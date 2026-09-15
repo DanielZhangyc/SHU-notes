@@ -6,6 +6,7 @@
 
 - 课程笔记：`学科/科目/notes/`，例如 `mathematics/mathematical-analysis-i/notes/`。
 - 文件命名：`章号-节号-英文主题`，同目录保存 `.tex` 和 `.pdf`。
+- 课后作业：放在对应节笔记末尾的“课后作业”模块，按教材题号组织；没有课堂笔记时，该节只保留作业。每题附题干及完整、严谨的解答。
 - `template.tex`：通用笔记模板。
 - `personal-textbook/`：自用教材；`misc/`：未归类内容。
 

@@ -12,7 +12,7 @@
 %   "tags": [
 %     "mathematics"
 %   ],
-%   "excerpt": "邻域、数集的有界性、上下确界与确界原理，以及相关例题和证明。"
+%   "excerpt": "邻域、数集的有界性、上下确界与确界原理，以及相关例题、证明和习题 1.2 的课后作业。"
 % }
 % halo:end
 % 编译：lualatex 01-02-sets-and-suprema.tex（建议运行两次）
@@ -207,6 +207,85 @@ $n\in\Nplus$ 且 $n>1/\varepsilon$。于是
   \qquad 1-\varepsilon<1-\frac1n<1.
 \]
 这就验证了任意逼近性，故 $\sup S=1$。
+\end{proof}
+
+\newpage
+\section{课后作业}
+
+\subsection{习题 1.2，第 2 题}
+\noindent\textbf{题目：}设 $S\subseteq\R$ 为非空数集，给出“$S$ 无上界”和“$S$ 无界”的定义。
+
+\noindent\textbf{解：}
+\begin{enumerate}
+ \item $S$ 无上界，是指
+ \[
+   \forall M\in\R,\quad\exists x\in S,\quad x>M.
+ \]
+ \item $S$ 无界，是指
+ \[
+   \forall M>0,\quad\exists x\in S,\quad |x|>M.
+ \]
+\end{enumerate}
+
+\subsection{习题 1.2，第 3 题}
+\noindent\textbf{题目：}证明数集 $S=\{2-x^2:x\in\R\}$ 有上界而无下界。
+
+\begin{proof}
+对任意 $x\in\R$，都有 $2-x^2\le2$，故 $2$ 是 $S$ 的一个上界。
+
+任取 $L\in\R$。若 $L\le2$，取 $x=\sqrt{3-L}$，则
+\[
+ y=2-x^2=L-1<L,\qquad y\in S.
+\]
+若 $L>2$，取 $x=0$，则 $y=2\in S$ 且 $y<L$。
+因此任意实数 $L$ 都不是 $S$ 的下界，故 $S$ 无下界。
+\end{proof}
+
+\newpage
+\subsection{习题 1.2，第 4 题（3）}
+\noindent\textbf{题目：}求 $S=(0,1)\setminus\mathbb{Q}$ 的上、下确界，并依定义验证。
+
+\begin{proof}
+对任意 $x\in S$，有 $0<x<1$，故 $0$ 是下界，$1$ 是上界。
+
+任取 $\varepsilon>0$，由正整数的无界性，可取正整数
+\[
+ n>\max\left\{2,\frac{\sqrt2}{\varepsilon}\right\}.
+\]
+令 $u=\sqrt2/n$。因为 $\sqrt2$ 是无理数，$1/n$ 是非零有理数，
+所以 $u$ 是无理数，且
+\[
+ 0<u<1,\qquad u<\varepsilon.
+\]
+于是 $u\in S$ 且 $u<0+\varepsilon$，验证了下确界的任意逼近性，故 $\inf S=0$。
+
+再令 $v=1-u$，则 $v$ 也是无理数，且
+\[
+ 0<v<1,\qquad v>1-\varepsilon.
+\]
+因此 $v\in S$，验证了上确界的任意逼近性，故 $\sup S=1$。
+\end{proof}
+
+\subsection{习题 1.2，第 4 题（4）}
+\noindent\textbf{题目：}求 $S=\{1-2^{-n}:n\in\Nplus\}$ 的上、下确界，并依定义验证。
+
+\begin{proof}
+对任意 $n\in\Nplus$，都有 $\frac12\le1-2^{-n}<1$。
+故 $1/2$ 是下界，$1$ 是上界。
+
+任取 $\varepsilon>0$，取 $n=1$，则 $1-2^{-1}=1/2\in S$，且
+$1/2<1/2+\varepsilon$，所以 $\inf S=1/2$。
+
+任取 $\alpha<1$，令
+\[
+ t=\log_2\frac1{1-\alpha},\qquad
+ n=\max\{1,\lfloor t\rfloor+1\}.
+\]
+则 $n\in\Nplus$ 且 $n>t$，从而
+\[
+ 1-\frac1{2^n}>1-\frac1{2^t}=\alpha.
+\]
+这说明任意小于 $1$ 的实数都不是 $S$ 的上界，故 $\sup S=1$。
 \end{proof}
 
 \end{document}

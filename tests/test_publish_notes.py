@@ -42,7 +42,10 @@ class FakeHalo:
 class PublishingTests(unittest.TestCase):
     def setUp(self):
         self.config = json.loads(CONFIG.read_text())
-        self.note = discover_notes(self.config)[0]
+        self.note = next(
+            note for note in discover_notes(self.config)
+            if note["source"] == "mathematics/mathematical-analysis-i/notes/01-02-sets-and-suprema.tex"
+        )
 
     def test_real_note_conversion(self):
         page = render_note(self.note, self.config)

@@ -1,0 +1,133 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "1.1",
+%   "title": "数学分析（一）1.1：实数",
+%   "categories": [
+%     "study-notes"
+%   ],
+%   "tags": [
+%     "mathematics"
+%   ],
+%   "excerpt": "习题 1.1 的课后作业：无理数、绝对值不等式与实数大小比较。"
+% }
+% halo:end
+% 编译：lualatex 01-01-real-numbers.tex（建议运行两次）
+% 课后作业根据《笔记 2027.pdf》第 1--3 页及习题 1.1 截图整理。
+% LuaLaTeX 嵌入中文字体及 Unicode 映射，兼容 PDF 预览与文字复制。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Nplus}{\mathbb{N}_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 1.1\quad 实数}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{实数}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月15日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{课后作业}
+
+\subsection{习题 1.1，第 1 题}
+\noindent\textbf{题目：}设 $a\in\mathbb{Q}$，$x\in\R\setminus\mathbb{Q}$。证明：
+（1）$a+x$ 为无理数；（2）当 $a\ne0$ 时，$ax$ 为无理数。
+
+\begin{proof}
+（1）反设 $a+x\in\mathbb{Q}$。由有理数对减法封闭，
+$x=(a+x)-a\in\mathbb{Q}$，与 $x$ 为无理数矛盾。
+
+（2）反设 $ax\in\mathbb{Q}$。由于 $a\in\mathbb{Q}$ 且 $a\ne0$，
+有 $x=(ax)/a\in\mathbb{Q}$，仍与条件矛盾。
+\end{proof}
+
+\subsection{习题 1.1，第 3 题}
+\noindent\textbf{题目：}设 $a,b\in\R$。若对任意 $\varepsilon>0$，都有 $|a-b|<\varepsilon$，证明 $a=b$。
+
+\begin{proof}
+反设 $a\ne b$，则 $|a-b|>0$。取 $\varepsilon=|a-b|$，由题设得到
+$|a-b|<|a-b|$，矛盾。因此 $a=b$。
+\end{proof}
+
+\subsection{习题 1.1，第 5 题（1）}
+\noindent\textbf{题目：}证明：对任意 $x\in\R$，有 $|x-1|+|x-2|\ge1$，并说明等号成立的条件。
+
+\begin{proof}
+由三角不等式，
+\[
+ |x-1|+|x-2|=|x-1|+|2-x|
+ \ge |(x-1)+(2-x)|=1.
+\]
+等号成立当且仅当 $(x-1)(2-x)\ge0$，即 $x\in[1,2]$。
+\end{proof}
+
+\newpage
+\subsection{习题 1.1，第 7 题}
+\noindent\textbf{题目：}设 $x>0$，$b>0$，$a\ne b$。证明 $\dfrac{a+x}{b+x}$ 严格介于 $1$ 与 $\dfrac ab$ 之间。
+
+\begin{proof}
+由于 $b>0$、$b+x>0$，有
+\[
+ \frac{a+x}{b+x}-1=\frac{a-b}{b+x},\qquad
+ \frac ab-\frac{a+x}{b+x}=\frac{x(a-b)}{b(b+x)}.
+\]
+当 $a>b$ 时，两式右端均为正，故
+\[
+ 1<\frac{a+x}{b+x}<\frac ab.
+\]
+当 $a<b$ 时，两式右端均为负，故
+\[
+ \frac ab<\frac{a+x}{b+x}<1.
+\]
+\end{proof}
+
+\subsection{习题 1.1，第 8 题}
+\noindent\textbf{题目：}设 $p$ 为正整数且不是完全平方数，证明 $\sqrt p$ 是无理数。
+
+\begin{proof}
+反设 $\sqrt p=m/n$，其中 $m,n\in\Nplus$ 且 $\gcd(m,n)=1$。平方得
+\[
+ m^2=pn^2.
+\]
+若 $n>1$，取 $n$ 的一个素因子 $q$。由 $q\mid n$ 得 $q\mid m^2$；
+由于 $q$ 是素数，可得 $q\mid m$。这与 $\gcd(m,n)=1$ 矛盾。
+因此 $n=1$，从而 $p=m^2$，与 $p$ 不是完全平方数矛盾。
+故 $\sqrt p$ 是无理数。
+\end{proof}
+
+\end{document}
