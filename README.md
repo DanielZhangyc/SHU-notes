@@ -18,3 +18,7 @@ lualatex filename.tex
 ```
 
 含目录或交叉引用时运行两次。
+
+## 博客同步
+
+在 LaTeX 文件顶部的 `halo` 注释块中配置文章标题、分类和标签，推送到 `main` 后由 GitHub Actions 同步至 Halo。首次使用需配置 `HALO_TOKEN`，见 [发布说明](publish/README.md)。

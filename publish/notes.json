@@ -1,0 +1,17 @@
+{
+  "halo_url": "https://www.xy0v0.top",
+  "repository": "DanielZhangyc/SHU-notes",
+  "pdf_branch": "main",
+  "categories": {
+    "study-notes": "学习笔记"
+  },
+  "tags": {
+    "mathematics": "数学"
+  },
+  "courses": {
+    "mathematical-analysis-i": {
+      "name": "数学分析（一）",
+      "directory": "mathematics/mathematical-analysis-i/notes"
+    }
+  }
+}

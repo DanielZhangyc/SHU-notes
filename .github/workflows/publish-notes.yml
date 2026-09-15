@@ -1,0 +1,44 @@
+name: Publish notes to Halo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '**/notes/*.tex'
+      - '**/notes/*.pdf'
+      - 'publish/notes.json'
+      - 'scripts/publish_notes.py'
+      - 'tests/**'
+      - '.github/workflows/publish-notes.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: halo-notes
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Pandoc
+        run: |
+          curl --fail --location --retry 3 \
+            https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-1-amd64.deb \
+            --output "$RUNNER_TEMP/pandoc.deb"
+          sudo dpkg -i "$RUNNER_TEMP/pandoc.deb"
+      - name: Validate and preview
+        run: |
+          python3 -m unittest discover -s tests
+          python3 scripts/publish_notes.py --preview
+      - name: Publish configured notes
+        env:
+          HALO_TOKEN: ${{ secrets.HALO_TOKEN }}
+        run: python3 scripts/publish_notes.py --publish
