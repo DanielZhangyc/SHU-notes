@@ -1,14 +1,20 @@
-## 简介
-个人的上海大学课程笔记记录
+# SHU Notes
+
+个人的上海大学课程笔记。
 
 ## 目录结构
-对于每个课程，按照如下方式进行管理（以数学分析为例）：
+
+- 课程笔记：`学科/科目/notes/`，例如 `mathematics/mathematical-analysis-i/notes/`。
+- 文件命名：`章号-节号-英文主题`，同目录保存 `.tex` 和 `.pdf`。
+- `template.tex`：通用笔记模板。
+- `personal-textbook/`：自用教材；`misc/`：未归类内容。
+
+## 编译
+
+使用 **LuaLaTeX**，在源文件所在目录运行：
+
+```sh
+lualatex filename.tex
 ```
-math-analysis/
-├── chapters/             # 稳定、正式的教材正文
-├── class-notes/          # 已整理的课堂增量
-├── inbox/                # 尚未处理的手写 PDF
-├── exercises/            # 代表性习题
-├── mistakes/             # 错误证明与错题
-└── main.tex
-```
+
+含目录或交叉引用时运行两次。

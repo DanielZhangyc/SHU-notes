@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# LaTeX 编译中间文件
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.xdv
+*.dvi
+
+# 本地构建与临时文件
+/build/
+/tmp/

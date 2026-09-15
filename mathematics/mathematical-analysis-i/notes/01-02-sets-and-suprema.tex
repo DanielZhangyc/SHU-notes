@@ -1,0 +1,196 @@
+% !TeX program = lualatex
+% 编译：lualatex 01-02-sets-and-suprema.tex（建议运行两次）
+% 根据 IMG_0983.HEIC、IMG_0984.HEIC 整理。
+% LuaLaTeX 嵌入中文字体及 Unicode 映射，兼容 PDF 预览与文字复制。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Nplus}{\mathbb{N}_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 1.2\quad 数集与确界原理}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{数集与确界原理}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月15日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{邻域}
+
+\begin{definition}[邻域与去心邻域]
+设 $a\in\R$，$\delta>0$。点 $a$ 的 $\delta$ 邻域为
+\[
+  U(a;\delta)=(a-\delta,a+\delta)
+  =\{x\in\R:|x-a|<\delta\}.
+\]
+去掉中心点 $a$，得到去心邻域
+\[
+  U^{\circ}(a;\delta)=(a-\delta,a)\cup(a,a+\delta)
+  =\{x\in\R:0<|x-a|<\delta\}.
+\]
+左邻域、右邻域分别记为
+\[
+  U_-(a;\delta)=(a-\delta,a],\qquad
+  U_+(a;\delta)=[a,a+\delta).
+\]
+\end{definition}
+\noindent\textbf{注意：}这里的左、右邻域均包含 $a$；去心时再去掉 $a$。
+
+\section{数集的有界性}
+以下讨论非空实数集 $S\subseteq\R$。
+
+\begin{definition}[上界、下界与有界集]
+\leavevmode
+\begin{enumerate}
+  \item 若存在 $M\in\R$，使得对所有 $x\in S$ 都有 $x\le M$，则称 $M$ 为 $S$ 的一个\textbf{上界}，称 $S$ \textbf{有上界}。
+  \item 若存在 $L\in\R$，使得对所有 $x\in S$ 都有 $x\ge L$，则称 $L$ 为 $S$ 的一个\textbf{下界}，称 $S$ \textbf{有下界}。
+  \item 若 $S$ 既有上界又有下界，则称 $S$ 为\textbf{有界集}。
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[有界性的等价刻画]
+$S$ 有界，当且仅当存在 $K>0$，使得对所有 $x\in S$ 都有 $|x|\le K$。
+\end{proposition}
+\begin{proof}
+若 $S$ 有界，设 $L,M$ 分别为其下界和上界，取
+\[
+  K=\max\{|L|,|M|\}+1>0.
+\]
+则对任意 $x\in S$，有 $-K\le L\le x\le M\le K$，故 $|x|\le K$。
+反之，若 $|x|\le K$ 对所有 $x\in S$ 成立，则 $-K\le x\le K$，所以 $-K$ 和 $K$ 分别为下界和上界，$S$ 有界。
+\end{proof}
+
+\newpage
+\section{有界性例题}
+
+\begin{example}[正弦函数值组成的数集]
+证明 $A=\{\sin t:t\in[-\pi/2,\pi/2]\}$ 有界。
+\end{example}
+\begin{proof}
+对任意 $x\in A$，存在 $t\in[-\pi/2,\pi/2]$，使得 $x=\sin t$。
+于是 $|x|=|\sin t|\le1$。取 $K=1$，即知 $A$ 有界。
+\end{proof}
+
+\begin{example}[正整数倒数组成的数集]
+证明 $B=\{1/n:n\in\Nplus\}=\{1,1/2,1/3,\ldots\}$ 有界。
+\end{example}
+\begin{proof}
+对任意 $n\in\Nplus$，有 $0<1/n\le1$，因此对任意 $x\in B$，
+都有 $|x|\le1$。所以 $B$ 有界。
+\end{proof}
+
+\section{上确界、下确界与确界原理}
+
+\begin{definition}[上确界]
+实数 $\beta$ 称为 $S$ 的\textbf{上确界}，记作 $\beta=\sup S$，若它满足：
+\begin{enumerate}
+  \item \textbf{上界性：}$\forall x\in S,\ x\le\beta$；
+  \item \textbf{任意逼近性：}$\forall\varepsilon>0,\ \exists x_{\varepsilon}\in S$，使得
+  $\beta-\varepsilon<x_{\varepsilon}$。
+\end{enumerate}
+第二条说明，任何小于 $\beta$ 的实数都不是 $S$ 的上界。
+因此，上确界就是\textbf{最小的上界}。
+\end{definition}
+
+\begin{definition}[下确界]
+实数 $\alpha$ 称为 $S$ 的\textbf{下确界}，记作 $\alpha=\inf S$，若它满足：
+\begin{enumerate}
+  \item \textbf{下界性：}$\forall x\in S,\ x\ge\alpha$；
+  \item \textbf{任意逼近性：}$\forall\varepsilon>0,\ \exists x_{\varepsilon}\in S$，使得
+  $x_{\varepsilon}<\alpha+\varepsilon$。
+\end{enumerate}
+第二条说明，任何大于 $\alpha$ 的实数都不是 $S$ 的下界。
+因此，下确界就是\textbf{最大的下界}。
+\end{definition}
+
+\noindent\textbf{注意：}上、下确界不一定属于 $S$。若 $\sup S\in S$，它就是最大值；若 $\inf S\in S$，它就是最小值。
+
+\begin{theorem}[确界原理]
+非空、有上界的实数集必有上确界；非空、有下界的实数集必有下确界。
+\end{theorem}
+
+\newpage
+\section{确界例题：\texorpdfstring{$1-1/n$}{1-1/n}}
+
+\begin{example}
+设
+\[
+  S=\left\{1-\frac1n:n\in\Nplus\right\}
+   =\left\{0,\frac12,\frac23,\frac34,\ldots\right\}.
+\]
+证明 $\inf S=0$，$\sup S=1$。
+\end{example}
+
+\begin{proof}
+\textbf{第一步：证明 $\inf S=0$。}
+
+对任意 $n\in\Nplus$，由 $n\ge1$ 得
+\[
+  0\le1-\frac1n<1.
+\]
+故 $0$ 是 $S$ 的一个下界。对任意 $\varepsilon>0$，取 $n=1$，则
+\[
+  x_{\varepsilon}=1-\frac11=0\in S,
+  \qquad x_{\varepsilon}=0<0+\varepsilon.
+\]
+因此，下确界定义中的两条条件均满足，$\inf S=0$。
+
+\medskip
+\textbf{第二步：证明 $\sup S=1$。}
+
+由 $1-1/n<1$ 可知，$1$ 是 $S$ 的一个上界。
+任取 $\varepsilon>0$，为了找到 $x_{\varepsilon}\in S$ 使得
+$x_{\varepsilon}>1-\varepsilon$，只需选择正整数 $n$ 满足
+\[
+  1-\frac1n>1-\varepsilon
+  \quad\Longleftrightarrow\quad
+  \frac1n<\varepsilon
+  \quad\Longleftrightarrow\quad
+  n>\frac1\varepsilon.
+\]
+具体地，取
+\[
+  n=\left\lfloor\frac1\varepsilon\right\rfloor+1,
+\]
+其中 $\lfloor t\rfloor$ 表示不超过 $t$ 的最大整数。因为
+$\lfloor t\rfloor\le t<\lfloor t\rfloor+1$，所以此时
+$n\in\Nplus$ 且 $n>1/\varepsilon$。于是
+\[
+  \frac1n<\varepsilon,
+  \qquad 1-\varepsilon<1-\frac1n<1.
+\]
+这就验证了任意逼近性，故 $\sup S=1$。
+\end{proof}
+
+\end{document}
