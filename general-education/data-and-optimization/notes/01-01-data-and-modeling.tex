@@ -1,0 +1,185 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "data-and-optimization",
+%   "section": "1.1",
+%   "title": "数据与优化（通识笔记）1.1：数据之用：从数据到模型",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "第一讲：数据的价值、推荐系统与低秩矩阵补全、预测中的特征选择及相关关系的边界。"
+% }
+% halo:end
+% 根据两段课堂录音的转录整理；补充的公式和例题不表示课堂逐字原稿。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}[definition]{例题}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.35em,topsep=0.3em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small 数据与优化（通识笔记）}
+\fancyhead[R]{\small 第一讲\quad 数据之用}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{数据之用：从数据到模型}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月16日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\bfseries\@title\par}\vspace{0.6em}\@author\par\vspace{0.2em}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\section{数据为什么有用}
+本讲的主线是：把实际问题转化为数据问题，再用数学模型支持预测和决策。
+\begin{center}
+实际问题 $\longrightarrow$ 收集与处理数据 $\longrightarrow$ 发现结构\\[0.4em]
+$\longrightarrow$ 建立模型 $\longrightarrow$ 验证模型 $\longrightarrow$ 预测与决策
+\end{center}
+\subsection{数据、信息与知识}
+\begin{itemize}
+\item \textbf{数据：}对事物的记录，如某个时刻的天体位置、用户对电影的评分。
+\item \textbf{信息：}数据在具体语境中表达的意义，如从连续观测中发现运动轨迹，或从评分中发现偏好。
+\item \textbf{知识：}对信息进一步组织、解释后形成的认识，如能够描述和预测现象的规律。
+\end{itemize}
+数据是信息的载体，但数据多不等于有效信息多。随机数字、重复记录、错误记录，未必能帮助解决目标问题。
+
+\subsection{大数据的特点与处理}
+课堂涉及四个方面：\textbf{规模大、产生和更新快、类型多、蕴含可挖掘的价值}。例如平台持续产生大量文字、图像、评分与行为记录，经过分析可以支持推荐和预测。
+
+建模前要检查数据的缺失、噪声、异常、真实性及与任务的关联。一个能解释已有数据的模型，还应接受新数据的检验；已有数据上的吻合不自动保证未来预测准确。
+
+\subsection{案例的共同作用}
+天体观测说明数据为模型提供依据，也帮助比较不同解释；人工智能案例说明数据、模型和算法需要配合。学习重点是说明\textbf{用了什么数据、解决什么问题、依赖什么假设、怎样验证}，不必把案例中的历史数字作为本讲的核心记忆负担。
+
+\newpage
+\section{推荐系统：把偏好预测写成矩阵补全}
+\subsection{三类数据矩阵}
+\begin{itemize}
+\item \textbf{评分矩阵：}行对应用户，列对应物品，元素表示用户对物品的评分或偏好。
+\item \textbf{用户信息矩阵：}行对应用户，列对应用户属性。
+\item \textbf{物品信息矩阵：}行对应物品，列对应物品属性，如电影类别。
+\end{itemize}
+本讲重点讨论基于评分矩阵的推荐模型；用户和物品属性可作为辅助信息。这是推荐系统的一种建模方式，不意味着所有推荐算法都必须显式使用评分矩阵。
+
+设有 $m$ 个用户、$n$ 件物品。记已观测评分为 $M_{ij}$，其位置集合为
+\[
+\Omega=\{(i,j):\text{用户 }i\text{ 对物品 }j\text{ 的评分已知}\}.
+\]
+\textbf{缺失不等于零分。}缺失表示不知道；已知零分也是观测，必须纳入 $\Omega$。任务是预测未知位置的评分，再将预测评分较高的物品推荐给相应用户。
+
+\subsection{低秩假设}
+\begin{definition}
+矩阵的秩是其线性无关列的最大数量，也等于线性无关行的最大数量。若秩相对于矩阵行、列数较小，就称其具有低秩结构。
+\end{definition}
+直观上，很多用户的偏好可能由少数共同因素解释，因此评分之间存在相关结构，可以尝试用低秩矩阵描述。\textbf{低秩是建模假设}，不能仅凭“人以群分”就断言实际评分矩阵必然低秩。
+
+\textbf{不要混淆两种性质：}观测稀疏指已知评分少；低秩指矩阵行列之间有较强的线性关联。空缺很多不会自动推出补全结果低秩。
+
+\subsection{目标函数与约束}
+记待求的完整评分矩阵为 $X\in\mathbb{R}^{m\times n}$。课堂中的理想化模型为
+\[
+\boxed{\min_X\operatorname{rank}(X)\quad
+\text{满足 }X_{ij}=M_{ij},\quad(i,j)\in\Omega.}
+\]
+\textbf{目标函数}要求补全结果尽可能低秩；\textbf{约束条件}要求保留已知评分。未知位置虽没有观测等式约束，仍受整个矩阵低秩目标的影响。只有“低秩”这一条件，通常不足以保证能唯一恢复真实评分。
+
+\newpage
+\section{从秩到核范数}
+\subsection{用更易处理的目标替代原目标}
+\begin{definition}
+设矩阵 $X$ 的奇异值为 $\sigma_1,\ldots,\sigma_r$，其中 $r=\min(m,n)$，允许其中有零。则
+\[
+\operatorname{rank}(X)=\#\{k:\sigma_k>0\},\qquad
+\|X\|_*=\sum_{k=1}^{r}\sigma_k.
+\]
+$\|X\|_*$ 称为 $X$ 的核范数。
+\end{definition}
+直接最小化秩通常难以求解。课堂介绍的思路是改用核范数，形成凸优化替代模型：
+\[
+\boxed{\min_X\|X\|_*\quad
+\text{满足 }X_{ij}=M_{ij},\quad(i,j)\in\Omega.}
+\]
+秩数的是非零奇异值的\textbf{个数}，核范数计算奇异值的\textbf{总和}。核范数最小化用于促进低秩结构，但两个问题\textbf{不在一般情况下等价}；是否恢复真实矩阵，还取决于观测数量、位置和矩阵结构等条件。
+
+本讲先理解建模与替代的思想即可，奇异值分解的具体计算和求解算法不在这份导论笔记中展开。
+
+\subsection{补充辨析：不能一般地用特征值数秩}
+\begin{example}
+矩阵 $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ 的秩是多少？
+\end{example}
+\noindent\textbf{解：}只有第二列非零，所以 $\operatorname{rank}(A)=1$。但其两个特征值均为零。因此，“方阵的秩等于非零特征值的个数”不是一般成立的结论。对任意实矩阵，使用非零\textbf{奇异值}的个数计算秩是正确的。
+
+\subsection{补充例题：怎样理解缺失值与低秩}
+给定 $M=\begin{pmatrix}5&?\\5&3\end{pmatrix}$，假设补全结果的秩为 $1$。
+若 $X=\begin{pmatrix}5&x\\5&3\end{pmatrix}$，则两列线性相关，故
+\[
+\det X=15-5x=0,\qquad x=3.
+\]
+这里的结果依赖秩为 $1$ 的假设。若直接把问号填成 $0$，就额外假定了未知评分为零，且所得矩阵的秩变为 $2$。此例用于理解模型，不代表实际推荐都能这样精确补全。
+
+\newpage
+\section{预测与决策案例}
+\subsection{搜索数据与流感趋势预测}
+课堂以搜索记录辅助预测流感趋势为例。传统统计存在时间延迟，相关搜索量可能提供较及时的信号。基本流程为：
+\begin{enumerate}
+\item 确定预测目标，例如某地区某时期的流感活动水平。
+\item 从搜索记录中选取可能相关的关键词或统计特征。
+\item 利用历史特征与对应观测建立预测模型。
+\item 将预测与实际观测比较，检验误差和适用范围。
+\end{enumerate}
+用统一符号表示，简单的线性预测模型可以写为
+\[
+\widehat y=\beta_0+\beta_1x_1+\cdots+\beta_px_p,
+\]
+其中 $x_j$ 是输入特征，$\widehat y$ 是预测值，$\beta_j$ 是待估计参数。此式是对课堂思路的标准化表达，不要求本讲掌握参数求解。
+
+\textbf{特征必须服务于目标。}例如评选班干部时，组织能力和责任心可能有用，血型或身高通常不能直接说明是否胜任。特征选择是从候选特征中挑选子集；更广义的特征提取还可构造新的表示，两者不宜完全混同。
+
+搜索量也会受到新闻关注、搜索习惯等因素影响。因此相关性带来的预测能力需要持续验证，不能把一个案例理解为“搜索越多就一定感染越多”。
+
+\subsection{其他应用及其共同边界}
+\begin{itemize}
+\item \textbf{药物用途探索：}从数据中寻找新的候选关联，为后续研究提供线索；数据关联本身不能替代实验和临床验证。
+\item \textbf{广告匹配：}根据用户、广告及场景信息选择可能更合适的展示内容，体现数据对决策的支持。
+\item \textbf{购物关联分析：}发现共同购买模式，为陈列或推荐提供参考；课堂故事用于解释思路，不据此认定因果关系。
+\end{itemize}
+\textbf{相关不等于因果。}两个现象一起变化，可能受共同因素影响。模型既要看数据中的规律，也要考虑规律能否在新的时间、群体和环境中继续成立。
+
+\newpage
+\section{闭卷自测与第一讲补习}
+以下问题按本讲内容整理，\textbf{不是教师公布的试题或考试范围}。先合上笔记口头回答，再核对要点。
+\begin{enumerate}
+\item \textbf{数据多为什么不一定有价值？}\\
+要点：数据可能重复、错误或无关；需结合任务进行处理、建模和验证，才能支持决策。
+\item \textbf{评分矩阵的行、列和缺失位置各表示什么？}\\
+要点：用户、物品、未知偏好；缺失不能直接当作零分。
+\item \textbf{观测稀疏与低秩有什么区别？}\\
+要点：前者是已知元素少，后者是行列之间的线性关联；两者不等价。
+\item \textbf{矩阵补全的目标函数和约束各是什么？}\\
+要点：最小化补全矩阵的秩；在 $\Omega$ 上保持已知评分一致。能写出模型并逐项解释。
+\item \textbf{为什么引入核范数？}\\
+要点：直接优化秩通常困难；核范数是奇异值之和，可作为促进低秩的凸替代目标，但不保证一般等价。
+\item \textbf{搜索数据怎样用于预测？}\\
+要点：确定目标、选择相关特征、建立模型、对照实际观测检验；注意数据关系可能改变。
+\item \textbf{数据发现的关联能直接当作因果吗？}\\
+要点：不能；可能存在共同因素，需要额外研究和验证。
+\end{enumerate}
+
+\subsection{一次补习的完成标准}
+先读第 1 节掌握主线，再把第 2、3 节的两个优化模型默写一次，说明每个符号和约束的含义；最后用“问题—数据—模型—验证—局限”复述一个预测案例。能够独立回答以上问题，再回听仍不清楚的片段即可。
+
+\subsection{课程安排备忘}
+录音中提到前七周授课、第八周闭卷随堂考试，可能包含论述和模型解释。作业、成绩构成及考试范围以教师或教学大纲确认为准。
+
+\smallskip
+\noindent{\small\textbf{资料说明：}根据两段课堂录音转录整理，省略识别不稳的历史数字与板书坐标。补充例题用于理解；课程名为描述性名称，1.1 为整理编号。}
+\end{document}

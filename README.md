@@ -23,3 +23,7 @@ lualatex filename.tex
 ## 博客同步
 
 在 LaTeX 文件顶部的 `halo` 注释块中配置文章标题、分类和标签，推送到 `main` 后由 GitHub Actions 同步至 Halo。首次使用需配置 `HALO_TOKEN`，见 [发布说明](publish/README.md)。
+
+## 通识课程笔记
+
+- [第一讲：数据之用：从数据到模型](general-education/data-and-optimization/notes/01-01-data-and-modeling.pdf)（[LaTeX 源文件](general-education/data-and-optimization/notes/01-01-data-and-modeling.tex)）。课程目录暂用描述性名称“数据与优化”，编号按讲次整理；仅保存在仓库，`publish: false`，不发布博客。

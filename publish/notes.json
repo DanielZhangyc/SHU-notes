@@ -12,6 +12,10 @@
     "mathematical-analysis-i": {
       "name": "数学分析（一）",
       "directory": "mathematics/mathematical-analysis-i/notes"
+    },
+    "data-and-optimization": {
+      "name": "数据与优化（通识笔记）",
+      "directory": "general-education/data-and-optimization/notes"
     }
   }
 }
