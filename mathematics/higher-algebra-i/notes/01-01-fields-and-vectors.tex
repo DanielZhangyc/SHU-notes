@@ -1,0 +1,279 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "1.1",
+%   "title": "高等代数（一）1.1：数域与向量初步",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "数域的定义与例子、最小数域、向量运算与线性组合，以及线性方程组和高斯消元的基本变换。"
+% }
+% halo:end
+% 编译：lualatex 01-01-fields-and-vectors.tex（运行两次）
+% 根据《笔记 2026年9月17日.pdf》四页原稿整理。
+% 编号 1.1 按首篇课堂笔记暂定，不表示已核实教材节号。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）}
+\fancyhead[R]{\small 1.1\quad 数域与向量初步}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{数域与向量初步}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月17日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{数域}
+
+\begin{definition}[数域]
+设 $P\subseteq\C$。若 $0,1\in P$，且 $P$ 对加、减、乘、除四则运算封闭，即对任意 $a,b\in P$，都有
+\[
+  a+b,\ a-b,\ ab\in P,
+  \qquad b\ne0\text{ 时，}\frac{a}{b}\in P,
+\]
+则称 $P$ 为一个\textbf{数域}。
+\end{definition}
+这里的运算均为通常的复数运算，除法只对非零除数进行。$\Q$、$\R$、$\C$ 都是数域；$\Z$ 不是数域，因为 $1,2\in\Z$ 而 $1/2\notin\Z$。
+数域中的 $0$ 和 $1$ 分别满足
+\[
+  a+0=a,\qquad a\cdot1=a\qquad(a\in P).
+\]
+
+\begin{proposition}[最小数域]
+任意数域 $P$ 都包含 $\Q$，因此 $\Q$ 是按包含关系而言的最小数域。
+\end{proposition}
+\begin{proof}
+先证明 $\N\subseteq P$，这里约定 $0\in\N$。由定义，$0,1\in P$；若 $n\in P$，则由加法封闭性有 $n+1\in P$。根据数学归纳法，每个自然数都属于 $P$。
+
+再由减法封闭性，对任意 $n\in\N$，有 $-n=0-n\in P$，故 $\Z\subseteq P$。
+
+最后，对任意 $x\in\Q$，可写成 $x=p/q$，其中 $p,q\in\Z$ 且 $q\ne0$。因为 $p,q\in P$，由除法封闭性得到 $x\in P$。因此 $\Q\subseteq P$；而 $\Q$ 本身是数域，结论成立。
+\end{proof}
+
+\begin{example}[$\Q(\sqrt2)$ 是数域]
+证明
+\[
+  \Q(\sqrt2)=\{a+b\sqrt2:a,b\in\Q\}
+\]
+是一个数域。
+\end{example}
+\begin{proof}
+首先，$\Q(\sqrt2)\subseteq\R\subseteq\C$，且取 $(a,b)=(0,0)$、$(1,0)$，分别得到 $0,1\in\Q(\sqrt2)$。
+
+任取 $A=a+b\sqrt2$、$B=c+d\sqrt2$，其中 $a,b,c,d\in\Q$。则
+\begin{align*}
+  A\pm B&=(a\pm c)+(b\pm d)\sqrt2,\\
+  AB&=(ac+2bd)+(ad+bc)\sqrt2.
+\end{align*}
+各系数均为有理数，所以加、减、乘法封闭。
+
+当 $B\ne0$ 时，先说明 $c^2-2d^2\ne0$。若 $c^2=2d^2$：当 $d=0$ 时，$c=0$，与 $B\ne0$ 矛盾；当 $d\ne0$ 时，$(c/d)^2=2$，与 $\sqrt2$ 为无理数矛盾。因此可以有理化分母：
+\[
+  \frac AB
+  =\frac{(a+b\sqrt2)(c-d\sqrt2)}{c^2-2d^2}
+  =\frac{ac-2bd}{c^2-2d^2}
+   +\frac{bc-ad}{c^2-2d^2}\sqrt2
+  \in\Q(\sqrt2).
+\]
+故除法也封闭，$\Q(\sqrt2)$ 是数域。
+\end{proof}
+
+\begin{example}[含立方根的两项式集合]
+判断集合
+\[
+  S=\{a+b\sqrt[3]{2}:a,b\in\Q\}
+\]
+是否为数域。
+\end{example}
+\begin{proof}[解]
+记 $\alpha=\sqrt[3]{2}$。先说明 $\alpha\notin\Q$：若 $\alpha=u/v$，其中 $u,v$ 为互素整数且 $v\ne0$，则 $u^3=2v^3$。于是 $u$ 为偶数，令 $u=2k$，得到 $v^3=4k^3$，故 $v$ 也为偶数，与互素矛盾。
+
+因为 $\alpha\in S$，若 $S$ 对乘法封闭，应有 $\alpha^2\in S$。下面证明这一点不成立。
+
+反设存在 $p,q\in\Q$，使得 $\alpha^2=p+q\alpha$。两边乘以 $\alpha$，再代入此式，得
+\[
+  2=\alpha^3=p\alpha+q\alpha^2
+   =pq+(p+q^2)\alpha.
+\]
+由于 $\alpha$ 是无理数，而 $p,q$ 均为有理数，必有
+\[
+  p+q^2=0,\qquad pq=2.
+\]
+从而 $p=-q^2$，$q^3=-2$，即 $q=-\sqrt[3]{2}\notin\Q$，矛盾。
+因此 $\alpha^2=\sqrt[3]{4}\notin S$，$S$ 对乘法不封闭，\textbf{不是数域}。
+\end{proof}
+
+\begin{example}[$\Q(\pi)$ 是数域]
+令
+\[
+  \Q(\pi)=\left\{
+    \frac{f(\pi)}{g(\pi)}:
+    f,g\in\Q[x],\ g(\pi)\ne0
+  \right\},
+\]
+其中 $\Q[x]$ 表示所有有理系数多项式构成的集合。证明 $\Q(\pi)$ 是一个数域。
+\end{example}
+\begin{proof}
+显然 $\Q(\pi)\subseteq\R\subseteq\C$，取常数多项式可知 $0,1\in\Q(\pi)$。
+任取
+\[
+  A=\frac{f(\pi)}{g(\pi)},\qquad
+  B=\frac{h(\pi)}{k(\pi)},
+  \qquad g(\pi)k(\pi)\ne0.
+\]
+有理系数多项式的和、差、积仍为有理系数多项式，而
+\[
+  A\pm B=\frac{(fk\pm hg)(\pi)}{(gk)(\pi)},
+  \qquad AB=\frac{(fh)(\pi)}{(gk)(\pi)}.
+\]
+上述分母均非零，所以加、减、乘法封闭。当 $B\ne0$ 时，$h(\pi)\ne0$，从而
+\[
+  \frac AB=\frac{(fk)(\pi)}{(gh)(\pi)}\in\Q(\pi),
+\]
+除法也封闭，故 $\Q(\pi)$ 是数域。
+\end{proof}
+这里要求的是分母的\textbf{取值} $g(\pi)\ne0$。上述证明只用到四则运算，并不需要讨论 $\pi$ 的超越性。
+
+\section{向量及其运算}
+以下固定一个数域 $P$，并设 $n$ 为正整数。
+
+\begin{definition}[行向量、列向量与 $P^n$]
+若 $a_1,\ldots,a_n\in P$，则
+\[
+  (a_1,a_2,\ldots,a_n)
+\]
+称为 $P$ 上的一个 $n$ 维\textbf{行向量}，而
+\[
+  \boldsymbol\alpha=
+  \begin{pmatrix}a_1\\a_2\\\vdots\\a_n\end{pmatrix}
+  =(a_1,a_2,\ldots,a_n)^{\mathsf T}
+\]
+称为 $P$ 上的一个 $n$ 维\textbf{列向量}，其中 $\mathsf T$ 表示转置。$a_i$ 称为向量的第 $i$ 个分量。
+
+本篇约定以列向量为主，记 $P^n$ 为 $P$ 上所有 $n$ 维列向量组成的集合。两个向量相等，当且仅当对应分量分别相等。
+\end{definition}
+
+\begin{definition}[向量加法与数乘]
+设 $\boldsymbol\alpha=(a_1,\ldots,a_n)^{\mathsf T}$、
+$\boldsymbol\beta=(b_1,\ldots,b_n)^{\mathsf T}\in P^n$，$c\in P$，定义
+\[
+  \boldsymbol\alpha+\boldsymbol\beta
+    =(a_1+b_1,\ldots,a_n+b_n)^{\mathsf T},
+  \qquad
+  c\boldsymbol\alpha=(ca_1,\ldots,ca_n)^{\mathsf T}.
+\]
+由于 $P$ 对加法和乘法封闭，结果仍属于 $P^n$。这里 $c$ 称为\textbf{标量}，$c\boldsymbol\alpha$ 称为向量的\textbf{数乘}。
+\end{definition}
+
+\begin{proposition}[向量运算的八条基本法则]
+对任意 $\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol\gamma\in P^n$ 及 $c,d\in P$，有
+\begin{enumerate}
+  \item 加法交换律：$\boldsymbol\alpha+\boldsymbol\beta=\boldsymbol\beta+\boldsymbol\alpha$；
+  \item 加法结合律：$(\boldsymbol\alpha+\boldsymbol\beta)+\boldsymbol\gamma=\boldsymbol\alpha+(\boldsymbol\beta+\boldsymbol\gamma)$；
+  \item 零向量：$\boldsymbol0=(0,\ldots,0)^{\mathsf T}$，且 $\boldsymbol\alpha+\boldsymbol0=\boldsymbol\alpha$；
+  \item 负向量：$-\boldsymbol\alpha=(-a_1,\ldots,-a_n)^{\mathsf T}$，且 $\boldsymbol\alpha+(-\boldsymbol\alpha)=\boldsymbol0$；
+  \item 数乘单位律：$1\boldsymbol\alpha=\boldsymbol\alpha$；
+  \item 数乘结合律：$c(d\boldsymbol\alpha)=(cd)\boldsymbol\alpha$；
+  \item 对向量加法的分配律：$c(\boldsymbol\alpha+\boldsymbol\beta)=c\boldsymbol\alpha+c\boldsymbol\beta$；
+  \item 对标量加法的分配律：$(c+d)\boldsymbol\alpha=c\boldsymbol\alpha+d\boldsymbol\alpha$。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+按分量验证即可。例如，第 $i$ 个分量分别满足
+\[
+  a_i+b_i=b_i+a_i,\qquad
+  c(a_i+b_i)=ca_i+cb_i.
+\]
+其余各式同样归结为数域 $P$ 中的相应运算律。结合以上加法与数乘，$P^n$ 称为 $P$ 上的\textbf{$n$ 维向量空间}。
+\end{proof}
+
+\section{线性组合与线性表示}
+
+\begin{definition}[线性组合与线性表示]
+设 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_m\in P^n$，$c_1,\ldots,c_m\in P$。向量
+\[
+  c_1\boldsymbol\alpha_1+\cdots+c_m\boldsymbol\alpha_m
+  =\sum_{i=1}^{m}c_i\boldsymbol\alpha_i
+\]
+称为向量组 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_m$ 的一个\textbf{线性组合}。若 $\boldsymbol\beta\in P^n$ 且存在这样的系数，使得
+\[
+  \boldsymbol\beta=\sum_{i=1}^{m}c_i\boldsymbol\alpha_i,
+\]
+则称 $\boldsymbol\beta$ 可由该向量组\textbf{线性表示}。
+\end{definition}
+线性组合是对有限个向量进行数乘后再相加；其中系数必须属于指定数域 $P$。取全部系数 $c_i=0$，可知零向量可以由任意给定的非空向量组线性表示。
+
+\section{线性方程组与高斯消元}
+
+\begin{definition}[数域上的线性方程组]
+设 $a_{ij},b_i\in P$，形如
+\[
+  \begin{cases}
+    a_{11}x_1+\cdots+a_{1n}x_n=b_1,\\
+    a_{21}x_1+\cdots+a_{2n}x_n=b_2,\\
+    \hspace{3.5em}\vdots\\
+    a_{m1}x_1+\cdots+a_{mn}x_n=b_m
+  \end{cases}
+\]
+的方程组称为 $P$ 上的\textbf{线性方程组}。使全部方程同时成立的向量 $(x_1,\ldots,x_n)^{\mathsf T}\in P^n$ 称为它的一个解。
+\end{definition}
+
+\begin{proposition}[同解变换]
+对线性方程组进行下列任一变换，解集不变：
+\begin{enumerate}
+  \item 交换两个方程的位置；
+  \item 用 $P$ 中的一个\textbf{非零数}乘某个方程的两边；
+  \item 将某个方程的 $c$ 倍加到另一个方程上，其中 $c\in P$。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+原方程组的每个解显然满足变换后的方程组。反过来，三类变换都可逆：交换后再次交换；乘以非零数 $c$ 后再乘以 $c^{-1}$；加上某个方程的 $c$ 倍后，再加上它的 $-c$ 倍。因此新方程组的每个解也满足原方程组，故解集相同。
+\end{proof}
+
+\textbf{高斯消元法}通过上述变换逐步消去未知量，将方程组化为便于求解的阶梯形，再进行回代。对增广矩阵操作时，这三类变换称为\textbf{初等行变换}，分别记为
+\[
+  R_i\leftrightarrow R_j,\qquad
+  R_i\leftarrow cR_i\ (c\ne0),\qquad
+  R_i\leftarrow R_i+cR_j\ (i\ne j).
+\]
+变换必须作用于整个方程，包括等号右端的常数项。数域对四则运算的封闭性保证了消元过程中所产生的系数仍属于 $P$。
+
+\end{document}

@@ -9,6 +9,10 @@
     "mathematics": "数学"
   },
   "courses": {
+    "higher-algebra-i": {
+      "name": "高等代数（一）",
+      "directory": "mathematics/higher-algebra-i/notes"
+    },
     "mathematical-analysis-i": {
       "name": "数学分析（一）",
       "directory": "mathematics/mathematical-analysis-i/notes"
