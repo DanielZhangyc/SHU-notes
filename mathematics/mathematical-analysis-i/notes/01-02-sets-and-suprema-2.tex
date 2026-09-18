@@ -1,0 +1,256 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "1.2",
+%   "title": "数学分析（一）1.2：数集与确界原理（2）",
+%   "categories": [
+%     "study-notes"
+%   ],
+%   "tags": [
+%     "mathematics"
+%   ],
+%   "excerpt": "确界原理的十进制与闭区间套证明，以及最大值、确界比较、平移和正数倍性质。"
+% }
+% halo:end
+% 编译：lualatex 01-02-sets-and-suprema-2.tex（建议运行两次）
+% 课堂日期：2026-09-18。
+% 根据 IMG_1085.HEIC 下半页的确界原理证明至 IMG_1087.HEIC 整理。
+% LuaLaTeX 嵌入中文字体及 Unicode 映射，兼容 PDF 预览与文字复制。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Nplus}{\mathbb{N}_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 1.2（2）\quad 数集与确界原理}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{数集与确界原理（2）}
+\author{Yuchen Zhang}
+\date{课堂日期：2026年9月18日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{确界原理的证明}
+\begin{theorem}[确界原理]
+非空、有上界的实数集必有上确界；非空、有下界的实数集必有下确界。
+\end{theorem}
+
+\subsection{十进制构造}
+\begin{proof}
+先证上确界的存在性，并以实数的无限小数表示为基础。
+任取 $s_0\in S$，将各元素加上 $1-s_0$，集合仍有上界且含正数；
+平移后集合的上确界减去 $1-s_0$，即为原集合的上确界。
+故可设 $S$ 含有正数。
+
+\textbf{构造。}不是 $S$ 上界的非负整数构成非空有限集：
+$0$ 不是上界，而充分大的整数都是上界。取其中最大者 $a_0$，令 $p_0=a_0$。
+则 $p_0$ 不是上界，$p_0+1$ 是上界。
+
+将区间 $[p_{k-1},p_{k-1}+10^{-(k-1)}]$ 十等分，
+在 $0,1,\ldots,9$ 中取最大的数字 $a_k$，使
+\[
+  p_k=p_{k-1}+a_k10^{-k}
+\]
+不是上界。因 $p_{k-1}$ 不是上界，数字 $0$ 至少可选。
+由最大性（$a_k=9$ 时利用上一层的上界），对每个 $k\ge0$ 都有
+\[
+  \exists x\in S:\ x>p_k,
+  \qquad \forall x\in S:\ x\le p_k+10^{-k}.
+\]
+令 $\eta=a_0.a_1a_2\cdots$，则 $p_k\le\eta\le p_k+10^{-k}$。
+这里允许末尾循环 $9$，所以右端保留 $\le$。
+
+\medskip
+\textbf{验证。}若存在 $x\in S$ 满足 $x>\eta$，取 $10^{-k}<x-\eta$，则
+\[
+  x\le p_k+10^{-k}\le\eta+10^{-k}<x,
+\]
+矛盾，故 $\eta$ 是上界。任取 $\alpha<\eta$，取 $10^{-k}<\eta-\alpha$，则
+\[
+  p_k\ge\eta-10^{-k}>\alpha.
+\]
+由于 $p_k$ 不是上界，存在 $x\in S$ 使 $x>p_k>\alpha$。
+故任何小于 $\eta$ 的数都不是上界，即 $\eta=\sup S$。
+\end{proof}
+
+\newpage
+\subsection{闭区间套证明}
+\noindent 此处以闭区间套定理为前提：若非空闭区间
+$[a_k,b_k]$ 逐层包含，且长度趋于 $0$，则它们恰有一个公共点。
+
+\begin{proof}
+仍设 $S\ne\varnothing$ 且有上界。任取 $x_0\in S$，令 $a_0=x_0-1$，
+再取 $S$ 的一个上界 $b_0$。则 $a_0$ 不是上界，而 $b_0$ 是上界。
+
+\textbf{第一步：二分构造闭区间套。}
+
+设 $[a_k,b_k]$ 已确定，取中点 $m_k=(a_k+b_k)/2$，并定义
+\[
+  [a_{k+1},b_{k+1}]=
+  \begin{cases}
+    [a_k,m_k],&m_k\text{ 是 }S\text{ 的上界},\\
+    [m_k,b_k],&m_k\text{ 不是 }S\text{ 的上界}.
+  \end{cases}
+\]
+于是对所有 $k\ge0$，都有
+\[
+  a_k\text{ 不是上界},\qquad b_k\text{ 是上界},\qquad
+  b_k-a_k=\frac{b_0-a_0}{2^k}.
+\]
+这些闭区间逐层包含，长度趋于 $0$。由闭区间套定理，存在唯一实数
+$\xi$，使得对所有 $k\ge0$ 都有 $a_k\le\xi\le b_k$。
+
+\medskip
+\textbf{第二步：验证 $\xi=\sup S$。}
+
+若存在 $x\in S$ 满足 $x>\xi$，取充分大的 $k$，使
+$b_k-a_k<x-\xi$。则
+\[
+  b_k-\xi\le b_k-a_k<x-\xi,
+\]
+从而 $b_k<x$，与 $b_k$ 是上界矛盾。因此 $\xi$ 是上界。
+
+任取 $\alpha<\xi$，取充分大的 $k$，使 $b_k-a_k<\xi-\alpha$，则
+\[
+  \xi-a_k\le b_k-a_k<\xi-\alpha,
+  \qquad \alpha<a_k.
+\]
+由于 $a_k$ 不是上界，存在 $x\in S$ 使 $x>a_k>\alpha$。
+所以 $\xi$ 是最小的上界，即 $\xi=\sup S$。
+\end{proof}
+
+\medskip
+\noindent\textbf{下确界的存在性。}
+若非空集合 $S$ 有下界，则 $-S=\{-x:x\in S\}$ 有上界。
+令 $\beta=\sup(-S)$，则所有 $x\in S$ 都满足 $x\ge-\beta$。
+任取 $\varepsilon>0$，存在 $-x\in-S$ 使
+$\beta-\varepsilon<-x$，即 $x<-\beta+\varepsilon$。
+故 $\inf S=-\beta$，确界原理的另一半也得证。
+
+\newpage
+\section{确界的性质}
+
+\begin{proposition}[最大值与上确界]
+设 $S\subseteq\R$ 非空，则
+\[
+  \max S=\eta
+  \quad\Longleftrightarrow\quad
+  \eta=\sup S\ \text{且}\ \eta\in S.
+\]
+\end{proposition}
+\begin{proof}
+若 $\max S=\eta$，则 $\eta\in S$，且所有 $x\in S$ 都满足 $x\le\eta$，
+所以 $\eta$ 是上界。任取 $\alpha<\eta$，直接取 $x=\eta\in S$，
+就有 $x>\alpha$。因此 $\eta$ 是最小上界，即 $\sup S=\eta$。
+
+反之，若 $\eta=\sup S$ 且 $\eta\in S$，则由上界性，
+对所有 $x\in S$ 都有 $x\le\eta$，所以 $\max S=\eta$。
+\end{proof}
+
+\noindent 仅有 $\sup S=\eta$ 不能推出最大值存在；还必须有 $\eta\in S$。
+
+\begin{proposition}[两个数集的确界比较]
+设 $A,B\subseteq\R$ 均非空，且
+\[
+  \forall x\in A,\quad\forall y\in B,\quad x\le y.
+\]
+则 $A$ 有上确界，$B$ 有下确界，并且
+\[
+  \sup A\le\inf B.
+\]
+\end{proposition}
+\begin{proof}
+任取 $y_0\in B$，则 $y_0$ 是 $A$ 的上界；任取 $x_0\in A$，
+则 $x_0$ 是 $B$ 的下界。由确界原理，$\sup A$ 与 $\inf B$ 均存在。
+
+对任意 $y\in B$，$y$ 都是 $A$ 的上界，故由上确界的最小性，
+\[
+  \sup A\le y\qquad(\forall y\in B).
+\]
+这说明 $\sup A$ 是 $B$ 的一个下界。由于 $\inf B$ 是最大的下界，
+因此 $\sup A\le\inf B$。
+\end{proof}
+
+\newpage
+\begin{proposition}[平移与正数倍]
+设 $S\subseteq\R$ 非空且有上界，记 $\eta=\sup S$。
+\begin{enumerate}
+  \item 对任意 $a\in\R$，定义 $S+a=\{x+a:x\in S\}$，则
+  \[
+    \sup(S+a)=\sup S+a.
+  \]
+  \item 对任意 $b>0$，定义 $bS=\{bx:x\in S\}$，则
+  \[
+    \sup(bS)=b\sup S.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{（1）平移。}
+对任意 $x\in S$，有 $x\le\eta$，从而
+\[
+  x+a\le\eta+a.
+\]
+因此 $\eta+a$ 是 $S+a$ 的上界。
+
+任取 $\alpha<\eta+a$，则 $\alpha-a<\eta$。
+由 $\eta=\sup S$，存在 $x_0\in S$，使
+\[
+  x_0>\alpha-a,
+  \qquad x_0+a>\alpha.
+\]
+由于 $x_0+a\in S+a$，所以任何小于 $\eta+a$ 的数都不是 $S+a$ 的上界。
+故 $\sup(S+a)=\eta+a$。
+
+\medskip
+\textbf{（2）正数倍。}
+由于 $b>0$，对任意 $x\in S$，由 $x\le\eta$ 得
+\[
+  bx\le b\eta.
+\]
+因此 $b\eta$ 是 $bS$ 的上界。
+
+任取 $\alpha<b\eta$，则 $\alpha/b<\eta$。
+由 $\eta=\sup S$，存在 $x_0\in S$，使
+\[
+  x_0>\frac\alpha b,
+  \qquad bx_0>\alpha.
+\]
+由于 $bx_0\in bS$，所以任何小于 $b\eta$ 的数都不是 $bS$ 的上界。
+故 $\sup(bS)=b\eta$。
+\end{proof}
+
+\end{document}
