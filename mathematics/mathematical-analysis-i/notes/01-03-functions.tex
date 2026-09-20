@@ -1,0 +1,255 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "1.3",
+%   "title": "数学分析（一）1.3：函数",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "函数与反函数、初等函数与特殊函数、有界性，以及函数和的上下确界不等式。"
+% }
+% halo:end
+% 来源：IMG_1221.HEIC、IMG_1222.HEIC、IMG_1223.HEIC 上半页。
+% 不含第三张照片中的数列极限内容。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\sgn}{sgn}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 1.3\quad 函数}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{函数}
+\author{Yuchen Zhang}
+\date{课堂日期：2026年9月20日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\section{映射与反函数}
+\begin{definition}[映射]
+设 $D,M$ 为非空集合。若按照某一法则 $f$，对每个 $x\in D$，
+存在唯一的 $y\in M$ 与之对应，就称 $f$ 为从 $D$ 到 $M$ 的映射，记作
+\[
+ f:D\to M,\qquad y=f(x).
+\]
+$D$ 是定义域，$M$ 是陪域，$f(D)=\{f(x):x\in D\}$ 是值域。
+当 $D,M\subseteq\R$ 时，这就是本节讨论的实函数。
+\end{definition}
+\begin{enumerate}
+\item \textbf{单射：}每个 $y\in M$ 至多有一个原像，等价于
+\[
+ \forall x_1,x_2\in D,\quad f(x_1)=f(x_2)\Longrightarrow x_1=x_2.
+\]
+\item \textbf{满射：}每个 $y\in M$ 至少有一个原像，即
+\[
+ \forall y\in M,\quad\exists x\in D:\ f(x)=y.
+\]
+\item \textbf{双射（一一映射）：}既是单射又是满射，每个 $y\in M$ 恰有一个原像。
+\end{enumerate}
+
+\begin{definition}[反函数]
+若 $f:D\to M$ 是双射，则对每个 $y\in M$，存在唯一 $x\in D$ 使 $f(x)=y$。
+由此得到反函数 $f^{-1}:M\to D$，满足
+\[
+ f^{-1}(f(x))=x\ (x\in D),\qquad f(f^{-1}(y))=y\ (y\in M).
+\]
+\end{definition}
+反函数交换原函数的定义域与值域。若将陪域取为 $f(D)$，则 $f$ 有反函数
+当且仅当 $f$ 是单射。符号 $f^{-1}$ 表示反函数，不表示倒数 $1/f$。
+
+\begin{example}
+函数 $f:[0,+\infty)\to[0,+\infty)$，$f(x)=x^2$ 是双射。
+由 $y=x^2$、$x\ge0$ 解得 $x=\sqrt y$，故 $f^{-1}(x)=\sqrt x$（$x\ge0$）。
+若将 $x^2$ 的定义域扩大到 $\R$，则因 $f(1)=f(-1)$，不再有反函数。
+\end{example}
+
+\newpage
+\section{常见函数}
+\subsection{初等函数、双曲函数与反三角函数}
+基本初等函数包括常数函数、幂函数、指数函数、对数函数、三角函数和反三角函数。
+由基本初等函数经过有限次四则运算与复合所得到的函数称为初等函数；
+初等函数在其定义区间内连续。
+
+双曲正弦与双曲余弦定义为
+\[
+ \sinh x=\frac{e^x-e^{-x}}2,\qquad
+ \cosh x=\frac{e^x+e^{-x}}2\qquad(x\in\R).
+\]
+$\sinh$ 在 $\R$ 上严格递增，值域为 $\R$；$\cosh$ 限制在 $[0,+\infty)$ 上
+严格递增，值域为 $[1,+\infty)$。相应的反函数为
+\[
+ \arsinh x=\ln\bigl(x+\sqrt{x^2+1}\bigr)\quad(x\in\R),
+\]
+\[
+ \arcosh x=\ln\bigl(x+\sqrt{x^2-1}\bigr)\quad(x\ge1).
+\]
+反三角函数也需要先限制原函数的定义域：
+\[
+\begin{array}{c|c|c}
+ \text{反函数}&\text{定义域}&\text{值域}\\ \hline
+ \arcsin x&[-1,1]&[-\pi/2,\pi/2]\\
+ \arccos x&[-1,1]&[0,\pi]
+\end{array}
+\]
+
+\subsection{几个特殊函数}
+\textbf{符号函数与取整函数。}
+\[
+ \sgn x=\begin{cases}1,&x>0,\\0,&x=0,\\-1,&x<0,\end{cases}
+ \qquad x\sgn x=|x|.
+\]
+取整函数 $[x]=\lfloor x\rfloor$ 表示不超过 $x$ 的最大整数，满足
+$\lfloor x\rfloor\le x<\lfloor x\rfloor+1$，例如 $\lfloor-1.2\rfloor=-2$。
+
+\textbf{狄利克雷函数与黎曼函数。}
+\[
+ D(x)=\begin{cases}1,&x\in\Q,\\0,&x\in\R\setminus\Q;\end{cases}
+ \qquad
+ R(x)=\begin{cases}
+ 1/q,&x=p/q\in(0,1),\ p,q\in\Nplus,\ \gcd(p,q)=1,\\
+ 0,&x=0,1\text{ 或 }x\in(0,1)\setminus\Q.
+ \end{cases}
+\]
+这里采用端点值为 $0$ 的黎曼函数定义，有理数须写成既约分数。
+
+\textbf{狄拉克 $\delta$（单位冲激）。}
+常形式地写成 $\delta(x)=0$（$x\ne0$）、$\delta(0)=+\infty$，并记
+$\int_{-\infty}^{+\infty}\delta(x)\,\mathrm dx=1$。
+它不是通常意义的实值函数；上述写法是直观表示，不能作为普通函数的定义。
+
+\newpage
+\section{函数的单调性与有界性}
+\begin{proposition}[反函数的单调性]
+设 $D\subseteq\R$，$f:D\to\R$ 是单射，则 $f$ 严格递增当且仅当
+其反函数 $f^{-1}:f(D)\to D$ 严格递增。
+\end{proposition}
+\begin{proof}
+若 $f$ 严格递增，任取 $y_1,y_2\in f(D)$ 且 $y_1<y_2$，
+令 $x_1=f^{-1}(y_1)$、$x_2=f^{-1}(y_2)$。
+若 $x_1\ge x_2$，则由严格递增性及相等情形有
+$y_1=f(x_1)\ge f(x_2)=y_2$，矛盾。
+故 $f^{-1}(y_1)<f^{-1}(y_2)$。反之，对 $f^{-1}$ 应用同一结论，
+并利用 $(f^{-1})^{-1}=f$ 即得。
+\end{proof}
+
+\begin{definition}[有界性]
+设 $f:D\to\R$，$D\ne\varnothing$。
+\begin{enumerate}
+\item 若存在 $U\in\R$，使得对所有 $x\in D$ 都有 $f(x)\le U$，则称 $f$ 在 $D$ 上有上界。
+\item 若存在 $L\in\R$，使得对所有 $x\in D$ 都有 $f(x)\ge L$，则称 $f$ 在 $D$ 上有下界。
+\item 若 $f$ 在 $D$ 上既有上界又有下界，则称其有界。等价地，
+\[
+ \exists M\ge0,\quad\forall x\in D,\quad |f(x)|\le M.
+\]
+\end{enumerate}
+\end{definition}
+常数 $M$ 必须对所有 $x$ 同时适用，不能依赖于 $x$。
+由量词否定，$f$ 在 $D$ 上无界等价于
+\[
+ \forall M\ge0,\quad\exists x\in D,\quad |f(x)|>M.
+\]
+无界只要求没有上界或没有下界，未必两者都没有。
+
+\begin{example}
+证明 $f(x)=\tan x$ 在 $[0,\pi/2)$ 上有下界而无上界。
+\end{example}
+\begin{proof}
+对所有 $x\in[0,\pi/2)$，都有 $\tan x\ge0$，故 $0$ 是下界。
+
+任取 $M\ge0$，由于 $0\le\arctan M<\pi/2$，可取
+\[
+ x=\frac{\arctan M+\pi/2}{2},\qquad
+ \arctan M<x<\frac\pi2.
+\]
+由正切函数在 $[0,\pi/2)$ 上严格递增，得
+\[
+ \tan x>\tan(\arctan M)=M.
+\]
+所以任意非负数都不是上界；负数也不可能是上界，因为 $f(0)=0$。
+故该函数无上界。
+\end{proof}
+
+\newpage
+\section{函数和的确界不等式}
+对非空集合 $D$ 上的有界函数 $f$，记
+\[
+ \inf_{x\in D}f(x)=\inf f(D),\qquad
+ \sup_{x\in D}f(x)=\sup f(D).
+\]
+它们分别是值域的下确界和上确界，不要求在某点取得。
+
+\begin{proposition}
+设 $f,g$ 在同一非空集合 $D$ 上有界，则 $f+g$ 也有界，且
+\[
+ \inf_{x\in D}f(x)+\inf_{x\in D}g(x)
+ \le\inf_{x\in D}\bigl(f(x)+g(x)\bigr),
+\]
+\[
+ \sup_{x\in D}\bigl(f(x)+g(x)\bigr)
+ \le\sup_{x\in D}f(x)+\sup_{x\in D}g(x).
+\]
+\end{proposition}
+\begin{proof}
+记 $m_f=\inf_{x\in D}f(x)$、$m_g=\inf_{x\in D}g(x)$，
+$M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
+由有界性与确界原理，这四个数均为有限实数。
+
+对任意 $x\in D$，由上下确界的界性，
+\[
+ m_f\le f(x)\le M_f,\qquad m_g\le g(x)\le M_g,
+\]
+相加得到
+\[
+ m_f+m_g\le f(x)+g(x)\le M_f+M_g.
+\]
+这也说明 $f+g$ 有界。
+
+其中 $m_f+m_g$ 是 $\{f(x)+g(x):x\in D\}$ 的一个下界，
+而下确界是最大的下界，故
+\[
+ m_f+m_g\le\inf_{x\in D}\bigl(f(x)+g(x)\bigr).
+\]
+同理，$M_f+M_g$ 是该集合的一个上界，而上确界是最小的上界，故
+\[
+ \sup_{x\in D}\bigl(f(x)+g(x)\bigr)\le M_f+M_g.
+\]
+\end{proof}
+
+\subsection*{与数集求和的区别}
+函数和 $f(x)+g(x)$ 中两项必须取同一个 $x$，因此一般只能得到不等式。
+例如在 $D=[0,1]$ 上取 $f(x)=x$、$g(x)=1-x$，则 $f(x)+g(x)=1$，但
+\[
+ \inf_D f+\inf_D g=0<1=\inf_D(f+g),
+\]
+\[
+ \sup_D(f+g)=1<2=\sup_D f+\sup_D g.
+\]
+相比之下，数集和 $A+B=\{a+b:a\in A,\ b\in B\}$ 中 $a,b$ 可以独立选择，
+因此非空有界数集满足 $\sup(A+B)=\sup A+\sup B$。
+\end{document}
