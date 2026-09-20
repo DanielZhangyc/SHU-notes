@@ -12,12 +12,13 @@
 %   "tags": [
 %     "mathematics"
 %   ],
-%   "excerpt": "确界原理的十进制与闭区间套证明，以及最大值、确界比较、平移和正数倍性质。"
+%   "excerpt": "确界原理的两种证明与确界性质，以及习题 1.2 第 5、6（1）、7（1）题的完整解答。"
 % }
 % halo:end
 % 编译：lualatex 01-02-sets-and-suprema-2.tex（建议运行两次）
 % 课堂日期：2026-09-18。
 % 根据 IMG_1085.HEIC 下半页的确界原理证明至 IMG_1087.HEIC 整理。
+% 2026-09-19 根据 IMG_1150.HEIC、IMG_1151.HEIC 补充课后作业；题干已对照用户提供的教材截图。
 % LuaLaTeX 嵌入中文字体及 Unicode 映射，兼容 PDF 预览与文字复制。
 \RequirePackage{iftex}
 \RequireLuaTeX
@@ -251,6 +252,105 @@ $\beta-\varepsilon<-x$，即 $x<-\beta+\varepsilon$。
 \]
 由于 $bx_0\in bS$，所以任何小于 $b\eta$ 的数都不是 $bS$ 的上界。
 故 $\sup(bS)=b\eta$。
+\end{proof}
+
+\newpage
+\section{课后作业}
+
+\subsection{习题 1.2，第 5 题}
+\noindent\textbf{题目：}设 $S$ 为非空有下界数集，证明
+\[
+  \inf S=\xi\in S\quad\Longleftrightarrow\quad\xi=\min S.
+\]
+
+\begin{proof}
+先设 $\xi=\inf S\in S$。由下确界的下界性，
+对任意 $x\in S$ 都有 $x\ge\xi$。又因 $\xi\in S$，故
+\[
+  \min S=\xi=\inf S.
+\]
+
+反之，若 $S$ 有最小值，记 $\xi=\min S$，则 $\xi\in S$，
+且对任意 $x\in S$ 都有 $x\ge\xi$，所以 $\xi$ 是 $S$ 的下界。
+任取 $\beta>\xi$，取 $x=\xi\in S$，就有 $x<\beta$。
+因此任何大于 $\xi$ 的实数都不是 $S$ 的下界，故
+\[
+  \inf S=\xi\in S.
+\]
+两向均得证，且最小值存在时必等于下确界。
+\end{proof}
+
+\subsection{习题 1.2，第 6 题（1）}
+\noindent\textbf{题目：}设 $S$ 为非空数集，定义
+$S^{-}=\{x:-x\in S\}$。证明
+\[
+  \inf S^{-}=-\sup S.
+\]
+\noindent 这里按有限实数确界讨论，假设 $S$ 有上界，使 $\sup S$ 存在。
+
+\begin{proof}
+记 $M=\sup S$。任取 $y\in S^{-}$，则 $-y\in S$，所以
+\[
+  -y\le M\quad\Longrightarrow\quad y\ge-M.
+\]
+故 $-M$ 是 $S^{-}$ 的一个下界。
+
+任取 $\beta>-M$，则 $-\beta<M$。由 $M=\sup S$，
+存在 $x_0\in S$，使得
+\[
+  x_0>-\beta\quad\Longrightarrow\quad -x_0<\beta.
+\]
+又因 $-x_0\in S^{-}$，所以任何大于 $-M$ 的实数都不是 $S^{-}$ 的下界。
+因此 $-M$ 是 $S^{-}$ 的最大下界，即
+\[
+  \inf S^{-}=-M=-\sup S.
+\]
+\end{proof}
+
+\newpage
+\subsection{习题 1.2，第 7 题（1）}
+\noindent\textbf{题目：}设 $A,B$ 皆为非空有界数集，定义
+\[
+  A+B=\{x+y:x\in A,\ y\in B\}.
+\]
+证明
+\[
+  \sup(A+B)=\sup A+\sup B.
+\]
+
+\begin{proof}
+记 $M_A=\sup A$，$M_B=\sup B$。由 $A,B$ 非空可知，$A+B$ 非空。
+
+\textbf{第一步：验证上界性。}
+
+任取 $z\in A+B$，存在 $x\in A$、$y\in B$ 使 $z=x+y$。
+由上确界的上界性，$x\le M_A$、$y\le M_B$，从而
+\[
+  z=x+y\le M_A+M_B.
+\]
+所以 $M_A+M_B$ 是 $A+B$ 的上界。
+
+\medskip
+\textbf{第二步：验证它是最小上界。}
+
+任取 $c<M_A+M_B$，则 $c-M_B<M_A$。
+由 $M_A=\sup A$，可取 $x_0\in A$，使
+\[
+  x_0>c-M_B.
+\]
+将这个不等式移项，得到
+\[
+  c-x_0<M_B.
+\]
+于是再由 $M_B=\sup B$，可取 $y_0\in B$，使
+\[
+  y_0>c-x_0.
+\]
+因此 $x_0+y_0\in A+B$ 且 $x_0+y_0>c$，说明 $c$ 不是 $A+B$ 的上界。
+故任何小于 $M_A+M_B$ 的实数都不是上界，最终得到
+\[
+  \sup(A+B)=M_A+M_B=\sup A+\sup B.
+\]
 \end{proof}
 
 \end{document}
