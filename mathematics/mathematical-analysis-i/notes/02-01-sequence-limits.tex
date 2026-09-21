@@ -1,0 +1,286 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "mathematical-analysis-i",
+%   "section": "2.1",
+%   "title": "数学分析（一）2.1：数列极限",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "数列极限的定义、邻域刻画与发散，以及用定义证明有理式、幂、根式和阶乘相关极限。"
+% }
+% halo:end
+% 来源：IMG_1262.HEIC、IMG_1263.HEIC、IMG_1264.HEIC。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 2.1\quad 数列极限}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{数列极限}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月21日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\section{数列极限的定义}
+\begin{definition}[收敛与极限]
+设 $\{a_n\}$ 为实数列，$A\in\R$。若
+\[
+ \forall\varepsilon>0,\quad\exists N\in\Nplus,\quad
+ \forall n>N,\quad |a_n-A|<\varepsilon,
+\]
+则称数列 $\{a_n\}$ 收敛于 $A$，记为
+\[
+ \lim_{n\to\infty}a_n=A\qquad\text{或}\qquad a_n\to A\ (n\to\infty).
+\]
+\end{definition}
+\begin{enumerate}
+\item $\varepsilon$ 可以任意小，但必须为正；$N$ 可以依赖于 $\varepsilon$，
+也可以依赖于给定数列与 $A$，但不能依赖于随后选取的 $n$。
+\item $N$ 不唯一：某个 $N$ 可用时，任何更大的正整数也可用。
+通常先由 $|a_n-A|<\varepsilon$ 估计出对 $n$ 的要求，再选取整数 $N$。
+\item 对固定的 $c>0$、$p>0$，定义右端的 $\varepsilon$ 可以换成
+$c\varepsilon$ 或 $\varepsilon^p$，也可将严格不等号改为 $\le$，所得定义均等价。
+例如，若能使误差小于 $c\varepsilon$，则对目标误差 $\eta>0$ 取
+$\varepsilon=\eta/c$ 即可；若误差仅保证 $\le\varepsilon$，则取 $\varepsilon=\eta/2$。
+\end{enumerate}
+
+\subsection{邻域刻画}
+记 $U(A;\varepsilon)=(A-\varepsilon,A+\varepsilon)$，则
+\[
+ |a_n-A|<\varepsilon\iff A-\varepsilon<a_n<A+\varepsilon
+ \iff a_n\in U(A;\varepsilon).
+\]
+因此，$a_n\to A$ 当且仅当：对任意 $\varepsilon>0$，落在
+$U(A;\varepsilon)$ 外的数列项只有有限项。
+这里按下标计数，即集合 $\{n\in\Nplus:a_n\notin U(A;\varepsilon)\}$ 有限。
+一方面，$n>N$ 时均在邻域内，邻域外至多有前 $N$ 项；另一方面，
+若邻域外仅有有限项，取 $N$ 不小于这些项的所有下标即可（没有这样的项时取 $N=1$）。
+
+\subsection{发散及其量词表述}
+数列不收敛于任何实数时，称其发散。准确地说，
+\[
+ \forall A\in\R,\quad\exists\varepsilon_0>0,\quad
+ \forall N\in\Nplus,\quad\exists n>N:\ |a_n-A|\ge\varepsilon_0.
+\]
+即对每个候选极限 $A$，都存在一个邻域，其外有无穷多项。
+只排除某一个 $A$，不能证明数列发散。
+
+\newpage
+\section{由定义证明极限：基本例题}
+\begin{example}
+证明 $\displaystyle\lim_{n\to\infty}\frac1n=0$。
+\end{example}
+\begin{proof}
+任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$。
+对任意 $n>N$，有
+\[
+ \left|\frac1n-0\right|=\frac1n<\frac1N\le\varepsilon.
+\]
+故结论成立。这里 $\lceil t\rceil$ 为不小于 $t$ 的最小整数。
+\end{proof}
+
+\begin{example}
+证明 $\displaystyle\lim_{n\to\infty}\frac{3n^2}{n^2-3}=3$。
+\end{example}
+\begin{proof}
+当 $n\ge2$ 时，
+\[
+ \left|\frac{3n^2}{n^2-3}-3\right|=\frac9{n^2-3}.
+\]
+任取 $\varepsilon>0$，取
+\[
+ N=\max\left\{2,\left\lceil\sqrt{\frac9\varepsilon+3}\right\rceil\right\}.
+\]
+对任意 $n>N$，有 $n^2>9/\varepsilon+3$，于是
+\[
+ \left|\frac{3n^2}{n^2-3}-3\right|=\frac9{n^2-3}<\varepsilon.
+\]
+故结论成立。
+\end{proof}
+
+\begin{example}
+设 $q\in\R$ 且 $|q|<1$，证明 $\displaystyle\lim_{n\to\infty}q^n=0$。
+\end{example}
+\begin{proof}
+$q=0$ 时显然成立。以下设 $0<|q|<1$。
+任取 $\varepsilon>0$，因 $\ln|q|<0$，有
+\[
+ |q|^n<\varepsilon
+ \iff n\ln|q|<\ln\varepsilon
+ \iff n>\frac{\ln\varepsilon}{\ln|q|}.
+\]
+取
+\[
+ N=\max\left\{1,\left\lceil\frac{\ln\varepsilon}{\ln|q|}\right\rceil\right\}.
+\]
+则对任意 $n>N$，都有 $|q^n-0|=|q|^n<\varepsilon$，故结论成立。
+取最大值保证了 $\varepsilon\ge1$ 时 $N$ 仍是正整数。
+\end{proof}
+
+\newpage
+\section{根式与方根的极限}
+\begin{example}
+设 $x_n\to a>0$，证明 $\sqrt{x_n}$ 从充分大的 $n$ 起有定义，且
+$\sqrt{x_n}\to\sqrt a$。
+\end{example}
+\begin{proof}
+先保证根式有意义。由极限定义，存在 $N_0\in\Nplus$，使 $n>N_0$ 时
+$|x_n-a|<a/2$，从而 $x_n>a/2>0$。
+因此 $\sqrt{x_n}$ 至少从某一项起有定义；若要把它看成从第一项起的实数列，
+可要求所有 $x_n\ge0$，或将前面有限项另行赋值，均不影响极限。
+
+任取 $\varepsilon>0$，由 $x_n\to a$，存在 $N_1\in\Nplus$，
+使 $n>N_1$ 时 $|x_n-a|<\varepsilon\sqrt a$。
+取 $N=\max\{N_0,N_1\}$，则对任意 $n>N$，
+\[
+ |\sqrt{x_n}-\sqrt a|
+ =\frac{|x_n-a|}{\sqrt{x_n}+\sqrt a}
+ \le\frac{|x_n-a|}{\sqrt a}<\varepsilon.
+\]
+故 $\sqrt{x_n}\to\sqrt a$。
+\end{proof}
+\textbf{另一种估计。} 对 $u,v\ge0$，由
+$|u-v|=|\sqrt u-\sqrt v|(\sqrt u+\sqrt v)$ 及
+$|\sqrt u-\sqrt v|\le\sqrt u+\sqrt v$，可得
+\[
+ |\sqrt u-\sqrt v|\le\sqrt{|u-v|}.
+\]
+故只要使 $|x_n-a|<\varepsilon^2$，就能使
+$|\sqrt{x_n}-\sqrt a|<\varepsilon$。
+
+\begin{example}
+设 $a>0$，证明 $\displaystyle\lim_{n\to\infty}a^{1/n}=1$。
+\end{example}
+\begin{proof}
+$a=1$ 时显然成立。
+若 $a>1$，令 $t_n=a^{1/n}-1>0$。由二项式展开，
+\[
+ a=(1+t_n)^n\ge1+nt_n,\qquad 0<t_n\le\frac{a-1}{n}.
+\]
+任取 $\varepsilon>0$，取 $N=\max\{1,\lceil(a-1)/\varepsilon\rceil\}$，
+则 $n>N$ 时，$|a^{1/n}-1|\le(a-1)/n<\varepsilon$。
+
+若 $0<a<1$，令 $b=1/a>1$。由前面的估计，
+\[
+ |a^{1/n}-1|=1-\frac1{b^{1/n}}
+ =\frac{b^{1/n}-1}{b^{1/n}}\le b^{1/n}-1\le\frac{b-1}{n}.
+\]
+取 $N=\max\{1,\lceil(b-1)/\varepsilon\rceil\}$ 即得所需结论。
+\end{proof}
+
+\newpage
+\subsection*{补充例题：$\sqrt[n]{n}$ 的极限}
+证明 $\displaystyle\lim_{n\to\infty}n^{1/n}=1$。
+\begin{proof}
+令 $t_n=n^{1/n}-1\ge0$。当 $n\ge2$ 时，二项式展开给出
+\[
+ n=(1+t_n)^n\ge\binom n2t_n^2,
+ \qquad 0\le t_n\le\sqrt{\frac2{n-1}}.
+\]
+任取 $\varepsilon>0$，取 $N=\max\{2,\lceil1+2/\varepsilon^2\rceil\}$。
+对任意 $n>N$，有
+\[
+ |n^{1/n}-1|=t_n\le\sqrt{\frac2{n-1}}<\varepsilon.
+\]
+所以 $n^{1/n}\to1$。此处底数随 $n$ 变化，不能直接套用固定 $a$ 的结论。
+\end{proof}
+
+\section{阶乘与幂的比较}
+\begin{example}
+证明 $\displaystyle\lim_{n\to\infty}\frac{2^n}{n!}=0$；
+进一步，对任意固定的 $\alpha\in\R$，证明
+$\displaystyle\lim_{n\to\infty}\frac{\alpha^n}{n!}=0$。
+\end{example}
+\begin{proof}
+先看 $2^n/n!$。当 $n\ge2$ 时，
+\[
+ \frac{2^n}{n!}
+ =\frac4n\prod_{k=2}^{n-1}\frac2k\le\frac4n,
+\]
+其中 $n=2$ 时空乘积取 $1$。
+任取 $\varepsilon>0$，取 $N=\max\{2,\lceil4/\varepsilon\rceil\}$，
+则 $n>N$ 时，$|2^n/n!|\le4/n<\varepsilon$。
+
+一般地，$\alpha=0$ 时显然成立。若 $\alpha\ne0$，选取整数
+$m\ge\max\{1,2|\alpha|\}$，并记 $C=|\alpha|^m/m!>0$。
+对 $n>m$，有
+\[
+ \left|\frac{\alpha^n}{n!}\right|
+ =C\prod_{k=m+1}^{n}\frac{|\alpha|}{k}
+ \le C\left(\frac12\right)^{n-m}.
+\]
+给定 $\varepsilon>0$，取
+\[
+ N=m+\max\{1,\lceil\log_2(C/\varepsilon)\rceil\}.
+\]
+对任意 $n>N$，有 $n-m>\log_2(C/\varepsilon)$，于是
+$|\alpha^n/n!|\le C2^{-(n-m)}<\varepsilon$，结论成立。
+\end{proof}
+
+\newpage
+\section{用定义证明数列发散}
+\begin{example}
+证明数列 $\{n^2\}$ 与 $\{(-1)^n\}$ 均发散。
+\end{example}
+\begin{proof}
+\textbf{（1）$\{n^2\}$。}
+任取 $A\in\R$，取 $\varepsilon_0=1$。
+对于任意 $N\in\Nplus$，选取正整数
+\[
+ n>\max\{N,1,A+1\}.
+\]
+则 $n^2\ge n>A+1$，从而
+\[
+ |n^2-A|=n^2-A>1=\varepsilon_0.
+\]
+所以 $A$ 不是该数列的极限。由于 $A$ 任意，$\{n^2\}$ 发散。
+
+\textbf{（2）$\{(-1)^n\}$。}
+任取 $A\in\R$，仍取 $\varepsilon_0=1$。
+\begin{itemize}[leftmargin=2em]
+\item 若 $A\ge0$，则对任意 $N$，可取奇数 $n>N$，此时
+\[
+ |(-1)^n-A|=|-1-A|=1+A\ge1.
+\]
+\item 若 $A<0$，则对任意 $N$，可取偶数 $n>N$，此时
+\[
+ |(-1)^n-A|=|1-A|=1-A>1.
+\]
+\end{itemize}
+所以对每个 $A\in\R$，邻域 $U(A;1)$ 外都有无穷多项，故该数列发散。
+\end{proof}
+
+\subsection*{证明时的检查要点}
+\begin{enumerate}
+\item \textbf{证明收敛：}先任取 $\varepsilon>0$，再给出正整数 $N$，
+最后验证对所有 $n>N$ 都有 $|a_n-A|<\varepsilon$。
+\item \textbf{证明发散：}先任取候选极限 $A$，再选定某个 $\varepsilon_0>0$，
+证明无论 $N$ 多大，总能找到 $n>N$ 使误差至少为 $\varepsilon_0$。
+\item \textbf{检查条件：}分母的符号、根式的定义域、对数底数，以及
+$N$ 是否为正整数，都应在估计前或选取 $N$ 时落实。
+\end{enumerate}
+\end{document}
