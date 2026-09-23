@@ -3,6 +3,7 @@
 
 import argparse
 import copy
+import hashlib
 import html
 import json
 import os
@@ -18,6 +19,10 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "publish/notes.json"
 THEOREMS = {"definition": "定义", "proposition": "命题", "theorem": "定理", "example": "例题"}
+TIKZ_PICTURE = re.compile(r"\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}", re.S)
+SGN_SIN_PICTURE_HASH = "158865b788a1c053bae31009ba64489f407a0d6325ca97ea357e22f11a6792d9"
+SGN_SIN_SVG = ROOT / "publish/assets/sgn-sin.svg"
+FIGURE_MARKER = "HALOFIGURESGNSIN"
 
 META_BLOCK = re.compile(r"^% halo:begin\n(.*?)^% halo:end(?:\n|$)", re.M | re.S)
 META_KEYS = {"version", "publish", "course", "section", "title", "categories", "tags", "excerpt"}
@@ -107,16 +112,36 @@ def run_pandoc(text, *args):
     return result.stdout
 
 
-def normalize_document(document):
-    """Match the template's shared theorem counter, reset at each section."""
+def normalize_document(document, tex):
+    """Apply the section and theorem counters declared by these notes."""
     document = copy.deepcopy(document)
-    section = counter = 0
+    section_match = re.search(r"\\setcounter\{section\}\{(\d+)\}", tex)
+    section = int(section_match[1]) if section_match else 0
+    section_prefix_match = re.search(
+        r"\\renewcommand\{\\thesection\}\{(\d+)\.\\arabic\{section\}\}", tex
+    )
+    section_prefix = section_prefix_match[1] + "." if section_prefix_match else ""
+    declarations = {}
+    for kind, shared, reset in re.findall(
+        r"\\newtheorem\{(\w+)\}(?:\[(\w+)\])?\{[^{}]*\}(?:\[(section)\])?", tex
+    ):
+        if kind in THEOREMS:
+            declarations[kind] = (shared or kind, bool(reset))
+    counters = {kind: 0 for kind in declarations}
+    for kind in counters:
+        match = re.search(r"\\setcounter\{" + kind + r"\}\{(\d+)\}", tex)
+        if match:
+            counters[kind] = int(match[1])
+    proof_labels = re.findall(r"\\begin\{proof\}(?:\[([^\]]+)\])?", tex)
+    proof_index = 0
     for block in document["blocks"]:
         if block["t"] == "Header":
             if block["c"][0] == 1:
                 section += 1
-                counter = 0
-                block["c"][2][0:0] = [{"t": "Str", "c": str(section)}, {"t": "Space"}]
+                for kind, (_, reset) in declarations.items():
+                    if reset:
+                        counters[kind] = 0
+                block["c"][2][0:0] = [{"t": "Str", "c": f"{section_prefix}{section}"}, {"t": "Space"}]
             # Halo's theme already provides the article h1.
             block["c"][0] += 1
         elif block["t"] == "Div":
@@ -130,12 +155,34 @@ def normalize_document(document):
                 if first["t"] not in {"Strong", "Emph"}:
                     raise ValueError("Missing theorem or proof label")
                 if kind:
-                    counter += 1
-                    label = f"{THEOREMS[kind]} {section}.{counter}"
+                    if kind not in declarations:
+                        raise ValueError(f"Missing LaTeX theorem declaration: {kind}")
+                    root, reset = declarations[kind]
+                    counters[root] += 1
+                    custom = re.search(
+                        r"\\renewcommand\{\\the" + kind + r"\}\{(\d+)\.\\arabic\{" + root + r"\}\}", tex
+                    )
+                    prefix = custom[1] + "." if custom else f"{section_prefix}{section}." if reset or declarations[root][1] else ""
+                    label = f"{THEOREMS[kind]} {prefix}{counters[root]}"
                 else:
-                    label = "证明."
+                    if proof_index >= len(proof_labels):
+                        raise ValueError("Pandoc proof count differs from LaTeX source")
+                    label = (proof_labels[proof_index] or "证明") + "."
+                    proof_index += 1
                 first["c"] = [{"t": "Str", "c": label}]
+    if proof_index != len(proof_labels):
+        raise ValueError("Pandoc proof count differs from LaTeX source")
     return document
+
+
+def replace_supported_figures(tex, source):
+    pictures = TIKZ_PICTURE.findall(tex)
+    if not pictures:
+        return tex, None
+    if (source.name != "01-03-functions.tex" or len(pictures) != 1 or
+            hashlib.sha256(pictures[0].encode()).hexdigest() != SGN_SIN_PICTURE_HASH):
+        raise ValueError(f"Unsupported TikZ picture in {source}; add a verified HTML figure")
+    return tex.replace(pictures[0], FIGURE_MARKER), SGN_SIN_SVG.read_text()
 
 
 def render_note(note, config):
@@ -150,8 +197,14 @@ def render_note(note, config):
         raise ValueError("Missing LaTeX document body")
     # The blog supplies its own title and metadata, while preamble macros remain available.
     tex = preamble + separator + body.replace(r"\maketitle", "")
+    tex, figure = replace_supported_figures(tex, source)
     document = json.loads(run_pandoc(tex, "-f", "latex", "-t", "json"))
-    content = run_pandoc(json.dumps(normalize_document(document)), "-f", "json", "-t", "html5", "--mathml")
+    content = run_pandoc(json.dumps(normalize_document(document, tex)), "-f", "json", "-t", "html5", "--mathml")
+    if figure:
+        marker = f"<p>{FIGURE_MARKER}</p>"
+        if content.count(marker) != 1:
+            raise ValueError(f"Figure marker missing or duplicated in {source}")
+        content = content.replace(marker, figure)
     # Make long display formulas horizontally scrollable on small screens.
     content = content.replace('<math display="block"', '<math style="display:block;overflow-x:auto;padding:0.5em 0" display="block"')
     pdf_path = source.with_suffix(".pdf").relative_to(ROOT).as_posix()

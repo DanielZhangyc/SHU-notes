@@ -1,8 +1,9 @@
 import copy
 import json
+import re
 import unittest
 
-from scripts.publish_notes import CONFIG, CONTENT, POSTS, ROOT, META_BLOCK, discover_notes, parse_metadata, strip_metadata, render_note, sync
+from scripts.publish_notes import CONFIG, CONTENT, POSTS, ROOT, META_BLOCK, discover_notes, parse_metadata, strip_metadata, render_note, replace_supported_figures, sync
 
 
 class FakeHalo:
@@ -58,6 +59,40 @@ class PublishingTests(unittest.TestCase):
         self.assertIn("<math", page)
         self.assertIn("<mfrac>", page)
         self.assertIn("github.com/DanielZhangyc/SHU-notes/blob/main/", page)
+
+    def test_new_notes_preserve_figure_numbering_and_solution_labels(self):
+        notes = {note["source"]: note for note in discover_notes(self.config)}
+        def render(path):
+            return render_note(notes[path], self.config)
+
+        function = render("mathematics/mathematical-analysis-i/notes/01-03-functions.tex")
+        self.assertIn('<svg xmlns="http://www.w3.org/2000/svg"', function)
+        self.assertIn("在各相邻整π点之间交替取一和负一", function)
+        self.assertNotIn("HALOFIGURESGNSIN", function)
+
+        sequence = render("mathematics/mathematical-analysis-i/notes/02-02-properties-of-convergent-sequences.tex")
+        for label in ("定理 2.2", "定理 2.3", "定理 2.4"):
+            self.assertIn(label, sequence)
+        self.assertNotIn("定理 1.1", sequence)
+
+        physics = render("physics/physics-experiment/notes/01-02-measurement-basics.tex")
+        for number, title in (("1.2", "误差的定义"), ("1.3", "不确定度"),
+                              ("1.4", "直接测量"), ("1.5", "间接测量")):
+            self.assertTrue(re.search(rf"<h2[^>]*>{re.escape(number)}\s+{title}", physics),
+                            f"Missing section {number} {title}")
+        for label in ("例题 1.4.1", "例题 1.5.1"):
+            self.assertIn(label, physics)
+        self.assertEqual(physics.count("<em>解.</em>"), 3)
+
+        algebra = render("mathematics/higher-algebra-i/notes/01-03-determinant-properties-and-expansion.tex")
+        self.assertIn("<em>解.</em>", algebra)
+
+    def test_unrecognized_tikz_fails_instead_of_dropping_figure(self):
+        source = ROOT / "mathematics/mathematical-analysis-i/notes/01-03-functions.tex"
+        tex = source.read_text()
+        altered = tex.replace("x=1.35cm", "x=1.36cm")
+        with self.assertRaisesRegex(ValueError, "Unsupported TikZ picture"):
+            replace_supported_figures(altered, source)
 
     def test_create_repeat_and_update(self):
         halo = FakeHalo()

@@ -8,10 +8,12 @@
 %   "title": "数学分析（一）2.1：数列极限",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "数列极限的定义、邻域刻画与发散，以及用定义证明有理式、幂、根式和阶乘相关极限。"
+%   "excerpt": "数列极限的定义、无穷小量与无穷大量、基本例题，以及习题 2.1 的课后作业。"
 % }
 % halo:end
-% 来源：IMG_1262.HEIC、IMG_1263.HEIC、IMG_1264.HEIC。
+% 来源：IMG_1262.HEIC、IMG_1263.HEIC、IMG_1264.HEIC；
+% 本次补充依据 IMG_1365.HEIC、IMG_1366.HEIC、IMG_1367.HEIC、
+% IMG_1369.HEIC 上半页，作业题干对照《数学分析》第五版上册习题 2.1。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -274,13 +276,214 @@ $|\alpha^n/n!|\le C2^{-(n-m)}<\varepsilon$，结论成立。
 所以对每个 $A\in\R$，邻域 $U(A;1)$ 外都有无穷多项，故该数列发散。
 \end{proof}
 
-\subsection*{证明时的检查要点}
-\begin{enumerate}
-\item \textbf{证明收敛：}先任取 $\varepsilon>0$，再给出正整数 $N$，
-最后验证对所有 $n>N$ 都有 $|a_n-A|<\varepsilon$。
-\item \textbf{证明发散：}先任取候选极限 $A$，再选定某个 $\varepsilon_0>0$，
-证明无论 $N$ 多大，总能找到 $n>N$ 使误差至少为 $\varepsilon_0$。
-\item \textbf{检查条件：}分母的符号、根式的定义域、对数底数，以及
-$N$ 是否为正整数，都应在估计前或选取 $N$ 时落实。
-\end{enumerate}
+\newpage
+\section{无穷小量与无穷大量}
+\begin{definition}[无穷小量]
+极限为 $0$ 的数列称为无穷小量。数列 $a_n\to a$ 当且仅当
+$\alpha_n=a_n-a$ 是无穷小量；此时可写成 $a_n=a+\alpha_n$。
+\end{definition}
+
+\begin{definition}[无穷大量]
+若数列 $\{a_n\}$ 满足
+\[
+ \forall M>0,\quad\exists N\in\Nplus,\quad
+ \forall n>N,\quad |a_n|>M,
+\]
+则称其为无穷大量，记作 $a_n\to\infty$。
+若上式中的 $|a_n|>M$ 分别可加强为 $a_n>M$ 或 $a_n<-M$，
+则记作 $a_n\to+\infty$ 或 $a_n\to-\infty$。
+\end{definition}
+记号 $a_n\to\infty$ 只要求绝对值最终超过任意给定的界，
+不要求数列最终同号。例如 $(-1)^n n\to\infty$，
+但既不趋于 $+\infty$，也不趋于 $-\infty$。
+
+\subsection*{无界与无穷大的区别}
+无界只要求对任意 $M>0$，\emph{存在某一项}的绝对值大于 $M$；
+无穷大量要求\emph{从某一项起每一项}都如此。
+数列 $b_n=[1+(-1)^n]n$ 无界，但其奇数项恒为 $0$，
+所以不是无穷大量。无穷大量必发散，因为收敛数列从某项起
+落在某个有限区间内，再加上有限个首项即有界。
+
+\newpage
+\section{课后作业}
+\subsection{习题 2.1，第 1 题}
+\noindent\textbf{题目：}设
+$a_n=\dfrac{1+(-1)^n}{n}$，候选极限 $a=0$。
+（1）对 $\varepsilon_1=0.1$、$\varepsilon_2=0.01$、
+$\varepsilon_3=0.001$，分别求出符合极限定义的 $N$；
+（2）这是否已经证明 $a_n\to0$；
+（3）对任意 $\varepsilon>0$，是否都能找到这样的 $N$？
+
+\begin{proof}
+奇数项为 $0$，偶数项为 $2/n$，故 $0\le a_n\le2/n$。
+（1）依次可取 $N=20,200,2000$；当 $n>N$ 时，
+$|a_n| \le 2/n<2/N=\varepsilon_i$。
+（2）仅检查三个指定的 $\varepsilon$，还不足以证明极限，
+因为定义要求\emph{每个}正 $\varepsilon$ 都成立。
+（3）任给 $\varepsilon>0$，取
+$N=\max\{1,\lceil2/\varepsilon\rceil\}$。
+对一切 $n>N$，都有 $|a_n|\le2/n<\varepsilon$，因此 $a_n\to0$。
+\end{proof}
+
+\subsection{习题 2.1，第 2 题（1）（3）（5）}
+\noindent\textbf{题目：}按 $\varepsilon$--$N$ 定义证明：
+\[
+ \text{（1）}\ \frac{n}{n+1}\to1,\qquad
+ \text{（3）}\ \frac{n!}{n^n}\to0,\qquad
+ \text{（5）}\ \frac{n}{a^n}\to0\quad(a>1).
+\]
+\begin{proof}
+\textbf{（1）}任取 $\varepsilon>0$，取
+$N=\max\{1,\lceil1/\varepsilon\rceil\}$。当 $n>N$ 时，
+\[
+ \left|\frac{n}{n+1}-1\right|=\frac1{n+1}
+ <\frac1n<\varepsilon.
+\]
+\textbf{（3）}对 $n\ge1$，
+\[
+ 0<\frac{n!}{n^n}
+ =\frac1n\cdot\frac2n\cdots\frac nn\le\frac1n.
+\]
+任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$，
+则 $n>N$ 时上式小于 $\varepsilon$。
+
+\textbf{（5）}写 $a=1+h$，其中 $h>0$。二项式定理给出
+$a^n\ge\binom n2h^2$，所以 $n\ge2$ 时
+\[
+ 0<\frac n{a^n}\le\frac{2}{(n-1)h^2}.
+\]
+给定 $\varepsilon>0$，取
+$N=\max\{2,\lceil1+2/(\varepsilon h^2)\rceil\}$，
+则 $n>N$ 时右端小于 $\varepsilon$。
+\end{proof}
+
+\subsection{习题 2.1，第 3 题}
+\noindent\textbf{题目：}根据本节已证明的基本极限，求
+\[
+\begin{array}{llll}
+\text{（1）}\ \displaystyle\lim\frac1{\sqrt n},&
+\text{（2）}\ \displaystyle\lim\sqrt[n]{3},&
+\text{（3）}\ \displaystyle\lim\frac1{n^3},&
+\text{（4）}\ \displaystyle\lim\frac1{3^n},\\[0.5em]
+\text{（5）}\ \displaystyle\lim\frac1{\sqrt{2^n}},&
+\text{（6）}\ \displaystyle\lim\sqrt[n]{10},&
+\text{（7）}\ \displaystyle\lim\frac1{\sqrt[n]{2}},
+\end{array}
+\qquad(n\to\infty)
+\]
+并指出哪些是无穷小数列。
+
+\begin{proof}
+（1）对任意 $\varepsilon>0$，当 $n>1/\varepsilon^2$ 时，
+$1/\sqrt n<\varepsilon$，故极限为 $0$。
+（2）与（6）由前文固定正数的方根极限得到，分别为 $1$ 与 $1$；
+更具体地，$0\le\sqrt[n]3-1\le2/n$、
+$0\le\sqrt[n]{10}-1\le9/n$。
+（3）因 $0<1/n^3\le1/n$，极限为 $0$。
+（4）与（5）分别是公比 $1/3$ 与 $1/\sqrt2$ 的几何数列，
+两公比的绝对值都小于 $1$，故极限均为 $0$。
+（7）令 $b_n=\sqrt[n]2\ge1$，则
+\[
+ 0\le1-\frac1{b_n}=\frac{b_n-1}{b_n}
+ \le b_n-1\le\frac1n\to0,
+\]
+故极限为 $1$。因此（1）、（3）、（4）、（5）是无穷小数列。
+\end{proof}
+
+\subsection{习题 2.1，第 4 题}
+\noindent\textbf{题目：}证明：若 $a_n\to a$，则对任一正整数 $k$，
+$a_{n+k}\to a$。
+\begin{proof}
+任取 $\varepsilon>0$，由 $a_n\to a$，存在 $N\in\Nplus$，
+使 $m>N$ 时 $|a_m-a|<\varepsilon$。
+若 $n>N$，则 $n+k>N$，于是
+$|a_{n+k}-a|<\varepsilon$。故 $a_{n+k}\to a$。
+\end{proof}
+
+\subsection{习题 2.1，第 5 题}
+\noindent\textbf{题目：}用“任一候选极限的某个邻域外总有无穷多项”
+这一表述证明：（1）$\{1/n\}$ 不以 $1$ 为极限；
+（2）$\{n^{(-1)^n}\}$ 发散。
+\begin{proof}
+\textbf{（1）}取 $\varepsilon_0=1/2$。无论给定哪个 $N$，
+都可取 $n>\max\{N,2\}$，使
+$|1/n-1|=1-1/n>1/2$。
+因此 $1$ 不是 $\{1/n\}$ 的极限。
+
+\textbf{（2）}任取候选极限 $A\in\R$，取 $\varepsilon_0=1$。
+对任意 $N$，可取偶数 $n>\max\{N,|A|+1\}$。
+此时 $n^{(-1)^n}=n$，且
+$|n-A|\ge n-|A|>1$。
+所以没有任何实数是该数列的极限，数列发散。
+\end{proof}
+
+\subsection{习题 2.1，第 8 题}
+\noindent\textbf{题目：}若 $a_n\to a$，证明 $|a_n|\to|a|$；
+求使逆命题对任意数列成立的 $a$。
+\begin{proof}
+由反三角不等式，
+\[
+ \bigl||a_n|-|a|\bigr|\le|a_n-a|\to0,
+\]
+故 $|a_n|\to|a|$。若 $a=0$，则
+$\bigl||a_n|-|a|\bigr|=|a_n|=|a_n-a|$，逆命题也成立。
+若 $a\ne0$，取常数列 $a_n=-a$，有
+$|a_n|=|a|$，但 $a_n$ 不趋于 $a$。
+因此所求的值恰为 $a=0$。
+\end{proof}
+
+\subsection{习题 2.1，第 9 题}
+\noindent\textbf{题目：}按 $\varepsilon$--$N$ 定义证明：
+\[
+ \text{（1）}\ \sqrt{n+1}-\sqrt n\to0,\qquad
+ \text{（2）}\ \frac{1+2+\cdots+n}{n^3}\to0,
+\]
+\[
+ \text{（3）}\ a_n\to1,\quad
+ a_n=\begin{cases}
+ (n-1)/n,&n\text{ 为偶数},\\
+ \sqrt{n^2+n}/n,&n\text{ 为奇数}.
+ \end{cases}
+\]
+\begin{proof}
+\textbf{（1）}有
+\[
+ 0<\sqrt{n+1}-\sqrt n
+ =\frac1{\sqrt{n+1}+\sqrt n}<\frac1{\sqrt n}.
+\]
+给定 $\varepsilon>0$，取
+$N=\max\{1,\lceil1/\varepsilon^2\rceil\}$ 即可。
+
+\textbf{（2）}由等差数列求和式，对 $n\ge1$ 有
+\[
+ 0<\frac{1+2+\cdots+n}{n^3}
+ =\frac{n+1}{2n^2}\le\frac1n.
+\]
+取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$ 即可。
+
+\textbf{（3）}若 $n$ 为偶数，则 $|a_n-1|=1/n$；
+若 $n$ 为奇数，则
+\[
+ |a_n-1|=\sqrt{1+\frac1n}-1
+ =\frac{1/n}{\sqrt{1+1/n}+1}\le\frac1{2n}.
+\]
+故所有 $n$ 都有 $|a_n-1|\le1/n$。
+取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$ 即得 $a_n\to1$。
+\end{proof}
+
+\subsection{习题 2.1，第 10 题}
+\noindent\textbf{题目：}设每个 $a_n\ne0$，证明
+$a_n\to0$ 的充要条件是 $1/a_n\to\infty$。
+这里“趋于 $\infty$”指绝对值最终超过任意正数，
+不预设 $a_n$ 的符号。
+\begin{proof}
+若 $a_n\to0$，任取 $M>0$，对 $\varepsilon=1/M$ 应用极限定义，
+可得充分大 $n$ 时 $|a_n|<1/M$。因为 $a_n\ne0$，
+所以 $|1/a_n|>M$，即 $1/a_n\to\infty$。
+
+反之，若 $1/a_n\to\infty$，任取 $\varepsilon>0$，
+对 $M=1/\varepsilon$ 应用无穷大量的定义，
+可得充分大 $n$ 时 $|1/a_n|>1/\varepsilon$，
+从而 $|a_n|<\varepsilon$。故 $a_n\to0$。
+\end{proof}
 \end{document}

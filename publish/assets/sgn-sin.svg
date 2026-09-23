@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 220" role="img" aria-labelledby="sgn-sin-title sgn-sin-desc" style="display:block;max-width:560px;width:100%;height:auto;margin:1em auto;background:white">
+  <title id="sgn-sin-title">y = sgn(sin x) 在负二π到二π上的图像</title>
+  <desc id="sgn-sin-desc">在各相邻整π点之间交替取一和负一，整π点处取零。</desc>
+  <g fill="none" stroke="#202020" stroke-width="1.6">
+    <path d="M35 110H525m-8-5 8 5-8 5M280 195V20m-5 8 5-8 5 8"/>
+    <path d="M80 55H180M180 165H280M280 55H380M380 165H480" stroke-width="2"/>
+    <path d="M80 105v10m100-10v10m100-10v10m100-10v10m100-10v10"/>
+    <g fill="white">
+      <circle cx="80" cy="55" r="3.5"/><circle cx="80" cy="165" r="3.5"/>
+      <circle cx="180" cy="55" r="3.5"/><circle cx="180" cy="165" r="3.5"/>
+      <circle cx="280" cy="55" r="3.5"/><circle cx="280" cy="165" r="3.5"/>
+      <circle cx="380" cy="55" r="3.5"/><circle cx="380" cy="165" r="3.5"/>
+      <circle cx="480" cy="55" r="3.5"/><circle cx="480" cy="165" r="3.5"/>
+    </g>
+  </g>
+  <g fill="#202020">
+    <circle cx="80" cy="110" r="3"/><circle cx="180" cy="110" r="3"/>
+    <circle cx="280" cy="110" r="3"/><circle cx="380" cy="110" r="3"/>
+    <circle cx="480" cy="110" r="3"/>
+  </g>
+  <g fill="#202020" font-family="serif" font-size="16" text-anchor="middle">
+    <text x="80" y="140">−2π</text><text x="180" y="140">−π</text>
+    <text x="280" y="140">0</text><text x="380" y="140">π</text>
+    <text x="480" y="140">2π</text>
+    <text x="266" y="60" text-anchor="end">1</text>
+    <text x="266" y="170" text-anchor="end">−1</text>
+    <text x="530" y="116">x</text><text x="280" y="15">y</text>
+  </g>
+</svg>

@@ -1,0 +1,130 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "2.2",
+%   "title": "数学分析（一）2.2：收敛数列的性质",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "收敛数列极限的唯一性、有界性、保号性及最终区间性质。"
+% }
+% halo:end
+% 来源：IMG_1369.HEIC、IMG_1370.HEIC。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}
+\newtheorem{theorem}{定理}
+\renewcommand{\thetheorem}{2.\arabic{theorem}}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 2.2\quad 收敛数列的性质}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{收敛数列的性质}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月23日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\setcounter{section}{1}
+\setcounter{theorem}{1}
+\section{收敛数列的性质}
+
+以下均设 $\{x_n\}$ 为实数列。若存在 $a\in\R$ 使
+\[
+  \forall\varepsilon>0,\quad \exists N\in\Nplus,\quad
+  \forall n>N,\quad |x_n-a|<\varepsilon,
+\]
+则记 $x_n\to a$。
+
+\begin{theorem}[唯一性]
+若 $x_n\to a$ 且 $x_n\to b$，则 $a=b$。
+\end{theorem}
+\begin{proof}
+反设 $a\ne b$。取 $\varepsilon=|a-b|/3>0$。由 $x_n\to a$，存在
+$N_1$ 使 $n>N_1$ 时 $|x_n-a|<\varepsilon$；由 $x_n\to b$，存在
+$N_2$ 使 $n>N_2$ 时 $|x_n-b|<\varepsilon$。
+取 $n>\max\{N_1,N_2\}$，由三角不等式得
+\[
+ |a-b|\le |a-x_n|+|x_n-b|<2\varepsilon
+ =\frac23|a-b|,
+\]
+矛盾。因此 $a=b$。
+\end{proof}
+
+\begin{theorem}[有界性]
+若 $x_n\to a$，则数列 $\{x_n\}$ 有界，即存在 $M>0$，使得对一切
+$n\in\Nplus$ 都有 $|x_n|\le M$。
+\end{theorem}
+\begin{proof}
+取 $\varepsilon=1$。由 $x_n\to a$，存在 $N\in\Nplus$，使 $n>N$ 时
+\[
+ |x_n-a|<1.
+\]
+于是对 $n>N$，
+\[
+ |x_n|\le |x_n-a|+|a|<1+|a|.
+\]
+前 $N$ 项只有有限项，令
+\[
+ M=\max\bigl\{|x_1|,\ldots,|x_N|,1+|a|\bigr\},
+\]
+则对所有 $n\in\Nplus$ 都有 $|x_n|\le M$，故数列有界。
+\end{proof}
+
+\newpage
+\begin{theorem}[保号性]
+若 $x_n\to a$ 且 $a>0$，则存在 $N\in\Nplus$，使 $n>N$ 时 $x_n>0$。
+若 $a<0$，则存在 $N\in\Nplus$，使 $n>N$ 时 $x_n<0$。
+\end{theorem}
+\begin{proof}
+先设 $a>0$。在极限定义中取 $\varepsilon=a/2$，则存在 $N$，使 $n>N$ 时
+\[
+ |x_n-a|<\frac a2.
+\]
+因此
+\[
+ x_n\ge a-|x_n-a|>a-\frac a2=\frac a2>0.
+\]
+若 $a<0$，取 $\varepsilon=|a|/2$，则
+\[
+ x_n\le a+|x_n-a|<a+\frac{|a|}{2}=\frac a2<0
+\]
+对充分大的 $n$ 成立。
+\end{proof}
+
+\subsection*{最终区间性质}
+保号性可推广为：若 $x_n\to a$，且 $b<a<c$，则存在 $N\in\Nplus$，使
+\[
+ n>N\quad\Longrightarrow\quad b<x_n<c.
+\]
+证明时取
+\[
+ \varepsilon=\min\{a-b,c-a\}>0.
+\]
+当 $n>N$ 时，$|x_n-a|<\varepsilon$，于是
+\[
+ b\le a-\varepsilon<x_n<a+\varepsilon\le c.
+\]
+因此，收敛数列从某一项起始终落在任意包含其极限的开区间内。
+\end{document}

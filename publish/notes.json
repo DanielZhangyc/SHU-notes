@@ -6,7 +6,8 @@
     "study-notes": "学习笔记"
   },
   "tags": {
-    "mathematics": "数学"
+    "mathematics": "数学",
+    "physics": "物理"
   },
   "courses": {
     "higher-algebra-i": {
@@ -20,6 +21,10 @@
     "data-and-optimization": {
       "name": "数据与优化（通识笔记）",
       "directory": "general-education/data-and-optimization/notes"
+    },
+    "physics-experiment": {
+      "name": "大学基础物理实验",
+      "directory": "physics/physics-experiment/notes"
     }
   }
 }

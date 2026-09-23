@@ -1,0 +1,286 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "physics-experiment",
+%   "section": "1.2",
+%   "title": "大学基础物理实验1.2：测量基础知识",
+%   "categories": ["study-notes"],
+%   "tags": ["physics"],
+%   "excerpt": "测量误差与不确定度，以及直接测量和间接测量结果的估计。"
+% }
+% halo:end
+% 依据：朱红妹等《大学基础物理实验（第二版）》第一章1.2--1.5；
+% 另参照2026年9月15日、23日课堂笔记。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={测量基础知识},pdfauthor={Yuchen Zhang}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}{例题}[section]
+\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+\renewcommand{\theexample}{\thesection.\arabic{example}}
+\renewcommand{\proofname}{证明}
+
+\setlist[enumerate]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 大学基础物理实验}
+\fancyhead[R]{\small 1.2--1.5\quad 测量基础知识}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\renewcommand{\thesection}{1.\arabic{section}}
+
+\title{测量基础知识}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月23日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small\@date\par}
+  \end{center}}
+\makeatother
+
+\newcommand{\meanx}{\overline{x}}
+\newcommand{\meanN}{\overline{N}}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\begin{document}
+\maketitle
+
+\setcounter{section}{1}
+\section{误差的定义、分类和简要处理方法}
+
+\subsection*{直接测量与间接测量}
+
+直接用仪器测得待测量的过程称为\textbf{直接测量}；通过测量其他量，再由函数关系求得待测量的过程称为\textbf{间接测量}。例如，圆柱体积由直径 $d$ 和高 $h$ 间接确定：
+\[
+  V=\frac{\pi d^2h}{4}.
+\]
+
+\subsection*{误差}
+
+\begin{definition}[测量误差]
+设待测量的真值为 $x_0$，测量值为 $x$，则测量误差定义为
+\[
+  e=x-x_0.
+\]
+误差的正负表示测量值相对于真值的偏离方向：$e>0$ 时测量值偏大，$e<0$ 时测量值偏小。真值通常未知，故误差不能由测量结果直接确定。
+\end{definition}
+
+\subsection*{误差分类与修正}
+
+\begin{itemize}
+  \item \textbf{系统误差}在相同测量条件下具有稳定的偏向。仪器零点偏移、刻度校准偏差、测量原理或近似模型不完善等均可能引入系统误差。设读数中的系统偏差估计值为 $\Delta_s$，则修正值为
+  \[
+    x_{\mathrm{修正}}=x_{\mathrm{读数}}-\Delta_s.
+  \]
+  \item \textbf{随机误差}由测量过程中难以控制的因素引起，其影响大小和方向具有随机性。同一量的重复测量结果会出现散布。取多次测量的平均值可减弱随机误差的影响，但不能消除系统误差。
+  \item \textbf{粗大错误}主要由操作、读数或记录失误引起。发现异常数据时，应核查测量过程和原始记录；仅凭数据偏离平均值较大，不能判定为粗大错误。
+\end{itemize}
+
+\subsection*{重复测量的平均值与标准差}
+
+对同一待测量在相同条件下进行 $n$ 次测量，所得数据记为 $x_1,\ldots,x_n$。算术平均值
+\[
+  \meanx=\frac1n\sum_{i=1}^n x_i
+\]
+作为多次测量结果的中心估计。随机偏差有正有负，求平均可使其部分抵消；测量中若存在共同的系统偏差，该偏差仍保留在平均值中。
+
+样本标准差定义为
+\[
+  s_x=\sqrt{\frac{\displaystyle\sum_{i=1}^n(x_i-\meanx)^2}{n-1}}.
+\]
+残差 $x_i-\meanx$ 满足 $\sum_{i=1}^n(x_i-\meanx)=0$，因此自由度为 $n-1$；估计总体方差时以 $n-1$ 为分母。
+
+平均值的标准差为
+\[
+  s_{\meanx}=\frac{s_x}{\sqrt n}.
+\]
+若各次测量相互独立且具有相同方差，则平均值的方差为单次测量方差的 $1/n$，故其标准差按 $1/\sqrt n$ 缩小。$s_x$ 描述单次测量数据的散布，$s_{\meanx}$ 描述平均值的散布。
+
+\section{不确定度和实验结果的表示}
+
+误差 $e=x-x_0$ 是测量值与真值之差；不确定度则依据测量数据及仪器等信息评定，用于表征测量结果的可信程度。实验结果通常表示为
+\[
+  x=\meanx\pm U.
+\]
+其中 $\meanx$ 为测量结果的中心值，$U$ 为不确定度。区间 $[\meanx-U,\meanx+U]$ 给出真值所在范围的估计，其覆盖概率取决于所用的评定方法。
+
+\subsection*{A类评定、B类评定与合成不确定度}
+
+\textbf{A类评定}通过重复测量数据的统计分析评定不确定度；\textbf{B类评定}采用其他方法，依据仪器指标、分辨力、校准证书等信息评定不确定度。A、B类按评定方法区分，与随机误差、系统误差的来源分类并非一一对应。
+
+本节采用基础实验中的近似处理：在 A、B 类分量相互独立时，用方和根估计合成不确定度
+\[
+  U=\sqrt{\Delta_A^2+\Delta_B^2}.
+\]
+若各分量之间存在相关性，则需计入相关项。
+
+相对不确定度定义为
+\[
+  E_x=\frac{U}{\abs{\meanx}}\times100\%,\qquad \meanx\ne0.
+\]
+绝对不确定度 $U$ 与测量量具有相同单位；相对不确定度为无量纲量，常以百分数表示，便于比较不同量级的测量结果。
+
+一般评定中，先将各分量换算为标准不确定度，再合成为 $u_c$；扩展不确定度为 $U=ku_c$，其中 $k$ 为包含因子。对正态分布，$k\approx2$ 时覆盖概率约为 $95\%$。上述基础实验近似式不等同于这一标准不确定度合成过程。
+
+\section{直接测量结果的不确定度估计}
+
+\subsection*{A类不确定度}
+
+重复测量 $n$ 次时，平均值的 A 类不确定度为
+\[
+  \Delta_A=t(p,n-1)s_{\meanx}
+  =t(p,n-1)\frac{s_x}{\sqrt n},
+\]
+其中 $p$ 为置信水平，$t(p,n-1)$ 为自由度 $n-1$ 对应的双侧 $t$ 因子。该式适用于相互独立、服从同一正态分布的重复测量数据。
+
+当 $n=6$--$10$ 时，基础实验常简化取 $\Delta_A\approx s_x$，对应的置信水平约为 $94\%$--$99\%$。指定置信水平或给定 $t$ 因子时，应按完整公式计算。
+
+\subsection*{B类不确定度}
+
+直接测量中，常以仪器误差限 $\Delta_{\text{仪}}$ 近似 $\Delta_B$。对按满量程百分比规定误差限的仪表，设准确度等级为 $c$ 级，满量程为 $X_{\text{量程}}$，则
+\[
+  \Delta_{\text{仪}}=\frac{c}{100}X_{\text{量程}}.
+\]
+准确度等级以满量程为基准。例如，量程为 $75\,\mathrm{mV}$、准确度等级为 $0.5$ 级的仪表，其仪器误差限为
+\[
+  \Delta_{\text{仪}}=0.5\%\times75\,\mathrm{mV}
+  =0.375\,\mathrm{mV}\approx0.38\,\mathrm{mV}.
+\]
+
+\subsection*{合成不确定度与结果表示}
+
+对已作系统误差修正的直接测量结果，按上述近似方法，
+\[
+  U=\sqrt{\Delta_A^2+\Delta_B^2},\qquad
+  x=\meanx_{\mathrm{修正}}\pm U.
+\]
+单次测量无法由重复数据评定 A 类不确定度。若其他影响相对仪器误差限可忽略，可简化取 $U\approx\Delta_{\text{仪}}$。
+
+\begin{example}[螺旋测微器测量直径]
+六次读数（单位：$\mathrm{mm}$）为
+\[
+  5.007,\quad5.009,\quad5.006,\quad5.010,\quad5.004,\quad5.005.
+\]
+已知零点偏差为 $+0.005\,\mathrm{mm}$，仪器不确定度为 $\Delta_B=0.004\,\mathrm{mm}$，求修正后的测量结果。
+\end{example}
+
+\begin{proof}[解]
+由测量数据得
+\[
+  \meanx_{\mathrm{读数}}=5.00683\,\mathrm{mm},\qquad
+  s_x=0.00232\,\mathrm{mm}.
+\]
+取 $\Delta_A\approx s_x$，于是
+\[
+  U=\sqrt{(0.00232)^2+(0.004)^2}\,\mathrm{mm}
+   =0.00462\,\mathrm{mm}.
+\]
+零点偏差为正，故从读数平均值中减去该偏差：
+\[
+  \meanx_{\mathrm{修正}}=5.00683-0.005=5.00183\,\mathrm{mm}.
+\]
+用未舍入值计算，相对不确定度为 $E_x\approx0.00462/5.00183\times100\%=0.092\%$。将 $U$ 舍入为 $0.005\,\mathrm{mm}$，并使中心值的小数位与 $U$ 对齐，得
+\[
+  \boxed{d=(5.002\pm0.005)\,\mathrm{mm}}.
+\]
+\end{proof}
+
+\section{间接测量结果的不确定度估计}
+
+\subsection*{一般传播公式}
+
+设间接测量量 $N$ 由直接测量量 $x_1,\ldots,x_m$ 决定：
+\[
+  N=f(x_1,x_2,\ldots,x_m),\qquad
+  \meanN=f(\meanx_1,\meanx_2,\ldots,\meanx_m).
+\]
+在测量值附近对 $f$ 作一阶线性近似，输出量的变化满足
+\[
+  \delta N\approx\sum_{i=1}^m
+  \frac{\partial f}{\partial x_i}\,\delta x_i.
+\]
+偏导数在测量值处计算，表示 $N$ 对相应输入量的局部灵敏度。若各输入量相互独立，且各不确定度采用相同的包含因子，则一阶近似下
+\[
+  U_N=\sqrt{\sum_{i=1}^m
+    \left(\frac{\partial f}{\partial x_i}U_{x_i}\right)^2}.
+\]
+该式要求测量值附近的一阶线性近似有效。包含因子不同时，应先换算为标准不确定度再传播；输入量相关时还需计入协方差项。基础实验中也常将此式用于上述近似不确定度的传播。
+
+\subsection*{幂函数的相对不确定度}
+
+若
+\[
+  N=Cx^a y^b z^c,
+\]
+则一阶相对变化为
+\[
+  \frac{\delta N}{N}\approx
+  a\frac{\delta x}{x}+b\frac{\delta y}{y}+c\frac{\delta z}{z}.
+\]
+令 $E_x=U_x/\abs{x}$，在各量非零且满足上述传播条件时，
+\[
+  E_N=\sqrt{(aE_x)^2+(bE_y)^2+(cE_z)^2}.
+\]
+幂指数体现输入量对结果的相对灵敏度。例如，$N$ 与 $x^2$ 成正比时，$x$ 的相对不确定度对 $N$ 的贡献为 $2E_x$。若以百分数表示各相对不确定度，代入时应统一使用百分数。
+
+对三角函数，角度不确定度须以弧度表示。例如 $y=\sin\theta$ 时，
+\[
+  U_y\approx\abs{\cos\theta}\,U_\theta,
+\]
+若角度以度给出，应先换算为弧度再代入。
+
+\begin{example}[由直径计算圆面积]
+测得圆直径 $d=(12.512\pm0.004)\,\mathrm{mm}$，求圆面积及其不确定度。
+\end{example}
+
+\begin{proof}[解]
+由 $S=\pi d^2/4$，得
+\[
+  S=\frac{\pi(12.512)^2}{4}\,\mathrm{mm}^2
+   =122.9542\,\mathrm{mm}^2.
+\]
+由 $\partial S/\partial d=\pi d/2$，按不确定度传播公式，
+\[
+  U_S=\abs{\frac{\partial S}{\partial d}}U_d
+  =\frac{\pi d}{2}U_d
+  =0.0786\,\mathrm{mm}^2.
+\]
+又因 $S$ 与 $d^2$ 成正比，故 $E_S=2E_d\approx0.064\%$。统一舍入后，
+\[
+  \boxed{S=(122.95\pm0.08)\,\mathrm{mm}^2}.
+\]
+\end{proof}
+
+\begin{example}[圆柱体积的不确定度]
+设 $V=\pi d^2h/4$，$d=(10.00\pm0.02)\,\mathrm{mm}$，$h=(20.00\pm0.05)\,\mathrm{mm}$，两输入量相互独立，求体积及其不确定度。
+\end{example}
+
+\begin{proof}[解]
+由幂函数的相对不确定度公式，
+\[
+  E_V=\sqrt{\left(2\frac{0.02}{10.00}\right)^2+
+                   \left(\frac{0.05}{20.00}\right)^2}
+      =0.00472=0.472\%.
+\]
+体积中心值为 $V=1570.8\,\mathrm{mm}^3$，故 $U_V=E_VV\approx7.4\,\mathrm{mm}^3$。报告为
+\[
+  \boxed{V=(1571\pm7)\,\mathrm{mm}^3}.
+\]
+\end{proof}
+
+\end{document}

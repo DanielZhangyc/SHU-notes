@@ -8,17 +8,20 @@
 %   "title": "数学分析（一）1.3：函数",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "函数与反函数、初等函数与特殊函数、有界性，以及函数和的上下确界不等式。"
+%   "excerpt": "函数与反函数、初等函数、函数性质、确界不等式，以及习题 1.3 和 1.4 的课后作业。"
 % }
 % halo:end
 % 来源：IMG_1221.HEIC、IMG_1222.HEIC、IMG_1223.HEIC 上半页。
 % 不含第三张照片中的数列极限内容。
+% 课后作业依据 IMG_1362.HEIC、IMG_1363.HEIC、IMG_1364.HEIC，
+% 题干对照《数学分析》第五版上册习题 1.3、1.4。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{enumitem,fancyhdr}
+\usepackage{tikz}
 \usepackage[hidelinks]{hyperref}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
@@ -252,4 +255,268 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \]
 相比之下，数集和 $A+B=\{a+b:a\in A,\ b\in B\}$ 中 $a,b$ 可以独立选择，
 因此非空有界数集满足 $\sup(A+B)=\sup A+\sup B$。
+
+\section{课后作业}
+
+\subsection{习题 1.3，第 1 题（4）}
+\noindent\textbf{题目：}作函数 $y=\sgn(\sin x)$ 的图像。
+
+\noindent\textbf{解：}由符号函数的定义，对任意 $k\in\mathbb Z$，有
+\[
+ \sgn(\sin x)=
+ \begin{cases}
+  1,&2k\pi<x<(2k+1)\pi,\\
+  0,&x=k\pi,\\
+  -1,&(2k-1)\pi<x<2k\pi.
+ \end{cases}
+\]
+因此图像在每个长度为 $\pi$ 的开区间上分别为 $y=1$ 或 $y=-1$，
+而在所有 $x=k\pi$ 处取值为 $0$。例如在 $[-2\pi,2\pi]$ 上，图像如下：
+
+\begin{center}
+\begin{tikzpicture}[x=1.35cm,y=0.8cm]
+  \draw[->] (-2.35,0)--(2.35,0) node[right] {$x$};
+  \draw[->] (0,-1.45)--(0,1.45) node[above] {$y$};
+  \draw (-2,1)--(-1,1) (-1,-1)--(0,-1)
+        (0,1)--(1,1) (1,-1)--(2,-1);
+  \foreach \x/\label in {-2/$-2\pi$,-1/$-\pi$,0/$0$,1/$\pi$,2/$2\pi$} {
+    \draw (\x,0.07)--(\x,-0.07) node[below=2pt] {\label};
+    \draw[fill=white] (\x,1) circle (1.7pt);
+    \draw[fill=white] (\x,-1) circle (1.7pt);
+    \fill (\x,0) circle (1.4pt);
+  }
+  \draw (0,1) node[left=3pt] {$1$};
+  \draw (0,-1) node[left=5pt] {$-1$};
+\end{tikzpicture}
+\end{center}
+
+\subsection{习题 1.3，第 4 题（4）}
+\noindent\textbf{题目：}确定初等函数
+\[
+ y=\lg\left(\arcsin\frac{x}{10}\right)
+\]
+的存在域。
+
+\begin{proof}
+要使反正弦有意义，必须有
+\[
+ -1\le \frac{x}{10}\le 1.
+\]
+同时，对数的真数必须为正，所以还要有
+\[
+ \arcsin\frac{x}{10}>0
+ \quad\Longleftrightarrow\quad
+ \frac{x}{10}>0,
+\]
+因为 $\arcsin t$ 在 $[-1,1]$ 上严格递增且 $\arcsin 0=0$。
+合并条件得到
+\[
+ 0<x\le 10.
+\]
+故存在域为 $D=(0,10]$。
+\end{proof}
+
+\subsection{习题 1.3，第 5 题（2）}
+\noindent\textbf{题目：}设函数
+\[
+ f(x)=
+ \begin{cases}
+  2+x,&x\le0,\\
+  2^x,&x>0,
+ \end{cases}
+\]
+求 $f(\Delta x)-f(0)$、$f(-\Delta x)-f(0)$（$\Delta x>0$）。
+
+\noindent\textbf{解：}由 $f(0)=2$，且 $\Delta x>0$，有
+\[
+ f(\Delta x)-f(0)=2^{\Delta x}-2,
+ \qquad
+ f(-\Delta x)-f(0)=(2-\Delta x)-2=-\Delta x.
+\]
+
+\subsection{习题 1.3，第 7 题（2）}
+\noindent\textbf{题目：}指出函数 $y=(\arcsin(x^2))^2$ 是由哪些初等函数复合而成的。
+
+\noindent\textbf{解：}取初等函数
+\[
+ f(x)=x^2,\qquad g(x)=\arcsin x.
+\]
+于是
+\[
+ y=f\bigl(g(f(x))\bigr)=(\arcsin(x^2))^2,
+ \qquad x\in[-1,1].
+\]
+定义域来自 $x^2\in[-1,1]$，即 $|x|\le1$。
+
+\subsection{习题 1.3，第 10 题（1）}
+\noindent\textbf{题目：}判断等式
+\[
+ \tan(\arctan x)=x,\qquad x\in\R
+\]
+是否成立。
+
+\begin{proof}
+对任意 $x\in\R$，令 $u=\arctan x$。按照反正切函数的值域，
+ $u\in(-\pi/2,\pi/2)$，并且 $\tan u=x$。因此
+\[
+ \tan(\arctan x)=x
+\]
+对所有 $x\in\R$ 成立。
+\end{proof}
+
+\subsection{习题 1.3，第 12 题（1）（2）}
+\noindent\textbf{题目：}证明关于取整函数 $y=[x]$ 的不等式：
+\begin{enumerate}[label=(\arabic*)]
+ \item 当 $x>0$ 时，$1-x<x[1/x]\le1$；
+ \item 当 $x<0$ 时，$1\le x[1/x]<1-x$。
+\end{enumerate}
+
+\begin{proof}
+当 $x>0$ 时，令 $n=[1/x]$。取整函数的定义给出
+\[
+ n\le\frac1x<n+1.
+\]
+乘以正数 $x$，得
+\[
+ nx\le1<(n+1)x.
+\]
+又由 $1<(n+1)x$ 得 $1-x<nx$。因此
+\[
+ 1-x<x[1/x]\le1.
+\]
+
+当 $x<0$ 时，仍令 $n=[1/x]$，则
+\[
+ n\le\frac1x<n+1.
+\]
+乘以负数 $x$ 时不等号方向改变，得到
+\[
+ nx\ge1>(n+1)x.
+\]
+所以 $x[1/x]=nx\ge1$，且 $nx<1-x$，即
+\[
+ 1\le x[1/x]<1-x.
+\]
+两式均得证。
+\end{proof}
+
+\subsection{习题 1.4，第 1 题}
+\noindent\textbf{题目：}证明 $f(x)=\dfrac{x}{x^2+1}$ 是 $\R$ 上的有界函数。
+
+\begin{proof}
+对任意 $x\in\R$，有
+\[
+ (|x|-1)^2\ge0
+ \quad\Longrightarrow\quad
+ x^2+1\ge2|x|.
+\]
+由于 $x^2+1>0$，从而
+\[
+ \left|\frac{x}{x^2+1}\right|
+ =\frac{|x|}{x^2+1}\le\frac12.
+\]
+故 $-1/2\le f(x)\le1/2$ 对所有 $x\in\R$ 成立，函数在 $\R$ 上有界。
+事实上，$x=1$ 和 $x=-1$ 时分别取得上界 $1/2$ 与下界 $-1/2$。
+\end{proof}
+
+\subsection{习题 1.4，第 2 题（1）（2）（3）}
+\noindent\textbf{题目：}
+\begin{enumerate}[label=(\arabic*)]
+ \item 叙述无界函数的定义；
+ \item 证明 $f(x)=1/x^2$ 为 $(0,1)$ 上的无界函数；
+ \item 举出函数 $f$ 的例子，使 $f$ 为闭区间 $[0,1]$ 上的无界函数。
+\end{enumerate}
+
+\noindent\textbf{解：}
+
+\begin{enumerate}[label=(\arabic*)]
+ \item 函数 $f$ 在定义域 $D$ 上无界，是指
+ \[
+ \forall M\ge0,\ \exists x\in D,\quad |f(x)|>M.
+ \]
+ \item 任取 $M\ge0$。若 $M>0$，取
+ \[
+ x=\frac1{\sqrt{M+1}}\in(0,1),
+ \]
+ 则 $f(x)=M+1>M$；若 $M=0$，取任意 $x\in(0,1)$ 即有 $f(x)>0=M$。
+ 因此对任意 $M\ge0$ 都能找到 $x\in(0,1)$ 使 $|f(x)|>M$，故 $f$ 在 $(0,1)$ 上无界。
+ \item 例如定义
+ \[
+ f(x)=
+ \begin{cases}
+  \tan\!\left(\dfrac{\pi x}{2}\right),&0\le x<1,\\
+  0,&x=1.
+ \end{cases}
+ \]
+ 它定义在闭区间 $[0,1]$ 上。任取 $M\ge0$，取
+ $x=\dfrac2\pi\arctan(M+1)\in(0,1)$，则
+ $f(x)=M+1>M$，故它在 $[0,1]$ 上无界。
+\end{enumerate}
+
+\subsection{习题 1.4，第 3 题（3）}
+\noindent\textbf{题目：}证明函数 $y=\cos x$ 在 $[0,\pi]$ 上严格递减。
+
+\begin{proof}
+任取 $0\le x_1<x_2\le\pi$。利用和差化积公式，
+\[
+ \cos x_1-\cos x_2
+ =2\sin\frac{x_1+x_2}{2}\sin\frac{x_2-x_1}{2}.
+\]
+其中
+\[
+ 0<\frac{x_1+x_2}{2}<\pi,
+ \qquad
+ 0<\frac{x_2-x_1}{2}\le\frac\pi2,
+\]
+所以两正弦因子都为正，进而
+ $\cos x_1-\cos x_2>0$，即 $\cos x_1>\cos x_2$。
+故 $\cos x$ 在 $[0,\pi]$ 上严格递减。
+\end{proof}
+
+\subsection{习题 1.4，第 4 题（2）}
+\noindent\textbf{题目：}判别函数 $f(x)=x+\sin x$ 的奇偶性。
+
+\begin{proof}
+定义域 $\R$ 关于原点对称，且对任意 $x\in\R$，
+\[
+ f(-x)=-x+\sin(-x)=-x-\sin x=-f(x).
+\]
+所以 $f$ 是奇函数。
+\end{proof}
+
+\subsection{习题 1.4，第 5 题（2）}
+\noindent\textbf{题目：}求函数 $y=\tan 3x$ 的周期。
+
+\begin{proof}
+若 $T>0$ 是周期，取 $x=0$，则 $\tan(3T)=\tan0=0$，
+故 $3T=k\pi$，其中 $k\in\Nplus$。反之，对每个这样的 $T$，
+平移 $x\mapsto x+T$ 保持函数的定义域不变，且
+$\tan(3(x+T))=\tan(3x+k\pi)=\tan3x$。
+因此所有正周期为 $k\pi/3$（$k\in\Nplus$），最小正周期为
+\[
+ T=\frac\pi3.
+\]
+\end{proof}
+
+\subsection{习题 1.4，第 9 题（2）}
+\noindent\textbf{题目：}设 $f$ 为定义在 $D$ 上的有界函数，证明
+\[
+ \inf_{x\in D}[-f(x)]=-\sup_{x\in D}f(x).
+\]
+\begin{proof}
+记 $M=\sup_{x\in D}f(x)$。由上确界的上界性，对任意 $x\in D$ 都有
+ $f(x)\le M$，所以 $-f(x)\ge-M$。因此 $-M$ 是集合
+ $\{-f(x):x\in D\}$ 的一个下界。
+
+任取 $\beta>-M$，则 $-\beta<M$。由 $M$ 是 $f(D)$ 的上确界，存在
+ $x_0\in D$ 使 $f(x_0)>-\beta$。于是
+\[
+ -f(x_0)<\beta,
+\]
+说明 $\beta$ 不是集合 $\{-f(x):x\in D\}$ 的下界。
+所以 $-M$ 是该集合的最大下界，即
+\[
+ \inf_{x\in D}[-f(x)]=-M=-\sup_{x\in D}f(x).
+\]
+\end{proof}
 \end{document}

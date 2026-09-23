@@ -8,6 +8,7 @@ on:
       - '**/notes/*.tex'
       - '**/notes/*.pdf'
       - 'publish/notes.json'
+      - 'publish/assets/**'
       - 'scripts/publish_notes.py'
       - 'tests/**'
       - '.github/workflows/publish-notes.yml'
