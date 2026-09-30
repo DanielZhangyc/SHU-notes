@@ -122,6 +122,7 @@ def normalize_document(document, tex):
     )
     section_prefix = section_prefix_match[1] + "." if section_prefix_match else ""
     declarations = {}
+    unnumbered = dict(re.findall(r"\\newtheorem\*\{(\w+)\}\{([^{}]*)\}", tex))
     for kind, shared, reset in re.findall(
         r"\\newtheorem\{(\w+)\}(?:\[(\w+)\])?\{[^{}]*\}(?:\[(section)\])?", tex
     ):
@@ -155,6 +156,9 @@ def normalize_document(document, tex):
                 if first["t"] not in {"Strong", "Emph"}:
                     raise ValueError("Missing theorem or proof label")
                 if kind:
+                    if kind in unnumbered:
+                        first["c"] = [{"t": "Str", "c": unnumbered[kind]}]
+                        continue
                     if kind not in declarations:
                         raise ValueError(f"Missing LaTeX theorem declaration: {kind}")
                     root, reset = declarations[kind]

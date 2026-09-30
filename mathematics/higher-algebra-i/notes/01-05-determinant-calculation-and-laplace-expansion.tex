@@ -1,0 +1,313 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "1.5",
+%   "title": "高等代数（一）1.5：行列式计算与拉普拉斯展开",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "行列式的降阶与递推计算、多行（列）的拉普拉斯展开、分块三角行列式与叉积。"
+% }
+% halo:end
+% 课堂日期：2026-09-29；1.5为笔记自身的主题编号。
+% 来源：笔记 2026年9月29日.pdf；IMG_1561、1563、1564、1565、1566、1568.HEIC。
+% 与1.4衔接：不重复单行列展开的定义与证明，改从排列展开式的系数理解。
+% 补齐递推初值、a=b情形、分块公式条件及叉积退化情形。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）}
+\fancyhead[R]{\small 行列式计算与拉普拉斯展开}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{行列式计算与拉普拉斯展开}
+\author{Yuchen Zhang}
+\date{课堂日期：2026年9月29日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{从排列展开式理解代数余子式}
+
+设 $A=(a_{ij})$ 为 $n$ 阶方阵，$A_{ij}$ 表示元素 $a_{ij}$ 的代数余子式。
+固定第二列到第 $n$ 列，把第一列换成变量 $x_1,\ldots,x_n$，记
+\[
+ \Delta(x_1,\ldots,x_n)=
+ \begin{vmatrix}x_1&a_{12}&\cdots&a_{1n}\\x_2&a_{22}&\cdots&a_{2n}\\
+ \vdots&\vdots&&\vdots\\x_n&a_{n2}&\cdots&a_{nn}\end{vmatrix}.
+\]
+按列的次序写出排列定义，有
+\[
+ \Delta(x_1,\ldots,x_n)
+ =\sum_{(i_1,\ldots,i_n)}(-1)^{\tau(i_1,\ldots,i_n)}
+ x_{i_1}a_{i_2,2}\cdots a_{i_n,n},
+\]
+其中求和遍历 $1,\ldots,n$ 的所有排列，$\tau$ 表示逆序数。
+每一项恰含一个 $x_k$。把含同一个 $x_k$ 的项合并，就得到
+\[
+ \Delta(x_1,\ldots,x_n)=\sum_{k=1}^n x_k A_{k1}.
+\]
+因此，代数余子式 $A_{k1}$ 就是把第一列看作变量时，$x_k$ 的系数。
+它不依赖第一列中的元素，只由其余列决定。换成任意一列或一行，道理相同。
+
+\subsection{不同行（列）的对应乘积之和}
+
+上述观点也解释了上一讲的零和公式。若把第 $j$ 列换成第 $l$ 列（$l\ne j$），
+新行列式有两列相同，故为零；第 $j$ 列的代数余子式却不变。因此
+\[
+ \sum_{i=1}^n a_{il}A_{ij}=0\quad(l\ne j).
+\]
+同理，按行有
+\[
+ \sum_{j=1}^n a_{kj}A_{ij}=0\quad(k\ne i).
+\]
+与按行（列）展开公式合在一起，即为
+\[
+ \sum_{r=1}^n a_{hr}A_{ir}
+ =\begin{cases}\det A,&h=i,\\0,&h\ne i,\end{cases}
+ \qquad
+ \sum_{r=1}^n a_{rk}A_{rj}
+ =\begin{cases}\det A,&k=j,\\0,&k\ne j.\end{cases}
+\]
+同一行（列）对应相乘求和得到原行列式，换成另一行（列）则得到零。
+
+\newpage
+\section{行列式的降阶与递推计算}
+
+\begin{example}
+计算
+\[
+ D=\begin{vmatrix}
+ 5&3&-1&2&0\\1&7&2&5&2\\0&-2&3&1&0\\0&-4&-1&4&0\\0&2&3&5&0
+ \end{vmatrix}.
+\]
+\end{example}
+\begin{proof}[解]
+先按第五列展开，再按所得四阶行列式的第一列展开，得
+\[
+ D=2(-1)^{2+5}
+ \begin{vmatrix}5&3&-1&2\\0&-2&3&1\\0&-4&-1&4\\0&2&3&5\end{vmatrix}
+ =-10\begin{vmatrix}-2&3&1\\-4&-1&4\\2&3&5\end{vmatrix}.
+\]
+对右侧三阶行列式作 $r_3\leftarrow r_3+r_1$，再从第三行提出 $6$，得
+\[
+ D=-60\begin{vmatrix}-2&3&1\\-4&-1&4\\0&1&1\end{vmatrix}
+ =-60\bigl[(-2)(-1-4)-3(-4)+(-4)\bigr]
+ =\boxed{-1080}.
+\]
+每次展开都选择非零元素最少的一行或一列；行倍加用于进一步制造零元素。
+\end{proof}
+
+\begin{example}
+求主对角线为 $a+b$、上副对角线为 $a$、下副对角线为 $b$ 的三对角行列式
+\[
+ D_n=\begin{vmatrix}
+ a+b&a&0&\cdots&0\\b&a+b&a&\ddots&\vdots\\
+ 0&b&a+b&\ddots&0\\\vdots&\ddots&\ddots&\ddots&a\\0&\cdots&0&b&a+b
+ \end{vmatrix}\quad(n\ge1).
+\]
+\end{example}
+\begin{proof}[解]
+约定 $D_0=1$，则 $D_1=a+b$。按第一列展开，第二项的余子式再按第一行展开，得
+\[
+ D_n=(a+b)D_{n-1}-abD_{n-2}\quad(n\ge2).
+\]
+令 $E_n=D_n-bD_{n-1}$，则 $E_n=aE_{n-1}$，且 $E_1=a$，故 $E_n=a^n$。
+于是 $D_n=a^n+bD_{n-1}$，逐次代入得
+\[
+ \boxed{D_n=\sum_{k=0}^n a^{n-k}b^k
+ =\begin{cases}\dfrac{a^{n+1}-b^{n+1}}{a-b},&a\ne b,\\[6pt]
+ (n+1)a^n,&a=b.\end{cases}}
+\]
+有限和的形式不需要除以 $a-b$，因而也适用于 $a=b$ 或参数为零的情形。
+\end{proof}
+
+\newpage
+\section{多行（列）的拉普拉斯展开}
+
+\subsection{子式、余子式与展开公式}
+
+设 $A$ 为 $n$ 阶方阵，$1\le r<n$。选取递增的行指标集
+$I=\{i_1<\cdots<i_r\}$ 和列指标集 $J=\{j_1<\cdots<j_r\}$。
+记 $A[I,J]$ 为这些行、列交叉位置构成的子矩阵，$I^c,J^c$ 为相应的补集。
+所有子矩阵中的行、列均保持原来的顺序。
+
+\begin{definition}
+$r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
+删去所选行、列后所得的行列式，称为它的\textbf{余子式}，即 $\det A[I^c,J^c]$。
+其\textbf{代数余子式}为
+\[
+ (-1)^{\sum I+\sum J}\det A[I^c,J^c],
+ \qquad \sum I=i_1+\cdots+i_r,\quad\sum J=j_1+\cdots+j_r.
+\]
+\end{definition}
+
+\begin{theorem}[拉普拉斯展开]
+固定 $r$ 列 $J$，对所有 $r$ 行的选择 $I$ 求和，有
+\[
+ \boxed{\det A=\sum_{|I|=r}(-1)^{\sum I+\sum J}
+       \det A[I,J]\det A[I^c,J^c].}
+\]
+固定 $r$ 行 $I$ 时，则对所有 $r$ 列的选择 $J$ 求和：
+\[
+ \det A=\sum_{|J|=r}(-1)^{\sum I+\sum J}
+       \det A[I,J]\det A[I^c,J^c].
+\]
+\end{theorem}
+每次固定一组行或列，只遍历另一组，共有 $\binom nr$ 项。
+当 $r=1$ 时，这正是上一讲的按一行或一列展开公式。
+
+\subsection{按前 $r$ 列展开时，符号从哪里来}
+
+固定 $J=\{1,\ldots,r\}$。排列展开式的每一项在前 $r$ 列取出的元素，
+必定来自 $r$ 个不同的行。按这组行 $I=\{k_1<\cdots<k_r\}$ 把所有项分组。
+
+先把所选行排在前面、其余行排在后面，且两组内部均递增。
+第 $k_s$ 行前面有 $k_s-1$ 个较小的行指标，其中 $s-1$ 个已在所选组内，
+故它与另一组产生 $k_s-s$ 个逆序。组间的总逆序数为
+\[
+ \sum_{s=1}^r(k_s-s)=\sum_{s=1}^r k_s-\frac{r(r+1)}2.
+\]
+组内的排列分别构成两个行列式，因此这一组的和为
+\[
+ (-1)^{\sum I+r(r+1)/2}
+ \det A[I,\{1,\ldots,r\}]\det A[I^c,\{r+1,\ldots,n\}].
+\]
+这里把减号改成加号不改变奇偶性。对所有 $I$ 求和即得前 $r$ 列的公式。
+一般列集 $J$ 先移到前面，另产生 $\sum J-r(r+1)/2$ 次对换，
+故总符号为 $(-1)^{\sum I+\sum J}$。按行展开可由转置得到。
+
+\newpage
+\section{拉普拉斯展开的应用}
+
+\subsection{分块三角行列式}
+
+\begin{proposition}
+设 $A$、$D$ 分别是 $p$ 阶、$q$ 阶方阵，$B$ 为 $p\times q$ 矩阵，则
+\[
+ \det\begin{pmatrix}A&B\\0&D\end{pmatrix}=\det A\det D.
+\]
+同理，$\det\begin{pmatrix}A&0\\C&D\end{pmatrix}=\det A\det D$。
+\end{proposition}
+\begin{proof}
+按前 $p$ 列展开。这些列在后 $q$ 行全为零，因此只有选取前 $p$ 行时子式才可能非零。
+该项的符号为 $(-1)^{2(1+\cdots+p)}=1$，子式为 $\det A$，余子式为 $\det D$。
+下分块三角的情形由转置得到。
+\end{proof}
+
+这里要求对角块是方阵，但不要求它们可逆。一般的分块矩阵不能直接套用下面的二阶形式：
+\[
+ \det\begin{pmatrix}A&B\\C&D\end{pmatrix}
+ =\det A\det D-\det B\det C.
+\]
+例如四个块均为 $2\times2$ 矩阵，取 $A=D=0$、$B=C=I_2$。
+整体矩阵对应两次对换，行列式为 $1$，而右端为 $-1$。
+
+\subsection{一个四阶行列式}
+
+\begin{example}
+从矩阵 $\begin{pmatrix}a_1&b_1&c_1\\a_2&b_2&c_2\end{pmatrix}$ 中分别删去第 $1,2,3$ 列，
+所得二阶行列式依次记为
+\[
+ A=\begin{vmatrix}b_1&c_1\\b_2&c_2\end{vmatrix},\quad
+ B=\begin{vmatrix}a_1&c_1\\a_2&c_2\end{vmatrix},\quad
+ C=\begin{vmatrix}a_1&b_1\\a_2&b_2\end{vmatrix}.
+\]
+证明
+\[
+ H=\begin{vmatrix}a_1&b_1&c_1&0\\a_2&b_2&c_2&0\\
+ 0&a_1&b_1&c_1\\0&a_2&b_2&c_2\end{vmatrix}=AC-B^2.
+\]
+\end{example}
+\begin{proof}
+按前两行展开。含第四列的二阶子式均为零；选取第 $2,3$ 列时，余子式有一列为零。
+故六种列选择中只有 $\{1,2\}$、$\{1,3\}$ 两项可能非零，分别为
+\[
+ (-1)^{1+2+1+2}CA=CA,\qquad
+ (-1)^{1+2+1+3}BB=-B^2.
+\]
+相加即得 $H=AC-B^2$。此处 $A,B,C$ 均是二阶行列式的值，即三个数。
+\end{proof}
+
+\newpage
+\section{代数余子式与三维叉积}
+
+设 $\boldsymbol\alpha=(a_{11},a_{21},a_{31})^{\mathsf T}$、
+$\boldsymbol\beta=(a_{12},a_{22},a_{32})^{\mathsf T}$ 为 $\mathbb R^3$ 中的向量。
+把它们作为前两列，第三列记为 $\boldsymbol x=(x,y,z)^{\mathsf T}$。按第三列展开：
+\begin{align*}
+ \det(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol x)
+ &=\begin{vmatrix}a_{11}&a_{12}&x\\a_{21}&a_{22}&y\\a_{31}&a_{32}&z\end{vmatrix}\\
+ &=x\begin{vmatrix}a_{21}&a_{22}\\a_{31}&a_{32}\end{vmatrix}
+ -y\begin{vmatrix}a_{11}&a_{12}\\a_{31}&a_{32}\end{vmatrix}
+ +z\begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix}.
+\end{align*}
+因此，若令
+\[
+ \boldsymbol\gamma=
+ \begin{pmatrix}
+ a_{21}a_{32}-a_{31}a_{22}\\
+ a_{31}a_{12}-a_{11}a_{32}\\
+ a_{11}a_{22}-a_{21}a_{12}
+ \end{pmatrix},
+\]
+就有
+\[
+ \det(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol x)
+ =\boldsymbol\gamma\cdot\boldsymbol x.
+\]
+取 $\boldsymbol x=\boldsymbol\alpha$ 或 $\boldsymbol\beta$，左侧都有两列相同，因而
+\[
+ \boldsymbol\gamma\cdot\boldsymbol\alpha=0,
+ \qquad \boldsymbol\gamma\cdot\boldsymbol\beta=0.
+\]
+这解释了为什么由这三个代数余子式组成的向量，同时与原来的两个向量正交。
+
+\begin{definition}
+上述向量 $\boldsymbol\gamma$ 称为 $\boldsymbol\alpha$ 与 $\boldsymbol\beta$ 的\textbf{叉积}，记为
+$\boldsymbol\alpha\times\boldsymbol\beta$。
+\end{definition}
+
+例如
+\[
+ (1,0,0)^{\mathsf T}\times(0,1,0)^{\mathsf T}=(0,0,1)^{\mathsf T}.
+\]
+当 $\boldsymbol\alpha,\boldsymbol\beta$ 线性无关时，叉积非零，给出它们张成平面的一个法向量。
+当两向量线性相关时，这些二阶子式均为零，叉积为零向量，不能用来指定法向方向。
+交换两向量，相当于交换行列式的前两列，故
+\[
+ \boldsymbol\beta\times\boldsymbol\alpha=-\boldsymbol\alpha\times\boldsymbol\beta.
+\]
+所以叉积的三个坐标并非另行记忆的一组公式，它们就是第三列的代数余子式，符号依次为 $+,-,+$。
+
+\end{document}

@@ -1,0 +1,247 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "1.4",
+%   "title": "高等代数（一）1.4：矩阵与行列式展开",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "矩阵与行列式的区别、转置与初等变换，以及从列的多重线性推导按行（列）展开。"
+% }
+% halo:end
+% 课堂日期：2026-09-24。1.4沿用本课程课堂笔记序号，非已核实教材节号。
+% 来源：IMG_1403.HEIC、IMG_1404.HEIC；笔记 2026年9月24日.pdf及同名(2).pdf。
+% 用户确认本课也讲了按行展开；单行（列）展开由上一讲迁入；例题为说明计算方法而补充。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）}
+\fancyhead[R]{\small 1.4\quad 矩阵与行列式展开}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{矩阵与行列式展开}
+\author{Yuchen Zhang}
+\date{课堂日期：2026年9月24日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{矩阵与行列式}
+
+\begin{definition}
+设 $P$ 为数域。把 $mn$ 个数 $a_{ij}\in P$ 排成 $m$ 行、$n$ 列的矩形数表
+\[
+ A=\begin{pmatrix}
+ a_{11}&a_{12}&\cdots&a_{1n}\\
+ a_{21}&a_{22}&\cdots&a_{2n}\\
+ \vdots&\vdots&&\vdots\\
+ a_{m1}&a_{m2}&\cdots&a_{mn}
+ \end{pmatrix},
+\]
+称为一个 $m\times n$ 矩阵，简记为 $A=(a_{ij})_{m\times n}$。
+其中 $a_{ij}$ 是第 $i$ 行、第 $j$ 列的元素。当 $m=n$ 时，称 $A$ 为 $n$ 阶方阵。
+\end{definition}
+
+矩阵本身是一张数表。对 $n$ 阶方阵 $A$，按排列定义计算得到的数
+称为它的\textbf{行列式}，记作 $\det A$ 或 $|A|$。例如
+\[
+ A=\begin{pmatrix}1&2\\3&4\end{pmatrix},
+ \qquad |A|=1\cdot4-2\cdot3=-2.
+\]
+这里 $A$ 是矩阵，$|A|$ 是数；非方阵不定义通常意义下的行列式。
+
+将矩阵的第 $j$ 列记为
+\[
+ \boldsymbol\alpha_j=(a_{1j},a_{2j},\ldots,a_{mj})^{\mathsf T},
+\]
+则 $A=(\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_n)$。
+因此，$n$ 阶行列式也可看成一个运算：输入 $n$ 个 $n$ 维列向量，输出一个数。
+记号 $\det(\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_n)$ 就是以这些向量为列的方阵的行列式。
+
+\subsection{转置}
+
+\begin{definition}
+把矩阵 $A=(a_{ij})_{m\times n}$ 的行与列互换，得到的 $n\times m$ 矩阵
+称为 $A$ 的\textbf{转置矩阵}，记为 $A^{\mathsf T}$。若 $B=A^{\mathsf T}$，则 $b_{ij}=a_{ji}$。
+\end{definition}
+
+对方阵，有 $\det A^{\mathsf T}=\det A$。用排列定义可写成
+\[
+ \det A^{\mathsf T}
+ =\sum_{\sigma\in S_n}(-1)^{\tau(\sigma)}\prod_{i=1}^n a_{\sigma(i),i}
+ =\sum_{\sigma\in S_n}(-1)^{\tau(\sigma)}\prod_{k=1}^n a_{k,\sigma^{-1}(k)}.
+\]
+逆排列与原排列同奇偶，且 $\sigma^{-1}$ 也遍历全部排列，故末式就是 $\det A$。
+这里 $S_n$ 表示所有 $n$ 元排列的集合，$\tau(\sigma)$ 表示逆序数。
+因此，行与列的性质相对应。
+
+\section{初等变换与行列式的变化}
+
+\begin{definition}
+以下三种操作称为矩阵的\textbf{初等行变换}：
+\begin{enumerate}
+ \item 用非零数 $c$ 乘某一行，记为 $r_i\leftarrow c r_i$；
+ \item 把一行的 $c$ 倍加到另一行，记为 $r_i\leftarrow r_i+c r_j$，其中 $i\ne j$；
+ \item 交换两行，记为 $r_i\leftrightarrow r_j$，其中 $i\ne j$。
+\end{enumerate}
+对列作同样的操作，称为\textbf{初等列变换}。
+\end{definition}
+
+这些操作对矩形矩阵也适用。若 $A$ 为方阵、变换后得到 $B$，则由行列式性质：
+\[
+\begin{array}{c|c}
+ \text{对矩阵所作的操作}&\text{行列式的变化}\\ \hline
+ r_i\leftarrow c r_i&\det B=c\det A\\
+ r_i\leftarrow r_i+c r_j&\det B=\det A\\
+ r_i\leftrightarrow r_j&\det B=-\det A
+\end{array}
+\]
+列变换的结论相同。矩阵经过变换后通常改变；上表说明的是它的行列式怎样变化。
+
+第一类变换要求 $c\ne0$，是为了能用乘 $1/c$ 的操作还原。
+但作为行列式的数乘性质，$c=0$ 时等式仍成立，此时产生零行，行列式为零。
+还应区分“某一行乘 $c$”与“整个矩阵乘 $c$”：后者把每一行都乘 $c$，故
+\[
+ \det(cA)=c^n\det A.
+\]
+
+\section{从列的多重线性到展开公式}
+
+\subsection{固定其余列，只拆开一列}
+
+行列式对每一列分别线性。例如固定第 $j$ 列以外的各列，有
+\begin{align*}
+ &\det(\boldsymbol\alpha_1,\ldots,s\boldsymbol u+t\boldsymbol v,\ldots,\boldsymbol\alpha_n)\\
+ &\quad=s\det(\boldsymbol\alpha_1,\ldots,\boldsymbol u,\ldots,\boldsymbol\alpha_n)
+       +t\det(\boldsymbol\alpha_1,\ldots,\boldsymbol v,\ldots,\boldsymbol\alpha_n).
+\end{align*}
+每次只对一列使用线性，其他列保持不动；这就是列的\textbf{多重线性}的含义。
+它不能理解为对整个矩阵的线性，一般并没有 $\det(A+B)=\det A+\det B$。
+
+设 $\boldsymbol e_i$ 为第 $i$ 个分量等于 $1$、其余分量为 $0$ 的标准单位列向量。
+任意第 $j$ 列都可写成
+\[
+ \boldsymbol\alpha_j=\sum_{i=1}^n a_{ij}\boldsymbol e_i.
+\]
+代入行列式并利用第 $j$ 列的线性，得
+\[
+ \det A=\sum_{i=1}^n a_{ij}
+ \det(\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_{j-1},
+       \boldsymbol e_i,\boldsymbol\alpha_{j+1},\ldots,\boldsymbol\alpha_n).
+\]
+式中固定的是列号 $j$，求和指标 $i$ 遍历这一列的各行。
+原行列式由此拆成 $n$ 项，每一项中的第 $j$ 列都只剩一个 $1$。
+
+\subsection{余子式与代数余子式}
+
+\begin{definition}
+在 $n$ 阶方阵 $A$ 中（$n\ge2$），划去元素 $a_{ij}$ 所在的第 $i$ 行和第 $j$ 列，
+剩下的 $n-1$ 阶方阵的行列式，称为 $a_{ij}$ 的\textbf{余子式}，记为 $M_{ij}$。
+数 $A_{ij}=(-1)^{i+j}M_{ij}$ 称为它的\textbf{代数余子式}。
+\end{definition}
+
+这里的 $A_{ij}$ 是一个数，与矩阵 $A$ 本身不同。因子 $(-1)^{i+j}$ 的符号按棋盘交替排列：
+\[
+ \begin{pmatrix}+&-&+&\cdots\\-&+&-&\cdots\\+&-&+&\cdots\\\vdots&\vdots&\vdots&\ddots\end{pmatrix}.
+\]
+
+把上式中第 $j$ 列被替换为 $\boldsymbol e_i$ 的矩阵记为 $B$。
+将 $B$ 的第 $i$ 行依次交换到第一行，再将第 $j$ 列依次交换到第一列，
+共需 $(i-1)+(j-1)$ 次对换，得到
+\[
+ C=\begin{pmatrix}1&*\\0&B_{ij}\end{pmatrix},
+ \qquad \det C=(-1)^{i+j-2}\det B.
+\]
+其中 $B_{ij}$ 正是从 $A$ 删去第 $i$ 行、第 $j$ 列后的矩阵，其行列顺序未变。
+由排列定义，$C$ 的第一列只有第一项非零，非零乘积必须选取左上角的 $1$；
+其余元素的带符号求和恰为 $\det B_{ij}=M_{ij}$。因此
+\[
+ \det B=(-1)^{i+j}M_{ij}=A_{ij}.
+\]
+所以展开式中的符号来自行、列交换的次数，而余子式来自删去那个 $1$ 所占的行与列。
+
+\subsection{按一行或一列展开}
+
+\begin{theorem}
+设 $D=\det A$。固定第 $j$ 列，有
+\[
+ \boxed{D=\sum_{i=1}^n a_{ij}A_{ij}
+           =\sum_{i=1}^n(-1)^{i+j}a_{ij}M_{ij}.}
+\]
+固定第 $i$ 行，有
+\[
+ \boxed{D=\sum_{j=1}^n a_{ij}A_{ij}
+           =\sum_{j=1}^n(-1)^{i+j}a_{ij}M_{ij}.}
+\]
+\end{theorem}
+第一式由上述列分解得到；第二式可对转置矩阵应用第一式得到。
+这把一个 $n$ 阶行列式化为若干个 $n-1$ 阶行列式。
+计算时通常选择零较多的一行或一列，以减少实际需要计算的余子式。
+
+\newpage
+\begin{example}
+计算 $D=\begin{vmatrix}1&0&2\\3&4&5\\0&0&6\end{vmatrix}$。
+\end{example}
+\begin{proof}[解]
+按第二列展开，只有 $a_{22}=4$ 非零。划去第二行、第二列，得
+\[
+ M_{22}=\begin{vmatrix}1&2\\0&6\end{vmatrix}=6,
+ \qquad D=4(-1)^{2+2}M_{22}=24.
+\]
+也可以先作 $r_2\leftarrow r_2-3r_1$，得到上三角形行列式，
+再取主对角线元素的乘积 $1\cdot4\cdot6=24$。
+\end{proof}
+
+\subsection{不同行（列）的对应乘积之和}
+
+\begin{proposition}
+某一行的元素与另一行对应位置的代数余子式相乘，再求和，结果为零。
+连同展开公式，有
+\[
+ \sum_{r=1}^n a_{hr}A_{ir}
+ =\begin{cases}D,&h=i,\\0,&h\ne i.\end{cases}
+\]
+相应的列形式为
+\[
+ \sum_{r=1}^n a_{rk}A_{rj}
+ =\begin{cases}D,&k=j,\\0,&k\ne j.\end{cases}
+\]
+\end{proposition}
+\begin{proof}
+当 $h=i$ 时，就是按第 $i$ 行展开。
+当 $h\ne i$ 时，把 $A$ 的第 $i$ 行替换为第 $h$ 行，得到两行相同的矩阵，行列式为零。
+沿替换后的第 $i$ 行展开；由于计算余子式时会删去这一行，代数余子式仍为原来的 $A_{ir}$，
+故展开式正是 $\sum_r a_{hr}A_{ir}=0$。列的结论同理。
+\end{proof}
+
+\end{document}

@@ -1,0 +1,162 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "2.3",
+%   "title": "数学分析（一）2.3：数列极限的计算",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "用夹逼定理与四则运算法则计算方根、阶乘、多项式之比、根式及含参数数列的极限。"
+% }
+% halo:end
+% 来源：IMG_1588.HEIC、IMG_1589.HEIC。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}
+\newtheorem{theorem}{定理}
+\renewcommand{\thetheorem}{2.\arabic{theorem}}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 2.3\quad 数列极限的计算}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{数列极限的计算}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月29日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\newtheorem{example}{例题}
+\begin{document}
+\maketitle
+\section{方根与阶乘的极限}
+\begin{example}
+设 $a>0$，证明 $a^{1/n}\to1$；证明 $n^{1/n}\to1$。
+\end{example}
+\begin{proof}
+若 $a>1$，令 $t_n=a^{1/n}-1>0$，由二项式定理，
+\[
+ a=(1+t_n)^n\ge1+nt_n,\qquad
+ 0<t_n\le\frac{a-1}{n}\longrightarrow0.
+\]
+由夹逼定理，$a^{1/n}=1+t_n\to1$。
+$a=1$ 时显然成立；若 $0<a<1$，对 $1/a>1$ 应用上式，再取倒数即可。
+
+令 $s_n=n^{1/n}-1\ge0$。当 $n\ge2$ 时，
+\[
+ n=(1+s_n)^n\ge\binom n2s_n^2,\qquad
+ 0\le s_n\le\sqrt{\frac2{n-1}}\longrightarrow0.
+\]
+故 $n^{1/n}\to1$。
+\end{proof}
+
+\begin{example}
+证明 $\displaystyle\lim_{n\to\infty}\frac1{\sqrt[n]{n!}}=0$。
+\end{example}
+\begin{proof}
+\textbf{方法一。} 已知对每个固定的 $c>0$，有 $c^n/n!\to0$。
+任取 $\varepsilon>0$，令 $c=1/\varepsilon$。存在 $N$，使 $n>N$ 时
+\[
+ \frac{(1/\varepsilon)^n}{n!}<1,
+ \qquad 0<\frac1{\sqrt[n]{n!}}<\varepsilon.
+\]
+故所求极限为 $0$。
+
+\textbf{方法二。} 当 $n\ge2$ 时，$n!$ 中至少有 $n/2$ 个因子不小于 $n/2$，
+其余因子均不小于 $1$，因而
+\[
+ n!\ge\left(\frac n2\right)^{n/2},\qquad
+ 0<\frac1{\sqrt[n]{n!}}\le\sqrt{\frac2n}\longrightarrow0.
+\]
+再由夹逼定理得结论。
+\end{proof}
+
+\newpage
+\section{多项式之比}
+\begin{example}
+求下列极限：
+\[
+ \text{（1）}\ \lim_{n\to\infty}\frac{n^3+2n^2}{2n^3+1},\qquad
+ \text{（2）}\ \lim_{n\to\infty}\frac{3n^2+2}{2n^3+1},\qquad
+ \text{（3）}\ \lim_{n\to\infty}\frac{n^5+2}{2n^4+n^3}.
+\]
+\end{example}
+\begin{proof}[解]
+\textbf{（1）} 分子、分母同除以 $n^3$，得
+\[
+ \frac{n^3+2n^2}{2n^3+1}
+ =\frac{1+2/n}{2+1/n^3}\longrightarrow\frac12.
+\]
+\textbf{（2）} 同除以 $n^3$，得
+\[
+ \frac{3n^2+2}{2n^3+1}
+ =\frac{3/n+2/n^3}{2+1/n^3}\longrightarrow0.
+\]
+\textbf{（3）} 同除以 $n^4$，得
+\[
+ \frac{n^5+2}{2n^4+n^3}
+ =\frac{n+2/n^4}{2+1/n}\ge\frac n3\longrightarrow+\infty.
+\]
+所以第三个数列趋于正无穷，不收敛于有限实数。
+\end{proof}
+
+\section{根式之差}
+\begin{example}
+求 $\displaystyle\lim_{n\to\infty}\sqrt n\bigl(\sqrt{n+1}-\sqrt n\bigr)$。
+\end{example}
+\begin{proof}[解]
+将根式之差有理化，得
+\[
+ \sqrt n\bigl(\sqrt{n+1}-\sqrt n\bigr)
+ =\frac{\sqrt n}{\sqrt{n+1}+\sqrt n}
+ =\frac1{\sqrt{1+1/n}+1}\longrightarrow\frac12.
+\]
+\end{proof}
+
+\newpage
+\section{含参数的极限}
+\begin{example}
+设 $a\in\R\setminus\{-1\}$，求
+$\displaystyle\lim_{n\to\infty}\frac{a^n}{a^n+1}$。
+\end{example}
+\begin{proof}[解]
+分三种情形讨论。
+\begin{enumerate}
+\item 若 $a=1$，则各项均为 $1/2$，故极限为 $1/2$。
+\item 若 $|a|<1$，由 $a^n\to0$，得 $a^n/(a^n+1)\to0$。
+\item 若 $|a|>1$，则 $(1/a)^n\to0$，从而
+\[
+ \frac{a^n}{a^n+1}=\frac1{1+(1/a)^n}\longrightarrow1.
+\]
+\end{enumerate}
+因此
+\[
+ \lim_{n\to\infty}\frac{a^n}{a^n+1}
+ =\begin{cases}
+ 0,&|a|<1,\\
+ \tfrac12,&a=1,\\
+ 1,&|a|>1.
+ \end{cases}
+\]
+$a=-1$ 时奇数项的分母为零，不能构成题设的数列。
+\end{proof}
+
+\end{document}

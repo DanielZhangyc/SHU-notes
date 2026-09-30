@@ -87,6 +87,17 @@ class PublishingTests(unittest.TestCase):
         algebra = render("mathematics/higher-algebra-i/notes/01-03-determinant-properties-and-expansion.tex")
         self.assertIn("<em>解.</em>", algebra)
 
+    def test_convergence_criteria_preserves_unnumbered_examples(self):
+        note = next(
+            note for note in discover_notes(self.config)
+            if note["source"] == "mathematics/mathematical-analysis-i/notes/02-04-convergence-criteria.tex"
+        )
+        page = render_note(note, self.config)
+        self.assertEqual(page.count("<strong>例题</strong>"), 4)
+        self.assertNotRegex(page, r"例题 \d")
+        self.assertIn("<strong>定理 2.9</strong>", page)
+        self.assertIn("单调有界定理", page)
+
     def test_unrecognized_tikz_fails_instead_of_dropping_figure(self):
         source = ROOT / "mathematics/mathematical-analysis-i/notes/01-03-functions.tex"
         tex = source.read_text()

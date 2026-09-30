@@ -1,0 +1,175 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "2.4",
+%   "title": "数学分析（一）2.4：数列收敛的判别",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "单调有界定理及其应用、子列与收敛判别。"
+% }
+% halo:end
+% 来源：IMG_1581.HEIC—IMG_1584.HEIC；子列部分见 IMG_1589.HEIC。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}
+\renewcommand{\thetheorem}{2.\arabic{theorem}}
+\newtheorem*{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 2.4\quad 数列收敛的判别}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{数列收敛的判别}
+\author{Yuchen Zhang}
+\date{整理日期：2026年9月29日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\setcounter{section}{3}
+\setcounter{theorem}{8}
+\section{数列收敛的判别}
+
+\subsection*{单调有界定理}
+\begin{theorem}[单调有界定理]
+单调递增且有上界的实数列必收敛，其极限是该数列的上确界；
+单调递减且有下界的实数列也必收敛，其极限是该数列的下确界。
+\end{theorem}
+\begin{proof}
+设 $\{a_n\}$ 单调递增且有上界，令 $L=\sup\{a_n:n\in\Nplus\}$。
+对任意 $\varepsilon>0$，由上确界的性质，存在 $n_0$ 使
+$a_{n_0}>L-\varepsilon$。当 $n\ge n_0$ 时，
+\[
+L-\varepsilon<a_{n_0}\le a_n\le L,
+\]
+故 $|a_n-L|<\varepsilon$，即 $a_n\to L$。
+对单调递减且有下界的数列，向 $\{-a_n\}$ 应用上述结论即可。
+\end{proof}
+
+\begin{example}[$p$ 级数的敛散性]
+设 $s_n=\sum_{k=1}^{n}k^{-\alpha}$，其中 $\alpha\in\R$。
+当 $\alpha>1$ 时，$\{s_n\}$ 收敛；当 $\alpha\le1$ 时，$s_n\to+\infty$。
+\end{example}
+\begin{proof}
+$s_n$ 严格递增。若 $\alpha>1$，把正整数按
+$[2^j,2^{j+1}-1]$ 分组，则第 $j$ 组之和不超过
+$2^j(2^j)^{-\alpha}=2^{-j(\alpha-1)}$。
+令 $q=2^{1-\alpha}<1$，由有限等比和公式，任一部分和都不超过
+$1/(1-q)$，故 $\{s_n\}$ 有上界，因而收敛。
+若 $\alpha\le1$，则 $k^{-\alpha}\ge k^{-1}$。调和级数的第 $j$ 组
+$\sum_{k=2^j}^{2^{j+1}-1}k^{-1}\ge\frac12$，故其部分和无上界，
+从而 $s_n\to+\infty$。
+特别地，当 $\alpha=2$ 时，还可直接估计
+\[
+1+\sum_{k=2}^{n}\frac1{k^2}
+<1+\sum_{k=2}^{n}\frac1{k(k-1)}
+=2-\frac1n<2\qquad(n\ge2).
+\]
+\end{proof}
+
+\newpage
+\begin{example}[递推根式]
+令 $a_1=\sqrt2$，$a_{n+1}=\sqrt{2+a_n}$。求 $\lim_{n\to\infty}a_n$。
+\end{example}
+\begin{proof}
+由归纳法，$0<a_n<2$：初始项满足此式，且 $0<a_n<2$ 时
+$0<a_{n+1}=\sqrt{2+a_n}<2$。又
+\[
+a_{n+1}>a_n
+\quad\Longleftrightarrow\quad
+2+a_n>a_n^2
+\quad\Longleftrightarrow\quad
+(2-a_n)(a_n+1)>0.
+\]
+故数列递增且有上界，设其极限为 $A$。由平方根的极限性质，
+$A=\sqrt{2+A}$，故 $A\in\{2,-1\}$。由于 $A\ge a_1=\sqrt2>0$，所以 $A=2$。
+\end{proof}
+
+\begin{example}[从集合中取趋于上确界的递增数列]
+设 $S\subset\R$ 非空、有上界，$a=\sup S$，且 $a\notin S$。
+则存在严格递增的 $\{x_n\}\subset S$，使 $x_n\to a$。
+\end{example}
+\begin{proof}
+先取 $x_1\in S$，使 $a-1<x_1<a$。已取 $x_n$ 后，因
+$\max\{x_n,a-1/(n+1)\}<a$，由上确界的性质可取 $x_{n+1}\in S$，使
+\[
+x_{n+1}>\max\left\{x_n,a-\frac1{n+1}\right\}.
+\]
+于是 $\{x_n\}$ 严格递增，且 $a-1/n<x_n<a$ 对一切 $n$ 成立，
+故 $x_n\to a$。
+\end{proof}
+
+\newpage
+\begin{example}[数列 $\bigl(1+\frac1n\bigr)^n$]
+令 $b_n=(1+1/n)^n$。则 $\{b_n\}$ 严格递增且有上界，记
+\[
+e:=\lim_{n\to\infty}\left(1+\frac1n\right)^n.
+\]
+\end{example}
+\begin{proof}
+二项式展开给出
+\[
+b_n=2+\sum_{k=2}^{n}\frac1{k!}
+\prod_{j=1}^{k-1}\left(1-\frac jn\right).
+\]
+对固定的 $k\ge2$，当 $n$ 增加时，上式中的每个因子严格增加，
+且 $b_{n+1}$ 比 $b_n$ 多一个正项，所以 $b_{n+1}>b_n$。
+另一方面，对 $n\ge2$，
+\[
+b_n<2+\sum_{k=2}^{n}\frac1{k!}
+\le2+\sum_{k=2}^{n}\frac1{k(k-1)}
+=3-\frac1n<3.
+\]
+$b_1=2$ 也有上界 $3$，故由单调有界定理，极限 $e$ 存在。
+\end{proof}
+
+这个极限也可用于相应的实数列。若 $t_n>0$ 且 $t_n\to+\infty$，则
+$\bigl(1+1/t_n\bigr)^{t_n}\to e$。事实上，取
+$m_n=\lfloor t_n\rfloor$，当 $m_n\ge1$ 时有
+\[
+\left(1+\frac1{m_n+1}\right)^{m_n}
+\le\left(1+\frac1{t_n}\right)^{t_n}
+\le\left(1+\frac1{m_n}\right)^{m_n+1},
+\]
+两侧均趋于 $e$。由此，若 $u_n\to0$，且 $u_n>-1$、$u_n\ne0$，
+则 $\bigl(1+u_n\bigr)^{1/u_n}\to e$。其中 $u_n>0$ 的项令
+$t_n=1/u_n$；$u_n<0$ 的项令 $t_n=-1/u_n$，并用
+\[
+\left(1-\frac1{t_n}\right)^{-t_n}
+=\left(1+\frac1{t_n-1}\right)^{t_n-1}
+\left(1+\frac1{t_n-1}\right).
+\]
+
+\subsection*{子列与其他判别}
+若 $n_1<n_2<\cdots$ 是严格递增的正整数列，则
+$\{a_{n_k}\}_{k=1}^{\infty}$ 称为 $\{a_n\}$ 的一个\textbf{子列}。
+由于 $n_k\ge k$，若 $a_n\to a$，则每个子列都有 $a_{n_k}\to a$。
+因此，若能找到两个收敛于不同极限的子列，原数列就不收敛。
+例如 $a_n=(-1)^n$ 的奇、偶子列分别收敛于 $-1$、$1$。
+
+另外，对实数列还有如下判别：$\{a_n\}$ 收敛当且仅当它满足
+\textbf{柯西条件}，即对任意 $\varepsilon>0$，存在 $N$，使
+$m,n>N$ 时 $|a_m-a_n|<\varepsilon$。\textbf{魏尔斯特拉斯定理}
+指出，每个有界实数列都含有收敛子列；这里要求原数列有界，
+所得结论是某个子列收敛。
+\end{document}

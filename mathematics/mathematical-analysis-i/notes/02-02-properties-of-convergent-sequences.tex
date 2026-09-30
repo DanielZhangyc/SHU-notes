@@ -8,10 +8,10 @@
 %   "title": "数学分析（一）2.2：收敛数列的性质",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "收敛数列极限的唯一性、有界性、保号性及最终区间性质。"
+%   "excerpt": "收敛数列极限的唯一性、有界性、保号性、保序性、夹逼定理与四则运算法则。"
 % }
 % halo:end
-% 来源：IMG_1369.HEIC、IMG_1370.HEIC。
+% 来源：IMG_1369.HEIC、IMG_1370.HEIC；补充 IMG_1586.HEIC、IMG_1587.HEIC。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -127,4 +127,76 @@ $n\in\Nplus$ 都有 $|x_n|\le M$。
  b\le a-\varepsilon<x_n<a+\varepsilon\le c.
 \]
 因此，收敛数列从某一项起始终落在任意包含其极限的开区间内。
+
+\newpage
+\subsection*{极限与大小关系}
+若 $x_n\to a$、$y_n\to b$ 且 $a<b$，则充分大的 $n$ 都有 $x_n<y_n$。
+事实上，取 $\varepsilon=(b-a)/3$，当 $n$ 充分大时，
+\[
+ x_n<a+\varepsilon<b-\varepsilon<y_n.
+\]
+
+\begin{theorem}[保序性]
+设 $x_n\to a$、$y_n\to b$，且存在 $N_0$，使 $n>N_0$ 时
+$x_n\le y_n$，则 $a\le b$。
+\end{theorem}
+\begin{proof}
+若 $a>b$，由上面的结论，充分大的 $n$ 都有 $x_n>y_n$，与条件矛盾。
+故 $a\le b$。
+\end{proof}
+特别地，若 $x_n\ge0$ 从某一项起成立，则 $a\ge0$。
+严格不等式取极限后不一定仍严格。例如 $0<1/n$，但两边极限均为 $0$。
+
+\begin{theorem}[夹逼定理]
+设从某一项起 $x_n\le y_n\le z_n$，且 $x_n\to a$、$z_n\to a$，
+则 $y_n\to a$。
+\end{theorem}
+\begin{proof}
+任取 $\varepsilon>0$。存在 $N$，使 $n>N$ 时上述大小关系成立，且
+$|x_n-a|<\varepsilon$、$|z_n-a|<\varepsilon$。于是
+\[
+ a-\varepsilon<x_n\le y_n\le z_n<a+\varepsilon,
+\]
+即 $|y_n-a|<\varepsilon$，故 $y_n\to a$。
+\end{proof}
+
+\newpage
+\begin{theorem}[四则运算法则]
+若 $x_n\to a$、$y_n\to b$，则
+\[
+ x_n\pm y_n\to a\pm b,\qquad x_ny_n\to ab.
+\]
+若另有 $b\ne0$，则 $y_n$ 从某一项起不为零，且
+\[
+ \frac{x_n}{y_n}\longrightarrow\frac ab.
+\]
+\end{theorem}
+\begin{proof}
+\textbf{加减法。} 由
+\[
+ |(x_n\pm y_n)-(a\pm b)|\le |x_n-a|+|y_n-b|,
+\]
+只需将右侧两项分别控制在 $\varepsilon/2$ 内即可。
+
+\textbf{乘法。} 由收敛数列的有界性，存在 $M>0$，使所有 $n$ 都有
+$|x_n|\le M$。于是
+\[
+ |x_ny_n-ab|\le |x_n|\,|y_n-b|+|b|\,|x_n-a|
+ \le M|y_n-b|+|b|\,|x_n-a|.
+\]
+任取 $\varepsilon>0$，当 $n$ 充分大时，两项误差均小于
+$\varepsilon/(M+|b|+1)$，从而 $|x_ny_n-ab|<\varepsilon$。
+
+\textbf{除法。} 由 $y_n\to b\ne0$，充分大的 $n$ 满足
+$|y_n-b|<|b|/2$，从而 $|y_n|>|b|/2>0$。因此
+\[
+ \left|\frac1{y_n}-\frac1b\right|
+ =\frac{|y_n-b|}{|b|\,|y_n|}
+ \le\frac2{|b|^2}|y_n-b|\longrightarrow0.
+\]
+再用乘法法则，即得 $x_n/y_n\to a/b$。
+\end{proof}
+四则运算法则可逐次用于固定有限个收敛数列；若运算的项数随 $n$ 增长，
+则不能直接逐项取极限。
+
 \end{document}

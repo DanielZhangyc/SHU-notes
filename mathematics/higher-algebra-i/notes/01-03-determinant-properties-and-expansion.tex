@@ -5,14 +5,14 @@
 %   "publish": true,
 %   "course": "higher-algebra-i",
 %   "section": "1.3",
-%   "title": "高等代数（一）1.3：行列式性质与按行（列）展开",
+%   "title": "高等代数（一）1.3：对换与行列式性质",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "对换与排列奇偶性、行列式性质、按一行或一列展开，以及第二章习题4、6、8。"
+%   "excerpt": "对换与排列奇偶性、行列式性质，以及第二章习题4、6、8。"
 % }
 % halo:end
 % 课堂日期：2026-09-22。对照王萼芳、石生明修订《高等代数》第五版第二章。
-% 单行（列）展开依教材 §6 命名；§8 的拉普拉斯定理是多行展开。
+% 按一行（列）展开迁至9月24日笔记；保留本文件路径以维持已有发布链接。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -32,12 +32,12 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small 高等代数（一）}
-\fancyhead[R]{\small 1.3\quad 行列式性质与按行（列）展开}
+\fancyhead[R]{\small 1.3\quad 对换与行列式性质}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \raggedbottom
 
-\title{行列式性质与按行（列）展开}
+\title{对换与行列式性质}
 \author{Yuchen Zhang}
 \date{课堂日期：2026年9月22日}
 \makeatletter
@@ -84,7 +84,7 @@
 \begin{proof}
 转置行列式的展开式中以 $\sigma^{-1}$ 代替 $\sigma$；
 两者的奇偶性相同，故 $\det A^{\mathsf T}=\det A$。
-上三角形行列式的非零项须满足 $\sigma(i)\le i$。
+按行排列因子，上三角形行列式的非零项须满足 $\sigma(i)\ge i$。
 由 $\sum_i\sigma(i)=\sum_i i$，可知只有 $\sigma(i)=i$ 可能非零。
 下三角形情形由转置得到。
 \end{proof}
@@ -104,40 +104,6 @@
 由行线性提出该倍数后，也归结为两行相同的情形。第三条由线性及第二条推出。
 列的结论由转置性质得到。
 \end{proof}
-
-\section{按一行（列）展开}
-
-划去 $a_{ij}$ 所在的行与列，所得行列式称为\textbf{余子式}，记作 $M_{ij}$。
-对应的\textbf{代数余子式}为
-\[
-  A_{ij}=(-1)^{i+j}M_{ij}.
-\]
-
-\begin{theorem}
-设 $D=\det A$。对任意固定的行 $i$ 或列 $j$，有
-\[
-  D=\sum_{j=1}^{n}a_{ij}A_{ij},
-  \qquad
-  D=\sum_{i=1}^{n}a_{ij}A_{ij}.
-\]
-\end{theorem}
-\begin{proof}
-将第 $i$ 行写为 $\sum_j a_{ij}\boldsymbol e_j^{\mathsf T}$，
-并按该行的线性展开。把含 $\boldsymbol e_j^{\mathsf T}$ 的行列式的
-第 $i$ 行、第 $j$ 列移到末尾，分别需 $n-i$、$n-j$ 次对换；
-此时末行只有末列的 $1$ 非零。按排列定义，非零项都必须取这个 $1$，
-其余行列的排列符号不变，带符号求和正是 $M_{ij}$。因而 $a_{ij}$ 的系数为
-$(-1)^{(n-i)+(n-j)}M_{ij}=A_{ij}$。按列展开同理。
-\end{proof}
-
-由两行（列）相同的行列式为零，还得到
-\[
-  \sum_{r=1}^{n}a_{hr}A_{ir}=
-  \begin{cases}D,&h=i,\\0,&h\ne i,\end{cases}
-  \qquad
-  \sum_{r=1}^{n}a_{rk}A_{rj}=
-  \begin{cases}D,&k=j,\\0,&k\ne j.\end{cases}
-\]
 
 \section{课后作业}
 
