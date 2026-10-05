@@ -199,16 +199,66 @@ u\times v=
 u_2v_3-u_3v_2\\u_3v_1-u_1v_3\\u_1v_2-u_2v_1
 \end{pmatrix}.
 \]
-点积的结果是数，叉积的结果是向量。由坐标公式直接展开可得
-\[
-(u\times v)\cdot u=(u\times v)\cdot v=0,
-\]
-\[
+点积的结果是数，叉积的结果是向量。叉积的三个坐标都是二阶行列式的形式，
+这使它对两个向量分别线性，也决定了交换向量时的符号。
+
+\begin{proposition}[叉积的双线性与反对称性]
+对 $u,u',v,v'\in\R^3$ 及 $s,t\in\R$，有
+\begin{align*}
+(su+tu')\times v&=s(u\times v)+t(u'\times v),\\
+u\times(sv+tv')&=s(u\times v)+t(u\times v'),\\
+u\times v&=-v\times u.
+\end{align*}
+\end{proposition}
+\begin{proof}
+固定 $v$，第一坐标满足
+\begin{align*}
+ &(su_2+tu'_2)v_3-(su_3+tu'_3)v_2\\
+ &\quad=s(u_2v_3-u_3v_2)+t(u'_2v_3-u'_3v_2).
+\end{align*}
+其余两个坐标同样使用分配律，故叉积对第一个向量线性。
+固定 $u$ 时，各坐标对 $v$ 的分量也线性，得到第二式。
+交换 $u,v$ 后，每个坐标中的两个乘积互换，因而都变为原来的相反数，得到第三式。
+\end{proof}
+
+\begin{proposition}[叉积的正交性与长度]
+对 $u,v\in\R^3$，有
+\begin{gather*}
+(u\times v)\cdot u=(u\times v)\cdot v=0,\\
 \|u\times v\|^2=\|u\|^2\|v\|^2-(u\cdot v)^2.
+\end{gather*}
+\end{proposition}
+\begin{proof}
+先看正交性。将坐标代入点积，得
+\begin{align*}
+(u\times v)\cdot u
+&=u_1(u_2v_3-u_3v_2)+u_2(u_3v_1-u_1v_3)\\
+&\quad+u_3(u_1v_2-u_2v_1)=0.
+\end{align*}
+这里每个乘积都与另一个符号相反的乘积抵消。
+对 $v,u$ 应用这一等式，再由 $v\times u=-u\times v$，便得 $(u\times v)\cdot v=0$。
+
+再看长度。叉积三个坐标的平方和为
+\[
+\|u\times v\|^2=\sum_{1\le i<j\le3}(u_iv_j-u_jv_i)^2.
 \]
-因此叉积垂直于两个原向量；当两向量非零、夹角为 $\theta$ 时，
-其长度为 $\|u\|\|v\|\sin\theta$，等于所张平行四边形的面积，方向由右手定则确定。
-若两向量共线，则叉积为零。叉积满足 $u\times v=-v\times u$，且
+另一方面，分别展开范数平方的乘积 $\|u\|^2\|v\|^2$ 与点积的平方 $(u\cdot v)^2$，两者相减时，对角项 $u_i^2v_i^2$ 相互抵消，
+其余项按指标对 $\{i,j\}$ 合并，得
+\begin{align*}
+\|u\|^2\|v\|^2-(u\cdot v)^2
+&=\sum_{i<j}(u_i^2v_j^2+u_j^2v_i^2-2u_iu_jv_iv_j)\\
+&=\sum_{i<j}(u_iv_j-u_jv_i)^2.
+\end{align*}
+两式比较即得长度公式。
+\end{proof}
+若 $u,v$ 均非零，夹角为 $\theta\in[0,\pi]$，由 $u\cdot v=\|u\|\|v\|\cos\theta$ 得
+\[
+\|u\times v\|=\|u\|\|v\|\sin\theta.
+\]
+所以叉积的长度等于所张平行四边形的面积；叉积非零时，它垂直于底面，方向由右手定则确定。
+在 $u,v$ 均非零的条件下，叉积的长度为零当且仅当 $\theta=0$ 或 $\pi$，即两向量共线。
+若有一个向量为零，叉积也为零。因此，叉积为零当且仅当两向量共线，其中包括含零向量的情形。
+对于标准单位向量，坐标公式给出
 \[
 \boldsymbol e_1\times\boldsymbol e_2=\boldsymbol e_3,\quad
 \boldsymbol e_2\times\boldsymbol e_3=\boldsymbol e_1,\quad

@@ -217,12 +217,38 @@ $\boldsymbol\beta=(b_1,\ldots,b_n)^{\mathsf T}\in P^n$，$c\in P$，定义
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-按分量验证即可。例如，第 $i$ 个分量分别满足
+向量相等当且仅当各个分量相等，而向量的加法与数乘都是按分量定义的。
+因此，我们只需任取 $i\in\{1,\ldots,n\}$，在第 $i$ 个分量上验证相应等式。
+记 $\boldsymbol\gamma$ 的第 $i$ 个分量为 $g_i$。由数域中的加法交换律与结合律，有
 \[
   a_i+b_i=b_i+a_i,\qquad
-  c(a_i+b_i)=ca_i+cb_i.
+  (a_i+b_i)+g_i=a_i+(b_i+g_i),
 \]
-其余各式同样归结为数域 $P$ 中的相应运算律。结合以上加法与数乘，$P^n$ 称为 $P$ 上的\textbf{$n$ 维向量空间}。
+分别给出加法的交换律与结合律。等式 $a_i+0=a_i$、$a_i+(-a_i)=0$ 给出零向量与负向量的性质，
+而 $1a_i=a_i$、$c(da_i)=(cd)a_i$ 给出数乘的单位律与结合律。
+最后，由数域中的两条分配律，有
+\[
+  c(a_i+b_i)=ca_i+cb_i,\qquad (c+d)a_i=ca_i+da_i.
+\]
+这些等式对每个 $i$ 都成立，故相应的向量等式成立。
+\end{proof}
+结合以上加法与数乘，$P^n$ 称为 $P$ 上的\textbf{$n$ 维向量空间}。
+
+\begin{proposition}[数乘等于零的条件]
+对 $c\in P$、$\boldsymbol\alpha\in P^n$，有
+\[
+ c\boldsymbol\alpha=\boldsymbol0
+ \quad\Longleftrightarrow\quad c=0\ \text{或}\ \boldsymbol\alpha=\boldsymbol0.
+\]
+\end{proposition}
+\begin{proof}
+若 $c=0$ 或 $\boldsymbol\alpha=\boldsymbol0$，每个分量的乘积都是零，故 $c\boldsymbol\alpha=\boldsymbol0$。
+反过来，若 $c\boldsymbol\alpha=\boldsymbol0$ 且 $c\ne0$，则 $c^{-1}\in P$。
+在两边数乘 $c^{-1}$，由数乘结合律得
+\[
+ \boldsymbol\alpha=c^{-1}(c\boldsymbol\alpha)=c^{-1}\boldsymbol0=\boldsymbol0.
+\]
+乘以非零标量 $c$ 后，再乘以 $c^{-1}$ 就能还原原来的向量，因此非零标量不会把非零向量变为零向量。
 \end{proof}
 
 \section{线性组合与线性表示}

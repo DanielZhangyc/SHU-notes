@@ -13,6 +13,8 @@
 % halo:end
 % 课堂日期：2026-09-22。对照王萼芳、石生明修订《高等代数》第五版第二章。
 % 按一行（列）展开迁至9月24日笔记；保留本文件路径以维持已有发布链接。
+% 2026-10-05补证：核对北大《高等代数》第六版第二章，印刷页35--43（PDF页40--48）。
+% 保留前篇按列选取元素的定义，并补证它与教材按行写法的等价性。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -53,26 +55,76 @@
 \begin{document}
 \maketitle
 
+行列式的排列展开式为每一种元素选择规定了正负号。
+要理解交换行、列为什么使行列式变号，我们先从排列中两个数的对换看起。
+
 \section{对换与排列奇偶性}
 
 \begin{theorem}
 排列中任意两个数对换，排列的奇偶性改变。
 \end{theorem}
 \begin{proof}
-相邻两数对换时，只有这一对数的逆序状态改变，逆序数变化 $1$。
-若两数之间隔着 $s$ 个数，则这次对换可分解为 $2s+1$ 次相邻对换，
-故奇偶性仍改变。
+先看相邻两数的对换。其余每个数都在它们的同一侧，
+所以它与这两个数形成的逆序总数不变；只有被交换两数之间的逆序状态反转。
+因此逆序数增加或减少 $1$，奇偶性改变。
+
+若两数之间隔着 $s$ 个数，先把左边的数向右移动 $s+1$ 个位置，
+再把原来右边的数向左移动 $s$ 个位置。
+这样两个数交换了位置，中间各数恢复原来的次序，共作了 $2s+1$ 次相邻对换。
+每次都改变奇偶性，而 $2s+1$ 为奇数，故原对换也改变奇偶性。
 \end{proof}
 
 \begin{proposition}
-将排列变为自然顺序所需的对换次数，与原排列的逆序数同奇偶。
+在任意一个将排列变为自然顺序的对换过程中，对换次数与原排列的逆序数同奇偶。
 \end{proposition}
 \begin{proof}
-不断交换相邻的逆序数对，逆序数每次减少 $1$，最终成为自然顺序。
-任意一次对换都改变奇偶性，所以其他对换过程的次数也与原逆序数同奇偶。
+只要排列还不是自然顺序，就存在相邻且左边大于右边的两个数。
+交换这两个数，逆序数减少 $1$。逆序数是非负整数，故重复此操作必在有限步后得到自然顺序。
+
+对任意还原过程，设共作了 $m$ 次对换。每次对换都改变奇偶性，
+而自然顺序的逆序数为 $0$，故 $m$ 与原排列的逆序数同奇偶。
+\end{proof}
+
+按列选出的元素也可以按行重排，两种写法中的指标排列互为逆排列。
+因此，在改换写法之前，先比较原排列与逆排列的逆序数。
+
+\begin{proposition}[逆排列的逆序数]
+对任意排列 $\sigma\in S_n$，有
+\[
+ \tau(\sigma^{-1})=\tau(\sigma).
+\]
+\end{proposition}
+\begin{proof}
+任取 $\sigma$ 的一个逆序对 $(i,j)$，即 $i<j$ 且 $\sigma(i)>\sigma(j)$。
+在逆排列中，位置 $\sigma(j)<\sigma(i)$，而这两个位置上的数满足
+\[
+ \sigma^{-1}(\sigma(j))=j>i=\sigma^{-1}(\sigma(i)).
+\]
+所以 $(\sigma(j),\sigma(i))$ 是 $\sigma^{-1}$ 的一个逆序对。
+反过来，对逆排列的逆序对应用同样的对应，就恢复原来的 $(i,j)$。
+这给出了两种排列的逆序对之间的一一对应，故逆序总数相等。
 \end{proof}
 
 \section{行列式的性质}
+以下设 $A=(a_{ij})$ 为数域 $P$ 上的 $n$ 阶方阵。
+
+\subsection{按行与按列的排列展开}
+
+上一篇按列的顺序定义行列式，每项的行指标构成一个排列。
+借助逆排列，我们也可以把同一项的因子按行重排：
+\[
+ \prod_{j=1}^n a_{\sigma(j),j}
+ =\prod_{i=1}^n a_{i,\sigma^{-1}(i)},\qquad i=\sigma(j).
+\]
+令 $\pi=\sigma^{-1}$。由逆序数相等，且 $\pi$ 也遍历全部排列，得
+\[
+ \det A
+ =\sum_{\sigma\in S_n}(-1)^{\tau(\sigma)}\prod_{j=1}^n a_{\sigma(j),j}
+ =\sum_{\pi\in S_n}(-1)^{\tau(\pi)}\prod_{i=1}^n a_{i,\pi(i)}.
+\]
+两式选取的是同一组元素，区别只在于按列还是按行写出它们。
+
+\subsection{转置与三角形行列式}
 
 \begin{proposition}
 对任意方阵 $A$，有 $\det A^{\mathsf T}=\det A$。
@@ -82,28 +134,99 @@
 \]
 \end{proposition}
 \begin{proof}
-转置行列式的展开式中以 $\sigma^{-1}$ 代替 $\sigma$；
-两者的奇偶性相同，故 $\det A^{\mathsf T}=\det A$。
-按行排列因子，上三角形行列式的非零项须满足 $\sigma(i)\ge i$。
-由 $\sum_i\sigma(i)=\sum_i i$，可知只有 $\sigma(i)=i$ 可能非零。
+对 $A^{\mathsf T}$ 使用按列展开式，得到
+\[
+ \det A^{\mathsf T}
+ =\sum_{\sigma\in S_n}(-1)^{\tau(\sigma)}\prod_{j=1}^n a_{j,\sigma(j)}.
+\]
+右端正是 $A$ 的按行展开式，故 $\det A^{\mathsf T}=\det A$。
+
+若 $A$ 为上三角形矩阵，则 $i>j$ 时 $a_{ij}=0$。
+因此按行展开式中的非零项必须满足 $\pi(i)\ge i$（$i=1,\ldots,n$）。
+但排列的指标总和不变，即 $\sum_i\pi(i)=\sum_i i$，
+故这些不等式只能全部取等号，否则左边总和会严格大于右边。
+所以只有自然排列的一项可能非零，且其符号为正，得到 $\det A=\prod_i a_{ii}$。
 下三角形情形由转置得到。
 \end{proof}
 
+\subsection{多重线性与交替性}
+
 \begin{theorem}
-行列式分别对每一行、每一列线性。交换两行（列），行列式变号。因此：
-\begin{enumerate}
-  \item 一行（列）乘 $c$，行列式乘 $c$；
-  \item 两行（列）相同或成比例，行列式为 $0$；
-  \item 把一行（列）的 $c$ 倍加到另一行（列），行列式不变。
-\end{enumerate}
+行列式分别对每一行、每一列线性。交换两行（列），行列式变号。
 \end{theorem}
 \begin{proof}
-排列展开式的每项恰含给定行中的一个元素，故对该行线性。
-交换两行使每项对应的排列经过一次对换，因此变号。
-两行相同时，行列式等于自身的相反数，故为 $0$；若一行是另一行的倍数，
-由行线性提出该倍数后，也归结为两行相同的情形。第三条由线性及第二条推出。
+固定其余各行，把第 $r$ 行写成 $s\boldsymbol u+t\boldsymbol v$，其中 $s,t\in P$，
+$\boldsymbol u,\boldsymbol v$ 为 $n$ 维行向量，所得矩阵记为 $B$。
+用 $A_{\boldsymbol u}$、$A_{\boldsymbol v}$ 分别表示将 $A$ 的第 $r$ 行换为
+$\boldsymbol u$、$\boldsymbol v$ 后的矩阵。按行展开并使用分配律，得
+\begin{align*}
+ \det B
+ &=\sum_{\pi\in S_n}(-1)^{\tau(\pi)}
+   (su_{\pi(r)}+tv_{\pi(r)})\prod_{i\ne r}a_{i,\pi(i)}\\
+ &=s\det A_{\boldsymbol u}+t\det A_{\boldsymbol v}.
+\end{align*}
+这就证明了对第 $r$ 行的线性；关键在于每项只含这一行的一个元素。
+
+再设 $B$ 由 $A$ 交换第 $r,s$ 行得到。为了跟踪行指标，使用按列展开式。
+对任意排列 $\sigma$，把其中的 $r,s$ 两个值互换，所得排列记为 $\sigma'$，则
+\[
+ \prod_{j=1}^n b_{\sigma(j),j}=\prod_{j=1}^n a_{\sigma'(j),j},
+ \qquad (-1)^{\tau(\sigma')}=-(-1)^{\tau(\sigma)}.
+\]
+这里两个乘积选取同一组元素，而对换使符号相反。
+由于 $\sigma\mapsto\sigma'$ 是一一对应，对全部排列求和就得到 $\det B=-\det A$。
 列的结论由转置性质得到。
 \end{proof}
+
+\begin{proposition}
+由多重线性与交换行（列）变号，有以下结论：
+\begin{enumerate}
+ \item 一行（列）乘 $c$，行列式乘 $c$；有零行（列）时，行列式为 $0$；
+ \item 两行（列）相同或成比例，行列式为 $0$；
+ \item 把一行（列）的 $c$ 倍加到另一行（列），行列式不变；
+ \item 某一列可由其余列线性表示时，行列式为 $0$，行的情形同理。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一条是线性中的数乘性质，取 $c=0$ 即得零行的结论。
+若两行相同，交换后矩阵不变，而行列式变号，故 $D=-D$。
+由于 $P\subseteq\mathbb C$，有 $2\ne0$，从而 $D=0$。
+若一行是另一行的倍数，提出该倍数后便归结为两行相同的情形。
+
+这里用 $D(\ldots,\boldsymbol u,\ldots,\boldsymbol v,\ldots)$ 表示以括号内的向量依次作为各行的行列式，则
+\begin{align*}
+ &D(\ldots,\boldsymbol u,\ldots,\boldsymbol v+c\boldsymbol u,\ldots)\\
+ &\quad=D(\ldots,\boldsymbol u,\ldots,\boldsymbol v,\ldots)
+       +cD(\ldots,\boldsymbol u,\ldots,\boldsymbol u,\ldots)\\
+ &\quad=D(\ldots,\boldsymbol u,\ldots,\boldsymbol v,\ldots).
+\end{align*}
+第二项中的行列式有两行相同，因而为零，这就证明了倍加不变。
+
+最后，若第 $j$ 列满足 $\boldsymbol\alpha_j=\sum_{k\ne j}c_k\boldsymbol\alpha_k$，
+则沿第 $j$ 列使用线性，得到若干个含两列相同的行列式，故每项都为零。
+行的结论可同样证明。
+\end{proof}
+
+\subsection{这些性质怎样决定排列展开式}
+
+以下重新按列向量写行列式，记 $A$ 的第 $j$ 列为 $\boldsymbol\alpha_j$。
+将每一列按标准单位列向量拆开，有 $\boldsymbol\alpha_j=\sum_{i=1}^n a_{ij}\boldsymbol e_i$。
+逐列使用线性，得
+\[
+ \det A=\sum_{i_1=1}^n\cdots\sum_{i_n=1}^n
+ a_{i_1 1}\cdots a_{i_n n}\det(\boldsymbol e_{i_1},\ldots,\boldsymbol e_{i_n}).
+\]
+如果两个行指标相同，对应的两个单位列向量也相同，因而这一项为零。
+剩下的指标恰好构成排列 $\sigma(1),\ldots,\sigma(n)$。
+将这些列交换到自然顺序，对换次数与 $\tau(\sigma)$ 同奇偶；
+又由三角形行列式的公式，有 $\det(\boldsymbol e_1,\ldots,\boldsymbol e_n)=1$，因此
+\[
+ \det(\boldsymbol e_{\sigma(1)},\ldots,\boldsymbol e_{\sigma(n)})
+ =(-1)^{\tau(\sigma)}.
+\]
+代回上式，就得到原来的排列定义。
+所以多重线性、交换两列变号与标准单位向量组的取值 $1$，共同决定了行列式的排列展开式。
+任何满足这三个条件的运算，都能按相同的过程展开，得到相同的值。
 
 \section{课后作业}
 

@@ -15,6 +15,8 @@
 % 来源：笔记 2026年9月29日.pdf；IMG_1561、1563、1564、1565、1566、1568.HEIC。
 % 与1.4衔接：不重复单行列展开的定义与证明，改从排列展开式的系数理解。
 % 补齐递推初值、a=b情形、分块公式条件及叉积退化情形。
+% 2026-10-05补证：核对北大《高等代数》第六版第二章，印刷页60--62（PDF页65--67）。
+% 展开排列分组中两组内部求和的乘积，并补证叉积的零值判别。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -59,7 +61,8 @@
 
 \section{从排列展开式理解代数余子式}
 
-设 $A=(a_{ij})$ 为 $n$ 阶方阵，$A_{ij}$ 表示元素 $a_{ij}$ 的代数余子式。
+设 $A=(a_{ij})$ 为 $n$ 阶方阵（$n\ge2$），沿用上一讲的记号，
+$M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、代数余子式。
 固定第二列到第 $n$ 列，把第一列换成变量 $x_1,\ldots,x_n$，记
 \[
  \Delta(x_1,\ldots,x_n)=
@@ -73,7 +76,10 @@
  x_{i_1}a_{i_2,2}\cdots a_{i_n,n},
 \]
 其中求和遍历 $1,\ldots,n$ 的所有排列，$\tau$ 表示逆序数。
-每一项恰含一个 $x_k$。把含同一个 $x_k$ 的项合并，就得到
+每一项恰含一个 $x_k$。固定首个行号 $i_1=k$，它与其余行号形成 $k-1$ 个逆序。
+将剩余行号按递增次序重新编号为 $1,\ldots,n-1$，不改变它们之间的逆序关系，
+所以含 $x_k$ 的各项去掉这个因子后，其和为 $(-1)^{k-1}M_{k1}=A_{k1}$。
+把含同一个 $x_k$ 的项合并，便得到
 \[
  \Delta(x_1,\ldots,x_n)=\sum_{k=1}^n x_k A_{k1}.
 \]
@@ -101,7 +107,6 @@
 \]
 同一行（列）对应相乘求和得到原行列式，换成另一行（列）则得到零。
 
-\newpage
 \section{行列式的降阶与递推计算}
 
 \begin{example}
@@ -152,7 +157,6 @@
 有限和的形式不需要除以 $a-b$，因而也适用于 $a=b$ 或参数为零的情形。
 \end{proof}
 
-\newpage
 \section{多行（列）的拉普拉斯展开}
 
 \subsection{子式、余子式与展开公式}
@@ -187,27 +191,61 @@ $r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
 每次固定一组行或列，只遍历另一组，共有 $\binom nr$ 项。
 当 $r=1$ 时，这正是上一讲的按一行或一列展开公式。
 
-\subsection{按前 $r$ 列展开时，符号从哪里来}
+\subsection{排列分组与展开式的符号}
 
+\begin{proof}
 固定 $J=\{1,\ldots,r\}$。排列展开式的每一项在前 $r$ 列取出的元素，
 必定来自 $r$ 个不同的行。按这组行 $I=\{k_1<\cdots<k_r\}$ 把所有项分组。
+再将其余行指标递增排列，记为 $I^c=\{l_1<\cdots<l_{n-r}\}$。
 
-先把所选行排在前面、其余行排在后面，且两组内部均递增。
-第 $k_s$ 行前面有 $k_s-1$ 个较小的行指标，其中 $s-1$ 个已在所选组内，
-故它与另一组产生 $k_s-s$ 个逆序。组间的总逆序数为
+这一组中的每个完整排列都唯一写成
 \[
- \sum_{s=1}^r(k_s-s)=\sum_{s=1}^r k_s-\frac{r(r+1)}2.
+ k_{\pi(1)},\ldots,k_{\pi(r)},
+ l_{\rho(1)},\ldots,l_{\rho(n-r)},
+ \qquad \pi\in S_r,\quad\rho\in S_{n-r}.
 \]
-组内的排列分别构成两个行列式，因此这一组的和为
-\[
- (-1)^{\sum I+r(r+1)/2}
- \det A[I,\{1,\ldots,r\}]\det A[I^c,\{r+1,\ldots,n\}].
-\]
-这里把减号改成加号不改变奇偶性。对所有 $I$ 求和即得前 $r$ 列的公式。
-一般列集 $J$ 先移到前面，另产生 $\sum J-r(r+1)/2$ 次对换，
-故总符号为 $(-1)^{\sum I+\sum J}$。按行展开可由转置得到。
+其中 $\pi,\rho$ 分别决定两组内部的次序，可以彼此独立地选取。
+完整排列的逆序分为两组内部的逆序和组间的逆序。
+因为 $k_s,l_t$ 各按递增次序编号，两组内部的逆序数分别为 $\tau(\pi)$、$\tau(\rho)$。
 
-\newpage
+所选行号总在前面，所以组间逆序只取决于 $I$，不取决于两组内部怎样排列。
+对每个 $k_s$，比它小的行号共 $k_s-1$ 个，其中 $s-1$ 个在所选组内，
+剩余的 $k_s-s$ 个均在后一组，因而各产生一个逆序。组间逆序数为
+\[
+ h_I=\sum_{s=1}^r(k_s-s)=\sum I-\frac{r(r+1)}2.
+\]
+因此完整排列的符号为 $(-1)^{h_I+\tau(\pi)+\tau(\rho)}$。
+对所有 $\pi,\rho$ 求和，由分配律，这一组的和可以写成两个和的乘积：
+\begin{align*}
+ &(-1)^{h_I}
+ \left(\sum_{\pi\in S_r}(-1)^{\tau(\pi)}
+             \prod_{s=1}^r a_{k_{\pi(s)},s}\right)\\
+ &\qquad\cdot
+ \left(\sum_{\rho\in S_{n-r}}(-1)^{\tau(\rho)}
+             \prod_{t=1}^{n-r}a_{l_{\rho(t)},r+t}\right)\\
+ &=(-1)^{h_I}
+   \det A[I,\{1,\ldots,r\}]\det A[I^c,\{r+1,\ldots,n\}].
+\end{align*}
+两个括号分别按排列定义计算子式、余子式。
+每一对内部排列恰对应原展开式中的一项，故这一组共有 $r!(n-r)!$ 项。
+不同的 $I$ 不会收进同一个排列，而每个排列都属于某个 $I$，
+所以对所有 $I$ 求和，恰好得到原行列式的全部项。
+
+对一般列集 $J=\{j_1<\cdots<j_r\}$，将这些列依次移到前面，且两组内部次序不变，
+需要 $h_J=\sum_{s=1}^r(j_s-s)=\sum J-r(r+1)/2$ 次相邻对换。
+设移列后所得矩阵为 $B$，则
+\[
+ \det B=(-1)^{h_J}\det A,\qquad \det A=(-1)^{h_J}\det B.
+\]
+在 $B$ 中应用前 $r$ 列的公式，两个小矩阵分别就是原矩阵的 $A[I,J]$、$A[I^c,J^c]$。
+还原为 $\det A$ 时，每组再乘以 $(-1)^{h_J}$，所以总指数为
+\[
+ h_I+h_J=\sum I+\sum J-r(r+1).
+\]
+由于 $r(r+1)$ 是偶数，总符号为 $(-1)^{\sum I+\sum J}$，得到固定任意 $r$ 列的公式。
+对转置矩阵应用该公式，就得到固定任意 $r$ 行的公式。
+\end{proof}
+
 \section{拉普拉斯展开的应用}
 
 \subsection{分块三角行列式}
@@ -259,7 +297,6 @@ $r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
 相加即得 $H=AC-B^2$。此处 $A,B,C$ 均是二阶行列式的值，即三个数。
 \end{proof}
 
-\newpage
 \section{代数余子式与三维叉积}
 
 设 $\boldsymbol\alpha=(a_{11},a_{21},a_{31})^{\mathsf T}$、
@@ -302,12 +339,39 @@ $\boldsymbol\alpha\times\boldsymbol\beta$。
 \[
  (1,0,0)^{\mathsf T}\times(0,1,0)^{\mathsf T}=(0,0,1)^{\mathsf T}.
 \]
-当 $\boldsymbol\alpha,\boldsymbol\beta$ 线性无关时，叉积非零，给出它们张成平面的一个法向量。
-当两向量线性相关时，这些二阶子式均为零，叉积为零向量，不能用来指定法向方向。
+这里称 $\boldsymbol\alpha,\boldsymbol\beta$ \textbf{线性相关}，是指存在不全为零的实数 $s,t$，
+使 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$；若只有 $s=t=0$ 才能使等式成立，则称为\textbf{线性无关}。
+
+\begin{proposition}
+$\boldsymbol\alpha\times\boldsymbol\beta=\boldsymbol0$ 当且仅当 $\boldsymbol\alpha,\boldsymbol\beta$ 线性相关。
+\end{proposition}
+\begin{proof}
+若 $\boldsymbol\alpha=\boldsymbol0$，则叉积为零，且取 $(s,t)=(1,0)$ 即得一组不全为零的关系式系数。
+以下设 $\boldsymbol\alpha\ne\boldsymbol0$。
+
+若两向量线性相关，取一组不全为零的 $s,t$ 使关系式成立。
+必有 $t\ne0$，否则 $s\boldsymbol\alpha=\boldsymbol0$ 会迫使 $s=0$。
+于是 $\boldsymbol\beta=-(s/t)\boldsymbol\alpha$。
+代入各二阶子式可知它们都为零，故叉积为零。
+
+反过来，若叉积为零，由于它的三个坐标分别是三个二阶子式或其相反数，这些二阶子式均为零。
+取 $\boldsymbol\alpha$ 的一个非零分量 $a_{p1}$，则对每个 $q=1,2,3$，有
+\[
+ a_{p1}a_{q2}-a_{q1}a_{p2}=0,
+ \qquad a_{q2}=\frac{a_{p2}}{a_{p1}}a_{q1}.
+\]
+因此 $\boldsymbol\beta=(a_{p2}/a_{p1})\boldsymbol\alpha$，
+取 $(s,t)=(-a_{p2}/a_{p1},1)$ 即得一组不全为零的关系式系数，所以两向量线性相关。
+\end{proof}
+线性无关的两向量具有非零叉积，它给出所张平面的一个法向量。
+线性相关时叉积为零向量，不能用来指定法向方向。
 交换两向量，相当于交换行列式的前两列，故
 \[
- \boldsymbol\beta\times\boldsymbol\alpha=-\boldsymbol\alpha\times\boldsymbol\beta.
+ (\boldsymbol\beta\times\boldsymbol\alpha)\cdot\boldsymbol x
+ =-(\boldsymbol\alpha\times\boldsymbol\beta)\cdot\boldsymbol x.
 \]
+分别取 $\boldsymbol x=\boldsymbol e_1,\boldsymbol e_2,\boldsymbol e_3$，就得到三个坐标均变号，
+即 $\boldsymbol\beta\times\boldsymbol\alpha=-\boldsymbol\alpha\times\boldsymbol\beta$。
 所以叉积的三个坐标并非另行记忆的一组公式，它们就是第三列的代数余子式，符号依次为 $+,-,+$。
 
 \end{document}
