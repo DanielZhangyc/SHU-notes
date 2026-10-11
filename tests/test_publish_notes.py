@@ -93,10 +93,14 @@ class PublishingTests(unittest.TestCase):
             if note["source"] == "mathematics/mathematical-analysis-i/notes/02-04-convergence-criteria.tex"
         )
         page = render_note(note, self.config)
-        self.assertEqual(page.count("<strong>例题</strong>"), 4)
+        self.assertEqual(page.count("<strong>例题</strong>"), 8)
         self.assertNotRegex(page, r"例题 \d")
-        self.assertIn("<strong>定理 2.9</strong>", page)
-        self.assertIn("单调有界定理", page)
+        for label in ("定理 2.9", "定理 2.10", "定理 2.11"):
+            self.assertIn(f"<strong>{label}</strong>", page)
+        for title in ("单调有界定理", "致密性定理", "闭区间套定理",
+                      "柯西收敛准则", "无限小数的截断值", "平方倒数部分和",
+                      "调和部分和"):
+            self.assertIn(title, page)
 
     def test_unrecognized_tikz_fails_instead_of_dropping_figure(self):
         source = ROOT / "mathematics/mathematical-analysis-i/notes/01-03-functions.tex"

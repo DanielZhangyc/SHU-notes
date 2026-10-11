@@ -8,10 +8,12 @@
 %   "title": "数学分析（一）2.4：数列收敛的判别",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "单调有界定理及其应用、子列与收敛判别。"
+%   "excerpt": "单调有界定理及其应用、收敛子列定理、闭区间套与柯西收敛准则。"
 % }
 % halo:end
 % 来源：IMG_1581.HEIC—IMG_1584.HEIC；子列部分见 IMG_1589.HEIC。
+% 补充来源：IMG_2077.HEIC—IMG_2081.HEIC、IMG_2083.HEIC—IMG_2086.HEIC。
+% 无限小数例题另核对本地教材第二章例7；闭区间套补齐证明。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
@@ -22,8 +24,11 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\Nplus}{\mathbb N_{+}}
 \theoremstyle{definition}
+\newtheorem*{definition}{定义}
 \newtheorem{theorem}{定理}
 \renewcommand{\thetheorem}{2.\arabic{theorem}}
+\newtheorem*{lemma}{引理}
+\newtheorem*{proposition}{命题}
 \newtheorem*{example}{例题}
 \renewcommand{\proofname}{证明}
 \setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
@@ -37,7 +42,7 @@
 \raggedbottom
 \title{数列收敛的判别}
 \author{Yuchen Zhang}
-\date{整理日期：2026年9月29日}
+\date{整理日期：2026年9月29日；补充日期：2026年10月11日}
 \makeatletter
 \renewcommand{\maketitle}{\begin{center}
 {\LARGE\bfseries \@title\par}\vspace{0.6em}
@@ -51,6 +56,7 @@
 \section{数列收敛的判别}
 
 \subsection*{单调有界定理}
+本文所说的单调递增、单调递减都允许相邻项相等；严格单调另行说明。
 \begin{theorem}[单调有界定理]
 单调递增且有上界的实数列必收敛，其极限是该数列的上确界；
 单调递减且有下界的实数列也必收敛，其极限是该数列的下确界。
@@ -160,16 +166,349 @@ $t_n=1/u_n$；$u_n<0$ 的项令 $t_n=-1/u_n$，并用
 \left(1+\frac1{t_n-1}\right).
 \]
 
-\subsection*{子列与其他判别}
+\begin{example}[$1^\infty$ 型极限]
+求下列极限：
+\[
+\text{（1）}\ \lim_{n\to\infty}\left(1+\frac1{2n^2+n}\right)^{n^2},
+\qquad
+\text{（2）}\ \lim_{n\to\infty}\left(1-\frac2n\right)^n.
+\]
+第二个数列从 $n\ge3$ 起讨论。
+\end{example}
+\begin{proof}[解]
+为利用前面的极限，将原式写成以 $(1+u_n)^{1/u_n}$ 为底、
+以 $v_nu_n$ 为指数的幂。更一般地，若
+$u_n\to0$、$1+u_n>0$ 且 $v_nu_n\to c\in\R$，则
+\[
+(1+u_n)^{v_n}\longrightarrow e^c.
+\]
+当 $u_n\ne0$ 时，由
+\[
+(1+u_n)^{v_n}
+=\left[(1+u_n)^{1/u_n}\right]^{v_nu_n}
+\]
+得此结论，其中引用实数幂的极限性质：
+若 $x_n>0$、$x_n\to x>0$ 且 $y_n\to y$，则 $x_n^{y_n}\to x^y$。
+若 $u_n=0$ 的项有无穷多个，则
+$v_nu_n\to c$ 必有 $c=0$，而这些项的幂恒为 $1=e^0$，结论仍成立。
+
+\textbf{（1）} 取 $u_n=1/(2n^2+n)$、$v_n=n^2$，则
+\[
+v_nu_n=\frac{n^2}{2n^2+n}=\frac1{2+1/n}\longrightarrow\frac12,
+\]
+故所求极限为 $e^{1/2}$。
+
+\textbf{（2）} 取 $u_n=-2/n$、$v_n=n$，则 $v_nu_n=-2$，
+故所求极限为 $e^{-2}$。
+\end{proof}
+
+\subsection*{子列与收敛}
+从一个数列中按原来的先后顺序选取无穷多项，就得到它的一个子列。
+\begin{definition}[子列]
 若 $n_1<n_2<\cdots$ 是严格递增的正整数列，则
 $\{a_{n_k}\}_{k=1}^{\infty}$ 称为 $\{a_n\}$ 的一个\textbf{子列}。
-由于 $n_k\ge k$，若 $a_n\to a$，则每个子列都有 $a_{n_k}\to a$。
-因此，若能找到两个收敛于不同极限的子列，原数列就不收敛。
-例如 $a_n=(-1)^n$ 的奇、偶子列分别收敛于 $-1$、$1$。
+\end{definition}
 
-另外，对实数列还有如下判别：$\{a_n\}$ 收敛当且仅当它满足
-\textbf{柯西条件}，即对任意 $\varepsilon>0$，存在 $N$，使
-$m,n>N$ 时 $|a_m-a_n|<\varepsilon$。\textbf{魏尔斯特拉斯定理}
-指出，每个有界实数列都含有收敛子列；这里要求原数列有界，
-所得结论是某个子列收敛。
+\begin{proposition}[收敛数列的子列]
+若 $a_n\to a$，则 $\{a_n\}$ 的每个子列都收敛于 $a$。
+\end{proposition}
+\begin{proof}
+任取 $\varepsilon>0$，存在 $N\in\Nplus$，使 $n>N$ 时
+$|a_n-a|<\varepsilon$。由于 $n_k\ge k$，当 $k>N$ 时也有
+$n_k>N$，从而 $|a_{n_k}-a|<\varepsilon$。故 $a_{n_k}\to a$。
+\end{proof}
+
+反过来，一个子列收敛不能保证原数列收敛。例如 $a_n=(-1)^n$ 的
+偶数项子列恒为 $1$，奇数项子列恒为 $-1$，两者的极限不同，
+所以原数列不收敛。若一个数列的每个子列都收敛于同一个数 $a$，
+则原数列也收敛于 $a$，因为原数列本身就是它的一个子列。
+
+\subsection*{有界数列的收敛子列}
+有界数列是否一定含有收敛子列？单调有界定理提供了一条思路：
+先从有界数列中选出单调子列，再用该定理说明它收敛。
+
+\begin{lemma}[单调子列]
+每个实数列都含有一个单调子列。
+\end{lemma}
+\begin{proof}
+考察满足以下条件的下标 $n$：
+\[
+a_n\ge a_m\qquad\text{对所有 }m>n.
+\]
+也就是说，第 $n$ 项不小于它后面的任何一项。分两种情形讨论。
+
+\textbf{（1）这样的下标有无穷多个。}
+将它们按从小到大的顺序记为 $n_1<n_2<\cdots$，则
+$a_{n_1}\ge a_{n_2}\ge\cdots$，得到单调递减子列。
+
+\textbf{（2）这样的下标只有有限多个，或一个也没有。}
+取 $N$，使所有 $n>N$ 都不满足上述条件。因此，对每个 $n>N$，
+都存在 $m>n$，使 $a_m>a_n$。先取 $n_1>N$，再依次取
+$n_{k+1}>n_k$，使 $a_{n_{k+1}}>a_{n_k}$，
+就得到严格递增子列。
+\end{proof}
+
+\begin{theorem}[致密性定理（魏尔斯特拉斯定理）]
+每个有界实数列都含有一个收敛子列。
+\end{theorem}
+\begin{proof}
+由单调子列引理，原数列含有一个单调子列。选出的子列仍然有界，
+所以由单调有界定理，这个子列收敛。
+\end{proof}
+
+\newpage
+\subsection*{闭区间套与另一种子列构造}
+对于有界数列，还可以通过逐次缩小区间来选出收敛子列。
+为说明这种构造，先介绍闭区间套的性质。
+
+\begin{definition}[闭区间套]
+设 $I_n=[\alpha_n,\beta_n]$ 是非空闭区间。若
+\[
+I_1\supseteq I_2\supseteq\cdots,\qquad
+\beta_n-\alpha_n\longrightarrow0,
+\]
+则称 $\{I_n\}$ 为一个\textbf{闭区间套}。
+\end{definition}
+
+\begin{proposition}[闭区间套定理]
+若 $\{[\alpha_n,\beta_n]\}$ 为闭区间套，则存在唯一的实数 $\xi$，
+属于其中的每一个区间，即
+\[
+\bigcap_{n=1}^{\infty}[\alpha_n,\beta_n]=\{\xi\}.
+\]
+并且 $\alpha_n\to\xi$、$\beta_n\to\xi$。
+\end{proposition}
+\begin{proof}
+由区间的包含关系，$\{\alpha_n\}$ 单调递增，且以 $\beta_1$ 为上界。
+令 $\xi=\sup\{\alpha_n:n\in\Nplus\}$，则 $\alpha_n\to\xi$。
+
+对任意固定的 $n$，$\beta_n$ 都是所有左端点的上界：
+若 $k\le n$，则 $\alpha_k\le\alpha_n\le\beta_n$；
+若 $k>n$，则 $I_k\subseteq I_n$，仍有 $\alpha_k\le\beta_n$。
+故 $\alpha_n\le\xi\le\beta_n$，即 $\xi$ 属于每个区间。
+又
+\[
+0\le\beta_n-\xi\le\beta_n-\alpha_n\longrightarrow0,
+\]
+所以 $\beta_n\to\xi$。
+
+若 $\eta$ 也属于每个区间，则
+$|\eta-\xi|\le\beta_n-\alpha_n$ 对所有 $n$ 成立。
+令 $n\to\infty$，得 $\eta=\xi$，故公共点唯一。
+\end{proof}
+
+闭性与长度趋于零各有作用。嵌套开区间 $(0,1/n)$ 的交集为空；
+嵌套闭区间 $[0,1+1/n]$ 的长度不趋于零，其交集为 $[0,1]$，公共点不唯一。
+
+\begin{proof}[致密性定理的另一种证明]
+设 $\{a_n\}$ 有界，取闭区间 $I_1=[\alpha_1,\beta_1]$，
+使所有数列项都属于 $I_1$。若 $\alpha_1=\beta_1$，
+则原数列为常数列，结论成立。以下设 $\alpha_1<\beta_1$。
+
+将 $I_1$ 二等分为两个闭区间，其中至少有一个包含无穷多个数列项，
+否则两个区间都只包含有限多个数列项，与原数列有无穷多项矛盾。
+选取这样的一个区间作为 $I_2$。依次二等分并选取，可得
+\[
+I_1\supseteq I_2\supseteq\cdots,\qquad
+\beta_k-\alpha_k=\frac{\beta_1-\alpha_1}{2^{k-1}}\longrightarrow0.
+\]
+这里“包含无穷多个数列项”是指落在区间内的项具有无穷多个下标，
+这些项的值可以相同。由闭区间套定理，存在唯一的公共点 $\xi$。
+
+每个 $I_k$ 内都有无穷多个下标对应的项，因而删去任意有限个下标后，
+仍能在其中选取一项。于是可以依次选取 $n_1<n_2<\cdots$，
+使 $a_{n_k}\in I_k$。由于 $\xi\in I_k$，有
+\[
+|a_{n_k}-\xi|\le\beta_k-\alpha_k\longrightarrow0.
+\]
+故 $a_{n_k}\to\xi$，得到一个收敛子列。
+\end{proof}
+
+\newpage
+\subsection*{无上界数列的子列}
+上面讨论了有界数列。对于无上界的数列，也可以通过选取子列来描述
+它的取值特点。
+
+\begin{proposition}
+实数列 $\{a_n\}$ 无上界，当且仅当它含有一个趋于 $+\infty$ 的子列。
+\end{proposition}
+\begin{proof}
+先设 $\{a_n\}$ 无上界。去掉有限个初始项后，余下的数列仍无上界；
+否则，将余下数列的上界与这些初始项的最大值比较，就能得到原数列的
+上界，产生矛盾。
+
+因此，可先取 $n_1$，使 $a_{n_1}>1$；已取 $n_k$ 后，再从
+$n>n_k$ 的项中取 $n_{k+1}$，使 $a_{n_{k+1}}>k+1$。
+这样得到 $n_1<n_2<\cdots$，且 $a_{n_k}>k$，
+故 $a_{n_k}\to+\infty$。
+
+反过来，若某个子列趋于 $+\infty$，则对任意 $M\in\R$，
+该子列中总有一项大于 $M$。它也是原数列的一项，故原数列无上界。
+\end{proof}
+
+对 $\{-a_n\}$ 应用上述结论，可得：$\{a_n\}$ 无下界，当且仅当
+它含有一个趋于 $-\infty$ 的子列。
+这里趋于无穷的是选出的子列，原数列的其他项仍可能有不同的变化情形。
+例如 $a_{2k}=k$、$a_{2k-1}=0$ 的数列无上界，但原数列并不趋于 $+\infty$。
+
+\subsection*{柯西收敛准则}
+前面的讨论着眼于选出的子列。要判断整个数列是否收敛，还需要考察
+所有充分靠后的项。判断收敛时，不一定要先知道极限值；
+柯西条件直接比较这些项之间的差。
+
+\begin{definition}[柯西列]
+若实数列 $\{a_n\}$ 满足：对任意 $\varepsilon>0$，
+存在 $N\in\Nplus$，使对所有 $m,n>N$ 都有
+\[
+|a_m-a_n|<\varepsilon,
+\]
+则称 $\{a_n\}$ 为\textbf{柯西列}，也称它满足\textbf{柯西条件}。
+\end{definition}
+
+柯西条件也可等价地写为
+\[
+\forall\varepsilon>0,\ \exists N\in\Nplus,\quad
+\forall n>N,\ \forall p\in\Nplus,\quad
+|a_{n+p}-a_n|<\varepsilon.
+\]
+事实上，两种写法的差别只是将较大的下标写成较小的下标加上 $p$；
+两下标相同时，差为零。这里选定的 $N$ 要同时适用于所有正整数 $p$，
+不能随着 $p$ 改变。因此，柯西条件不能简化为只检查相邻两项之差。
+
+\newpage
+\begin{theorem}[柯西收敛准则]
+实数列收敛的充要条件是它为柯西列。
+\end{theorem}
+这里收敛指收敛于有限实数，趋于 $+\infty$ 或 $-\infty$ 都属于发散。
+\begin{proof}
+\textbf{必要性。} 设 $a_n\to a$。任取 $\varepsilon>0$，
+存在 $N$，使 $n>N$ 时 $|a_n-a|<\varepsilon/2$。
+当 $m,n>N$ 时，
+\[
+|a_m-a_n|\le|a_m-a|+|a_n-a|
+<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}
+=\varepsilon.
+\]
+故 $\{a_n\}$ 为柯西列。
+
+\textbf{充分性。} 设 $\{a_n\}$ 为柯西列。先证明它有界，再选出一个
+收敛子列，最后说明原数列也趋于这个子列的极限。
+
+取 $\varepsilon=1$，存在 $N_0$，使 $m,n>N_0$ 时
+$|a_m-a_n|<1$。固定 $m=N_0+1$，则当 $n>N_0$ 时，
+\[
+|a_n|\le|a_n-a_{N_0+1}|+|a_{N_0+1}|
+<1+|a_{N_0+1}|.
+\]
+取
+\[
+M=\max\bigl\{|a_1|,\ldots,|a_{N_0}|,\,
+1+|a_{N_0+1}|\bigr\},
+\]
+便有 $|a_n|\le M$ 对所有 $n$ 成立，故 $\{a_n\}$ 有界。
+由致密性定理，存在子列 $\{a_{n_k}\}$ 收敛于某个 $a\in\R$。
+
+任取 $\varepsilon>0$。由柯西条件，存在 $N_1$，使 $m,n>N_1$ 时
+$|a_m-a_n|<\varepsilon/2$。由 $a_{n_k}\to a$ 及 $n_k\to\infty$，
+可取一个固定的 $k_0$，使
+\[
+n_{k_0}>N_1,\qquad |a_{n_{k_0}}-a|<\frac{\varepsilon}{2}.
+\]
+当 $n>N_1$ 时，
+\[
+|a_n-a|\le|a_n-a_{n_{k_0}}|+|a_{n_{k_0}}-a|
+<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}
+=\varepsilon.
+\]
+故 $a_n\to a$。
+\end{proof}
+
+将柯西条件取否定，就得到数列不收敛的充要条件：
+\[
+\exists\varepsilon_0>0,\ \forall N\in\Nplus,\quad
+\exists m,n>N,\quad |a_m-a_n|\ge\varepsilon_0.
+\]
+也就是说，无论下标取得多大，总能找到更靠后的两项，
+使它们之间的距离不小于某个固定的正数。
+等价地，可以选取两列下标 $m_j\to\infty$、$n_j\to\infty$，
+使 $|a_{m_j}-a_{n_j}|\ge\varepsilon_0$ 对所有 $j$ 成立。
+
+\newpage
+\subsection*{柯西准则的应用}
+\begin{example}[无限小数的截断值]
+设每个 $d_k$ 都是 $0,1,\ldots,9$ 中的一个数字，令
+\[
+t_n=\frac{d_1}{10}+\frac{d_2}{10^2}+\cdots+\frac{d_n}{10^n}.
+\]
+证明 $\{t_n\}$ 收敛，并说明 $0.999\ldots=1$。
+\end{example}
+\begin{proof}
+任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。
+对任意 $n>N$ 及任意 $p\in\Nplus$，
+\begin{align*}
+|t_{n+p}-t_n|
+&=\sum_{k=n+1}^{n+p}\frac{d_k}{10^k}
+\le\sum_{k=n+1}^{n+p}\frac9{10^k}\\
+&=\frac1{10^n}\left(1-\frac1{10^p}\right)
+<\frac1{10^n}<\frac1n<\varepsilon.
+\end{align*}
+故 $\{t_n\}$ 为柯西列，因而收敛。无限小数 $0.d_1d_2\cdots$
+表示的实数，就是这个截断值数列的极限。
+
+特别地，当每个 $d_k=9$ 时，
+\[
+t_n=\frac9{10}+\frac9{10^2}+\cdots+\frac9{10^n}
+=1-\frac1{10^n}\longrightarrow1,
+\]
+所以 $0.999\ldots=1$。
+\end{proof}
+
+前面已经用单调有界定理讨论过平方倒数部分和与调和部分和。
+下面改用柯西准则，分别说明它们为什么收敛或不收敛。
+
+\begin{example}[平方倒数部分和]
+用柯西准则证明数列
+$s_n=\displaystyle\sum_{k=1}^{n}\frac1{k^2}$ 收敛。
+\end{example}
+\begin{proof}
+任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。
+对任意 $n>N$ 及任意 $p\in\Nplus$，有
+\begin{align*}
+|s_{n+p}-s_n|
+&=\sum_{k=n+1}^{n+p}\frac1{k^2}\\
+&<\sum_{k=n+1}^{n+p}\frac1{k(k-1)}\\
+&=\sum_{k=n+1}^{n+p}\left(\frac1{k-1}-\frac1k\right)\\
+&=\frac1n-\frac1{n+p}
+<\frac1n<\varepsilon.
+\end{align*}
+这里的上界 $1/n$ 与 $p$ 无关，故 $s_n$ 满足柯西条件，
+由柯西收敛准则可知它收敛。
+\end{proof}
+
+\newpage
+\begin{example}[调和部分和]
+用柯西准则证明数列
+$h_n=\displaystyle\sum_{k=1}^{n}\frac1k$ 不收敛。
+\end{example}
+\begin{proof}
+取 $\varepsilon_0=1/2$。对任意 $N\in\Nplus$，取 $n>N$，
+并令 $m=2n$，则
+\[
+|h_{2n}-h_n|
+=\sum_{k=n+1}^{2n}\frac1k
+\ge n\cdot\frac1{2n}
+=\frac12.
+\]
+故 $\{h_n\}$ 不满足柯西条件，从而不收敛。
+又 $\{h_n\}$ 单调递增；若它有上界，则由单调有界定理必收敛，
+与上述结论矛盾。因此 $\{h_n\}$ 无上界，且 $h_n\to+\infty$。
+\end{proof}
+
+虽然调和部分和不收敛，但
+\[
+h_{n+1}-h_n=\frac1{n+1}\longrightarrow0.
+\]
+这说明相邻两项之差趋于零，仍不足以保证数列收敛。
+柯西条件要求同时控制充分靠后的任意两项之差，
+包括这里的第 $n$ 项与第 $2n$ 项之差。
 \end{document}
