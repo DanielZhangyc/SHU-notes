@@ -1,0 +1,311 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "3.2",
+%   "title": "数学分析（一）3.2：函数极限的性质",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "函数极限的唯一性、局部有界性、保号性、保序性、夹逼定理、四则运算法则及归结原则。"
+% }
+% halo:end
+% 来源：IMG_2167.HEIC—IMG_2170.HEIC，并与 IMG_2165.HEIC—IMG_2166.HEIC 中的复习内容对照。
+% 归结原则的逆向构造补全了板书未写完的证明；记号沿用 03-01。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\newcommand{\U}{U}
+\theoremstyle{definition}
+\newtheorem*{definition}{定义}
+\newtheorem{theorem}{定理}
+\renewcommand{\thetheorem}{3.\arabic{theorem}}
+\newtheorem*{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 3.2\quad 函数极限的性质}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{函数极限的性质}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月14日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\setcounter{section}{2}
+\setcounter{theorem}{0}
+\section{函数极限的性质}
+
+以下各定理均在同一种趋近方式下讨论，例如 $x\to x_0$、$x\to x_0^+$ 或 $x\to+\infty$。为简洁起见，正文先写 $x\to x_0$；单侧极限和无穷远处的结论完全相同，只需把邻域条件换成相应的单侧或远端条件。
+
+\subsection*{唯一性}
+\begin{theorem}[唯一性]
+若
+\[
+ \lim_{x\to x_0}f(x)=A,\qquad \lim_{x\to x_0}f(x)=B,
+\]
+则 $A=B$。
+\end{theorem}
+\begin{proof}
+反设 $A\ne B$，取 $\varepsilon=|A-B|/3>0$。由两个极限的定义，存在 $\delta_1,\delta_2>0$，使得当 $0<|x-x_0|<\delta_i$ 时，分别有
+\[
+ |f(x)-A|<\varepsilon,\qquad |f(x)-B|<\varepsilon.
+\]
+取 $\delta=\min\{\delta_1,\delta_2\}$，任取 $0<|x-x_0|<\delta$，则
+\[
+ |A-B|\le |A-f(x)|+|f(x)-B|<2\varepsilon
+ =\frac23|A-B|,
+\]
+矛盾。故 $A=B$。
+\end{proof}
+
+\subsection*{局部有界性}
+\begin{theorem}[局部有界性]
+若 $\lim_{x\to x_0}f(x)=A$，则存在 $\delta>0$ 和 $M>0$，使得当
+\[
+ 0<|x-x_0|<\delta
+\]
+时有 $|f(x)|<M$。
+\end{theorem}
+\begin{proof}
+在极限定义中取 $\varepsilon=1$，可得某个 $\delta>0$，使
+\[
+ |f(x)-A|<1
+\]
+对所有 $0<|x-x_0|<\delta$ 成立。因此
+\[
+ |f(x)|\le |f(x)-A|+|A|<1+|A|.
+\]
+取 $M=1+|A|$ 即可。
+\end{proof}
+
+这里的“局部”是指某个去心邻域；极限存在并不要求函数在整个定义域上有界。局部有界性本身也不能推出极限存在，例如 $\sin(1/x)$ 在 $x\to0$ 时有界但没有极限。
+
+\subsection*{保号性}
+\begin{theorem}[保号性]
+若 $\lim_{x\to x_0}f(x)=A>0$，则存在 $\delta>0$，使 $0<|x-x_0|<\delta$ 时 $f(x)>0$。若 $A<0$，则在某个去心邻域内 $f(x)<0$。
+\end{theorem}
+\begin{proof}
+设 $A>0$。取 $\varepsilon=A/2$，则存在 $\delta>0$，使
+\[
+ |f(x)-A|<\frac A2.
+\]
+于是
+\[
+ f(x)>A-\frac A2=\frac A2>0
+\]
+对所有 $0<|x-x_0|<\delta$ 成立。
+
+当 $A<0$ 时，取 $\varepsilon=|A|/2$，可得
+\[
+ f(x)<A+\frac{|A|}{2}=\frac A2<0.
+\]
+\end{proof}
+
+保号性只适用于极限严格大于零或严格小于零的情形。若极限为零，函数值可以在邻域内变号，例如 $f(x)=x$ 在 $x\to0$ 时既有正值也有负值。
+
+\subsection*{保序性与夹逼定理}
+\begin{theorem}[保序性]
+若 $\lim_{x\to x_0}f(x)=A$、$\lim_{x\to x_0}g(x)=B$，并且存在 $\delta_0>0$，使
+\[
+ f(x)\le g(x)\qquad(0<|x-x_0|<\delta_0),
+\]
+则 $A\le B$。
+\end{theorem}
+\begin{proof}
+反设 $A>B$。取 $\varepsilon=(A-B)/3$。当 $x$ 充分接近 $x_0$ 时，
+\[
+ f(x)>A-\varepsilon>B+\varepsilon>g(x),
+\]
+与 $f(x)\le g(x)$ 矛盾。因此 $A\le B$。
+\end{proof}
+
+\begin{theorem}[夹逼定理]
+若在某个去心邻域内有
+\[
+ f(x)\le h(x)\le g(x),
+\]
+且
+\[
+ \lim_{x\to x_0}f(x)=\lim_{x\to x_0}g(x)=A,
+\]
+则 $\lim_{x\to x_0}h(x)=A$。
+\end{theorem}
+\begin{proof}
+任取 $\varepsilon>0$。取 $\delta>0$，使 $0<|x-x_0|<\delta$ 时既有夹逼关系，又有
+\[
+ |f(x)-A|<\varepsilon,\qquad |g(x)-A|<\varepsilon.
+\]
+于是
+\[
+ A-\varepsilon<f(x)\le h(x)\le g(x)<A+\varepsilon,
+\]
+即 $|h(x)-A|<\varepsilon$，故 $h(x)\to A$。
+\end{proof}
+
+\begin{example}
+证明
+\[
+ \lim_{x\to0}x\left\lfloor\frac1x\right\rfloor=1.
+\]
+\end{example}
+\begin{proof}
+先设 $x>0$。由取整函数的性质，
+\[
+ \frac1x-1<\left\lfloor\frac1x\right\rfloor\le\frac1x.
+\]
+乘以正数 $x$，得
+\[
+ 1-x<x\left\lfloor\frac1x\right\rfloor\le1.
+\]
+当 $x\to0^+$ 时，由夹逼定理，右侧函数趋于 $1$。当 $x<0$ 时，同样由
+\[
+ \frac1x-1<\left\lfloor\frac1x\right\rfloor\le\frac1x
+\]
+乘以负数 $x$ 得
+\[
+ 1\le x\left\lfloor\frac1x\right\rfloor<1-x,
+\]
+故右侧也趋于 $1$。再由双侧极限判定，原极限为 $1$。
+\end{proof}
+
+\subsection*{四则运算法则}
+\begin{theorem}[四则运算法则]
+若 $\lim_{x\to x_0}f(x)=A$、$\lim_{x\to x_0}g(x)=B$，则
+\[
+ \lim_{x\to x_0}[f(x)\pm g(x)]=A\pm B,
+\]
+\[
+ \lim_{x\to x_0}f(x)g(x)=AB.
+\]
+若 $B\ne0$，则在某个去心邻域内 $g(x)\ne0$，且
+\[
+ \lim_{x\to x_0}\frac{f(x)}{g(x)}=\frac AB.
+\]
+\end{theorem}
+\begin{proof}
+加减法由
+\[
+ |[f(x)\pm g(x)]-(A\pm B)|
+ \le |f(x)-A|+|g(x)-B|
+\]
+及 $\varepsilon/2$ 的选取立即得到。
+
+乘法中，先由局部有界性取 $M>0$，使 $|f(x)|<M$。于是
+\[
+ |f(x)g(x)-AB|
+ \le |f(x)|\,|g(x)-B|+|B|\,|f(x)-A|
+ <M|g(x)-B|+|B|\,|f(x)-A|.
+\]
+右端两项可同时取得任意小，故乘积极限为 $AB$。
+
+若 $B\ne0$，由 $g(x)\to B$，取 $\varepsilon=|B|/2$，可得
+\[
+ |g(x)|>\frac{|B|}{2}>0
+\]
+在某个去心邻域内成立。因此
+\[
+ \left|\frac1{g(x)}-\frac1B\right|
+ =\frac{|g(x)-B|}{|B|\,|g(x)|}
+ \le\frac2{|B|^2}|g(x)-B|\to0.
+\]
+再用乘法法则即得商的结论。
+\end{proof}
+
+\begin{example}
+计算
+\[
+ \lim_{x\to+\infty}\frac{2x^2+3x}{x^2+2x+1}.
+\]
+\end{example}
+\begin{proof}[解]
+除以 $x^2$ 后为
+\[
+ \frac{2+3/x}{1+2/x+1/x^2}\longrightarrow2.
+\]
+\end{proof}
+
+\subsection*{归结原则}
+直接从函数极限定义判断，有时需要同时处理所有充分接近 $x_0$ 的点。归结原则把它转化为数列问题。
+
+\begin{theorem}[归结原则（Heine 定理）]
+设 $f$ 在 $x_0$ 的某个去心邻域 $\U^0(x_0,\delta_0)$ 内有定义，则
+\[
+ \lim_{x\to x_0}f(x)=A
+\]
+当且仅当对任意满足
+\[
+ x_n\in\U^0(x_0,\delta_0),\qquad x_n\to x_0
+\]
+的数列 $\{x_n\}$，都有
+\[
+ f(x_n)\to A.
+\]
+\end{theorem}
+\begin{proof}
+先证必要性。设 $f(x)\to A$，任取 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$。给定 $\varepsilon>0$，由函数极限定义取 $\delta>0$，使
+\[
+ 0<|x-x_0|<\delta\Longrightarrow |f(x)-A|<\varepsilon.
+\]
+又由 $x_n\to x_0$，存在 $N$，使 $n>N$ 时 $|x_n-x_0|<\delta$。因 $x_n\ne x_0$，故 $|f(x_n)-A|<\varepsilon$，即 $f(x_n)\to A$。
+
+再证充分性。反设函数极限不等于 $A$。则存在 $\varepsilon_0>0$，使任意 $\delta>0$ 都能找到满足 $0<|x-x_0|<\delta$ 的点 $x$，使
+\[
+ |f(x)-A|\ge\varepsilon_0.
+\]
+对每个 $n\in\Nplus$ 取 $x_n$ 满足
+\[
+ 0<|x_n-x_0|<\min\left\{\delta_0,\frac1n\right\},\qquad |f(x_n)-A|\ge\varepsilon_0.
+\]
+则 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$，但 $f(x_n)$ 不趋于 $A$，与假设矛盾。因此 $\lim_{x\to x_0}f(x)=A$。
+\end{proof}
+
+\begin{example}
+证明 $\displaystyle\lim_{x\to0}\sin(1/x)$ 不存在。
+\end{example}
+\begin{proof}
+取
+\[
+ x_n=\frac1{2\pi n+\pi/2},\qquad
+ y_n=\frac1{2\pi n+3\pi/2}.
+\]
+两列都趋于 $0$，但
+\[
+ \sin\frac1{x_n}=1,\qquad \sin\frac1{y_n}=-1.
+\]
+若 $\lim_{x\to0}\sin(1/x)$ 存在，则由归结原则，两列函数值应趋于同一个极限，矛盾。故该极限不存在。
+\end{proof}
+
+\begin{example}
+计算 $\displaystyle\lim_{x\to\pi/4}(x\tan x-1)$。
+\end{example}
+\begin{proof}[解]
+由函数极限的四则运算法则和三角函数的连续性，
+\[
+ \lim_{x\to\pi/4}x\tan x
+ =\frac\pi4\cdot\tan\frac\pi4=\frac\pi4.
+\]
+因此
+\[
+ \lim_{x\to\pi/4}(x\tan x-1)=\frac\pi4-1.
+\]
+\end{proof}
+
+\end{document}

@@ -1,0 +1,586 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "1.6",
+%   "title": "高等代数（一）1.6：克拉默法则与范德蒙德行列式",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "从列向量和叠加性理解克拉默法则，证明解的存在性与唯一性，讨论齐次方程组，并证明范德蒙德行列式的乘积公式。"
+% }
+% halo:end
+% 整理日期：2026-10-12；照片未提供可确认的课堂日期。
+% 课堂来源：IMG_2122--2126.HEIC，照片标题为“第五讲 克拉默法则”。
+% 1.6为笔记自身的主题编号，承接1.5，不是教材节号或课堂讲次。
+% 教材：北大《高等代数》第五版，第二章。
+% 第二章第6节例2：印刷页52--53，所用PDF第64--65页。
+% 第二章第7节：印刷页55--59，所用PDF第67--71页。
+% 所用PDF：/Users/yuchenzhang/Downloads/高等代数 第五版 北大数学系前线代小组 王萼芳 石生明 Z-Library.pdf
+% 原书定理4、定理5及范德蒙德公式均给出证明；原书例1、例2给出解答。
+% 教学补充：矩阵乘向量的含义、叠加性、单位向量构造、D=0的边界例、
+% 列变换与同解的区别、范德蒙德转置形式和插值的存在唯一性应用。
+% 未将照片中的推导任务识别为课后作业；照片没有明确布置作业。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）1.6}
+\fancyhead[R]{\small 克拉默法则与范德蒙德行列式}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{克拉默法则与范德蒙德行列式}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月12日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{从方程组到列向量的线性组合}
+
+考虑 $n$ 个方程、$n$ 个未知量的线性方程组。若系数行列式不为零，
+不仅可以判定解存在，而且可以用行列式直接写出每个未知量的值。
+这一结论称为克拉默法则。要理解公式的来由，先把各个方程合成一个向量等式。
+
+以下系数和常数项均属于数域 $P$，设 $n\ge2$，方程组为
+\begin{equation}\label{eq:system}
+ \begin{cases}
+ a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1,\\
+ a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2,\\
+ \hspace{6em}\vdots\\
+ a_{n1}x_1+a_{n2}x_2+\cdots+a_{nn}x_n=b_n.
+ \end{cases}
+\end{equation}
+记
+\[
+ A=(a_{ij})_{n\times n},\qquad
+ \boldsymbol x=(x_1,\ldots,x_n)^{\mathsf T},\qquad
+ \boldsymbol b=(b_1,\ldots,b_n)^{\mathsf T}.
+\]
+$A$ 称为\textbf{系数矩阵}，$D=\det A$ 称为\textbf{系数行列式}。
+矩阵是一张数表，行列式是由这张方阵确定的一个数，二者不能混淆。
+
+记 $A$ 的第 $j$ 列为
+$\boldsymbol\alpha_j=(a_{1j},\ldots,a_{nj})^{\mathsf T}$。
+方程组 \eqref{eq:system} 等价于
+\begin{equation}\label{eq:column}
+ x_1\boldsymbol\alpha_1+\cdots+x_n\boldsymbol\alpha_n=\boldsymbol b.
+\end{equation}
+左边的第 $i$ 个分量是 $\sum_{j=1}^n a_{ij}x_j$，所以一个向量等式恰好包含原来的
+$n$ 个方程。把左边记为 $A\boldsymbol x$，便得到矩阵形式
+\[
+ A\boldsymbol x=\boldsymbol b.
+\]
+因此，求解方程组也就是求 $\boldsymbol b$ 用 $A$ 的各列作线性表示时的系数。
+
+\subsection{叠加性与标准单位向量}
+
+\begin{proposition}[叠加性]
+若 $A\boldsymbol u=\boldsymbol b^{(1)}$、
+$A\boldsymbol v=\boldsymbol b^{(2)}$，则对任意 $s,t\in P$，有
+\[
+ A(s\boldsymbol u+t\boldsymbol v)
+ =s\boldsymbol b^{(1)}+t\boldsymbol b^{(2)}.
+\]
+\end{proposition}
+\begin{proof}
+对每个 $i=1,\ldots,n$，左边的第 $i$ 个分量为
+\[
+ \sum_{j=1}^n a_{ij}(su_j+tv_j)
+ =s\sum_{j=1}^n a_{ij}u_j+t\sum_{j=1}^n a_{ij}v_j
+ =sb_i^{(1)}+tb_i^{(2)}.
+\]
+各分量分别相等，故向量相等。
+\end{proof}
+这里系数矩阵 $A$ 必须相同，右端项也要作相应的线性组合。
+例如，若 $\boldsymbol u,\boldsymbol v$ 都满足 $A\boldsymbol x=\boldsymbol b$，
+则 $A(\boldsymbol u+\boldsymbol v)=2\boldsymbol b$；
+当 $\boldsymbol b\ne\boldsymbol0$ 时，它们的和不是原方程组的解。
+
+记 $\boldsymbol e_i$ 为第 $i$ 个分量是 $1$、其余分量是 $0$ 的标准单位向量，则
+\[
+ \boldsymbol b=b_1\boldsymbol e_1+\cdots+b_n\boldsymbol e_n.
+\]
+因此，只要分别找到满足 $A\boldsymbol\xi_i=\boldsymbol e_i$ 的向量
+$\boldsymbol\xi_i$，就可以利用叠加性得到
+\[
+ A(b_1\boldsymbol\xi_1+\cdots+b_n\boldsymbol\xi_n)=\boldsymbol b.
+\]
+下面用代数余子式来构造这些 $\boldsymbol\xi_i$。
+
+\section{代数余子式怎样给出解}
+
+\subsection{两组展开恒等式}
+
+记 $M_{ij}$ 为删去 $A$ 的第 $i$ 行、第 $j$ 列后所得的 $(n-1)$ 阶行列式，称为余子式，
+$A_{ij}=(-1)^{i+j}M_{ij}$ 为元素 $a_{ij}$ 的代数余子式。
+这沿用前面笔记的记号；$A_{ij}$ 是一个数，不是矩阵 $A$ 的元素。
+按行、按列展开，以及不同行、不同列的零和公式，可以分别合写为
+\begin{align}
+ \sum_{j=1}^n a_{kj}A_{ij}
+ &=\begin{cases}D,&k=i,\\0,&k\ne i,\end{cases}
+ \label{eq:row}\\
+ \sum_{i=1}^n a_{ij}A_{ik}
+ &=\begin{cases}D,&j=k,\\0,&j\ne k.\end{cases}
+ \label{eq:col}
+\end{align}
+式 \eqref{eq:row} 固定行号 $k$ 和 $i$：取第 $k$ 行的元素与第 $i$ 行对应的
+代数余子式相乘，再沿列号 $j$ 求和。式 \eqref{eq:col} 固定列号 $j$ 和 $k$：
+取第 $j$ 列的元素与第 $k$ 列对应的代数余子式相乘，再沿行号 $i$ 求和。
+两个固定的行号或列号可以相同，求和结果据此分成 $D$ 和 $0$ 两种情形。
+
+简单回顾零和式的理由：若 $k\ne i$，把第 $i$ 行换成第 $k$ 行，
+所得行列式有两行相同，故为零。删去第 $i$ 行所得的余子式没有改变，
+所以沿新第 $i$ 行展开，就得到 $\sum_j a_{kj}A_{ij}=0$。
+按列的情形同理。这两组恒等式将使证明中的多数项变成零。
+
+\subsection{克拉默法则}
+
+把 $A$ 的第 $j$ 列换成 $\boldsymbol b$，其他列保持原位，所得行列式记为
+\begin{equation}\label{eq:Dj}
+ D_j=\det(\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_{j-1},
+ \boldsymbol b,\boldsymbol\alpha_{j+1},\ldots,\boldsymbol\alpha_n).
+\end{equation}
+更换的是第 $j$ \textbf{列}，因为 $x_j$ 正是这一列的线性组合系数。
+沿替换后的第 $j$ 列展开，有
+\begin{equation}\label{eq:Dj-expand}
+ D_j=\sum_{i=1}^n b_iA_{ij}.
+\end{equation}
+这里仍用原矩阵的 $A_{ij}$：求这一列的余子式时会删去这一列，
+所以更换列内的元素不影响这些代数余子式。
+
+\begin{theorem}[克拉默法则]
+若方程组 \eqref{eq:system} 的系数行列式 $D\ne0$，则方程组有且只有一个解，且
+\[
+ \boxed{x_j=\frac{D_j}{D}\quad(j=1,\ldots,n).}
+\]
+\end{theorem}
+定理同时断言解存在、解唯一，并给出了求解公式。
+证明时先构造一个解，再说明任何解都必须具有这些分量。
+
+\begin{proof}
+\textbf{第一步：构造一个解。}
+对每个 $i=1,\ldots,n$，取
+\[
+ \boldsymbol\xi_i
+ =\frac1D(A_{i1},A_{i2},\ldots,A_{in})^{\mathsf T}.
+\]
+这里取的是\textbf{第 $i$ 行的代数余子式，再把它们竖着排列成列向量}。
+计算 $A\boldsymbol\xi_i$ 时，固定 $i$ 来选定向量 $\boldsymbol\xi_i$，
+用 $k$ 表示乘积向量的分量号。按矩阵乘向量的含义，沿列号 $j$ 求和，
+再由式 \eqref{eq:row} 得到第 $k$ 个分量的值：
+\[
+ \frac1D\sum_{j=1}^n a_{kj}A_{ij}
+ =\begin{cases}1,&k=i,\\0,&k\ne i.\end{cases}
+\]
+因此 $A\boldsymbol\xi_i=\boldsymbol e_i$。
+利用 $\boldsymbol b=\sum_i b_i\boldsymbol e_i$ 及叠加性，取
+\[
+ \boldsymbol x=\sum_{i=1}^n b_i\boldsymbol\xi_i,
+\]
+就有 $A\boldsymbol x=\boldsymbol b$。它的第 $j$ 个分量恰为
+\[
+ x_j=\frac1D\sum_{i=1}^n b_iA_{ij}=\frac{D_j}{D}.
+\]
+所以公式确实给出一个解。
+
+\medskip
+\textbf{第二步：证明解唯一。}
+设 $\boldsymbol c=(c_1,\ldots,c_n)^{\mathsf T}$ 是任意一个解，则
+\[
+ \sum_{j=1}^n a_{ij}c_j=b_i\qquad(i=1,\ldots,n).
+\]
+固定一个未知量编号 $k$，把第 $i$ 个等式乘以 $A_{ik}$，再对 $i$ 求和。
+将 $b_i$ 用等式左边替换后，交换两个有限求和的次序，得
+\begin{align*}
+ D_k
+ &=\sum_{i=1}^n b_iA_{ik}\\
+ &=\sum_{i=1}^n A_{ik}\left(\sum_{j=1}^n a_{ij}c_j\right)\\
+ &=\sum_{j=1}^n c_j\left(\sum_{i=1}^n a_{ij}A_{ik}\right)
+ =Dc_k.
+\end{align*}
+最后一步用了式 \eqref{eq:col}：括号内只有 $j=k$ 时为 $D$，其余情形均为零。
+由于 $D\ne0$，有 $c_k=D_k/D$。这对每个 $k$ 都成立，
+所以任意解都等于第一步构造出的解，唯一性得证。
+\end{proof}
+
+只从“设 $\boldsymbol c$ 是一个解”出发推导出公式，说明的是\textbf{有解时至多一个}。
+还必须验证公式确实满足原方程组，才能得到“有且只有一个解”。
+当 $n=1$ 时，法则就是 $ax=b$ 在 $a\ne0$ 时有唯一解 $x=b/a$。
+
+\section{用克拉默法则求解}
+
+\begin{example}
+解方程组
+\[
+ \begin{cases}
+ 2x_1+x_2-5x_3+x_4=8,\\
+ x_1-3x_2-6x_4=9,\\
+ 2x_2-x_3+2x_4=-5,\\
+ x_1+4x_2-7x_3+6x_4=0.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+先计算系数行列式。交换前两行，再用第一行消去第一列其余非零元素，有
+\begin{align*}
+ D&=\begin{vmatrix}
+ 2&1&-5&1\\1&-3&0&-6\\0&2&-1&2\\1&4&-7&6
+ \end{vmatrix}\\
+ &=-\begin{vmatrix}
+ 1&-3&0&-6\\0&7&-5&13\\0&2&-1&2\\0&7&-7&12
+ \end{vmatrix}
+ =-\begin{vmatrix}7&-5&13\\2&-1&2\\7&-7&12\end{vmatrix}\\
+ &=-\bigl[7(-12+14)+5(24-14)+13(-14+7)\bigr]=27.
+\end{align*}
+由于 $D\ne0$，方程组有唯一解。依次替换四列，得到
+\begin{align*}
+ D_1&=\begin{vmatrix}8&1&-5&1\\9&-3&0&-6\\-5&2&-1&2\\0&4&-7&6\end{vmatrix}=81,
+ &D_2&=\begin{vmatrix}2&8&-5&1\\1&9&0&-6\\0&-5&-1&2\\1&0&-7&6\end{vmatrix}=-108,\\
+ D_3&=\begin{vmatrix}2&1&8&1\\1&-3&9&-6\\0&2&-5&2\\1&4&0&6\end{vmatrix}=-27,
+ &D_4&=\begin{vmatrix}2&1&-5&8\\1&-3&0&9\\0&2&-1&-5\\1&4&-7&0\end{vmatrix}=27.
+\end{align*}
+所以
+\[
+ \boxed{(x_1,x_2,x_3,x_4)=(3,-4,-1,1).}
+\]
+代回原方程组，四个左端分别为
+\[
+ 6-4+5+1=8,\quad 3+12-6=9,\quad
+ -8+1+2=-5,\quad 3-16+7+6=0,
+\]
+与右端相符。
+\end{proof}
+
+\subsection{行变换与列变换的区别}
+
+计算一个行列式时，可以按行列式性质作行变换或列变换，并记录它们对行列式值的影响。
+但求方程组的解时，若要保持未知量及解集不变，应对\textbf{整个增广矩阵}
+$(A\mid\boldsymbol b)$ 作初等行变换。增广矩阵就是在 $A$ 的右边添上常数项列
+$\boldsymbol b$；竖线只用来分隔系数与常数项。
+
+这里的行变换包括交换两行、把一行乘以非零数，以及把一行的倍数加到另一行。
+每次都要连同右端常数项一起变换。这三类操作都可逆，因此变换前后的方程组同解。
+
+列变换则改变未知量所对应的系数列。例如 $x_1+2x_2=3$ 交换两列后成为
+$2x_1+x_2=3$，原来的解 $(3,0)$ 不再是新方程的解。
+若确实要交换列，就必须同时交换未知量的含义，并在最后还原。
+因此，“能用于计算行列式的变换”与“保持同一组未知量的解集不变的变换”要分清。
+
+克拉默法则给出了未知量与系数、常数项之间的明确关系。
+若直接计算全部未知量，一般需要求 $D,D_1,\ldots,D_n$ 共 $n+1$ 个 $n$ 阶行列式；
+在具体数值计算中，消元法往往更方便。
+
+\section{系数行列式为零时，能判断什么}
+
+\subsection{一般方程组}
+
+克拉默法则要求 $D\ne0$。若 $D=0$，不能把 $D_j/D$ 当作一个数，
+更不能把 $0/0$ 当作零。
+不过，唯一性证明中除以 $D$ 之前的计算仍然有效：
+\[
+ \text{若 $\boldsymbol c$ 是一个解，则 }Dc_j=D_j\quad(j=1,\ldots,n).
+\]
+因此，当 $D=0$ 时，只要某个 $D_j\ne0$，方程组就无解。
+若所有 $D_j$ 都为零，仅凭这些等式还不能断定方程组有解。
+
+\begin{example}
+比较以下两个方程组：
+\[
+ \text{(1)}\quad
+ \begin{cases}x_1+x_2=1,\\2x_1+2x_2=3;\end{cases}
+ \qquad
+ \text{(2)}\quad
+ \begin{cases}x_1+x_2=1,\\2x_1+2x_2=2.\end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+二者的系数行列式都为 $0$。对方程组 (1)，有
+\[
+ D_1=\begin{vmatrix}1&1\\3&2\end{vmatrix}=-1\ne0,
+\]
+所以无解；也可以用第二式减去第一式的两倍，得到矛盾 $0=1$。
+
+对方程组 (2)，有 $D_1=D_2=0$。第二式只是第一式的两倍，
+所有解为 $(x_1,x_2)=(1-t,t)$，其中 $t\in P$，所以有无穷多个解。
+\end{proof}
+
+“所有 $D_j=0$”仍可能对应无解。例如
+\[
+ A=\begin{pmatrix}1&0&0\\0&0&0\\0&0&0\end{pmatrix},
+ \qquad \boldsymbol b=\begin{pmatrix}0\\1\\0\end{pmatrix}.
+\]
+原矩阵和每个替换一列后的矩阵都至少有一列全为零，
+所以 $D=D_1=D_2=D_3=0$，但方程组的第二个方程是 $0=1$，仍然无解。
+
+\subsection{齐次线性方程组}
+
+再看右端项全为零的情形。
+\begin{definition}
+常数项全为零的线性方程组
+$A\boldsymbol x=\boldsymbol0$ 称为\textbf{齐次线性方程组}。
+$\boldsymbol x=\boldsymbol0$ 总是它的一个解，称为\textbf{零解}。
+分量不全为零的解称为\textbf{非零解}。
+\end{definition}
+非零解只要求至少一个分量不为零，并不要求每个分量都非零。
+
+\begin{theorem}
+对于 $n$ 个方程、$n$ 个未知量的齐次线性方程组，若 $D\ne0$，则只有零解。
+等价地，若它有非零解，则必有 $D=0$。
+\end{theorem}
+\begin{proof}
+因为 $\boldsymbol b=\boldsymbol0$，每个 $D_j$ 都有一列全为零，所以 $D_j=0$。
+当 $D\ne0$ 时，由克拉默法则，唯一解为
+\[
+ x_j=\frac{D_j}{D}=0\qquad(j=1,\ldots,n).
+\]
+故方程组只有零解。取此结论的逆否命题，就得到“有非零解，则 $D=0$”。
+\end{proof}
+
+对方阵系数的齐次方程组，“$D=0$ 时有非零解”也成立，
+但这是上述结论的逆命题，不能只靠逆否关系得到。
+一般的证明留到线性方程组理论；在下面的参数题中，
+先用已证明的必要条件找出候选参数，再直接验证非零解是否存在。
+
+\begin{example}
+求 $\lambda\in P$ 满足什么条件时，方程组
+\[
+ \begin{cases}
+ \lambda x_1+x_2=0,\\
+ x_1+\lambda x_2=0
+ \end{cases}
+\]
+有非零解。
+\end{example}
+\begin{proof}[解]
+若有非零解，则
+\[
+ D=\begin{vmatrix}\lambda&1\\1&\lambda\end{vmatrix}
+ =\lambda^2-1=0,
+\]
+所以只能有 $\lambda=1$ 或 $\lambda=-1$。
+
+当 $\lambda=1$ 时，两式均为 $x_1+x_2=0$，有非零解 $(1,-1)$；
+全部解为 $(t,-t)$，$t\in P$。
+当 $\lambda=-1$ 时，两式等价于 $x_1=x_2$，有非零解 $(1,1)$；
+全部解为 $(t,t)$，$t\in P$。
+所以所求条件为
+\[
+ \boxed{\lambda=\pm1.}
+\]
+\end{proof}
+
+\section{范德蒙德行列式}
+
+为了使用克拉默法则，常常需要先判断系数行列式是否为零。
+有一类行列式，每一列都由一个参数的连续幂组成，第 $j$ 列对应参数 $a_j$。
+它的值可以写成这些参数之差的乘积，因而特别便于判断是否为零。
+
+\begin{definition}
+设 $a_1,\ldots,a_n\in P$，行列式
+\[
+ V_n(a_1,\ldots,a_n)=
+ \begin{vmatrix}
+ 1&1&\cdots&1\\
+ a_1&a_2&\cdots&a_n\\
+ a_1^2&a_2^2&\cdots&a_n^2\\
+ \vdots&\vdots&&\vdots\\
+ a_1^{n-1}&a_2^{n-1}&\cdots&a_n^{n-1}
+ \end{vmatrix}
+\]
+称为 $n$ 阶\textbf{范德蒙德行列式}。第一行直接取 $1$，参数可以为零。
+\end{definition}
+
+\begin{theorem}[范德蒙德行列式的乘积公式]
+\[
+ \boxed{V_n(a_1,\ldots,a_n)=\prod_{1\le i<j\le n}(a_j-a_i).}
+\]
+符号 $\prod$ 表示把指定的因子全部相乘；这里对每一对满足 $1\le i<j\le n$ 的指标
+取一个因子 $a_j-a_i$，共有 $\binom n2=n(n-1)/2$ 个因子。
+\end{theorem}
+
+\begin{proof}
+对阶数 $n$ 作数学归纳。$n=2$ 时，
+\[
+ V_2(a_1,a_2)=
+ \begin{vmatrix}1&1\\a_1&a_2\end{vmatrix}=a_2-a_1,
+\]
+公式成立。设公式对 $n-1$ 阶成立，以下考虑 $n$ 阶的情形。
+
+为便于沿第一列展开，要把这一列除第一个元素外全部化为零。
+用 $R_k$ 表示第 $k$ 行，下面的箭头表示用右边的行替换原来的第 $k$ 行。
+从最后一行开始，依次进行：
+\[
+ R_k\leftarrow R_k-a_1R_{k-1},
+ \qquad k=n,n-1,\ldots,2.
+\]
+这些行倍加不改变行列式。必须按这个顺序做，才能保证每次使用的上一行仍是原来的行。
+变换后第 $k$ 行、第 $j$ 列的元素为
+\[
+ a_j^{k-1}-a_1a_j^{k-2}=(a_j-a_1)a_j^{k-2}\quad(k\ge2),
+\]
+其中 $k=2$ 时直接为 $a_j-a_1$。
+特别地，第一列变成 $(1,0,\ldots,0)^{\mathsf T}$。
+沿第一列展开，并从余下各列分别提出 $a_2-a_1,\ldots,a_n-a_1$，得到
+\begin{align*}
+ V_n
+ &=
+ \begin{vmatrix}
+ a_2-a_1&\cdots&a_n-a_1\\
+ (a_2-a_1)a_2&\cdots&(a_n-a_1)a_n\\
+ \vdots&&\vdots\\
+ (a_2-a_1)a_2^{n-2}&\cdots&(a_n-a_1)a_n^{n-2}
+ \end{vmatrix}\\
+ &=\left(\prod_{j=2}^n(a_j-a_1)\right)
+ \begin{vmatrix}
+ 1&\cdots&1\\
+ a_2&\cdots&a_n\\
+ \vdots&&\vdots\\
+ a_2^{n-2}&\cdots&a_n^{n-2}
+ \end{vmatrix}\\
+ &=\left(\prod_{j=2}^n(a_j-a_1)\right)V_{n-1}(a_2,\ldots,a_n).
+\end{align*}
+右边的低阶行列式仍是范德蒙德行列式。由归纳假设，
+\[
+ V_n=
+ \left(\prod_{j=2}^n(a_j-a_1)\right)
+ \left(\prod_{2\le i<j\le n}(a_j-a_i)\right)
+ =\prod_{1\le i<j\le n}(a_j-a_i).
+\]
+前一部分包含所有涉及 $a_1$ 的差，后一部分包含其余指标对的差，
+二者合起来恰好覆盖全部指标对。归纳完成。
+\end{proof}
+
+这个证明只用了行倍加、展开和各列的线性性质，没有除以任何 $a_j-a_i$，
+所以参数相等时公式仍然成立。若把 $n=1$ 时的空乘积约定为 $1$，也有 $V_1=1$。
+
+\begin{proposition}
+$V_n(a_1,\ldots,a_n)\ne0$ 当且仅当 $a_1,\ldots,a_n$ 两两不同。
+\end{proposition}
+\begin{proof}
+数域中有限个数的乘积不为零，当且仅当每个因子都不为零。
+应用乘积公式，$V_n\ne0$ 等价于对每个 $i<j$ 都有 $a_j-a_i\ne0$，
+也就是参数两两不同。
+\end{proof}
+
+乘积中的差要按列的顺序写成“后面的参数减前面的参数”。
+例如
+\[
+ V_3(a_1,a_2,a_3)=(a_2-a_1)(a_3-a_1)(a_3-a_2).
+\]
+若把所有差都反过来，总共会多出因子 $(-1)^{n(n-1)/2}$。
+交换两个参数则相当于交换两列，行列式只变号。
+
+\subsection{转置形式与一个计算例}
+
+行列式在转置后不变，因此同样有
+\[
+ \begin{vmatrix}
+ 1&a_1&a_1^2&\cdots&a_1^{n-1}\\
+ 1&a_2&a_2^2&\cdots&a_2^{n-1}\\
+ \vdots&\vdots&\vdots&&\vdots\\
+ 1&a_n&a_n^2&\cdots&a_n^{n-1}
+ \end{vmatrix}
+ =\prod_{1\le i<j\le n}(a_j-a_i).
+\]
+这里转置的是矩阵，得到的是另一个写法的行列式；$V_n$ 本身是一个数。
+
+\begin{example}
+计算下列两个行列式：
+\[
+ \begin{vmatrix}1&1&1\\1&2&5\\1&4&25\end{vmatrix},
+ \qquad
+ \begin{vmatrix}1&1&1\\1&2&4\\1&5&25\end{vmatrix}.
+\]
+\end{example}
+\begin{proof}[解]
+第一个行列式的三列分别对应 $a_1=1,a_2=2,a_3=5$，故
+\[
+ \begin{vmatrix}1&1&1\\1&2&5\\1&4&25\end{vmatrix}
+ =(2-1)(5-1)(5-2)=12.
+\]
+第二个行列式所对应的矩阵是第一个矩阵的转置，所以它的值也为 $12$。
+\end{proof}
+
+\newpage
+\section{两种结论合用：插值的存在与唯一性}
+
+给定两两不同的 $a_1,\ldots,a_n$ 及任意 $b_1,\ldots,b_n$，
+希望找到一个次数不超过 $n-1$ 的多项式，使它在 $a_i$ 处取值为 $b_i$。
+零多项式也包括在这里的候选中。把待求多项式写成
+\[
+ p(t)=c_0+c_1t+\cdots+c_{n-1}t^{n-1},
+\]
+条件 $p(a_i)=b_i$ 就变成关于系数 $c_0,\ldots,c_{n-1}$ 的线性方程组
+\[
+ \begin{pmatrix}
+ 1&a_1&\cdots&a_1^{n-1}\\
+ 1&a_2&\cdots&a_2^{n-1}\\
+ \vdots&\vdots&&\vdots\\
+ 1&a_n&\cdots&a_n^{n-1}
+ \end{pmatrix}
+ \begin{pmatrix}c_0\\c_1\\\vdots\\c_{n-1}\end{pmatrix}
+ =
+ \begin{pmatrix}b_1\\b_2\\\vdots\\b_n\end{pmatrix}.
+\]
+它的系数行列式正是范德蒙德行列式的转置形式。
+由于 $a_i$ 两两不同，行列式非零，克拉默法则保证系数有且只有一组。
+因此满足这些取值条件、次数不超过 $n-1$ 的多项式\textbf{存在且唯一}。
+
+\begin{example}
+求次数不超过 $2$ 且满足 $p(0)=1$、$p(1)=2$、$p(2)=5$ 的多项式。
+\end{example}
+\begin{proof}[解]
+设 $p(t)=c_0+c_1t+c_2t^2$，则
+\[
+ \begin{cases}
+ c_0=1,\\
+ c_0+c_1+c_2=2,\\
+ c_0+2c_1+4c_2=5.
+ \end{cases}
+\]
+系数行列式为
+\[
+ \begin{vmatrix}1&0&0\\1&1&1\\1&2&4\end{vmatrix}
+ =(1-0)(2-0)(2-1)=2\ne0,
+\]
+所以解唯一。由第一式得 $c_0=1$，后两式化为
+$c_1+c_2=1$、$c_1+2c_2=2$，从而 $c_2=1$、$c_1=0$。
+因此
+\[
+ \boxed{p(t)=1+t^2.}
+\]
+代入 $t=0,1,2$ 可得所要求的三个值。
+范德蒙德公式在这里帮助判断系数行列式非零，克拉默法则由此保证解存在且唯一；
+实际求出系数时仍可采用消元法。
+\end{proof}
+
+\end{document}

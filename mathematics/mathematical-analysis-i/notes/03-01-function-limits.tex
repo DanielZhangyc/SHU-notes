@@ -1,0 +1,267 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "3.1",
+%   "title": "数学分析（一）3.1：函数极限",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "函数在无穷远处、有限点处及单侧趋近时的极限定义，并用定义证明基本例题。"
+% }
+% halo:end
+% 来源：IMG_2153.HEIC—IMG_2163.HEIC、IMG_2165.HEIC—IMG_2166.HEIC。
+% 依照已有数列极限笔记的定义—证明—例题结构整理；端点处只从定义域内趋近。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nplus}{\mathbb N_{+}}
+\newcommand{\U}{U}
+\theoremstyle{definition}
+\newtheorem*{definition}{定义}
+\newtheorem{theorem}{定理}
+\newtheorem*{criterion}{定理}
+\renewcommand{\thetheorem}{3.\arabic{theorem}}
+\newtheorem*{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 3.1\quad 函数极限}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{函数极限}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月14日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\setcounter{section}{2}
+\section{函数极限}
+
+数列极限研究下标趋于无穷时数列项的变化。函数极限研究的是：自变量按照指定方式趋近某个位置时，函数值是否趋近一个确定的数。这里的“趋近”只涉及函数定义域中可以取到的自变量，函数在趋近点的点值本身不决定极限。
+
+\subsection*{自变量趋于无穷时的极限}
+\begin{definition}
+设函数 $f$ 在某个右半无限区间 $(a,+\infty)$ 上有定义。若存在 $A\in\R$，使得对任意 $\varepsilon>0$，都存在 $M>a$，当 $x>M$ 时有
+\[
+ |f(x)-A|<\varepsilon,
+\]
+则称 $f(x)$ 当 $x\to+\infty$ 时以 $A$ 为极限，记作
+\[
+ \lim_{x\to+\infty}f(x)=A.
+\]
+\end{definition}
+
+类似地，若 $f$ 在某个左半无限区间 $(-\infty,a)$ 上有定义，且对任意 $\varepsilon>0$，存在 $M<a$，使 $x<M$ 时 $|f(x)-A|<\varepsilon$，则记作
+\[
+ \lim_{x\to-\infty}f(x)=A.
+\]
+若 $f$ 在 $|x|$ 足够大时有定义，并且
+\[
+ \lim_{x\to+\infty}f(x)=\lim_{x\to-\infty}f(x)=A,
+\]
+则称 $f(x)$ 当 $x\to\infty$ 时以 $A$ 为极限，记作
+\[
+ \lim_{x\to\infty}f(x)=A.
+\]
+此处的 $x\to\infty$ 表示 $|x|\to+\infty$，而不是只表示 $x\to+\infty$。几何上，若 $\lim_{x\to\infty}f(x)=A$，则直线 $y=A$ 是曲线的一条水平渐近线。
+
+\begin{example}
+证明 $\displaystyle\lim_{x\to+\infty}\sin\frac1x=0$。
+\end{example}
+\begin{proof}
+任取 $\varepsilon>0$，取 $M=1/\varepsilon$。当 $x>M$ 时，利用
+\[
+ |\sin t|\le |t|\qquad(t\in\R),
+\]
+有
+\[
+ \left|\sin\frac1x-0\right|\le\frac1x<\frac1M=\varepsilon.
+\]
+故 $\displaystyle\lim_{x\to+\infty}\sin(1/x)=0$。
+\end{proof}
+
+\begin{example}
+证明 $\displaystyle\lim_{x\to+\infty}\arctan x=\frac\pi2$。
+\end{example}
+\begin{proof}
+任取 $\varepsilon>0$。当 $x>0$ 时，$\arctan x\in(0,\pi/2)$，故
+\[
+ 0<\frac\pi2-\arctan x<\tan\left(\frac\pi2-\arctan x\right)=\frac1x.
+\]
+取 $M=1/\varepsilon$。当 $x>M$ 时，
+\[
+ \left|\arctan x-\frac\pi2\right|<\frac1x<\varepsilon.
+\]
+因此 $\displaystyle\lim_{x\to+\infty}\arctan x=\pi/2$。
+
+由于 $\arctan x$ 是奇函数，同理可得
+\[
+ \lim_{x\to-\infty}\arctan x=-\frac\pi2.
+\]
+两个方向的极限不同，所以 $\arctan x$ 当 $x\to\infty$ 时不存在有限极限。
+\end{proof}
+
+\subsection*{自变量趋于有限点}
+记
+\[
+ \U(x_0,\delta)=\{x\in\R:|x-x_0|<\delta\},\qquad
+ \U^0(x_0,\delta)=\{x\in\R:0<|x-x_0|<\delta\}.
+\]
+\begin{definition}
+设函数 $f$ 在 $x_0$ 的某个去心邻域 $\U^0(x_0,\delta_0)$ 上有定义。若存在 $A\in\R$，使得对任意 $\varepsilon>0$，存在 $\delta>0$，当
+\[
+ 0<|x-x_0|<\delta
+\]
+时都有
+\[
+ |f(x)-A|<\varepsilon,
+\]
+则称 $f(x)$ 当 $x\to x_0$ 时以 $A$ 为极限，记作
+\[
+ \lim_{x\to x_0}f(x)=A.
+\]
+这里先给定 $\varepsilon$，再选取只依赖于 $\varepsilon$ 和 $x_0$ 的 $\delta$；选定后，同一个去心邻域内的所有 $x$ 都必须满足误差估计。由于条件排除了 $x=x_0$，所以 $f(x_0)$ 可以没有定义，也可以任意指定，而不影响该极限。
+其中可取 $0<\delta\le\delta_0$。
+\end{definition}
+
+若极限定义中的 $\delta$ 可以取为 $\delta_0$，那么任意 $0<\delta\le\delta_0$ 也可以作为一个选择。证明中常把 $\delta$ 取得更小，以同时满足几个条件。
+
+\subsection*{单侧极限}
+若只允许 $x$ 从 $x_0$ 的左侧趋近，记
+\[
+ \lim_{x\to x_0^-}f(x)=A;
+\]
+若只允许 $x$ 从右侧趋近，记
+\[
+ \lim_{x\to x_0^+}f(x)=A.
+\]
+例如，右极限的定义是：对任意 $\varepsilon>0$，存在 $\delta>0$，使得当 $x_0<x<x_0+\delta$ 时，$|f(x)-A|<\varepsilon$；左极限同理，将条件改为 $x_0-\delta<x<x_0$。
+
+\begin{criterion}[双侧极限的判定]
+\[
+ \lim_{x\to x_0}f(x)=A
+ \quad\Longleftrightarrow\quad
+ \lim_{x\to x_0^-}f(x)=\lim_{x\to x_0^+}f(x)=A.
+\]
+\end{criterion}
+\begin{proof}
+必要性显然：双侧去心邻域包含左侧和右侧的去心邻域，因此双侧极限成立时，两侧极限都等于 $A$。
+
+反之，设左右极限都等于 $A$。任取 $\varepsilon>0$，分别取 $\delta_1,\delta_2>0$，使左侧和右侧的误差均小于 $\varepsilon$。令 $\delta=\min\{\delta_1,\delta_2\}$。当 $0<|x-x_0|<\delta$ 时，$x$ 必在 $x_0$ 左侧或右侧，因而总有 $|f(x)-A|<\varepsilon$。故双侧极限等于 $A$。
+\end{proof}
+
+\begin{example}
+设
+\[
+ f(x)=\begin{cases}x+2,&x\ge0,\\x-2,&x<0.\end{cases}
+\]
+则
+\[
+ \lim_{x\to0^+}f(x)=2,\qquad \lim_{x\to0^-}f(x)=-2.
+\]
+左右极限不相等，故 $\lim_{x\to0}f(x)$ 不存在。
+\end{example}
+
+\begin{example}
+函数 $f(x)=|x|/x$ 在 $x=0$ 的去心邻域内有定义。因为
+\[
+ \lim_{x\to0^-}\frac{|x|}{x}=-1,qquad
+ \lim_{x\to0^+}\frac{|x|}{x}=1,
+\]
+所以 $\lim_{x\to0}|x|/x$ 不存在。
+\end{example}
+
+\newpage
+\subsection*{用定义证明极限}
+证明有限点处的极限时，先把 $|f(x)-A|$ 化成可控制的表达式；若表达式含有随 $x$ 变化的分母，先用 $|x-x_0|<1$ 等条件使分母远离零。
+
+\begin{example}
+证明
+\[
+ \lim_{x\to2}\frac{x^2-4}{x-2}=4,
+ \qquad
+ \lim_{x\to2}\frac{x-2}{x^2-4}=\frac14.
+\]
+\end{example}
+\begin{proof}
+当 $x\ne2$ 时，$x^2-4=(x-2)(x+2)$。
+
+（1）任取 $\varepsilon>0$，取 $\delta=\varepsilon$。当 $0<|x-2|<\delta$ 时，
+\[
+ \left|\frac{x^2-4}{x-2}-4\right|=|x+2-4|=|x-2|<\varepsilon.
+\]
+
+（2）先要求 $|x-2|<1$，于是 $1<x<3$，从而 $|x+2|>3$。任取 $\varepsilon>0$，取
+\[
+ \delta=\min\left\{1,\,12\varepsilon\right\}.
+\]
+当 $0<|x-2|<\delta$ 时，
+\[
+ \left|\frac{x-2}{x^2-4}-\frac14\right|
+ =\left|\frac1{x+2}-\frac14\right|
+ =\frac{|x-2|}{4|x+2|}
+ <\frac{|x-2|}{12}<\varepsilon.
+\]
+故两式均得证。
+\end{proof}
+
+\begin{example}
+证明对任意 $x_0\in\R$，有
+\[
+ \lim_{x\to x_0}\sin x=\sin x_0.
+\]
+\end{example}
+\begin{proof}
+由和差化积公式，
+\[
+ |\sin x-\sin x_0|
+ =2\left|\sin\frac{x-x_0}{2}\right|\left|\cos\frac{x+x_0}{2}\right|
+ \le 2\left|\sin\frac{x-x_0}{2}\right|
+ \le |x-x_0|.
+\]
+任取 $\varepsilon>0$，取 $\delta=\varepsilon$。当 $0<|x-x_0|<\delta$ 时，上式给出
+\[
+ |\sin x-\sin x_0|<\varepsilon.
+\]
+\end{proof}
+
+同理，利用 $\cos x-\cos x_0=-2\sin((x+x_0)/2)\sin((x-x_0)/2)$，可得
+\[
+ \lim_{x\to x_0}\cos x=\cos x_0.
+\]
+
+\begin{example}
+证明
+\[
+ \lim_{x\to1^-}\sqrt{1-x^2}=0,
+ \qquad
+ \lim_{x\to-1^+}\sqrt{1-x^2}=0.
+\]
+\end{example}
+\begin{proof}
+函数 $\sqrt{1-x^2}$ 的定义域是 $[-1,1]$，所以在端点处只能从定义域内的一侧趋近。
+
+以 $x\to1^-$ 为例。任取 $\varepsilon>0$，取 $\delta=\min\{1,\varepsilon^2/2\}$。当 $1-\delta<x<1$ 时，
+\[
+ 0<1-x^2=(1-x)(1+x)<2(1-x)<2\delta\le\varepsilon^2,
+\]
+因而 $|\sqrt{1-x^2}-0|<\varepsilon$。另一端点的证明完全类似，故结论成立。
+\end{proof}
+
+\end{document}
