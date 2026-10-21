@@ -1,0 +1,273 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "3.3",
+%   "title": "数学分析（一）3.3：两个重要极限",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "正弦重要极限、数列指数极限向实变量的推广、常用比值极限，以及幂指型极限的计算。"
+% }
+% halo:end
+% 来源：IMG_2457—IMG_2459、IMG_2461、IMG_2466、IMG_2468—IMG_2472、IMG_2475.HEIC。
+% 教材核对：华东师大《数学分析》第5版上册，PDF第64—66页（书页53—55）。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\theoremstyle{definition}
+\newtheorem*{theorem}{定理}
+\newtheorem*{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.3em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 3.3\quad 两个重要极限}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{两个重要极限}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月22日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+
+\section{正弦函数的重要极限}
+当分子、分母同时趋于零时，四则运算法则不能直接给出商的极限。先比较 $\sin x$ 与 $x$ 的大小。
+
+\begin{theorem}
+角度采用弧度制时，有
+\[
+ \boxed{\lim_{x\to0}\frac{\sin x}{x}=1.}
+\]
+\end{theorem}
+\begin{proof}
+当 $0<x<\pi/2$ 时，在单位圆中比较内接三角形、扇形和外切三角形的面积，得到
+\[
+ \frac12\sin x<\frac12x<\frac12\tan x.
+\]
+因此 $\sin x<x<\tan x$，进而有
+\[
+ \cos x<\frac{\sin x}{x}<1.
+\]
+由于 $\cos x\to1$，利用夹逼定理可得右极限为 $1$。又因
+\[
+ \frac{\sin(-x)}{-x}=\frac{\sin x}{x},
+\]
+左极限也为 $1$，故双侧极限为 $1$。
+\end{proof}
+
+若表达式 $u(x)\to0$，且在所讨论的趋近过程中最终非零，也可以把它整体看作上述极限中的自变量，从而得到
+\[
+ \frac{\sin u(x)}{u(x)}\to1,\qquad
+ \frac{u(x)}{\sin u(x)}\to1.
+\]
+这里要求趋于零的是整个 $u(x)$，原来的自变量不一定趋于零。
+
+\begin{example}
+计算
+\[
+ \lim_{x\to\pi}\frac{\sin x}{\pi-x},\qquad
+ \lim_{x\to\infty}x\sin\frac1x.
+\]
+\end{example}
+\begin{proof}[解]
+第一式令 $t=\pi-x$，则 $t\to0$，并且 $\sin x=\sin(\pi-t)=\sin t$，故
+\[
+ \lim_{x\to\pi}\frac{\sin x}{\pi-x}
+ =\lim_{t\to0}\frac{\sin t}{t}=1.
+\]
+第二式令 $t=1/x$。当 $x\to+\infty$ 或 $x\to-\infty$ 时，都有 $t\to0$，因此
+\[
+ \lim_{x\to\infty}x\sin\frac1x
+ =\lim_{t\to0}\frac{\sin t}{t}=1.
+\]
+\end{proof}
+
+\section{指数函数的重要极限}
+在数列收敛的判别中，我们已经得到
+\[
+ a_n=\left(1+\frac1n\right)^n\longrightarrow e.
+\]
+现在把整数 $n$ 换成实变量 $x$，考察 $x\to+\infty$ 时是否仍有同样的结论。
+
+\begin{theorem}
+有
+\[
+ \lim_{x\to+\infty}\left(1+\frac1x\right)^x=e,
+ \qquad
+ \lim_{x\to-\infty}\left(1+\frac1x\right)^x=e.
+\]
+等价地，
+\[
+ \boxed{\lim_{t\to0}(1+t)^{1/t}=e.}
+\]
+\end{theorem}
+\begin{proof}
+先设 $x\to+\infty$。取 $n=\lfloor x\rfloor$，则 $n\le x<n+1$，且
+\[
+ \left(1+\frac1{n+1}\right)^n
+ \le\left(1+\frac1x\right)^x
+ \le\left(1+\frac1n\right)^{n+1}.
+\]
+两端分别可以写成
+\[
+ \frac{a_{n+1}}{1+1/(n+1)},\qquad a_n\left(1+\frac1n\right),
+\]
+它们都趋于 $e$。由于 $x\to+\infty$ 时 $n\to+\infty$，由夹逼定理得到正无穷处的结论。
+
+再设 $x\to-\infty$。令 $u=-x$、$v=u-1$，则 $v\to+\infty$，并有
+\[
+ \left(1+\frac1x\right)^x
+ =\left(1-\frac1u\right)^{-u}
+ =\left(1+\frac1v\right)^{v+1}
+ =\left(1+\frac1v\right)^v\left(1+\frac1v\right)\to e.
+\]
+在这两个过程中，底数最终都为正，实数幂有定义。
+
+最后令 $t=1/x$，便把正、负无穷处的两个结论合写为 $t\to0$ 时的形式。其中只需在 $t>-1$、$t\ne0$ 的范围内讨论。
+\end{proof}
+
+\section{由重要极限得到的比值极限}
+\subsection*{三角函数与反三角函数}
+先由第一个重要极限推导几个常用结果：
+\[
+ \lim_{x\to0}\frac{x}{\tan x}=1,\qquad
+ \lim_{x\to0}\frac{\arcsin x}{x}=1,\qquad
+ \lim_{x\to0}\frac{\arctan x}{x}=1.
+\]
+第一式由
+\[
+ \frac{x}{\tan x}=\frac{x}{\sin x}\cos x\to1
+\]
+得到。第二式令 $t=\arcsin x$，于是 $x=\sin t$，且 $x\to0$ 时 $t\to0$，故
+\[
+ \frac{\arcsin x}{x}=\frac{t}{\sin t}\to1.
+\]
+第三式令 $t=\arctan x$，同理有
+\[
+ \frac{\arctan x}{x}=\frac{t}{\tan t}\to1.
+\]
+这里换元后 $t\to0$ 可以由反三角函数的单调性说明：例如给定 $0<\eta<\pi/2$，只要 $|x|<\sin\eta$，就有 $|\arcsin x|<\eta$；反正切的情形用 $|x|<\tan\eta$ 同理说明。
+
+半角公式还给出
+\[
+ \frac{1-\cos x}{x^2/2}
+ =\left(\frac{\sin(x/2)}{x/2}\right)^2\to1.
+\]
+因此
+\[
+ \lim_{x\to0}\frac{1-\cos x}{x^2}=\frac12.
+\]
+
+\subsection*{指数与对数的基本极限}
+第二个重要极限可以用来推导对数函数与指数函数的比值极限。为说明取对数、取指数的依据，先证明它们在有限点处的基本极限。
+
+由数列篇的方根极限，$e^{1/n}\to1$、$e^{-1/n}\to1$。当 $|h|<1/n$ 时，由单调性，
+\[
+ e^{-1/n}<e^h<e^{1/n}.
+\]
+由夹逼定理得 $e^h\to1$，从而 $e^{s+h}=e^s e^h\to e^s$。
+
+对于 $y_0>0$，任取 $\varepsilon>0$，当 $y$ 充分接近 $y_0$ 时，有
+\[
+ y_0e^{-\varepsilon}<y<y_0e^{\varepsilon}.
+\]
+利用对数的单调性，便得 $|\ln y-\ln y_0|<\varepsilon$。所以 $y\to y_0>0$ 时 $\ln y\to\ln y_0$。这些结论只用到了单调性和方根极限，没有借用下面待证的比值极限。
+
+现在对 $(1+x)^{1/x}\to e$ 取对数，得到
+\[
+ \boxed{\lim_{x\to0}\frac{\ln(1+x)}x=1.}
+\]
+再令 $t=e^x-1$。由刚才的指数极限，$x\to0$ 时 $t\to0$，并且 $x=\ln(1+t)$，所以
+\[
+ \boxed{\lim_{x\to0}\frac{e^x-1}{x}
+ =\lim_{t\to0}\frac{t}{\ln(1+t)}=1.}
+\]
+
+有了这两个结果，还可以处理幂函数的增量比。对任意实数 $\alpha$，有
+\[
+ \lim_{x\to0}\frac{(1+x)^\alpha-1}{x}=\alpha.
+\]
+当 $\alpha=0$ 时，分子恒为零，结论显然。若 $\alpha\ne0$，令 $v=\alpha\ln(1+x)$，则 $v\to0$，并有
+\[
+ \frac{(1+x)^\alpha-1}{x}
+ =\frac{e^v-1}{v}\,\alpha\frac{\ln(1+x)}x\to\alpha.
+\]
+这些比值极限说明了相应趋零量之间的相对大小。例如 $(e^x-1)/x\to1$ 表示它们的比值趋于 $1$；下一节将用等价无穷小的记号统一表示这种关系。
+
+\section{幂指型极限的计算}
+刚得到的对数极限，还能帮助我们计算底数趋于 $1$ 的幂指式。取对数后，幂指式就转化为指数与底数对数的乘积。
+
+\begin{theorem}
+在同一趋近过程中，若 $f(x)>0$ 最终成立，且
+\[
+ f(x)\to1,\qquad [f(x)-1]g(x)\to A\in\R,
+\]
+则
+\[
+ f(x)^{g(x)}\to e^A.
+\]
+\end{theorem}
+\begin{proof}
+记 $u(x)=f(x)-1$。定义
+\[
+ r(u)=\begin{cases}\dfrac{\ln(1+u)}u,&u\ne0,\\[0.4em]1,&u=0.\end{cases}
+\]
+由对数比值极限，$u\to0$ 时 $r(u)\to1$。于是即使某些点上 $f(x)=1$，仍可统一写成
+\[
+ \ln\bigl(f(x)^{g(x)}\bigr)
+ =g(x)\ln(1+u(x))
+ =g(x)u(x)r(u(x))\to A.
+\]
+再取指数即得结论。
+\end{proof}
+
+当 $g(x)\to+\infty$ 或 $g(x)\to-\infty$ 时，通常称这类问题为 $1^\infty$ 型。这个名称只描述底数和指数的趋向，不能直接确定结果；真正需要计算的是 $[f(x)-1]g(x)$ 的极限。
+
+\begin{example}
+计算
+\[
+ \lim_{x\to0}(1+2x)^{1/x},\qquad
+ \lim_{x\to0}(1-x)^{1/x},\qquad
+ \lim_{n\to\infty}\left(1+\frac1n-\frac1{n^2}\right)^n.
+\]
+\end{example}
+\begin{proof}[解]
+三式的底数最终都为正且趋于 $1$，相应的偏差与指数的乘积分别为
+\[
+ 2x\cdot\frac1x=2,\qquad
+ (-x)\cdot\frac1x=-1,\qquad
+ \left(\frac1n-\frac1{n^2}\right)n=1-\frac1n\to1.
+\]
+所以三个极限依次为 $e^2$、$e^{-1}$、$e$。第三式也可视为上述结论沿整数数列的应用。
+\end{proof}
+
+\begin{example}
+计算 $\displaystyle\lim_{x\to0^+}(\cos\sqrt{x})^{1/x}$。
+\end{example}
+\begin{proof}[解]
+当 $x>0$ 足够小时，$\cos\sqrt{x}>0$，并趋于 $1$。令 $t=\sqrt{x}$，则
+\[
+ \frac{\cos\sqrt{x}-1}{x}
+ =\frac{\cos t-1}{t^2}
+ =-\frac12\left(\frac{\sin(t/2)}{t/2}\right)^2\to-\frac12.
+\]
+因此由幂指型极限定理，原极限为 $e^{-1/2}$。
+\end{proof}
+
+\end{document}

@@ -8,11 +8,12 @@
 %   "title": "数学分析（一）3.2：函数极限的性质",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "函数极限的唯一性、局部有界性、保号性、保序性、夹逼定理、四则运算法则及归结原则。"
+%   "excerpt": "函数极限的基本性质、归结原则及其单侧形式、单调有界定理和柯西准则，并用两种方法判断极限不存在。"
 % }
 % halo:end
 % 来源：IMG_2167.HEIC—IMG_2170.HEIC，并与 IMG_2165.HEIC—IMG_2166.HEIC 中的复习内容对照。
-% 归结原则的逆向构造补全了板书未写完的证明；记号沿用 03-01。
+% 补充来源：IMG_2455—IMG_2457、IMG_2465—IMG_2467.HEIC。
+% 教材核对：华东师大《数学分析》第5版上册，PDF第61—63页（书页50—52）。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
@@ -40,7 +41,7 @@
 \raggedbottom
 \title{函数极限的性质}
 \author{Yuchen Zhang}
-\date{整理日期：2026年10月14日}
+\date{整理日期：2026年10月14日；补充：2026年10月22日}
 \makeatletter
 \renewcommand{\maketitle}{\begin{center}
 {\LARGE\bfseries \@title\par}\vspace{0.6em}
@@ -242,6 +243,18 @@
 \]
 \end{proof}
 
+\begin{example}
+计算 $\displaystyle\lim_{x\to\pi/4}(x\tan x-1)$。
+\end{example}
+\begin{proof}[解]
+由上一节已经证明的正弦、余弦极限和四则运算法则，
+\[
+ \lim_{x\to\pi/4}(x\tan x-1)
+ =\frac\pi4\cdot\frac{\sin(\pi/4)}{\cos(\pi/4)}-1
+ =\frac\pi4-1.
+\]
+\end{proof}
+
 \subsection*{归结原则}
 直接从函数极限定义判断，有时需要同时处理所有充分接近 $x_0$ 的点。归结原则把它转化为数列问题。
 
@@ -293,19 +306,125 @@
 若 $\lim_{x\to0}\sin(1/x)$ 存在，则由归结原则，两列函数值应趋于同一个极限，矛盾。故该极限不存在。
 \end{proof}
 
+归结原则中的“任意数列”不能改成“某个数列”。一列函数值收敛，只能确定沿这一列点趋近时的函数值极限；要证明函数极限存在，必须保证所有允许的趋近数列都给出同一个极限。反过来，只要找到一列函数值不收敛，或者两列函数值趋于不同的数，就能否定有限极限的存在。
+
+\subsection*{单侧归结原则}
+归结原则的证明也适用于单侧趋近和无穷远处。对于单侧极限，还可以把需要检验的数列限制为单调趋近的数列。
+
+\begin{theorem}[右极限的归结原则]
+设 $f$ 在 $(x_0,x_0+\delta_0)$ 上有定义，则
+\[
+ \lim_{x\to x_0^+}f(x)=A
+\]
+当且仅当对任意满足
+\[
+ x_0<x_n<x_0+\delta_0,\qquad x_n\downarrow x_0
+\]
+的严格递减数列，都有 $f(x_n)\to A$。
+\end{theorem}
+\begin{proof}
+必要性由归结原则直接得到。反之，若右极限不等于 $A$，则存在 $\varepsilon_0>0$，使每个充分小的右邻域中都有点 $x$ 满足 $|f(x)-A|\ge\varepsilon_0$。
+
+先取这样的点 $x_1\in(x_0,x_0+\delta_0)$。已取到 $x_n$ 后，再取一个这样的点 $x_{n+1}$，使
+\[
+ 0<x_{n+1}-x_0<\min\left\{\frac1{n+1},\frac{x_n-x_0}{2}\right\}.
+\]
+这样得到严格递减且趋于 $x_0$ 的数列，但始终有 $|f(x_n)-A|\ge\varepsilon_0$，与假设矛盾。
+\end{proof}
+
+左极限可相应地只检验严格递增到 $x_0$ 的数列；对于 $x\to+\infty$，可只检验严格递增且趋于 $+\infty$ 的数列。这里限制的是自变量数列的单调性，并不要求函数 $f$ 单调。
+
+\subsection*{单调有界定理}
+归结原则把函数极限转化为数列极限，但还需要判断各列函数值是否趋向同一个数。对单调函数，可以直接借助确界原理确定单侧极限。
+
+\begin{theorem}[单调有界定理]
+设 $f$ 在 $x_0$ 的某个右邻域内单调且有界，则有限右极限 $\lim_{x\to x_0^+}f(x)$ 存在。具体地，在这个右邻域内，
+\[
+ \begin{array}{c|c}
+ f\text{ 递增}&\displaystyle\lim_{x\to x_0^+}f(x)=\inf f\\[0.5em]
+ f\text{ 递减}&\displaystyle\lim_{x\to x_0^+}f(x)=\sup f
+ \end{array}
+\]
+其中 $\inf f$、$\sup f$ 分别指该邻域上函数值集合的下确界、上确界。对于左极限，递增函数对应上确界，递减函数对应下确界。
+\end{theorem}
+\begin{proof}
+以 $f$ 在 $(x_0,x_0+\delta_0)$ 上递增为例。令
+\[
+ A=\inf\{f(x):x_0<x<x_0+\delta_0\}.
+\]
+任取 $\varepsilon>0$，由下确界的定义，存在 $x'\in(x_0,x_0+\delta_0)$，使 $f(x')<A+\varepsilon$。取 $\delta=x'-x_0$。当 $x_0<x<x_0+\delta=x'$ 时，由单调性，
+\[
+ A\le f(x)\le f(x')<A+\varepsilon,
+\]
+故 $|f(x)-A|<\varepsilon$。这就证明了右极限为 $A$。其余情形同理。
+\end{proof}
+
+判定某一侧的极限时，只需考察这一侧某个足够小邻域内的单调性和有界性；左右两侧的极限仍可能不同。反过来，有限单侧极限存在必然推出这一侧的局部有界性。因此，对已经单调的函数，有限单侧极限存在与在某个更小的单侧邻域内有界等价，不要求它在原来的整个区间上有界。
+
+\subsection*{函数极限的柯西准则}
+还有一种判别方法只比较邻近的函数值，不预先指定极限值。
+
+\begin{theorem}[柯西准则]
+设 $f$ 在 $\U^0(x_0,\delta_0)$ 上有定义，则 $\lim_{x\to x_0}f(x)$ 存在有限值的充要条件是：对任意 $\varepsilon>0$，存在 $0<\delta\le\delta_0$，使任意两点 $x',x''\in\U^0(x_0,\delta)$ 都满足
+\[
+ |f(x')-f(x'')|<\varepsilon.
+\]
+\end{theorem}
+\begin{proof}
+必要性：设 $f(x)\to A$。任取 $\varepsilon>0$，由极限定义取 $\delta>0$，使去心邻域内的 $x$ 满足 $|f(x)-A|<\varepsilon/2$。于是其中任意两点满足
+\[
+ |f(x')-f(x'')|
+ \le |f(x')-A|+|f(x'')-A|<\varepsilon.
+\]
+
+充分性：先固定一列 $x_n\in\U^0(x_0,\delta_0)$，使 $x_n\to x_0$。任取 $\varepsilon>0$，按题设取 $\delta>0$。当 $n,m$ 充分大时，$x_n,x_m$ 都在 $\U^0(x_0,\delta)$ 中，因而
+\[
+ |f(x_n)-f(x_m)|<\varepsilon.
+\]
+由数列的柯西收敛准则，存在 $A\in\R$，使 $f(x_n)\to A$。
+
+下面用同一个 $A$ 控制任意邻近点的函数值。给定 $\varepsilon>0$，按题设取 $\delta>0$，使该去心邻域内任意两点的函数值之差小于 $\varepsilon/2$。再固定一个充分大的下标 $n_0$，使
+\[
+ x_{n_0}\in\U^0(x_0,\delta),\qquad
+ |f(x_{n_0})-A|<\frac\varepsilon2.
+\]
+这样，对任意 $x\in\U^0(x_0,\delta)$，都有
+\[
+ |f(x)-A|\le |f(x)-f(x_{n_0})|+|f(x_{n_0})-A|
+ <\frac\varepsilon2+\frac\varepsilon2=\varepsilon.
+\]
+故 $\lim_{x\to x_0}f(x)=A$。
+\end{proof}
+
+对于 $x\to+\infty$，只需把两个点都位于去心邻域的条件换成 $x',x''>M$。相应地，有限极限不存在当且仅当存在 $\varepsilon_0>0$，使任意远处都能找到两点，其函数值之差不小于 $\varepsilon_0$。有限点处的否定形式则为
+\[
+ \exists\varepsilon_0>0,\ \forall\delta\in(0,\delta_0],\
+ \exists x',x''\in\U^0(x_0,\delta):\quad
+ |f(x')-f(x'')|\ge\varepsilon_0.
+\]
+
 \begin{example}
-计算 $\displaystyle\lim_{x\to\pi/4}(x\tan x-1)$。
+用归结原则和柯西准则分别证明 $\displaystyle\lim_{x\to+\infty}\sin x$ 不存在。
 \end{example}
-\begin{proof}[解]
-由函数极限的四则运算法则和三角函数的连续性，
+\begin{proof}
+取 $x_n=2n\pi$、$y_n=2n\pi+\pi/2$。两列都趋于 $+\infty$，而
 \[
- \lim_{x\to\pi/4}x\tan x
- =\frac\pi4\cdot\tan\frac\pi4=\frac\pi4.
+ \sin x_n=0,\qquad \sin y_n=1.
 \]
-因此
+由归结原则，原极限不存在。若用柯西准则，则取 $\varepsilon_0=1$：对任意 $M>0$，取充分大的 $n$，便有 $x_n,y_n>M$，而 $|\sin x_n-\sin y_n|=1$，不满足柯西条件。
+\end{proof}
+
+\begin{example}
+证明函数 $f(x)=1/x$ 在 $x\to0$ 时不存在有限极限。
+\end{example}
+\begin{proof}
+取 $x_n=1/n$、$y_n=1/(n+1)$。两列都趋于 $0$，且
 \[
- \lim_{x\to\pi/4}(x\tan x-1)=\frac\pi4-1.
+ \left|\frac1{x_n}-\frac1{y_n}\right|=|n-(n+1)|=1.
 \]
+因此在任意小的去心邻域内，均有两个函数值之差等于 $1$，由柯西准则，有限极限不存在。
+
+也可只取 $x_n=1/n$：对应的函数值 $n$ 不收敛于有限实数，由归结原则即得结论。这里否定的是有限极限；无穷大量的含义将在后面另行定义。
 \end{proof}
 
 \end{document}

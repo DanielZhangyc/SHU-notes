@@ -1,0 +1,192 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "4.1",
+%   "title": "数学分析（一）4.1：连续性",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "函数在一点连续的定义、增量与ε—δ表述、典型例题，以及左连续、右连续和区间端点的约定。"
+% }
+% halo:end
+% 来源：IMG_2464、IMG_2480—IMG_2482.HEIC。
+% 教材核对：华东师大《数学分析》第5版上册，PDF第76、79页（书页65、68）。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\U}{U}
+\theoremstyle{definition}
+\newtheorem*{definition}{定义}
+\newtheorem*{theorem}{定理}
+\newtheorem*{example}{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.3em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 4.1\quad 连续性}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{连续性}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月22日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}
+{\LARGE\bfseries \@title\par}\vspace{0.6em}
+\@author\par\vspace{0.2em}{\small\@date\par}
+\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+
+\section{极限与点值}
+函数在一点的极限只描述附近函数值的趋向，并不决定这一点的函数值。连续性要求附近的函数值趋向这一点的函数值。
+
+例如 $\sin x/x$ 在 $x=0$ 处没有定义，却有 $\lim_{x\to0}\sin x/x=1$。又如
+\[
+ g(x)=\begin{cases}|x|,&x\ne0,\\1,&x=0,\end{cases}
+\]
+虽然 $\lim_{x\to0}g(x)=0$，但 $g(0)=1$。前一个函数缺少点值，后一个函数的点值与极限不同，都不能满足连续性的要求。
+
+\begin{definition}
+设 $f$ 在 $x_0$ 的某个邻域 $\U(x_0,\delta_0)$ 内有定义。若
+\[
+ \boxed{\lim_{x\to x_0}f(x)=f(x_0),}
+\]
+则称 $f$ 在点 $x_0$ 连续。
+\end{definition}
+
+因此，判断函数在一点是否连续，需要依次确认：
+\begin{enumerate}
+ \item $f(x_0)$ 有定义；
+ \item $\lim_{x\to x_0}f(x)$ 存在有限值；
+ \item 极限值等于 $f(x_0)$。
+\end{enumerate}
+只知道极限存在，或者只知道点值存在，都不够。
+
+由函数极限的定义，连续性也可表述为：对任意 $\varepsilon>0$，存在 $0<\delta\le\delta_0$，使
+\[
+ |x-x_0|<\delta\quad\Longrightarrow\quad
+ |f(x)-f(x_0)|<\varepsilon.
+\]
+这里可以允许 $x=x_0$，因为此时 $|f(x)-f(x_0)|=0$，所要求的不等式自动成立。这与函数极限定义中的去心条件不同：连续性本身已经要求函数在 $x_0$ 处有定义。
+
+\section{连续性的增量表述}
+同一件事也可以用自变量和函数值的增量来表达。固定所考察的点 $x_0$，记
+\[
+ \Delta x=x-x_0,\qquad
+ \Delta y=f(x_0+\Delta x)-f(x_0).
+\]
+其中 $\Delta x$ 称为自变量增量，$\Delta y$ 称为相应的函数值增量；两者都可以为正、为负或为零。
+
+于是 $f$ 在 $x_0$ 连续，等价于
+\[
+ \boxed{\lim_{\Delta x\to0}\Delta y=0.}
+\]
+因为 $x\to x_0$ 等价于 $\Delta x\to0$，而 $f(x)\to f(x_0)$ 正好等价于 $\Delta y\to0$。
+
+这意味着给定任意允许的函数值变化范围后，总能把自变量的变化限制得足够小，使函数值变化落在指定范围内。这里先给定 $\varepsilon$，再选取 $\delta$；选取的 $\delta$ 可以依赖于 $\varepsilon$ 和所考察的点 $x_0$。
+
+\section{连续性的判断}
+判断函数在一点是否连续，先确认函数在这一点有定义，再把点值与相应的极限比较。
+
+\begin{example}
+判断 $f(x)=x+2$ 在 $x=0$ 处是否连续。
+\end{example}
+\begin{proof}[解]
+有 $f(0)=2$，且 $\lim_{x\to0}(x+2)=2=f(0)$，所以在 $0$ 处连续。用定义验证时，任取 $\varepsilon>0$，取 $\delta=\varepsilon$，便有
+\[
+ |x|<\delta\quad\Longrightarrow\quad
+ |f(x)-f(0)|=|x|<\varepsilon.
+\]
+\end{proof}
+
+\begin{example}
+判断下列函数在 $x=0$ 处是否连续：
+\[
+ f(x)=\begin{cases}x\sin(1/x),&x\ne0,\\0,&x=0.\end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+因为 $|x\sin(1/x)|\le|x|$，所以
+\[
+ \lim_{x\to0}f(x)=0=f(0).
+\]
+故 $f$ 在 $0$ 处连续。虽然 $\sin(1/x)$ 不断振荡，但乘积的绝对值受到趋于零的 $|x|$ 控制。
+\end{proof}
+
+\begin{example}
+判断符号函数在 $x=0$ 处是否连续：
+\[
+ \operatorname{sgn}x=
+ \begin{cases}1,&x>0,\\0,&x=0,\\-1,&x<0.\end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+有 $\operatorname{sgn}0=0$，但
+\[
+ \lim_{x\to0^-}\operatorname{sgn}x=-1,\qquad
+ \lim_{x\to0^+}\operatorname{sgn}x=1.
+\]
+左右极限不同，双侧极限不存在，因此符号函数在 $0$ 处不连续。
+\end{proof}
+
+\begin{example}
+判断下列函数在 $x=0$ 处是否连续：
+\[
+ f(x)=\begin{cases}x,&x\ne0,\\1,&x=0.\end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+有 $\lim_{x\to0}f(x)=\lim_{x\to0}x=0$，而 $f(0)=1$。极限存在但不等于点值，因此在 $0$ 处不连续。如果把点值改为 $f(0)=0$，就能使它在 $0$ 处连续。
+\end{proof}
+
+第二例中的振荡因子没有极限，但乘积趋于点值；第四例虽有极限，却因点值不同而不连续。连续性的判据始终是函数值是否趋于该点的点值。
+
+\section{左连续与右连续}
+在区间内点，可以分别从左右两侧判断连续性。
+
+\begin{definition}
+设 $f(x_0)$ 有定义，并且 $f$ 在 $x_0$ 的某个右邻域内有定义。若
+\[
+ \lim_{x\to x_0^+}f(x)=f(x_0),
+\]
+则称 $f$ 在 $x_0$ 右连续。若 $f$ 在某个左邻域内有定义，且
+\[
+ \lim_{x\to x_0^-}f(x)=f(x_0),
+\]
+则称 $f$ 在 $x_0$ 左连续。
+\end{definition}
+
+\begin{theorem}
+设 $f$ 在 $x_0$ 的某个邻域内有定义，则 $f$ 在 $x_0$ 连续，当且仅当它在 $x_0$ 既左连续又右连续。
+\end{theorem}
+\begin{proof}
+由双侧极限与单侧极限的关系，
+\[
+ \lim_{x\to x_0}f(x)=f(x_0)
+ \quad\Longleftrightarrow\quad
+ \lim_{x\to x_0^-}f(x)=\lim_{x\to x_0^+}f(x)=f(x_0).
+\]
+两端分别是连续和左右连续的定义，故结论成立。
+\end{proof}
+
+若所考察的是区间端点，则只从区间内的一侧趋近。对定义在 $[a,b]$ 上的函数，在左端点 $a$ 的连续性指右连续，在右端点 $b$ 的连续性指左连续。
+
+例如 $f(x)=\sqrt{1-x^2}$ 的定义域是 $[-1,1]$。由前面已经证明的端点极限，
+\[
+ \lim_{x\to-1^+}f(x)=0=f(-1),\qquad
+ \lim_{x\to1^-}f(x)=0=f(1),
+\]
+所以它在左端点 $-1$ 右连续，在右端点 $1$ 左连续，亦即在定义域的这两个端点处连续。
+
+\end{document}
