@@ -8,11 +8,12 @@
 %   "title": "数学分析（一）4.1：连续性",
 %   "categories": ["study-notes"],
 %   "tags": ["mathematics"],
-%   "excerpt": "函数在一点连续的定义、增量与ε—δ表述、典型例题，以及左连续、右连续和区间端点的约定。"
+%   "excerpt": "函数连续的定义、增量表述与单侧连续，间断点的分类，以及黎曼函数的连续性证明。"
 % }
 % halo:end
-% 来源：IMG_2464、IMG_2480—IMG_2482.HEIC。
+% 来源：IMG_2464、IMG_2480—IMG_2482.HEIC；间断点与黎曼函数续自IMG_3107.HEIC。
 % 教材核对：华东师大《数学分析》第5版上册，PDF第76、79页（书页65、68）。
+% 2026-11-06补核PDF第77—79页（书页66—68），黎曼函数采用教材端点取0的定义。
 \RequirePackage{iftex}
 \RequireLuaTeX
 \documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
@@ -38,7 +39,7 @@
 \raggedbottom
 \title{连续性}
 \author{Yuchen Zhang}
-\date{整理日期：2026年10月22日}
+\date{整理日期：2026年10月22日\quad 补充日期：2026年11月6日}
 \makeatletter
 \renewcommand{\maketitle}{\begin{center}
 {\LARGE\bfseries \@title\par}\vspace{0.6em}
@@ -188,5 +189,54 @@
  \lim_{x\to1^-}f(x)=0=f(1),
 \]
 所以它在左端点 $-1$ 右连续，在右端点 $1$ 左连续，亦即在定义域的这两个端点处连续。
+
+\section{间断点及其分类}
+\begin{definition}
+设 $f$ 在 $x_0$ 的某个去心邻域内有定义。若 $f(x_0)$ 未定义，或者虽有定义但在 $x_0$ 不连续，则称 $x_0$ 为 $f$ 的间断点。
+\end{definition}
+讨论间断类型时，先考察左右极限；这里的“极限存在”均指存在有限极限。
+\begin{enumerate}
+\item \textbf{第一类间断点：}左右极限都存在。其中又分为：
+\begin{itemize}
+\item 可去间断点：左右极限相等，即 $\lim_{x\to x_0}f(x)=A\in\R$，但 $f(x_0)$ 未定义或 $f(x_0)\ne A$。
+\item 跳跃间断点：左右极限都存在，但 $\lim_{x\to x_0^-}f(x)\ne\lim_{x\to x_0^+}f(x)$。
+\end{itemize}
+\item \textbf{第二类间断点：}至少有一个单侧极限不存在有限值，包括趋于无穷或持续振荡的情形。
+\end{enumerate}
+例如 $\sin x/x$ 在 $0$ 处为可去间断；$\operatorname{sgn}x$ 在 $0$ 处为跳跃间断；$1/x$ 和 $\sin(1/x)$ 在 $0$ 处均为第二类间断。对可去间断点，只需补定义或改定义 $f(x_0)=A$，便得到在该点连续的函数。
+
+\newpage
+\section{黎曼函数的连续性}
+\begin{example}
+在 $[0,1]$ 上定义黎曼函数
+\[
+ R(x)=\begin{cases}
+ \dfrac1q,&x=\dfrac pq\in(0,1),\quad p,q\in\mathbb N_+,\ \gcd(p,q)=1,\\[4pt]
+ 0,&x=0,\ x=1\text{ 或 }x\in(0,1)\setminus\mathbb Q.
+ \end{cases}
+\]
+证明 $R$ 在 $(0,1)$ 的每个无理点连续，在每个有理点不连续，并判断端点的单侧连续性。
+\end{example}
+\begin{proof}
+先证对每个 $x_0\in[0,1]$，沿定义域趋近时都有
+\[
+ \lim_{\substack{x\to x_0\\x\in[0,1]}}R(x)=0.
+\]
+任取 $\varepsilon>0$，选正整数 $N>1/\varepsilon$。记
+\[
+ E_N=\left\{\frac pq\in(0,1):\gcd(p,q)=1,\ 1\le p<q\le N\right\}.
+\]
+分母 $q$ 只有有限种选择，每个 $q$ 对应的分子也只有有限个，故 $E_N$ 是有限集。令 $F=E_N\setminus\{x_0\}$。若 $F\ne\varnothing$，取
+\[
+ \delta=\frac12\min_{r\in F}|r-x_0|>0;
+\]
+若 $F=\varnothing$，取 $\delta=1$。当 $x\in[0,1]$ 且 $0<|x-x_0|<\delta$ 时，$x\notin E_N$。因此 $R(x)=0$，或 $x=p/q$ 为既约分数且 $q>N$，从而
+\[
+ 0\le R(x)<\frac1N<\varepsilon.
+\]
+故所述极限成立。
+
+若 $x_0\in(0,1)$ 为无理数，则 $R(x_0)=0$ 等于极限，因而连续。若 $x_0=p_0/q_0\in(0,1)$ 为既约分数，则 $R(x_0)=1/q_0>0$，不等于极限，因而是可去间断点。又因 $R(0)=R(1)=0$，所以 $R$ 在 $0$ 右连续、在 $1$ 左连续。
+\end{proof}
 
 \end{document}

@@ -1,0 +1,468 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "5.1",
+%   "title": "数学分析（一）5.1：导数和微分",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "导数、求导法则、参数与极坐标求导、高阶导数，以及微分的概念、形式不变性和近似计算。"
+% }
+% halo:end
+% 来源：IMG_3111—IMG_3116.HEIC；按知识结构合并教材第五章§1—§5。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\mathrm d}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.3em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 5.1\quad 导数和微分}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{导数和微分}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月6日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\bfseries\@title\par}\vspace{0.6em}\@author\par\vspace{0.2em}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\section{导数的定义与几何意义}
+设 $y=f(x)$，固定 $x_0$，记 $\Delta x=x-x_0$、$\Delta y=f(x_0+\Delta x)-f(x_0)$。当 $\Delta x\ne0$ 时，差商 $\Delta y/\Delta x$ 表示这段变化中的平均变化率；令 $\Delta x\to0$，若差商趋于有限值，就得到在 $x_0$ 的导数。
+\begin{definition}[导数]
+设 $f$ 在 $x_0$ 的某邻域内有定义。若极限
+\[
+ \boxed{f'(x_0)=\lim_{\Delta x\to0}
+ \frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}
+ =\lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}}
+\]
+存在有限值，则称 $f$ 在 $x_0$ 可导。还可记作
+\[
+ y'(x_0),\qquad \left.\frac{\dd y}{\dd x}\right|_{x=x_0},
+ \qquad \left.\frac{\dd f(x)}{\dd x}\right|_{x=x_0}.
+\]
+若 $f$ 在区间内每一点可导，把 $x$ 对应到 $f'(x)$ 得到的函数称为导函数，简称导数。
+\end{definition}
+只令 $\Delta x\to0^+$ 或 $\Delta x\to0^-$，得到右导数 $f'_+(x_0)$ 与左导数 $f'_-(x_0)$。由双侧极限与单侧极限的关系，
+\[
+ f\text{ 在 }x_0\text{ 可导}
+ \iff f'_+(x_0),f'_-(x_0)\text{ 都存在且相等}.
+\]
+说 $f$ 在 $[a,b]$ 上可导，是指在 $(a,b)$ 上可导，且 $f'_+(a)$、$f'_-(b)$ 都存在有限值。
+
+差商也是曲线上两点 $(x_0,f(x_0))$ 与 $(x_0+\Delta x,f(x_0+\Delta x))$ 所连割线的斜率。当 $\Delta x\to0$ 时，若割线斜率趋于有限值 $f'(x_0)$，便得到曲线在 $(x_0,f(x_0))$ 处的切线，其方程为
+\[
+ y-f(x_0)=f'(x_0)(x-x_0).
+\]
+\begin{example}
+求 $f(x)=x^2$ 在 $x=1$ 处的导数及切线。
+\end{example}
+\begin{proof}[解]
+由定义，
+\[
+ f'(1)=\lim_{h\to0}\frac{(1+h)^2-1}{h}
+ =\lim_{h\to0}(2+h)=2.
+\]
+故切线为 $y-1=2(x-1)$，即 $y=2x-1$。
+\end{proof}
+\begin{example}
+证明 $f(x)=|x|$ 在 $0$ 处连续但不可导。
+\end{example}
+\begin{proof}
+$\lim_{x\to0}|x|=0=f(0)$，故连续。但
+\[
+ f'_+(0)=\lim_{h\to0^+}\frac{|h|}{h}=1,
+ \qquad f'_-(0)=\lim_{h\to0^-}\frac{|h|}{h}=-1,
+\]
+两者不等，因此不可导。
+\end{proof}
+\section{可导性与一阶展开}
+导数不仅给出一个极限，还能把函数增量分成一个线性部分和更小的余项。
+\begin{theorem}[可导的等价表述]
+$f$ 在 $x_0$ 可导，当且仅当存在常数 $A$，使
+\[
+ \Delta y=A\Delta x+o(\Delta x)\qquad(\Delta x\to0).
+\]
+此时 $A=f'(x_0)$。这里 $r(h)=o(h)$ 是指 $r(h)/h\to0$。
+\end{theorem}
+\begin{proof}
+若 $f'(x_0)=A$，令
+\[
+ r(h)=f(x_0+h)-f(x_0)-Ah.
+\]
+由导数定义，$r(h)/h\to0$，从而得到所述展开。反之，将展开除以 $\Delta x\ne0$ 并取极限，得 $f'(x_0)=A$。
+\end{proof}
+\begin{theorem}
+可导必连续，连续不一定可导。
+\end{theorem}
+\begin{proof}
+若 $f$ 在 $x_0$ 可导，由 $\Delta y=f'(x_0)\Delta x+o(\Delta x)$ 得 $\Delta y\to0$，故连续。逆命题由 $|x|$ 在 $0$ 处的例子否定。
+\end{proof}
+\section{基本初等函数的导数}
+先列出基本初等函数的常用导数公式，再由差商证明正弦、余弦与指数函数 $e^x$ 的公式。其余公式在相应求导法则建立后说明。
+\[
+\begin{array}{c|c|l}
+ f(x)&f'(x)&\text{适用范围}\\\hline
+ C&0&x\in\R\\
+ x^\alpha&\alpha x^{\alpha-1}&x>0,\ \alpha\in\R\\
+ e^x&e^x&x\in\R\\
+ a^x&a^x\ln a&a>0,\ a\ne1\\
+ \ln|x|&1/x&x\ne0\\
+ \log_a|x|&1/(x\ln a)&x\ne0,\ a>0,\ a\ne1
+\end{array}
+\]
+整数幂及其他有定义的幂函数，可在相应可导的区间使用幂函数公式；$x=0$ 处应另按定义判断。
+\[
+\begin{array}{c|c@{\qquad}c|c}
+ f(x)&f'(x)&f(x)&f'(x)\\\hline
+ \sin x&\cos x&\cos x&-\sin x\\
+ \tan x&\sec^2x&\cot x&-\csc^2x\\
+ \sec x&\sec x\tan x&\csc x&-\csc x\cot x\\
+ \arcsin x&1/\sqrt{1-x^2}&\arccos x&-1/\sqrt{1-x^2}\\
+ \arctan x&1/(1+x^2)&\operatorname{arccot}x&-1/(1+x^2)
+\end{array}
+\]
+三角函数的公式限于函数有定义处；$\arcsin x,\arccos x$ 的导数公式适用于 $|x|<1$，其余两种反三角函数的导数公式适用于 $\R$。这里 $\operatorname{arccot}x$ 的值域取 $(0,\pi)$。
+
+例如，由正弦加法公式，
+\[
+ \frac{\sin(x+h)-\sin x}{h}
+ =\sin x\frac{\cos h-1}{h}+\cos x\frac{\sin h}{h}.
+\]
+其中 $\sin h/h\to1$，且由 $\cos h-1=-2\sin^2(h/2)$ 得 $(\cos h-1)/h\to0$，所以 $(\sin x)'=\cos x$。同理可得 $(\cos x)'=-\sin x$。
+
+由已知极限 $\lim_{h\to0}(e^h-1)/h=1$，
+\[
+ (e^x)'=\lim_{h\to0}e^x\frac{e^h-1}{h}=e^x.
+\]
+常数函数的差商恒为零，故其导数为零。
+\section{四则运算的求导法则}
+若两个函数都可导，它们的增量可分别展开，因而能计算和、积、商的导数。
+\begin{theorem}
+若 $u,v$ 在所考察点可导，则
+\[
+ (u\pm v)'=u'\pm v',\qquad (uv)'=u'v+uv'.
+\]
+若该点还有 $v\ne0$，则
+\[
+ \left(\frac uv\right)'=\frac{u'v-uv'}{v^2}.
+\]
+特别地，$(Cu)'=Cu'$，其中 $C$ 为常数。
+\end{theorem}
+\begin{proof}
+和差法则直接由差商的极限运算得到。对乘积，固定所考察的 $x$，有
+\begin{align*}
+ \frac{u(x+h)v(x+h)-u(x)v(x)}h
+ &=u(x+h)\frac{v(x+h)-v(x)}h\\
+ &\quad+v(x)\frac{u(x+h)-u(x)}h.
+\end{align*}
+因可导必连续，令 $h\to0$ 得 $(uv)'=uv'+vu'$。又因 $v(x)\ne0$，由连续性知附近分母也非零，且
+\[
+ \frac{1/v(x+h)-1/v(x)}h
+ =-\frac1{v(x+h)v(x)}\frac{v(x+h)-v(x)}h
+ \longrightarrow-\frac{v'(x)}{v(x)^2}.
+\]
+再把 $u/v$ 视为 $u\cdot(1/v)$，由乘积法则得到商法则。
+\end{proof}
+例如，$(\sec x)'=(1/\cos x)'=\sin x/\cos^2x=\sec x\tan x$。
+\section{反函数与复合函数的导数}
+反函数交换自变量与因变量，两者的差商互为倒数。因此，在原函数的导数不为零时，可以利用反函数的连续性求出这一倒数的极限。
+\begin{theorem}[反函数求导法则]
+设 $f$ 在区间 $I$ 上连续且严格单调，$x_0$ 是 $I$ 的内点。若 $f'(x_0)$ 存在且非零，则反函数 $g=f^{-1}$ 在 $y_0=f(x_0)$ 可导，且
+\[
+ \boxed{g'(y_0)=\frac1{f'(x_0)}.}
+\]
+\end{theorem}
+\begin{proof}
+令 $x=g(y)$。由反函数连续性，$y\to y_0$ 时 $x\to x_0$；由一一对应性，$y\ne y_0$ 时 $x\ne x_0$。故
+\[
+ \frac{g(y)-g(y_0)}{y-y_0}
+ =\frac{x-x_0}{f(x)-f(x_0)}
+ \longrightarrow\frac1{f'(x_0)}.
+\]
+\end{proof}
+\begin{example}
+求 $y=\arcsin x$ 和 $y=\arctan x$ 的导数。
+\end{example}
+\begin{proof}[解]
+若 $y=\arcsin x$，则 $x=\sin y$，$y\in[-\pi/2,\pi/2]$。当 $|x|<1$ 时，$\cos y>0$，因而
+\[
+ \frac{\dd y}{\dd x}=\frac1{\cos y}
+ =\frac1{\sqrt{1-\sin^2y}}=\frac1{\sqrt{1-x^2}}.
+\]
+若 $y=\arctan x$，则 $x=\tan y$，$y\in(-\pi/2,\pi/2)$，故
+\[
+ \frac{\dd y}{\dd x}=\frac1{\sec^2y}=\frac1{1+x^2}.
+\]
+同理，由 $x=\cos y$ 和 $x=\cot y$ 可得另外两种反三角函数的公式。
+\end{proof}
+对于复合函数，内函数先产生增量，再由外函数把它变为函数值增量。
+\begin{theorem}[复合函数求导法则]
+若 $u=g(x)$ 在 $x_0$ 可导，$y=f(u)$ 在 $u_0=g(x_0)$ 可导，且复合函数在 $x_0$ 附近有定义，则
+\[
+ (f\circ g)'(x_0)=f'(u_0)g'(x_0),
+ \qquad \frac{\dd y}{\dd x}=\frac{\dd y}{\dd u}\frac{\dd u}{\dd x}.
+\]
+\end{theorem}
+\begin{proof}
+由 $f$ 可导，可写
+\[
+ f(u_0+k)-f(u_0)=\bigl(f'(u_0)+\eta(k)\bigr)k,
+ \qquad \eta(k)\to0\quad(k\to0),
+\]
+并定义 $\eta(0)=0$，使该等式在 $k=0$ 时也成立。令 $h=\Delta x$、$\Delta u=g(x_0+h)-g(x_0)$，则 $\Delta u\to0$，且
+\[
+ \frac{\Delta y}{h}
+ =\bigl(f'(u_0)+\eta(\Delta u)\bigr)\frac{\Delta u}{h}
+ \longrightarrow f'(u_0)g'(x_0).
+\]
+这个证明允许 $\Delta u=0$，不需要把差商除以可能为零的内函数增量。
+\end{proof}
+由反函数法则，$(\ln x)'=1/e^{\ln x}=1/x$（$x>0$）。在 $x<0$ 时对 $\ln(-x)$ 用链式法则，仍得 $(\ln|x|)'=1/x$。进而由
+\[
+ \log_a|x|=\frac{\ln|x|}{\ln a},\qquad
+ a^x=e^{x\ln a},\qquad x^\alpha=e^{\alpha\ln x}\ (x>0),
+\]
+得到前表中的对数、一般指数和实幂导数。
+\begin{example}
+设 $n\in\mathbb N_+$，$f,\varphi$ 在所涉及的点可导。求
+\[
+ y=\left\{f\left([\varphi(\sin(x^n))]^n\right)\right\}^n
+\]
+的导数。
+\end{example}
+\begin{proof}[解]
+记 $u=\sin(x^n)$、$v=[\varphi(u)]^n$，则逐层求导得
+\begin{align*}
+ u'&=nx^{n-1}\cos(x^n),\\
+ v'&=n[\varphi(u)]^{n-1}\varphi'(u)u',\\
+ y'&=n[f(v)]^{n-1}f'(v)v'\\
+ &=n^3[f(v)]^{n-1}f'(v)[\varphi(u)]^{n-1}
+ \varphi'(u)x^{n-1}\cos(x^n).
+\end{align*}
+每个函数层都要乘上该层的导数；幂函数与 $f,\varphi$ 本身的求导分别进行。
+\end{proof}
+\begin{example}[幂指函数]
+设 $u,v$ 可导且 $u(x)>0$，求 $y=u(x)^{v(x)}$ 的导数。
+\end{example}
+\begin{proof}[解]
+取对数得 $\ln y=v\ln u$，两边求导，
+\[
+ \frac{y'}y=v'\ln u+v\frac{u'}u,
+\]
+所以
+\[
+ \boxed{y'=u^v\left(v'\ln u+v\frac{u'}u\right).}
+\]
+也可先写成 $y=e^{v\ln u}$，再用链式法则得到同一结果。例如 $x>0$ 时，$(x^x)'=x^x(\ln x+1)$。
+\end{proof}
+\section{极值的必要条件}
+导数的符号来自差商的符号。在一个内点取得极值时，左右差商的限制方向相反。
+\begin{definition}
+设 $x_0$ 为定义域内点。若存在 $\delta>0$，使对任意 $|x-x_0|<\delta$ 都有 $f(x)\le f(x_0)$，则称 $f$ 在 $x_0$ 取得局部极大值；将不等号反向，便得到局部极小值的定义。二者统称极值，$x_0$ 称为极值点。
+\end{definition}
+\begin{theorem}[费马定理]
+若 $f$ 在内点 $x_0$ 可导，且在 $x_0$ 取得极值，则 $f'(x_0)=0$。
+\end{theorem}
+\begin{proof}
+只证极大值情形。对充分小的 $h>0$，有
+\[
+ \frac{f(x_0+h)-f(x_0)}h\le0;
+\]
+对充分小的 $h<0$，相应差商不小于零。因此 $f'_+(x_0)\le0$、$f'_-(x_0)\ge0$。可导性要求两者相等，故只能等于零。极小值情形同理。
+\end{proof}
+满足 $f'(x_0)=0$ 的点称为驻点。驻点不一定是极值点，例如 $x^3$ 在 $0$ 处导数为零，但任意小的邻域内都有正值和负值。极值点也可能不可导，例如 $|x|$ 的极小值点 $0$。费马定理要求内点；$f(x)=x$ 在 $[0,1]$ 的端点取得最值，但端点的单侧导数为 $1$。
+\section{参变量函数与极坐标求导}
+当曲线用参数表示时，先求 $x,y$ 关于参数的变化率。当 $x$ 关于参数的变化率不为零时，两者相除便可得到曲线的导数；为此还需保证参数能在局部看作 $x$ 的函数。
+设
+\[
+ x=\varphi(t),\qquad y=\psi(t).
+\]
+在所讨论的参数点附近，假设 $\varphi$ 连续严格单调，因而 $t$ 可看作 $x$ 的连续反函数；再设两函数在该点可导，且 $\varphi'(t)\ne0$。由反函数与链式法则，
+\[
+ \boxed{\frac{\dd y}{\dd x}=\frac{\psi'(t)}{\varphi'(t)}.}
+\]
+若它们在附近二阶可导，且 $\varphi'$ 在附近非零，则
+\[
+ \boxed{\frac{\dd^2y}{\dd x^2}
+ =\frac1{\varphi'(t)}\frac{\dd}{\dd t}
+ \left(\frac{\psi'(t)}{\varphi'(t)}\right)
+ =\frac{\psi''(t)\varphi'(t)-\psi'(t)\varphi''(t)}{[\varphi'(t)]^3}.}
+\]
+第二次求导仍须把关于 $t$ 的导数除以 $\dd x/\dd t$，不能写成 $\psi''/\varphi''$。
+\begin{example}
+对摆线
+\[
+ x=a(t-\sin t),\qquad y=a(1-\cos t),\qquad a>0,
+\]
+求一阶、二阶导数。
+\end{example}
+\begin{proof}[解]
+先验证 $x$ 关于 $t$ 严格递增。对 $s>t$，有
+\[
+ |\sin s-\sin t|\le2\left|\sin\frac{s-t}{2}\right|<s-t,
+\]
+故 $a(s-\sin s)>a(t-\sin t)$。当 $t\notin2\pi\mathbb Z$ 时，$x'_t=a(1-\cos t)>0$，因而可用参数求导公式，得
+\[
+ \frac{\dd y}{\dd x}=\frac{\sin t}{1-\cos t}=\cot\frac t2.
+\]
+再求导得
+\[
+ \frac{\dd^2y}{\dd x^2}
+ =\frac{-\frac12\csc^2(t/2)}{a(1-\cos t)}
+ =-\frac1{4a\sin^4(t/2)}.
+\]
+在 $t=2k\pi$ 处，上述除法公式的分母为零，不能直接套用。
+\end{proof}
+若曲线用极坐标 $r=r(\theta)$ 表示，则
+\[
+ x=r(\theta)\cos\theta,\qquad y=r(\theta)\sin\theta.
+\]
+于是，在 $x$ 可局部用作自变量且分母非零处，
+\[
+ \frac{\dd y}{\dd x}
+ =\frac{r'(\theta)\sin\theta+r(\theta)\cos\theta}
+ {r'(\theta)\cos\theta-r(\theta)\sin\theta}.
+\]
+\section{高阶导数}
+对导函数继续求导，便得到二阶及更高阶导数。
+\begin{definition}
+导函数 $f'$ 的导数称为 $f$ 的二阶导数，记作 $f''$。递归定义
+\[
+ f^{(n)}=(f^{(n-1)})',\qquad
+ y^{(n)}=\frac{\dd^ny}{\dd x^n},\qquad f^{(0)}=f.
+\]
+这里 $f^{(n)}$ 表示求 $n$ 次导数，$[f(x)]^n$ 才表示函数值的 $n$ 次幂。
+\end{definition}
+对 $n\ge1$，逐次求导可得
+\begin{align*}
+ (x^\alpha)^{(n)}&=\alpha(\alpha-1)\cdots(\alpha-n+1)x^{\alpha-n}
+ &&(x>0),\\
+ (e^{ax})^{(n)}&=a^ne^{ax},\\
+ (\sin x)^{(n)}&=\sin\left(x+\frac{n\pi}2\right),\\
+ (\cos x)^{(n)}&=\cos\left(x+\frac{n\pi}2\right),\\
+ (\ln(1+x))^{(n)}&=\frac{(-1)^{n-1}(n-1)!}{(1+x)^n}
+ &&(x>-1).
+\end{align*}
+多项式的导数可直接在全实轴计算；若 $m$ 为非负整数，则 $x^m$ 的 $n$ 阶导数在 $n>m$ 时恒为零。
+\begin{theorem}[莱布尼茨公式]
+若 $u,v$ 都 $n$ 阶可导，则
+\[
+ \boxed{(uv)^{(n)}=\sum_{k=0}^n\binom nk u^{(k)}v^{(n-k)}.}
+\]
+\end{theorem}
+\begin{proof}
+$n=1$ 时即乘积求导法则。设 $n$ 阶公式成立，且 $u,v$ 都 $n+1$ 阶可导，对等式逐项求导，
+\[
+ (uv)^{(n+1)}=\sum_{k=0}^n\binom nk
+ \bigl(u^{(k+1)}v^{(n-k)}+u^{(k)}v^{(n-k+1)}\bigr).
+\]
+把第一部分的下标改为 $j=k+1$，与第二部分同类项合并，再用
+$\binom n{j-1}+\binom nj=\binom{n+1}j$，即得 $n+1$ 阶公式。
+\end{proof}
+\newpage
+\begin{example}
+求 $y=x^2e^x$ 的 $n$ 阶导数（$n\ge1$）。
+\end{example}
+\begin{proof}[解]
+$x^2$ 的三阶及以上导数都为零，而 $e^x$ 的各阶导数不变。因此当 $n\ge2$ 时，
+\[
+ y^{(n)}=x^2e^x+n(2x)e^x+\binom n2\,2e^x
+ =e^x\bigl(x^2+2nx+n(n-1)\bigr).
+\]
+$n=1$ 时直接求导也符合最后的公式。
+\end{proof}
+\section{微分与一阶近似}
+由可导性的一阶展开，函数增量可分成线性部分与 $o(\Delta x)$ 余项。这个线性部分称为微分，它给出了在所考察点用切线近似函数变化的办法。
+\begin{definition}[微分]
+若存在与 $\Delta x$ 无关的常数 $A$，使
+\[
+ \Delta y=A\Delta x+o(\Delta x),
+\]
+则称 $f$ 在 $x_0$ 可微，称其中的线性部分 $A\Delta x$ 为 $f$ 在 $x_0$ 的微分，记为 $\dd y$。
+\end{definition}
+由可导的等价表述，一元函数在一点可微当且仅当在该点可导，且 $A=f'(x_0)$。约定独立变量的微分 $\dd x=\Delta x$，便有
+\[
+ \boxed{\dd y=f'(x_0)\dd x,\qquad
+ \Delta y=\dd y+o(\Delta x).}
+\]
+微分是切线对应的纵向变化，函数增量是曲线上实际的纵向变化。二者一般不相等；例如 $f(x)=x^2$ 时，
+\[
+ \Delta y=2x_0\Delta x+(\Delta x)^2,\qquad
+ \dd y=2x_0\Delta x.
+\]
+若 $f'(x_0)\ne0$，则 $\Delta y/\dd y\to1$；若 $f'(x_0)=0$，仍有一阶展开，但不能再除以零微分比较相对误差。
+
+由求导法则，微分满足
+\begin{align*}
+ \dd(u\pm v)&=\dd u\pm\dd v,\\
+ \dd(uv)&=v\dd u+u\dd v,\\
+ \dd\left(\frac uv\right)&=\frac{v\dd u-u\dd v}{v^2}\qquad(v\ne0).
+\end{align*}
+例如，商函数的微分为
+\[
+ \dd\left(\frac uv\right)
+ =\frac{u'v-uv'}{v^2}\dd x
+ =\frac{v\dd u-u\dd v}{v^2}.
+\]
+\section{一阶微分的形式不变性与高阶微分}
+设 $u=g(x)$、$y=f(u)$，且两函数在相应点可导。把 $u$ 看作中间变量，由链式法则，
+\[
+ \dd y=f'(g(x))g'(x)\dd x=f'(u)\dd u,
+ \qquad \dd u=g'(x)\dd x.
+\]
+因此，无论 $u$ 是独立变量还是可导的中间变量，一阶微分都保持 $\dd y=f'(u)\dd u$ 的形式，称为一阶微分的形式不变性。
+
+当 $x$ 为独立变量、$\dd x$ 视作固定增量时，定义
+\[
+ \dd^2y=\dd(\dd y)=f''(x)(\dd x)^2,
+ \qquad \dd^ny=f^{(n)}(x)(\dd x)^n.
+\]
+但在 $y=f(u)$、$u=g(x)$ 中，若 $f,g$ 二阶可导，二阶微分一般为
+\[
+ \dd^2y=f''(u)(\dd u)^2+f'(u)\dd^2u.
+\]
+第二项一般不为零，所以高阶微分一般不具有一阶微分那样的形式不变性。例如 $y=u^2,u=x^2$ 时，$y=x^4$，故 $\dd^2y=12x^2(\dd x)^2$；若只写 $2(\dd u)^2$，就会少掉 $4x^2(\dd x)^2$。
+\section{近似计算与误差}
+当增量很小时，在一阶展开中略去 $o(\Delta x)$ 余项，可得 $f(x_0+\Delta x)\approx f(x_0)+f'(x_0)\Delta x$。
+\begin{example}
+用微分近似计算 $\sin33^\circ$ 与 $e^{-0.03}$。
+\end{example}
+\begin{proof}[解]
+对 $f(x)=\sin x$，取 $x_0=\pi/6$。三角函数求导以弧度为单位，所以 $\Delta x=3^\circ=\pi/60$，得
+\[
+ \sin33^\circ\approx\sin\frac\pi6+\cos\frac\pi6\cdot\frac\pi{60}
+ =\frac12+\frac{\sqrt3\pi}{120}\approx0.545345.
+\]
+对 $f(x)=e^x$，取 $x_0=0$、$\Delta x=-0.03$，得
+\[
+ e^{-0.03}\approx e^0+e^0(-0.03)=0.97.
+\]
+这里用的是一阶近似，未给出余项上界。
+\end{proof}
+若输入量的真值为 $x=x_0+\Delta x$，用 $x_0$ 作为近似值，$|\Delta x|$ 称为绝对误差；若 $x_0\ne0$，通常用 $|\Delta x|/|x_0|$ 估计相对误差。若已知 $|\Delta x|\le\delta_x$，则对输出量 $y=f(x)$，可用
+\[
+ \delta_y=|f'(x_0)|\delta_x
+\]
+作为一阶绝对误差估计；当 $f(x_0)\ne0$ 时，相应的一阶相对误差估计为
+\[
+ \frac{\delta_y}{|f(x_0)|}
+ =\left|\frac{f'(x_0)}{f(x_0)}\right|\delta_x.
+\]
+微分只描述一阶变化，$\delta_y$ 一般不是严格的误差上界。严格控制 $|f(x)-f(x_0)|$，还需要区间上的导数界；这将在中值定理中得到。
+\end{document}

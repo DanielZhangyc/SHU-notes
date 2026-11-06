@@ -1,0 +1,259 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "mathematical-analysis-i",
+%   "section": "6.1",
+%   "title": "数学分析（一）6.1：拉格朗日定理和函数的单调性",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "罗尔与拉格朗日中值定理、导数极限定理、单调性判别和达布定理，止于教材第六章第一节。"
+% }
+% halo:end
+% 来源：IMG_3116—IMG_3117.HEIC；华东师大《数学分析》第5版上册第六章§1。
+% 教材核对：PDF122—127（书页111—116）；正文止于PDF126（书页115），不进入§2。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\R}{\mathbb R}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{example}[theorem]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.3em,topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 6.1\quad 中值定理与单调性}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{拉格朗日定理和函数的单调性}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月6日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\bfseries\@title\par}\vspace{0.6em}\@author\par\vspace{0.2em}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+\section{罗尔中值定理}
+若一段连续曲线的两端等高，函数在区间内部又处处可导，那么中间至少有一条水平切线。闭区间上的最值定理和费马定理可以把这一观察写成严格结论。
+\begin{theorem}[罗尔（Rolle）中值定理]
+设 $a<b$，函数 $f$ 满足：
+\begin{enumerate}
+\item 在 $[a,b]$ 上连续；
+\item 在 $(a,b)$ 上可导；
+\item $f(a)=f(b)$。
+\end{enumerate}
+则存在 $\xi\in(a,b)$，使 $f'(\xi)=0$。
+\end{theorem}
+\begin{proof}
+由闭区间最值定理，$f$ 在 $[a,b]$ 上有最大值 $M$ 和最小值 $m$。若 $M=m$，则 $f$ 为常数，任意内点的导数都为零。
+
+若 $M>m$，因两端值相等，最大值与最小值不可能都只在端点取得，故至少有一个在内点 $\xi$ 取得。此点是极值点，且 $f$ 在此可导，由费马定理得 $f'(\xi)=0$。
+\end{proof}
+三个条件各有作用。例如：
+\begin{enumerate}
+\item 在 $[0,1]$ 上令 $f(x)=x$（$x<1$）、$f(1)=0$。两端值相等且内点可导，但右端点不连续，内点导数恒为 $1$。
+\item $f(x)=|x|$ 在 $[-1,1]$ 上连续且两端值相等，但在内点 $0$ 不可导，其他内点导数为 $\pm1$，没有零导数点。
+\item $f(x)=x$ 在 $[0,1]$ 上连续且内点可导，但两端值不相等，导数也没有零点。
+\end{enumerate}
+\begin{example}
+设 $f$ 在 $\R$ 上可导，且 $f'(x)=0$ 没有实根。证明 $f(x)=0$ 至多有一个实根。
+\end{example}
+\begin{proof}
+反设有两个不同实根 $x_1<x_2$。因可导必连续，$f$ 在 $[x_1,x_2]$ 上满足罗尔定理条件，故存在 $\xi\in(x_1,x_2)$，使 $f'(\xi)=0$，与假设矛盾。
+\end{proof}
+\section{拉格朗日中值定理}
+两端函数值不相等时，减去连接端点的直线，就能把问题化为两端等高的情形。
+\begin{theorem}[拉格朗日（Lagrange）中值定理]
+设 $a<b$，$f$ 在 $[a,b]$ 上连续，在 $(a,b)$ 上可导，则存在 $\xi\in(a,b)$，使
+\[
+ \boxed{f'(\xi)=\frac{f(b)-f(a)}{b-a}.}
+\]
+\end{theorem}
+\begin{proof}
+令 $k=(f(b)-f(a))/(b-a)$，作辅助函数
+\[
+ F(x)=f(x)-f(a)-k(x-a).
+\]
+则 $F$ 在 $[a,b]$ 上连续、在 $(a,b)$ 上可导，且 $F(a)=F(b)=0$。由罗尔定理存在 $\xi\in(a,b)$，使
+\[
+ F'(\xi)=f'(\xi)-k=0,
+\]
+即得结论。
+\end{proof}
+几何上，$k$ 是连接曲线两端点的割线斜率，定理保证中间有一条与割线平行的切线。辅助函数 $F$ 正是曲线与这条端点连线之间的纵向差。
+
+中值公式也可写成
+\begin{align*}
+ f(b)-f(a)&=f'(\xi)(b-a),\qquad a<\xi<b,\\
+ &=f'\bigl(a+\theta(b-a)\bigr)(b-a),\qquad 0<\theta<1.
+\end{align*}
+在两点间满足相同的连续、可导条件时，即使 $h<0$，也有
+\[
+ \boxed{f(x+h)-f(x)=f'(x+\theta h)h,\qquad0<\theta<1.}
+\]
+这里的 $\xi$ 或 $\theta$ 随所取的函数和区间而变化，并不是预先固定的点。
+\begin{example}
+设 $a<b$，证明 $\arctan b-\arctan a\le b-a$。
+\end{example}
+\begin{proof}
+对 $f(x)=\arctan x$ 应用中值定理，存在 $\xi\in(a,b)$，使
+\[
+ \arctan b-\arctan a=\frac{b-a}{1+\xi^2}\le b-a.
+\]
+\end{proof}
+\begin{proposition}[导数界与增量界]
+若 $f$ 在 $[a,b]$ 上连续、在 $(a,b)$ 上可导，且 $|f'(x)|\le M$，则对任意 $x,y\in[a,b]$，
+\[
+ |f(x)-f(y)|\le M|x-y|.
+\]
+\end{proposition}
+\begin{proof}
+$x=y$ 时显然成立；$x\ne y$ 时，在两点之间应用中值定理，再取绝对值即可。
+\end{proof}
+因此，若 $x$ 与近似值 $x_0$ 之间的整个区间上都有 $|f'|\le M$，则输入误差 $|x-x_0|\le\delta_x$ 能给出严格的输出误差界 $|f(x)-f(x_0)|\le M\delta_x$。这里使用的是区间上的导数界，与只用 $|f'(x_0)|\delta_x$ 的一阶微分估计不同。
+\section{常数差与导数极限定理}
+拉格朗日公式把两点间的函数值之差与中间一点的导数联系起来，因而能由导数直接判断函数值是否变化。
+\begin{proposition}
+若 $f$ 在区间 $I$ 上可导，且 $f'(x)=0$，则 $f$ 在 $I$ 上为常数。若 $f,g$ 在 $I$ 上可导且 $f'=g'$，则 $f-g$ 在 $I$ 上为常数。
+\end{proposition}
+\begin{proof}
+任取 $x_1<x_2$ 且 $x_1,x_2\in I$，由区间性，$[x_1,x_2]\subseteq I$。由中值定理存在 $\xi\in(x_1,x_2)$，使
+\[
+ f(x_2)-f(x_1)=f'(\xi)(x_2-x_1)=0.
+\]
+所以任意两点的函数值相等。对 $f-g$ 应用这一结论，得到第二个命题。
+\end{proof}
+区间条件不能直接省去。例如在 $\R\setminus\{0\}$ 上定义的 $\operatorname{sgn}x$ 处处导数为零，却在两段区间上取不同常数。
+在某点的导数尚未求出时，也可以利用附近导数的极限；这时必须先有该点的连续性。
+\begin{theorem}[导数极限定理]
+设 $f$ 在 $x_0$ 的某邻域内连续，在相应去心邻域内可导。若有限极限 $\lim_{x\to x_0}f'(x)=A$ 存在，则 $f$ 在 $x_0$ 可导，且 $f'(x_0)=A$。
+\end{theorem}
+\begin{proof}
+对附近任意 $x\ne x_0$，在 $x,x_0$ 之间应用中值定理，存在严格介于两点之间的 $\xi_x$，使
+\[
+ \frac{f(x)-f(x_0)}{x-x_0}=f'(\xi_x).
+\]
+当 $x\to x_0$ 时，$0<|\xi_x-x_0|<|x-x_0|$，故 $\xi_x\to x_0$，右端趋于 $A$。左端的极限即 $f'(x_0)$。
+\end{proof}
+连续性条件不可省略。例如 $f(x)=x$（$x\ne0$）、$f(0)=1$，虽在去心邻域内有 $f'(x)=1$，却在 $0$ 不连续，因而不可导。
+
+另一方面，可导也不保证导数连续。令 $g(0)=0$、$g(x)=x^2\sin(1/x)$（$x\ne0$），则由定义 $g'(0)=0$，但
+\[
+ g'(x)=2x\sin(1/x)-\cos(1/x)\qquad(x\ne0)
+\]
+在 $0$ 处没有极限。所以，导数极限定理给出了可导的一个充分条件。
+\begin{example}
+求函数
+\[
+ f(x)=\begin{cases}
+ x+\sin(x^2),&x\le0,\\
+ \ln(1+x),&x>0
+ \end{cases}
+\]
+的导数。
+\end{example}
+\begin{proof}[解]
+在 $x\ne0$ 时，由求导法则有
+\[
+ f'(x)=\begin{cases}1+2x\cos(x^2),&x<0,\\1/(1+x),&x>0.\end{cases}
+\]
+又 $\lim_{x\to0^-}f(x)=\lim_{x\to0^+}f(x)=0=f(0)$，故 $f$ 在 $0$ 连续。两侧导数的极限都等于 $1$，由导数极限定理，$f'(0)=1$。因此
+\[
+ f'(x)=\begin{cases}1+2x\cos(x^2),&x<0,\\1,&x=0,\\1/(1+x),&x>0.\end{cases}
+\]
+\end{proof}
+\section{函数单调性的导数判别}
+当自变量从小到大变化时，拉格朗日公式中的自变量增量为正，因此函数增量的符号由中间点的导数决定。
+以下“递增”指非递减，即 $x_1<x_2$ 时 $f(x_1)\le f(x_2)$；严格递增则要求严格小于。递减与严格递减的约定相应。
+\begin{theorem}[单调性的充要条件]
+设 $f$ 在区间 $I$ 上可导，则
+\[
+ \begin{aligned}
+ f\text{ 在 }I\text{ 上递增}&\iff f'(x)\ge0\quad(x\in I),\\
+ f\text{ 在 }I\text{ 上递减}&\iff f'(x)\le0\quad(x\in I).
+ \end{aligned}
+\]
+若 $I$ 含端点，端点的导数按相应单侧导数理解。
+\end{theorem}
+\begin{proof}
+若 $f$ 递增，则对任意 $x\ne x_0$，差商
+\[
+ \frac{f(x)-f(x_0)}{x-x_0}\ge0.
+\]
+令 $x\to x_0$，得 $f'(x_0)\ge0$。反之，若 $f'\ge0$，任取 $x_1<x_2$，由中值定理，
+\[
+ f(x_2)-f(x_1)=f'(\xi)(x_2-x_1)\ge0,
+\]
+故 $f$ 递增。对 $-f$ 应用所得结论，即得递减情形。
+\end{proof}
+若只知 $f$ 在 $(a,b)$ 上可导、在 $[a,b]$ 上连续，且内点导数非负，同样可用中值定理得到 $f$ 在 $[a,b]$ 上递增，无须端点可导。严格单调性也可借端点连续性延伸到端点。
+\newpage
+\begin{theorem}[严格单调性的充要条件]
+设 $f$ 在 $(a,b)$ 上可导。则 $f$ 严格递增，当且仅当：
+\begin{enumerate}
+\item 对所有 $x\in(a,b)$，$f'(x)\ge0$；
+\item 在每个非退化子区间内，都存在一点使 $f'(x)\ne0$，即 $f'$ 不在任何这样的子区间上恒为零。
+\end{enumerate}
+严格递减时，将第一条改为 $f'\le0$，第二条不变。
+\end{theorem}
+\begin{proof}
+若 $f$ 严格递增，则也递增，故 $f'\ge0$。若某非退化子区间上 $f'$ 恒为零，由前面的常数结论，$f$ 在该子区间为常数，与严格递增矛盾。
+
+反之，由第一条知 $f$ 递增。若存在 $x_1<x_2$ 使 $f(x_1)=f(x_2)$，则对每个 $x\in[x_1,x_2]$，
+\[
+ f(x_1)\le f(x)\le f(x_2)=f(x_1).
+\]
+因此 $f$ 在 $[x_1,x_2]$ 上恒为常数，内点导数全为零，与第二条矛盾。故 $f$ 严格递增。递减情形同理。
+\end{proof}
+特别地，$f'>0$ 足以保证严格递增，但不是必要条件：$x^3$ 在 $\R$ 上严格递增，而在 $0$ 处导数为零。
+\begin{example}
+讨论 $f(x)=x^3-x$ 的单调区间。
+\end{example}
+\begin{proof}[解]
+$f'(x)=3x^2-1$，故在 $x<-1/\sqrt3$ 或 $x>1/\sqrt3$ 时导数为正，在 $-1/\sqrt3<x<1/\sqrt3$ 时导数为负。由单调性判别及端点连续性，$f$ 在
+\[
+ (-\infty,-1/\sqrt3],\qquad[1/\sqrt3,+\infty)
+\]
+上严格递增，在 $[-1/\sqrt3,1/\sqrt3]$ 上严格递减。
+\end{proof}
+\begin{example}
+证明 $e^x>1+x$（$x\ne0$）。
+\end{example}
+\begin{proof}
+令 $F(x)=e^x-1-x$，则 $F'(x)=e^x-1$。当 $x<0$ 时 $F'<0$，当 $x>0$ 时 $F'>0$，故 $F$ 在 $(-\infty,0]$ 上严格递减，在 $[0,+\infty)$ 上严格递增。因此 $x\ne0$ 时 $F(x)>F(0)=0$，即得所需不等式。
+\end{proof}
+\newpage
+\section{导数的介值性：达布定理}
+函数可导并不要求导数连续，但导数仍有介值性。证明这一点时，可以把给定的导数值转成一个极值点上的零导数。
+\begin{theorem}[达布（Darboux）定理]
+设 $f$ 在 $[a,b]$ 上可导，且 $f'_+(a)\ne f'_-(b)$。若 $k$ 严格介于这两个单侧导数之间，则存在 $\xi\in(a,b)$，使 $f'(\xi)=k$。
+\end{theorem}
+\begin{proof}
+令 $F(x)=f(x)-kx$。不妨设 $F'_+(a)>0$、$F'_-(b)<0$。由单侧导数的定义，$a$ 右侧充分近的点满足
+\[
+ \frac{F(x)-F(a)}{x-a}>0,
+\]
+故 $F(x)>F(a)$，从而 $a$ 不是最大值点。同理，在 $b$ 左侧充分近的点，有
+\[
+ \frac{F(x)-F(b)}{x-b}<0.
+\]
+因 $x-b<0$，得到 $F(x)>F(b)$，所以 $b$ 也不是最大值点。
+
+$F$ 在 $[a,b]$ 上连续，故最大值必在某内点 $\xi$ 取得。由费马定理，$F'(\xi)=0$，即 $f'(\xi)=k$。另一种情形是 $F'_+(a)<0<F'_-(b)$，此时改用 $-F$，或改取最小值，论证相同。
+\end{proof}
+\begin{proposition}
+若 $f$ 在区间 $I$ 上可导且 $f'(x)\ne0$，则 $f$ 在 $I$ 上严格单调。
+\end{proposition}
+\begin{proof}
+若导数在两点取异号值，在这两点之间应用达布定理，便能找到导数为零的点，与假设矛盾。因此导数处处同号，由严格单调性的充分条件得出结论。
+\end{proof}
+导数的介值性来自可导性本身，并不需要先假设导数连续。
+\end{document}
