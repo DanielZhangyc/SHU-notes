@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert repository notes with Pandoc and synchronize them through Halo's UC API."""
+"""Convert enabled repository notes with Pandoc and export an Astro notes collection."""
 
 import argparse
 import copy
@@ -11,10 +11,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-import time
-from urllib.error import HTTPError
 from urllib.parse import quote
-from urllib.request import Request, build_opener, HTTPRedirectHandler
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "publish/notes.json"
@@ -97,7 +94,7 @@ def discover_notes(config, root=ROOT):
     notes = []
     for path in sorted(root.glob("*/*/notes/*.tex")):
         note = parse_metadata(path.read_text(), path.relative_to(root).as_posix(), config)
-        if note:
+        if note and note["slug"] not in config["excluded_slugs"]:
             notes.append(note)
     return notes
 
@@ -143,7 +140,7 @@ def normalize_document(document, tex):
                     if reset:
                         counters[kind] = 0
                 block["c"][2][0:0] = [{"t": "Str", "c": f"{section_prefix}{section}"}, {"t": "Space"}]
-            # Halo's theme already provides the article h1.
+            # Astro's layout already provides the article h1.
             block["c"][0] += 1
         elif block["t"] == "Div":
             classes = block["c"][0][1]
@@ -216,127 +213,58 @@ def render_note(note, config):
     return content + f'\n<p><a href="{html.escape(pdf_url, quote=True)}">阅读 / 下载 PDF</a></p>\n'
 
 
-class NoRedirect(HTTPRedirectHandler):
-    # A configured canonical URL avoids forwarding the bearer token to another host.
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        return None
+def git_output(*args):
+    result = subprocess.run(["git", "-C", str(ROOT), *args], text=True, capture_output=True, check=True)
+    return result.stdout.strip()
 
 
-class Halo:
-    def __init__(self, url, token):
-        if not url.startswith("https://"):
-            raise ValueError("HALO URL must use HTTPS")
-        self.url = url.rstrip("/")
-        self.token = token
-        self.opener = build_opener(NoRedirect())
-
-    def request(self, method, path, data=None):
-        body = json.dumps(data).encode() if data is not None else None
-        request = Request(self.url + path, data=body, method=method, headers={
-            "Authorization": "Bearer " + self.token,
-            "Accept": "application/json", "Content-Type": "application/json",
-        })
-        try:
-            with self.opener.open(request, timeout=30) as response:
-                raw = response.read()
-                return json.loads(raw) if raw else None
-        except HTTPError as error:
-            # Do not print request headers or arbitrary server response bodies.
-            raise RuntimeError(f"Halo {method} {path}: HTTP {error.code}") from None
-
-    def list_all(self, path):
-        items, page = [], 1
-        while True:
-            response = self.request("GET", f"{path}?page={page}&size=100")
-            items.extend(response["items"])
-            if not response.get("hasNext", len(items) < response.get("total", len(items))):
-                return items
-            page += 1
-
-
-def resolve_names(resources, requested, kind):
-    resolved = []
-    for name in requested:
-        matches = [item for item in resources if item["spec"]["displayName"] == name]
-        if len(matches) != 1:
-            raise ValueError(f"{kind} '{name}' must exist exactly once in Halo; create it in Console first")
-        resolved.append(matches[0]["metadata"]["name"])
-    return resolved
-
-
-POSTS = "/apis/uc.api.content.halo.run/v1alpha1/posts"
-CONTENT = "content.halo.run/content-json"
-SOURCE = "notes.xy0v0.top/source"
-
-
-def sync(halo, rendered, check_only=False):
-    categories = halo.list_all("/apis/content.halo.run/v1alpha1/categories")
-    tags = halo.list_all("/apis/content.halo.run/v1alpha1/tags")
-    posts = [entry["post"] for entry in halo.list_all(POSTS)]
-    plans = []
-    # Resolve every reference and detect collisions before the first write.
+def export_astro(rendered, config, output):
+    output = Path(output)
+    if git_output("rev-parse", "--is-shallow-repository") != "false":
+        raise ValueError("Astro export requires complete Git history for publication dates; fetch full history")
+    routes = [course["route"] for course in config["courses"].values()]
+    if len(routes) != len(set(routes)) or any(not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", route) for route in routes):
+        raise ValueError("Courses need unique lowercase ASCII route values")
+    manifest = {"version": 1, "repository": config["repository"],
+                "revision": git_output("rev-parse", "HEAD"), "notes": []}
+    files = []
     for note, content in rendered:
-        name = "notes-" + note["slug"]
-        matches = [post for post in posts if post["metadata"]["name"] == name or post["spec"]["slug"] == note["slug"]]
-        if len(matches) > 1:
-            raise ValueError(f"Multiple posts match {note['slug']}")
-        existing = matches[0] if matches else None
-        if existing and (existing["metadata"]["name"] != name or existing["metadata"].get("annotations", {}).get(SOURCE) != note["source"]):
-            raise ValueError(f"Existing post is not managed by this workflow: {note['slug']}")
-        spec = {
-            "title": note["title"], "slug": note["slug"],
-            "categories": resolve_names(categories, note["categories"], "Category"),
-            "tags": resolve_names(tags, note["tags"], "Tag"),
-            "excerpt": {"autoGenerate": False, "raw": note["excerpt"]},
+        if note["slug"] in config["excluded_slugs"]:
+            raise ValueError(f"Excluded note passed to export: {note['slug']}")
+        source = Path(note["source"])
+        history = git_output("log", "--follow", "--format=%cI", "--", source.as_posix()).splitlines()
+        updated = git_output("log", "-1", "--format=%cI", "--", source.as_posix(), source.with_suffix(".pdf").as_posix())
+        if not history or not updated:
+            raise ValueError(f"Missing Git history for note: {source}")
+        metadata = {
+            "title": note["title"], "description": note["excerpt"],
+            "publishDate": history[-1], "updatedDate": updated,
+            "tags": note["tags"], "categories": note["categories"],
+            "legacySlug": note["slug"], "course": note["course"], "section": note["section"],
+            "draft": False, "comment": False,
         }
-        plans.append((note, name, existing, spec, content))
-    for note, name, existing, spec, content in plans:
-        if check_only:
-            print(f"Ready to {'update' if existing else 'create'}: {note['title']}")
-            continue
-        path = POSTS + "/" + quote(name, safe="")
-        payload = json.dumps({"raw": content, "content": content, "rawType": "HTML"}, ensure_ascii=False)
-        if existing:
-            post = halo.request("GET", path)
-            if post["spec"].get("deleted"):
-                raise ValueError(f"Post is in recycle bin: {name}")
-            if any(post["spec"].get(key) != value for key, value in spec.items()):
-                post["spec"].update(spec)
-                halo.request("PUT", path, post)
-            snapshot = halo.request("GET", path + "/draft?patched=true")
-            annotations = snapshot["metadata"].setdefault("annotations", {})
-            previous = annotations.pop("content.halo.run/patched-content", None)
-            annotations.pop("content.halo.run/patched-raw", None)
-            if previous != content:
-                annotations[CONTENT] = payload
-                halo.request("PUT", path + "/draft", snapshot)
-        else:
-            halo.request("POST", POSTS, {
-                "apiVersion": "content.halo.run/v1alpha1", "kind": "Post",
-                "metadata": {"name": name, "annotations": {SOURCE: note["source"], CONTENT: payload}},
-                "spec": {**spec, "deleted": False, "publish": False, "pinned": False,
-                         "allowComment": True, "visible": "PUBLIC", "priority": 0},
-            })
-        current = halo.request("GET", path)
-        if not current["spec"].get("publish") or current["spec"].get("releaseSnapshot") != current["spec"].get("headSnapshot"):
-            halo.request("PUT", path + "/publish")
-        for attempt in range(10):
-            verified = halo.request("GET", path)
-            spec_now = verified["spec"]
-            if spec_now.get("publish") and spec_now.get("headSnapshot") and spec_now.get("releaseSnapshot") == spec_now["headSnapshot"]:
-                print(f"Published: {note['title']}")
-                break
-            time.sleep(1)
-        else:
-            raise RuntimeError(f"Publication confirmation timed out: {name}; rerun to reconcile")
+        header = "\n".join(f"{key}: {json.dumps(value, ensure_ascii=False)}" for key, value in metadata.items())
+        markdown = f"---\n{header}\n---\n\n{content}"
+        path = f"notes/{config['courses'][note['course']]['route']}/{source.stem}.md"
+        files.append((path, markdown.encode("utf-8")))
+        manifest["notes"].append({"path": path, "slug": note["slug"], "source": note["source"],
+                                  "sha256": hashlib.sha256(markdown.encode()).hexdigest()})
+    if len({path for path, _ in files}) != len(files):
+        raise ValueError("Duplicate Astro note export path")
+    for path, contents in files:
+        target = output / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(contents)
+    output.mkdir(parents=True, exist_ok=True)
+    (output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return manifest
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--preview", action="store_true", help="Render locally without credentials or API calls")
-    mode.add_argument("--check", action="store_true", help="Read-only check of permissions, categories and tags")
-    mode.add_argument("--publish", action="store_true", help="Create/update and publish configured articles")
+    mode.add_argument("--preview", action="store_true", help="Render local HTML previews")
+    mode.add_argument("--export-astro", type=Path, metavar="DIRECTORY", help="Export notes Markdown and manifest.json")
     args = parser.parse_args()
     config = json.loads(CONFIG.read_text())
     notes = discover_notes(config)
@@ -345,23 +273,18 @@ def main():
         raise ValueError("Each note needs a unique lowercase ASCII slug")
     rendered = [(note, render_note(note, config)) for note in notes]
     if args.preview:
-        output = ROOT / "build/halo"
+        output = ROOT / "build/astro-preview"
         output.mkdir(parents=True, exist_ok=True)
         for note, content in rendered:
             page = '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             page += '<style>body{max-width:800px;margin:40px auto;padding:0 20px;line-height:1.8}math{font-size:1.05em}</style>'
             page += f'<title>{html.escape(note["title"])}</title><h1>{html.escape(note["title"])}</h1>{content}</html>'
             (output / (note["slug"] + ".html")).write_text(page)
-            print(f"Preview: {note['title']} -> build/halo/{note['slug']}.html")
+            print(f"Preview: {note['title']} -> build/astro-preview/{note['slug']}.html")
         return
-    if not rendered:
-        print("No notes enabled for publication")
-        return
-    token = os.environ.get("HALO_TOKEN", "")
-    if not token:
-        raise ValueError("Set HALO_TOKEN (GitHub Actions repository secret or local environment)")
-    halo = Halo(config["halo_url"], token)
-    sync(halo, rendered, check_only=args.check)
+    manifest = export_astro(rendered, config, args.export_astro)
+    print(json.dumps({"notes": len(manifest["notes"]), "revision": manifest["revision"],
+                      "manifest": str(args.export_astro / "manifest.json")}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

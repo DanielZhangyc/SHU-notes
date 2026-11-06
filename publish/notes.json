@@ -1,7 +1,9 @@
 {
-  "halo_url": "https://www.xy0v0.top",
   "repository": "DanielZhangyc/SHU-notes",
   "pdf_branch": "main",
+  "excluded_slugs": [
+    "physics-experiment-01-02-measurement-basics"
+  ],
   "categories": {
     "study-notes": "学习笔记"
   },
@@ -12,18 +14,22 @@
   "courses": {
     "higher-algebra-i": {
       "name": "高等代数（一）",
+      "route": "higher-algebra",
       "directory": "mathematics/higher-algebra-i/notes"
     },
     "mathematical-analysis-i": {
       "name": "数学分析（一）",
+      "route": "mathematical-analysis",
       "directory": "mathematics/mathematical-analysis-i/notes"
     },
     "data-and-optimization": {
       "name": "数据与优化（通识笔记）",
+      "route": "data-and-optimization",
       "directory": "general-education/data-and-optimization/notes"
     },
     "physics-experiment": {
       "name": "大学基础物理实验",
+      "route": "physics-experiment",
       "directory": "physics/physics-experiment/notes"
     }
   }

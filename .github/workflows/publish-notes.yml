@@ -1,4 +1,4 @@
-name: Publish notes to Halo
+name: Publish notes to Astro
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       - '**/notes/*.pdf'
       - 'publish/notes.json'
       - 'publish/assets/**'
-      - 'scripts/publish_notes.py'
+      - 'scripts/*.py'
       - 'tests/**'
       - '.github/workflows/publish-notes.yml'
 
@@ -17,18 +17,19 @@ permissions:
   contents: read
 
 concurrency:
-  group: halo-notes
+  group: astro-notes
   cancel-in-progress: false
 
 jobs:
   publish:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Install Pandoc
         run: |
           curl --fail --location --retry 3 \
@@ -38,8 +39,26 @@ jobs:
       - name: Validate and preview
         run: |
           python3 -m unittest discover -s tests
-          python3 scripts/publish_notes.py --preview
+          python3 scripts/publish_notes.py --export-astro build/astro
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Prepare private Astro source
+        env:
+          ASTRO_SSH_HOST: ${{ secrets.ASTRO_SSH_HOST }}
+          ASTRO_SSH_USER: ${{ secrets.ASTRO_SSH_USER }}
+          ASTRO_SSH_PRIVATE_KEY: ${{ secrets.ASTRO_SSH_PRIVATE_KEY }}
+          ASTRO_SSH_KNOWN_HOSTS: ${{ secrets.ASTRO_SSH_KNOWN_HOSTS }}
+        run: python3 scripts/deploy_astro.py prepare
+      - name: Build Astro and search index
+        working-directory: build/astro-site
+        run: |
+          bun install --frozen-lockfile
+          bun run build
       - name: Publish configured notes
         env:
-          HALO_TOKEN: ${{ secrets.HALO_TOKEN }}
-        run: python3 scripts/publish_notes.py --publish
+          ASTRO_SSH_HOST: ${{ secrets.ASTRO_SSH_HOST }}
+          ASTRO_SSH_USER: ${{ secrets.ASTRO_SSH_USER }}
+          ASTRO_SSH_PRIVATE_KEY: ${{ secrets.ASTRO_SSH_PRIVATE_KEY }}
+          ASTRO_SSH_KNOWN_HOSTS: ${{ secrets.ASTRO_SSH_KNOWN_HOSTS }}
+        run: python3 scripts/deploy_astro.py publish
