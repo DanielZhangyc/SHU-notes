@@ -40,6 +40,9 @@ jobs:
         run: |
           python3 -m unittest discover -s tests
           python3 scripts/publish_notes.py --export-astro build/astro
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2

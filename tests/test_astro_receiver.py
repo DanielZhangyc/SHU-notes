@@ -122,6 +122,14 @@ class ReceiverTests(unittest.TestCase):
         self.assertTrue((self.releases / first["activeRelease"]).is_dir())
         self.assertTrue(active.is_dir())
 
+    def test_live_symlink_is_relative_and_resolves_to_published_release(self):
+        result = self.receiver.publish(archive(self.entries()))
+        link = os.readlink(self.live)
+        self.assertFalse(Path(link).is_absolute())
+        self.assertEqual((self.live.parent / link).resolve(),
+                         (self.releases / result["activeRelease"]).resolve())
+        self.assertTrue((self.live / "index.html").is_file())
+
     def test_stale_snapshot_fails_without_overwriting_newer_source(self):
         entries = self.entries()
         self.write("package.json", '{"name":"newer-site"}')

@@ -274,7 +274,7 @@ class Receiver:
                     shutil.copytree(content / "site", next_release)
                     try:
                         self.replace_link(self.source, next_source)
-                        self.replace_link(self.live, next_release)
+                        self.replace_link(self.live, os.path.relpath(next_release, self.live.parent))
                     except BaseException:
                         if os.readlink(self.source) != previous_source:
                             self.replace_link(self.source, previous_source)
