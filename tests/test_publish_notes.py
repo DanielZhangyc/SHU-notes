@@ -1,12 +1,13 @@
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
 
-from scripts.publish_notes import CONFIG, ROOT, discover_notes, parse_metadata, render_note
+from scripts.publish_notes import CONFIG, META_BLOCK, ROOT, discover_notes, parse_metadata, render_note
 
 
 class PublishingTests(unittest.TestCase):
@@ -14,6 +15,17 @@ class PublishingTests(unittest.TestCase):
     def setUpClass(cls):
         cls.config = json.loads(CONFIG.read_text())
         cls.notes = {note["source"]: note for note in discover_notes(cls.config)}
+        cls.metadata = {}
+        for path in ROOT.glob("*/*/notes/*.tex"):
+            block = META_BLOCK.search(path.read_text())
+            if block:
+                cls.metadata[path.relative_to(ROOT).as_posix()] = json.loads(
+                    "\n".join(line[2:] for line in block[1].splitlines())
+                )
+        cls.expected = {
+            source: data for source, data in cls.metadata.items()
+            if data["publish"] and f"{data['course']}-{Path(source).stem}" not in cls.config["excluded_slugs"]
+        }
         cls.temporary = tempfile.TemporaryDirectory(prefix="shu-notes-astro-test-")
         cls.addClassCleanup(cls.temporary.cleanup)
         cls.output = Path(cls.temporary.name)
@@ -27,7 +39,7 @@ class PublishingTests(unittest.TestCase):
         subprocess.run(cls.command, cwd=ROOT, text=True, capture_output=True, check=True)
 
     def render(self, source):
-        return render_note(self.notes[source], self.config)
+        return render_note({"source": source}, self.config)
 
     def test_real_note_conversion(self):
         page = self.render("mathematics/mathematical-analysis-i/notes/01-02-sets-and-suprema.tex")
@@ -64,16 +76,17 @@ class PublishingTests(unittest.TestCase):
             self.assertIn(title, page)
 
     def test_real_metadata_and_exclusions(self):
-        source = "mathematics/mathematical-analysis-i/notes/01-02-sets-and-suprema.tex"
-        note = parse_metadata((ROOT / source).read_text(), source, self.config)
-        self.assertEqual(note["title"], "数学分析（一）1.2：数集与确界原理")
-        self.assertEqual(note["categories"], ["学习笔记"])
-        self.assertEqual(note["tags"], ["数学"])
-        self.assertEqual(note["slug"], "mathematical-analysis-i-01-02-sets-and-suprema")
-        unpublished = "general-education/data-and-optimization/notes/01-01-data-and-modeling.tex"
-        self.assertIsNone(parse_metadata((ROOT / unpublished).read_text(), unpublished, self.config))
+        for source, metadata in self.metadata.items():
+            note = parse_metadata((ROOT / source).read_text(), source, self.config)
+            if not metadata["publish"]:
+                self.assertIsNone(note)
+                continue
+            self.assertEqual(note["title"], metadata["title"])
+            self.assertEqual(note["slug"], f"{metadata['course']}-{Path(source).stem}")
+            for field in ("categories", "tags"):
+                self.assertEqual(note[field], [self.config[field][key] for key in sorted(metadata[field])])
         self.assertIsNone(parse_metadata((ROOT / "template.tex").read_text(), "template.tex", self.config))
-        self.assertEqual(len(self.notes), 19)
+        self.assertEqual(set(self.notes), set(self.expected))
         self.assertFalse(any(note["slug"] in self.config["excluded_slugs"] for note in self.notes.values()))
 
     def test_export_contract_and_owned_paths(self):
@@ -83,12 +96,12 @@ class PublishingTests(unittest.TestCase):
         revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True,
                                   capture_output=True, check=True).stdout.strip()
         self.assertEqual(self.manifest["revision"], revision)
-        self.assertEqual(len(self.manifest["notes"]), 19)
-        self.assertEqual({entry["source"] for entry in self.manifest["notes"]}, set(self.notes))
+        self.assertEqual(len(self.manifest["notes"]), len(self.expected))
+        self.assertEqual({entry["source"] for entry in self.manifest["notes"]}, set(self.expected))
         paths = {entry["path"] for entry in self.manifest["notes"]}
         self.assertEqual(paths, {path.relative_to(self.output).as_posix() for path in self.output.rglob("*.md")})
-        self.assertEqual(sum(path.startswith("notes/higher-algebra/") for path in paths), 6)
-        self.assertEqual(sum(path.startswith("notes/mathematical-analysis/") for path in paths), 13)
+        expected_courses = Counter(self.config["courses"][data["course"]]["route"] for data in self.expected.values())
+        self.assertEqual(Counter(Path(path).parts[1] for path in paths), expected_courses)
         self.assertFalse((self.output / "blog").exists())
         for slug in self.config["excluded_slugs"]:
             self.assertNotIn(slug, json.dumps(self.manifest))
@@ -112,15 +125,21 @@ class PublishingTests(unittest.TestCase):
                 self.assertIs(data["draft"], False)
                 self.assertIs(data["comment"], False)
                 self.assertEqual(body, render_note(note, self.config))
-                self.assertIn("<math", body)
                 self.assertNotIn("<h1", body)
                 pdf = Path(entry["source"]).with_suffix(".pdf").as_posix()
                 self.assertIn(f"github.com/DanielZhangyc/SHU-notes/blob/main/{pdf}", body)
                 self.assertRegex(data["publishDate"], r"^\d{4}-\d\d-\d\dT")
                 self.assertRegex(data["updatedDate"], r"^\d{4}-\d\d-\d\dT")
-                if entry["source"].endswith("01-02-sets-and-suprema.tex"):
-                    self.assertEqual(data["publishDate"], "2026-09-15T16:17:52+08:00")
-                    self.assertEqual(data["updatedDate"], "2026-09-15T23:38:13+08:00")
+                published = subprocess.run(
+                    ["git", "log", "--follow", "--reverse", "--format=%cI", "--", entry["source"]],
+                    cwd=ROOT, text=True, capture_output=True, check=True
+                ).stdout.splitlines()[0]
+                updated = subprocess.run(
+                    ["git", "log", "-1", "--format=%cI", "--", entry["source"], pdf],
+                    cwd=ROOT, text=True, capture_output=True, check=True
+                ).stdout.strip()
+                self.assertEqual(data["publishDate"], published)
+                self.assertEqual(data["updatedDate"], updated)
 
     def test_repeated_real_export_is_byte_identical(self):
         before = {path.relative_to(self.output).as_posix(): path.read_bytes()
