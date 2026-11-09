@@ -1,0 +1,699 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "2.3",
+%   "title": "高等代数（一）2.3：线性方程组的解",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "线性方程组的有解判别、基础解系与非齐次解的结构，课堂消元例题，以及含参数方程组和教材习题的完整解答。"
+% }
+% halo:end
+% 2.3为笔记自身主题编号，非教材节号；课堂日期未确认。
+% 课堂来源：IMG_2687、IMG_2688、IMG_2693--2695；续整理IMG_3176--3182（3177为3176的模糊重复）。
+% 教材：北大《高等代数》第五版第三章第5、6节。
+% 有解判别：印刷页92--94（PDF104--106）；解的结构：印刷页94--99（PDF106--111）。
+% 使用PDF：/Users/yuchenzhang/Downloads/高等代数 第五版 北大数学系前线代小组 王萼芳 石生明 Z-Library.pdf
+% 原例题为教学补充；本轮按新照片增补课堂原例及明确标出的教材练习。
+% 新照片题号对应北大《高等代数》第六版：习题III第20(1)题（印刷108/PDF113）、第23题（109/114），补充题III第9题（111/116）。
+% IMG_3180右页四元题仅按可确认的条件整理，不补造缺失的原题编号或系数矩阵。
+% IMG_3180左页第23题特解第一分量应为-2，订正照片一处误写的-1。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\vx}{\boldsymbol{x}}
+\newcommand{\vb}{\boldsymbol{\beta}}
+\newcommand{\vo}{\boldsymbol{0}}
+\newcommand{\va}{\boldsymbol{\alpha}}
+\newcommand{\vxi}{\boldsymbol{\xi}}
+\newcommand{\veta}{\boldsymbol{\eta}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）2.3}
+\fancyhead[R]{\small 线性方程组的解}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{线性方程组的解}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月10日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{线性方程组与增广矩阵}
+
+以下设 $P$ 为数域，$m,n$ 为正整数。考虑 $P$ 上的线性方程组
+\begin{equation}\label{eq:system}
+ \begin{cases}
+ a_{11}x_1+\cdots+a_{1n}x_n=b_1,\\
+ a_{21}x_1+\cdots+a_{2n}x_n=b_2,\\
+ \hspace{4em}\vdots\\
+ a_{m1}x_1+\cdots+a_{mn}x_n=b_m.
+ \end{cases}
+\end{equation}
+记系数矩阵、未知向量与常数向量分别为
+\[
+ A=(a_{ij})_{m\times n},\qquad
+ \vx=(x_1,\ldots,x_n)^{\mathsf T},\qquad
+ \vb=(b_1,\ldots,b_m)^{\mathsf T}.
+\]
+则方程组写为 $A\vx=\vb$。记 $A=(\va_1,\ldots,\va_n)$，又可写成
+\[
+ x_1\va_1+\cdots+x_n\va_n=\vb.
+\]
+因此，方程组有解，当且仅当 $\vb$ 可由 $A$ 的列向量组线性表示。
+这里 $\va_j,\vb\in P^m$，而解向量 $\vx\in P^n$。
+
+\begin{definition}[增广矩阵]
+在系数矩阵 $A$ 的右侧添加常数列 $\vb$，得到的 $m\times(n+1)$ 矩阵
+\[
+ \overline A=(A\mid\vb)
+ =\left(\begin{array}{ccc|c}
+ a_{11}&\cdots&a_{1n}&b_1\\
+ \vdots&&\vdots&\vdots\\
+ a_{m1}&\cdots&a_{mn}&b_m
+ \end{array}\right)
+\]
+称为方程组\eqref{eq:system}的增广矩阵。
+\end{definition}
+
+对增广矩阵作初等行变换，相当于对整个方程作同解变换，常数项必须同时变换。
+交换两行、某行乘非零数、将一行的倍数加到另一行，这三种操作都可逆，因此保持解集不变。
+初等列变换虽然保持矩阵的秩，却一般不保持原未知量下的解；交换未知量对应的列时，须同时记录变量次序。
+
+\section{线性方程组有解的判别}
+
+\begin{theorem}[有解判别定理]
+线性方程组 $A\vx=\vb$ 有解，当且仅当
+\[
+ \boxed{\rank A=\rank(A\mid\vb).}
+\]
+\end{theorem}
+\begin{proof}
+先证必要性。若有解，则 $\vb=\sum_{j=1}^n x_j\va_j$，故向量组
+$\va_1,\ldots,\va_n$ 与 $\va_1,\ldots,\va_n,\vb$ 等价，两组的秩相同。
+由矩阵的秩等于列秩，得到 $\rank A=\rank(A\mid\vb)$。
+
+再证充分性。设两矩阵的秩均为 $r$。若 $r=0$，则 $A=0$ 且 $\vb=0$，任意 $\vx\in P^n$ 都是解。
+以下设 $r>0$，取 $A$ 的列向量组的一个极大无关组
+$\va_{i_1},\ldots,\va_{i_r}$。
+若 $\vb$ 不能由它们线性表示，则
+$\va_{i_1},\ldots,\va_{i_r},\vb$ 线性无关，
+从而 $\rank(A\mid\vb)\ge r+1$，矛盾。
+故 $\vb$ 可由 $A$ 的列向量组表示，表示系数给出方程组的解。
+\end{proof}
+
+在 $A$ 中只增加一列，秩至多增加 $1$，所以
+\[
+ \rank(A\mid\vb)=\rank A\quad\text{或}\quad\rank A+1.
+\]
+若对增广矩阵行消元后出现
+\[
+ (0\ \cdots\ 0\mid c),\qquad c\ne0,
+\]
+则对应方程为 $0=c$，原方程组无解。此时常数列产生一个额外主元，增广秩比系数秩大 $1$。
+而行 $(0\ \cdots\ 0\mid0)$ 只对应恒等式 $0=0$，不增加约束。
+
+\subsection{主元未知量与自由未知量}
+
+\begin{definition}
+将增广矩阵用初等行变换化为行阶梯形。在方程组有解时，系数部分主元所在列对应的未知量
+称为\textbf{主元未知量}，其余未知量称为\textbf{自由未知量}。
+\end{definition}
+主元列是非零行的首个非零元素所在的列，编号不必连续。
+自由未知量可以任意指定；指定以后，由末行向上回代，主元未知量随之唯一确定。
+
+\begin{theorem}[解的个数]
+设 $A$ 有 $n$ 列，$r=\rank A$，则：
+\begin{enumerate}
+\item 若 $\rank A<\rank\overline A$，方程组无解；
+\item 若 $\rank A=\rank\overline A=n$，方程组有唯一解；
+\item 若 $\rank A=\rank\overline A=r<n$，方程组有无穷多解，且自由未知量有 $n-r$ 个。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第一项即有解判别定理。以下设方程组有解。初等行变换保持秩，
+阶梯形系数矩阵有 $r$ 个非零行，也就有 $r$ 个主元。
+因此有 $r$ 个主元未知量、$n-r$ 个自由未知量。
+
+若 $r=n$，没有自由未知量，逐行回代得到唯一解。
+若 $r<n$，任意给定自由未知量的值，都能回代得到唯一一组主元分量。
+不同的自由分量给出不同的解，而数域 $P$ 含无穷多个数，故解有无穷多个。
+\end{proof}
+这里与秩比较的是未知量个数 $n$，不是方程个数 $m$。
+仅有 $\rank A=n$ 只能保证\textbf{有解时解唯一}，不能保证非齐次方程组一定有解。
+例如 $A=(1,0)^{\mathsf T}$、$\vb=(0,1)^{\mathsf T}$ 时，
+方程组为 $x_1=0,\ 0=1$，虽 $\rank A=n=1$，仍无解。
+
+\begin{example}\label{ex:nonhom}
+解线性方程组
+\[
+ \begin{cases}
+ x_1+2x_2-x_3+x_4=1,\\
+ 2x_1+4x_2+x_3-x_4=5,\\
+ x_1+2x_2+2x_3-2x_4=4.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+对增广矩阵作初等行变换：
+\begin{align*}
+\left(\begin{array}{rrrr|r}1&2&-1&1&1\\2&4&1&-1&5\\1&2&2&-2&4\end{array}\right)
+&\xrightarrow[ R_3\leftarrow R_3-R_1]{R_2\leftarrow R_2-2R_1}
+\left(\begin{array}{rrrr|r}1&2&-1&1&1\\0&0&3&-3&3\\0&0&3&-3&3\end{array}\right)\\
+&\xrightarrow{R_3\leftarrow R_3-R_2}
+\left(\begin{array}{rrrr|r}1&2&-1&1&1\\0&0&3&-3&3\\0&0&0&0&0\end{array}\right)\\
+&\xrightarrow{R_2\leftarrow R_2/3}
+\left(\begin{array}{rrrr|r}1&2&-1&1&1\\0&0&1&-1&1\\0&0&0&0&0\end{array}\right)\\
+&\xrightarrow{R_1\leftarrow R_1+R_2}
+\left(\begin{array}{rrrr|r}1&2&0&0&2\\0&0&1&-1&1\\0&0&0&0&0\end{array}\right).
+\end{align*}
+故 $\rank A=\rank\overline A=2<4$，方程组有无穷多解。
+主元位于第 $1,3$ 列，故 $x_2,x_4$ 为自由未知量。令 $x_2=s,x_4=t$，由
+\[
+ x_1+2x_2=2,\qquad x_3-x_4=1
+\]
+得到全部解
+\[
+ \boxed{\vx=(2-2s,s,1+t,t)^{\mathsf T},\qquad s,t\in P.}
+\]
+任意 $s,t$ 都给出一个解；反之，任意解的 $x_2,x_4$ 一旦给定，$x_1,x_3$ 即由上式确定，故此表示没有遗漏。
+\end{proof}
+
+\newpage
+\section{齐次线性方程组与基础解系}
+
+\begin{definition}[齐次线性方程组]
+常数项全为零的方程组 $A\vx=\vo$ 称为齐次线性方程组。
+向量 $\vx=\vo$ 总是它的解，称为零解；分量不全为零的解称为非零解。
+\end{definition}
+
+\begin{theorem}
+有 $n$ 个未知量的齐次线性方程组 $A\vx=\vo$ 有非零解，当且仅当 $\rank A<n$。
+\end{theorem}
+\begin{proof}
+添加零列不改变秩，故齐次方程组总满足有解条件。
+若 $\rank A=n$，由解的个数定理，零解是唯一解。
+若 $\rank A<n$，至少存在一个自由未知量。将其中一个取为 $1$，其余自由未知量取为 $0$，
+再回代求主元未知量，得到的解含有分量 $1$，因而是非零解。
+\end{proof}
+
+\begin{proposition}
+若方程个数 $m$ 少于未知量个数 $n$，则齐次方程组必有非零解。
+若 $A$ 为 $n$ 阶方阵，则齐次方程组有非零解当且仅当 $\det A=0$。
+\end{proposition}
+\begin{proof}
+当 $m<n$ 时，$\rank A\le m<n$，由上一定理得到第一项。
+当 $A$ 为 $n$ 阶方阵时，$\rank A<n$ 当且仅当 $\det A=0$，得到第二项。
+\end{proof}
+
+\begin{proposition}[齐次解的线性组合]
+若 $A\boldsymbol u=\vo$、$A\boldsymbol v=\vo$，则对任意 $s,t\in P$，
+$s\boldsymbol u+t\boldsymbol v$ 仍为齐次方程组的解。
+\end{proposition}
+\begin{proof}
+由矩阵乘向量的线性性，
+\[
+ A(s\boldsymbol u+t\boldsymbol v)=sA\boldsymbol u+tA\boldsymbol v=\vo.
+\]
+\end{proof}
+有限个齐次解的线性组合也仍是解。因此，可以选取适当的一组解，用它们的线性组合表示全部解。
+
+\begin{definition}[基础解系]
+设齐次方程组有非零解。若它的一组解 $\vxi_1,\ldots,\vxi_k$ 线性无关，
+且方程组的每个解都能由它们线性表示，则称这组解为方程组的\textbf{基础解系}。
+此时全部解为
+\[
+ \vx=c_1\vxi_1+\cdots+c_k\vxi_k,\qquad c_1,\ldots,c_k\in P.
+\]
+\end{definition}
+基础解系的各向量必须同时满足：是原齐次方程组的解、线性无关、能表示全部解。
+沿用这里的定义，只有零解时不列基础解系。
+
+\subsection{基础解系的存在与构造}
+
+\begin{theorem}
+设 $A$ 有 $n$ 列，$\rank A=r<n$。则 $A\vx=\vo$ 存在基础解系，
+且任意基础解系都恰含 $n-r$ 个解向量。
+\end{theorem}
+\begin{proof}
+将 $A$ 化为行阶梯形，设自由未知量为 $x_{j_1},\ldots,x_{j_k}$，其中 $k=n-r$。
+分别令这 $k$ 个自由分量取值为
+\[
+ (1,0,\ldots,0),\quad(0,1,\ldots,0),\quad\ldots,\quad(0,\ldots,0,1),
+\]
+并回代求其余分量，得到 $k$ 个完整的 $n$ 维解向量 $\vxi_1,\ldots,\vxi_k$。
+下面证明它们构成基础解系。
+
+\textbf{第一步：线性无关。}设 $\sum_{i=1}^k c_i\vxi_i=\vo$。
+对每个 $\ell=1,\ldots,k$，取第 $j_\ell$ 个分量，左边为 $c_\ell$，右边为 $0$，
+故 $c_1=\cdots=c_k=0$。
+
+\textbf{第二步：表示全部解。}任取齐次解 $\vx$，设其自由分量为
+$x_{j_1}=t_1,\ldots,x_{j_k}=t_k$。向量
+$\boldsymbol y=\sum_{i=1}^k t_i\vxi_i$ 也是齐次解，并且与 $\vx$ 具有相同的自由分量。
+自由分量确定后，主元分量由回代唯一确定，故 $\vx=\boldsymbol y$。
+因此每个齐次解都能由 $\vxi_1,\ldots,\vxi_k$ 表出。
+
+最后，任意另一基础解系与此组都能表示全部解，所以二者等价；又都线性无关，
+由等价无关组的向量个数相同，另一基础解系也含 $k=n-r$ 个向量。
+\end{proof}
+自由未知量取单位值时，只有\textbf{自由分量}按单位向量赋值，主元分量仍须回代计算。
+每个基础解向量有 $n$ 个分量，而基础解系共有 $n-r$ 个向量。
+当 $r=0$ 时，$A=0$，可取 $P^n$ 的标准单位向量组为基础解系。
+
+\begin{example}\label{ex:hom}
+求齐次方程组
+\[
+ \begin{cases}
+ x_1+2x_2-x_3+x_4=0,\\
+ 2x_1+4x_2+x_3-x_4=0,\\
+ x_1+2x_2+2x_3-2x_4=0
+ \end{cases}
+\]
+的一个基础解系及全部解。
+\end{example}
+\begin{proof}[解]
+系数矩阵与例\ref{ex:nonhom}相同，作相同的初等行变换，得到
+\[
+ \begin{pmatrix}1&2&0&0\\0&0&1&-1\\0&0&0&0\end{pmatrix}.
+\]
+故 $x_1=-2x_2$、$x_3=x_4$，自由未知量为 $x_2,x_4$。
+分别取 $(x_2,x_4)=(1,0)$、$(0,1)$，得到
+\[
+ \vxi_1=(-2,1,0,0)^{\mathsf T},\qquad
+ \vxi_2=(0,0,1,1)^{\mathsf T}.
+\]
+两向量均满足齐次方程组。若 $c_1\vxi_1+c_2\vxi_2=\vo$，
+考察第 $2,4$ 个分量得 $c_1=c_2=0$，所以二者无关。
+任意解可令 $x_2=s,x_4=t$，写成
+\[
+ \vx=(-2s,s,t,t)^{\mathsf T}=s\vxi_1+t\vxi_2.
+\]
+故 $\vxi_1,\vxi_2$ 构成一个基础解系，全部解为
+\[
+ \boxed{\vx=s(-2,1,0,0)^{\mathsf T}+t(0,0,1,1)^{\mathsf T},\qquad s,t\in P.}
+\]
+\end{proof}
+基础解系与系数矩阵的列极大无关组是不同对象：前者由 $n-r$ 个 $n$ 维解向量组成，
+后者在 $r>0$ 时由原矩阵中 $r$ 个 $m$ 维列向量组成，不能互相替代。
+
+\subsection{课堂例题：五元齐次方程组}
+
+下面按自由分量取单位值的方法，求课堂五元方程组的基础解系。
+
+\begin{example}\label{ex:class-hom}
+求齐次方程组的一个基础解系及全部解：
+\[
+ \begin{cases}
+ x_1+x_2+x_3+x_4+2x_5=0,\\
+ x_1+x_2+2x_3+2x_4+3x_5=0,\\
+ 2x_1+2x_2+2x_3+3x_4+5x_5=0,\\
+ 4x_1+4x_2+4x_3+5x_4+9x_5=0.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+第二、三、四行先分别减去第一行的 $1,2,4$ 倍，第四行再减去第三行，得到
+\begin{align*}
+ A&=\begin{pmatrix}1&1&1&1&2\\1&1&2&2&3\\2&2&2&3&5\\4&4&4&5&9\end{pmatrix}\\
+ &\longrightarrow
+ \begin{pmatrix}1&1&1&1&2\\0&0&1&1&1\\0&0&0&1&1\\0&0&0&1&1\end{pmatrix}
+ \longrightarrow
+ \begin{pmatrix}1&1&1&1&2\\0&0&1&1&1\\0&0&0&1&1\\0&0&0&0&0\end{pmatrix}.
+\end{align*}
+主元位于第 $1,3,4$ 列，故 $\rank A=3$，自由未知量为 $x_2,x_5$。
+令 $x_2=s,x_5=t$，由末行向上回代，依次得到
+\[
+ x_4=-t,\qquad x_3=0,\qquad x_1=-s-t.
+\]
+所以全部解为
+\[
+ \vx=s\underbrace{(-1,1,0,0,0)^{\mathsf T}}_{\vxi_1}
+       +t\underbrace{(-1,0,0,-1,1)^{\mathsf T}}_{\vxi_2},\qquad s,t\in P.
+\]
+两个向量在第 $2,5$ 个分量上的取值分别为 $(1,0)$、$(0,1)$，所以线性无关；
+上式又表示了全部解，故 $\vxi_1,\vxi_2$ 构成一个基础解系。
+\end{proof}
+
+\section{非齐次线性方程组解的结构}
+
+设 $\vb\ne\vo$。把非齐次方程组 $A\vx=\vb$ 的常数项全换为零，
+得到的齐次方程组 $A\vx=\vo$ 称为它的\textbf{导出组}。
+
+\begin{proposition}
+非齐次方程组的任意两个解之差是导出组的解；
+非齐次方程组的一个解与导出组的一个解之和，仍是非齐次方程组的解。
+\end{proposition}
+\begin{proof}
+若 $A\veta_1=A\veta_2=\vb$，则
+\[
+ A(\veta_1-\veta_2)=\vb-\vb=\vo.
+\]
+若 $A\veta=\vb$、$A\vxi=\vo$，则
+\[
+ A(\veta+\vxi)=\vb+\vo=\vb.
+\]
+\end{proof}
+
+\begin{theorem}[非齐次方程组的通解]
+设 $A\vx=\vb$ 有解，$\veta$ 是它的一个特解，则全部解为
+\[
+ \boxed{\vx=\veta+\vxi,\qquad \vxi\text{ 取遍导出组的全部解}.}
+\]
+若 $\rank A=r<n$，且 $\vxi_1,\ldots,\vxi_{n-r}$ 是导出组的一个基础解系，则
+\[
+ \boxed{\vx=\veta+c_1\vxi_1+\cdots+c_{n-r}\vxi_{n-r},\qquad c_i\in P.}
+\]
+若 $r=n$，则原方程组只有唯一解 $\veta$。
+\end{theorem}
+\begin{proof}
+任取原方程组的解 $\vx$，有
+\[
+ \vx=\veta+(\vx-\veta).
+\]
+由上一命题，$\vx-\veta$ 是导出组的解，故原方程组的每个解都具有所述形式。
+反过来，对任意导出组的解 $\vxi$，$\veta+\vxi$ 都是原方程组的解。
+所以此表示恰好给出全部解。
+当 $r<n$ 时，用基础解系表示 $\vxi$ 得到第二式；当 $r=n$ 时导出组只有零解，故 $\vx=\veta$。
+\end{proof}
+特解与基础解系都不必唯一。更换特解时，新旧特解之差属于导出组的解集，因此通解表示的集合不变。
+对非齐次方程组，任意两个解之和一般不是解，因为其右端变为 $2\vb$；
+这与齐次解对线性组合封闭的性质不同。
+
+\begin{example}
+用一个特解与导出组的基础解系表示例\ref{ex:nonhom}中方程组的全部解。
+\end{example}
+\begin{proof}[解]
+由例\ref{ex:nonhom}，取自由未知量 $x_2=x_4=0$，得到一个特解
+$\veta=(2,0,1,0)^{\mathsf T}$。
+由例\ref{ex:hom}，导出组的基础解系可取
+$\vxi_1=(-2,1,0,0)^{\mathsf T}$、$\vxi_2=(0,0,1,1)^{\mathsf T}$。
+故全部解为
+\[
+ \boxed{\vx=
+ \begin{pmatrix}2\\0\\1\\0\end{pmatrix}
+ +s\begin{pmatrix}-2\\1\\0\\0\end{pmatrix}
+ +t\begin{pmatrix}0\\0\\1\\1\end{pmatrix},\qquad s,t\in P.}
+\]
+代入原系数矩阵，有
+\[
+ A\veta=(1,5,4)^{\mathsf T}=\vb,\qquad A\vxi_1=A\vxi_2=\vo,
+\]
+与解的结构定理一致。
+\end{proof}
+
+\subsection{课堂例题：同一系数矩阵的非齐次方程组}
+
+保留例\ref{ex:class-hom}的系数矩阵，只把常数列改为 $(1,2,1,3)^{\mathsf T}$。
+
+\begin{example}
+求方程组的全部解：
+\[
+ \begin{cases}
+ x_1+x_2+x_3+x_4+2x_5=1,\\
+ x_1+x_2+2x_3+2x_4+3x_5=2,\\
+ 2x_1+2x_2+2x_3+3x_4+5x_5=1,\\
+ 4x_1+4x_2+4x_3+5x_4+9x_5=3.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+对增广矩阵作与例\ref{ex:class-hom}相同的行变换，再消去主元上方的元素：
+\begin{align*}
+ \overline A
+ &=\left(\begin{array}{rrrrr|r}1&1&1&1&2&1\\1&1&2&2&3&2\\2&2&2&3&5&1\\4&4&4&5&9&3\end{array}\right)\\
+ &\longrightarrow
+ \left(\begin{array}{rrrrr|r}1&1&1&1&2&1\\0&0&1&1&1&1\\0&0&0&1&1&-1\\0&0&0&0&0&0\end{array}\right)\\
+ &\longrightarrow
+ \left(\begin{array}{rrrrr|r}1&1&0&0&1&0\\0&0&1&0&0&2\\0&0&0&1&1&-1\\0&0&0&0&0&0\end{array}\right).
+\end{align*}
+系数秩与增广秩均为 $3$。令自由未知量 $x_2=x_5=0$，得到一个特解
+\[
+ \veta=(0,0,2,-1,0)^{\mathsf T}.
+\]
+导出组正是例\ref{ex:class-hom}的齐次方程组，因此全部解为
+\[
+ \boxed{\vx=(0,0,2,-1,0)^{\mathsf T}
+ +s(-1,1,0,0,0)^{\mathsf T}
+ +t(-1,0,0,-1,1)^{\mathsf T},\quad s,t\in P.}
+\]
+\end{proof}
+
+\subsection{课堂例题：三式四元方程组}
+
+\begin{example}
+求方程组的全部解：
+\[
+ \begin{cases}
+ 9x_1-3x_2+5x_3+6x_4=4,\\
+ 6x_1-2x_2+3x_3+x_4=5,\\
+ 3x_1-x_2+3x_3+14x_4=-8.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+交换第一、三行，再消去第一列，得到
+\begin{align*}
+ \left(\begin{array}{rrrr|r}9&-3&5&6&4\\6&-2&3&1&5\\3&-1&3&14&-8\end{array}\right)
+ &\longrightarrow
+ \left(\begin{array}{rrrr|r}3&-1&3&14&-8\\0&0&-3&-27&21\\0&0&-4&-36&28\end{array}\right)\\
+ &\longrightarrow
+ \left(\begin{array}{rrrr|r}3&-1&3&14&-8\\0&0&1&9&-7\\0&0&0&0&0\end{array}\right).
+\end{align*}
+两个主元在第 $1,3$ 列，自由未知量为 $x_2,x_4$。
+令 $x_2=s,x_4=t$，回代得到全部解：
+\[
+ \boxed{\vx=
+ \begin{pmatrix}13/3\\0\\-7\\0\end{pmatrix}
+ +s\begin{pmatrix}1/3\\1\\0\\0\end{pmatrix}
+ +t\begin{pmatrix}13/3\\0\\-9\\1\end{pmatrix},\qquad s,t\in P.}
+\]
+取 $s=t=0$ 可得一个特解；两个齐次向量在第 $2,4$ 个分量上的取值分别为 $(1,0)$、$(0,1)$，
+由前述构造方法，它们组成导出组的一个基础解系。
+\end{proof}
+
+\subsection{课堂例题：由已知解求全部解}
+
+\begin{example}
+设某个四元非齐次方程组 $A\vx=\vb$ 的系数矩阵满足 $\rank A=3$。
+已知 $\veta_1,\veta_2,\veta_3$ 都是它的解，且
+\[
+ \veta_1=(1,-2,-3,4)^{\mathsf T},\qquad
+ 5\veta_2-3\veta_3=(2,0,0,8)^{\mathsf T}.
+\]
+求这个方程组的全部解。
+\end{example}
+\begin{proof}[解]
+由 $A\veta_2=A\veta_3=\vb$，有
+\[
+ A(5\veta_2-3\veta_3)=2\vb.
+\]
+所以 $\veta_0=\tfrac12(5\veta_2-3\veta_3)=(1,0,0,4)^{\mathsf T}$ 也是一个特解。
+两个特解之差
+\[
+ \vxi=\veta_0-\veta_1=(0,2,3,0)^{\mathsf T}
+\]
+是导出组的非零解。又因 $n-\rank A=4-3=1$，导出组的基础解系只含一个向量，
+故 $\vxi$ 本身组成基础解系，原方程组的全部解为
+\[
+ \boxed{\vx=(1,-2,-3,4)^{\mathsf T}+c(0,2,3,0)^{\mathsf T},\qquad c\in P.}
+\]
+这里不能直接把 $5\veta_2-3\veta_3$ 当作原方程组的解：它的系数和为 $2$，须先除以 $2$。
+\end{proof}
+
+\section{含参数的线性方程组}
+
+\begin{example}
+讨论实参数 $a$ 取不同值时，下列方程组的解：
+\[
+ \begin{cases}
+ x+y+z=1,\\
+ x+ay+z=a,\\
+ x+y+a^2z=a.
+ \end{cases}
+\]
+\end{example}
+\begin{proof}[解]
+第二、三式分别减去第一式，得到同解方程组
+\[
+ x+y+z=1,\qquad (a-1)y=a-1,\qquad (a^2-1)z=a-1.
+\]
+由于 $a-1$、$a^2-1$ 可能为零，分以下三种情形。
+\begin{enumerate}
+\item 若 $a\ne\pm1$，则 $y=1$、$z=1/(a+1)$，回代得 $x=-1/(a+1)$。
+此时系数秩与增广秩均为 $3$，唯一解为
+\[
+ (x,y,z)=\left(-\frac1{a+1},1,\frac1{a+1}\right).
+\]
+\item 若 $a=1$，后两式均为 $0=0$，只剩 $x+y+z=1$。
+系数秩与增广秩均为 $1$，令 $y=s,z=t$，得全部解
+\[
+ (x,y,z)^{\mathsf T}=(1,0,0)^{\mathsf T}
+ +s(-1,1,0)^{\mathsf T}+t(-1,0,1)^{\mathsf T},\qquad s,t\in\mathbb R.
+\]
+\item 若 $a=-1$，第三式变成 $0=-2$，矛盾，故无解。
+此时系数矩阵秩为 $2$，增广矩阵秩为 $3$。
+\end{enumerate}
+\end{proof}
+该方程组的系数行列式为 $(a-1)^2(a+1)$。
+行列式非零时解唯一；行列式为零时，$a=1$ 给出无穷多解，而 $a=-1$ 给出无解。
+因此，对非齐次方程组，仅由系数行列式为零不能判定是否有解，还须比较系数秩与增广秩。
+
+\section{课后作业}
+
+本节题号按北大《高等代数》第六版标注。
+
+\subsection{习题 III 第20题（1）：对角元含参数的方程组}
+
+讨论 $\lambda\in P$ 取什么值时下列方程组有解，并求解：
+\[
+ \begin{cases}
+ \lambda x_1+x_2+x_3=1,\\
+ x_1+\lambda x_2+x_3=\lambda,\\
+ x_1+x_2+\lambda x_3=\lambda^2.
+ \end{cases}
+\]
+\begin{proof}[解]
+先找出系数行列式为零的参数值。沿第一行展开并因式分解，得到
+\[
+ D=\begin{vmatrix}\lambda&1&1\\1&\lambda&1\\1&1&\lambda\end{vmatrix}
+ =\lambda^3-3\lambda+2=(\lambda-1)^2(\lambda+2).
+\]
+因此分三种情形。
+\begin{enumerate}
+ \item 若 $\lambda\ne1,-2$，则 $D\ne0$，由克拉默法则，方程组有唯一解。
+ 将第一、二、三列分别换成常数列，计算得
+ \begin{align*}
+ D_1&=-(\lambda-1)^2(\lambda+1),\\
+ D_2&=(\lambda-1)^2,\\
+ D_3&=(\lambda-1)^2(\lambda+1)^2.
+ \end{align*}
+ 所以唯一解为
+ \[
+  \boxed{(x_1,x_2,x_3)=
+  \left(-\frac{\lambda+1}{\lambda+2},\frac1{\lambda+2},
+  \frac{(\lambda+1)^2}{\lambda+2}\right).}
+ \]
+ \item 若 $\lambda=1$，三式都化为 $x_1+x_2+x_3=1$。
+ 令 $x_2=s,x_3=t$，得到全部解
+ \[
+  \vx=(1,0,0)^{\mathsf T}+s(-1,1,0)^{\mathsf T}
+  +t(-1,0,1)^{\mathsf T},\qquad s,t\in P.
+ \]
+ \item 若 $\lambda=-2$，将三式相加，左端为 $0$，右端为
+ $1-2+4=3$，矛盾，故无解。
+\end{enumerate}
+两个使行列式为零的参数值，分别给出无穷多解与无解，不能省去这两种情形的检查。
+\end{proof}
+
+\subsection{习题 III 第23题：先讨论有解条件，再求通解}
+
+$a,b\in P$ 取什么值时，线性方程组
+\[
+ \begin{cases}
+ x_1+x_2+x_3+x_4+x_5=1,\\
+ 3x_1+2x_2+x_3+x_4-3x_5=a,\\
+ x_2+2x_3+2x_4+6x_5=3,\\
+ 5x_1+4x_2+3x_3+3x_4-x_5=b
+ \end{cases}
+\]
+有解？在有解的情形下，求它的全部解。
+\newpage
+\begin{proof}[解]
+先消去第一列，再用第三行消去第二、四行的非零系数，最后将第三行换到第二行，得到
+\begin{align*}
+ \overline A
+ &=\left(\begin{array}{rrrrr|r}1&1&1&1&1&1\\3&2&1&1&-3&a\\0&1&2&2&6&3\\5&4&3&3&-1&b\end{array}\right)\\
+ &\longrightarrow
+ \left(\begin{array}{rrrrr|r}1&1&1&1&1&1\\0&-1&-2&-2&-6&a-3\\0&1&2&2&6&3\\0&-1&-2&-2&-6&b-5\end{array}\right)\\
+ &\longrightarrow
+ \left(\begin{array}{rrrrr|r}1&1&1&1&1&1\\0&1&2&2&6&3\\0&0&0&0&0&a\\0&0&0&0&0&b-2\end{array}\right).
+\end{align*}
+末两行分别对应 $0=a$、$0=b-2$，故有解的充要条件为
+\[
+ \boxed{a=0,\qquad b=2.}
+\]
+此时系数秩与增广秩均为 $2$，有三个自由未知量 $x_3,x_4,x_5$。
+令 $x_3=s,x_4=t,x_5=u$，由第二行及第一行依次得到
+\[
+ x_2=3-2s-2t-6u,\qquad x_1=-2+s+t+5u.
+\]
+所以全部解为
+\begin{align*}
+ \vx={}&(-2,3,0,0,0)^{\mathsf T}
+ +s(1,-2,1,0,0)^{\mathsf T}\\
+ &+t(1,-2,0,1,0)^{\mathsf T}
+ +u(5,-6,0,0,1)^{\mathsf T},\qquad s,t,u\in P.
+\end{align*}
+其中 $(-2,3,0,0,0)^{\mathsf T}$ 是一个特解；后三个向量均为导出组的解，
+且它们在第 $3,4,5$ 个分量上的取值组成标准单位向量组，因此构成导出组的一个基础解系。
+\end{proof}
+
+\subsection{补充题 III 第9题：系数和为1的解表示}
+
+设 $\veta_0$ 是线性方程组 $A\vx=\vb$ 的一个解，
+$\veta_1,\ldots,\veta_t$ 是它的导出组的一个基础解系。令
+\[
+ \boldsymbol\gamma_1=\veta_0,\qquad
+ \boldsymbol\gamma_{i+1}=\veta_i+\veta_0\quad(i=1,\ldots,t).
+\]
+证明：原方程组的任意一个解 $\boldsymbol\gamma$ 都可以表示成
+\[
+ \boldsymbol\gamma=u_1\boldsymbol\gamma_1+\cdots+u_{t+1}\boldsymbol\gamma_{t+1},
+ \qquad u_1+\cdots+u_{t+1}=1.
+\]
+\begin{proof}
+任取原方程组的解 $\boldsymbol\gamma$。由非齐次解的结构定理，存在 $c_1,\ldots,c_t\in P$，使
+\[
+ \boldsymbol\gamma=\veta_0+\sum_{i=1}^{t}c_i\veta_i.
+\]
+将 $\veta_i=\boldsymbol\gamma_{i+1}-\boldsymbol\gamma_1$ 代入，得
+\begin{align*}
+ \boldsymbol\gamma
+ &=\boldsymbol\gamma_1+
+ \sum_{i=1}^{t}c_i(\boldsymbol\gamma_{i+1}-\boldsymbol\gamma_1)\\
+ &=\left(1-\sum_{i=1}^{t}c_i\right)\boldsymbol\gamma_1
+ +\sum_{i=1}^{t}c_i\boldsymbol\gamma_{i+1}.
+\end{align*}
+取 $u_1=1-\sum_{i=1}^{t}c_i$、$u_{i+1}=c_i$，便得到所需表示，且这些系数之和为 $1$。
+\end{proof}
+反过来，因为每个 $\boldsymbol\gamma_i$ 都满足 $A\boldsymbol\gamma_i=\vb$，
+任何系数和为 $1$ 的线性组合也满足
+\[
+ A\left(\sum_{i=1}^{t+1}u_i\boldsymbol\gamma_i\right)
+ =\left(\sum_{i=1}^{t+1}u_i\right)\vb=\vb.
+\]
+因此，这些系数和为 $1$ 的组合恰好给出原方程组的全部解。
+若导出组只有零解，原方程组的解唯一，直接取 $u_1=1$ 即可。
+
+\end{document}

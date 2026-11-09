@@ -1,0 +1,312 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": true,
+%   "course": "higher-algebra-i",
+%   "section": "2.2",
+%   "title": "高等代数（一）2.2：矩阵的秩",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "定义矩阵的行秩、列秩和秩，证明秩定理，并用初等行变换求秩及列向量组的极大线性无关组。"
+% }
+% halo:end
+% 整理日期：2026-10-26；照片未提供可确认的课堂日期。
+% 课堂来源：IMG_2698--2701.jpeg。
+% 教材：北大《高等代数》第五版，第三章第4节，印刷页84--90，PDF第96--102页。
+% 秩定理及推论：印刷页86--89，PDF第98--101页。
+% 求极大线性无关组的例题：第4节例2，印刷页89，PDF第101页。
+% 所用PDF：/Users/yuchenzhang/Downloads/高等代数 第五版 北大数学系前线代小组 王萼芳 石生明 Z-Library.pdf
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\rank}{\operatorname{rank}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）2.2}
+\fancyhead[R]{\small 矩阵的秩}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{矩阵的秩}
+\author{Yuchen Zhang}
+\date{整理日期：2026年10月26日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{行秩与列秩}
+
+以下矩阵的元素均属于数域 $P$。设 $A=(a_{ij})_{m\times n}$，其中 $m,n\ge1$。
+按列看，$A$ 由 $n$ 个 $m$ 维列向量组成；按行看，$A$ 由 $m$ 个 $n$ 维行向量组成。
+记
+\[
+ A=(\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_n)
+ =\begin{pmatrix}\boldsymbol\beta_1\\\vdots\\\boldsymbol\beta_m\end{pmatrix},
+\]
+其中
+\[
+ \boldsymbol\alpha_j=(a_{1j},\ldots,a_{mj})^{\mathsf T},\qquad
+ \boldsymbol\beta_i=(a_{i1},\ldots,a_{in}).
+\]
+
+\begin{definition}
+矩阵 $A$ 的列向量组的秩称为 $A$ 的\textbf{列秩}，行向量组的秩称为 $A$ 的\textbf{行秩}。
+全由零向量组成的向量组的秩规定为 $0$。
+\end{definition}
+
+\begin{example}
+求矩阵
+\[
+ A=\begin{pmatrix}1&0&4&5\\2&0&8&10\end{pmatrix}
+\]
+的行秩与列秩。
+\end{example}
+\begin{proof}[解]
+第二行是第一行的 $2$ 倍，而第一行非零，故第一行组成行向量组的一个极大线性无关组，行秩为 $1$。
+记各列为 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_4$，则
+\[
+ \boldsymbol\alpha_1=(1,2)^{\mathsf T}\ne\boldsymbol0,\qquad
+ \boldsymbol\alpha_2=\boldsymbol0,\qquad
+ \boldsymbol\alpha_3=4\boldsymbol\alpha_1,\qquad
+ \boldsymbol\alpha_4=5\boldsymbol\alpha_1.
+\]
+所以第一列组成列向量组的一个极大线性无关组，列秩也为 $1$。
+\end{proof}
+
+\section{子式与矩阵的秩}
+
+\begin{definition}
+在矩阵 $A$ 中任取 $k$ 行和 $k$ 列，其中 $1\le k\le\min(m,n)$，
+位于这些行、列交叉处的元素按原顺序组成的 $k$ 阶行列式，称为 $A$ 的一个\textbf{$k$ 阶子式}。
+所选行、列不要求连续。
+\end{definition}
+若行号为 $i_1<\cdots<i_k$、列号为 $j_1<\cdots<j_k$，相应子式为
+\[
+ \begin{vmatrix}
+ a_{i_1j_1}&\cdots&a_{i_1j_k}\\
+ \vdots&&\vdots\\
+ a_{i_kj_1}&\cdots&a_{i_kj_k}
+ \end{vmatrix}.
+\]
+
+\begin{definition}
+非零矩阵 $A$ 中非零子式的最高阶数称为 $A$ 的\textbf{秩}，记作 $\rank A$。
+零矩阵的秩规定为 $0$。
+\end{definition}
+
+\begin{proposition}
+设 $A$ 为 $m\times n$ 矩阵，则
+\[
+ 0\le\rank A\le\min(m,n),\qquad
+ \rank A=0\Longleftrightarrow A=0.
+\]
+当 $1\le r\le\min(m,n)$ 时，$\rank A=r$ 的充分必要条件是：
+$A$ 有非零的 $r$ 阶子式，且所有 $r+1$ 阶子式均为零。
+当 $r=\min(m,n)$ 时，后一条件无需检验。
+\end{proposition}
+\begin{proof}
+子式的阶数不超过 $\min(m,n)$，故秩满足上述界限。
+矩阵的元素就是它的一阶子式，因此非零矩阵的秩至少为 $1$，零矩阵的秩为 $0$。
+
+若秩为 $r$，根据定义存在非零的 $r$ 阶子式，而所有更高阶子式均为零。
+反过来，设存在非零的 $r$ 阶子式，且所有 $r+1$ 阶子式均为零。
+将任一 $r+2$ 阶子式按一行展开，各项都含一个 $r+1$ 阶子式，因而该子式为零。
+逐级作同样的展开，得到所有更高阶子式均为零，故秩为 $r$。
+当 $r=\min(m,n)$ 时不存在更高阶子式，有非零的 $r$ 阶子式便足够。
+\end{proof}
+
+\section{秩定理}
+
+\begin{theorem}
+矩阵 $A$ 的秩、列秩与行秩相等，即
+\[
+ \boxed{\rank A=\text{列秩}(A)=\text{行秩}(A).}
+\]
+若 $\rank A=r>0$，则任一非零 $r$ 阶子式所在的 $r$ 个完整列向量，
+构成 $A$ 的列向量组的一个极大线性无关组；相应的 $r$ 个完整行向量也具有同样的性质。
+\end{theorem}
+\begin{proof}
+设按最高阶非零子式定义的秩为 $r$。若 $r=0$，则 $A=0$，行秩与列秩均为 $0$。
+以下设 $r>0$，取一个非零的 $r$ 阶子式。
+
+重新排列行、列，可使这一子式位于左上角，记相应的 $r$ 阶方阵为 $B$，则 $\det B\ne0$。
+交换行只改变各列分量的共同顺序，不改变列之间的线性关系；交换列只改变列向量的排列次序。
+对行向量也同理。因此这些重排不改变行秩、列秩，也不改变非零子式的最高阶数。
+
+\textbf{先证前 $r$ 个完整列向量线性无关。}
+设
+\[
+ c_1\boldsymbol\alpha_1+\cdots+c_r\boldsymbol\alpha_r=\boldsymbol0.
+\]
+取前 $r$ 个分量，得到
+\[
+ B(c_1,\ldots,c_r)^{\mathsf T}=\boldsymbol0.
+\]
+由 $\det B\ne0$ 及克拉默法则，$c_1=\cdots=c_r=0$，故前 $r$ 列线性无关。
+
+\medskip
+\textbf{再证其余各列可由前 $r$ 列线性表出。}
+任取 $j>r$，考虑
+\[
+ B(c_1,\ldots,c_r)^{\mathsf T}=(a_{1j},\ldots,a_{rj})^{\mathsf T}.
+\]
+由克拉默法则，该方程组有唯一解。用这组系数令
+\[
+ \boldsymbol d=\boldsymbol\alpha_j-\sum_{k=1}^r c_k\boldsymbol\alpha_k.
+\]
+于是 $d_1=\cdots=d_r=0$。对任意 $i>r$，取行号 $1,\ldots,r,i$ 和列号 $1,\ldots,r,j$
+对应的 $r+1$ 阶子式。由于 $\rank A=r$，该子式为零，即
+\[
+ D_{ij}=\det\begin{pmatrix}
+ B&(a_{1j},\ldots,a_{rj})^{\mathsf T}\\
+ a_{i1}\ \cdots\ a_{ir}&a_{ij}
+ \end{pmatrix}=0.
+\]
+把最后一列减去前 $r$ 列的相应线性组合，不改变行列式的值，故
+\[
+ 0=D_{ij}
+ =\det\begin{pmatrix}B&\boldsymbol0\\a_{i1}\ \cdots\ a_{ir}&d_i\end{pmatrix}
+ =d_i\det B.
+\]
+由 $\det B\ne0$ 得 $d_i=0$。因此 $\boldsymbol d=\boldsymbol0$，即
+$\boldsymbol\alpha_j=\sum_{k=1}^r c_k\boldsymbol\alpha_k$。
+若 $r=m$，前 $r$ 个分量已经是全部分量，无需再检验；若 $r=n$，则没有其余列需要表示。
+
+前 $r$ 列既线性无关，又能表出所有列，所以构成列向量组的一个极大线性无关组，列秩为 $r$。
+对 $A^{\mathsf T}$ 作相同论证。它与 $A$ 的对应子式互为转置，行列式值相等，
+故 $\rank A^{\mathsf T}=r$；而 $A^{\mathsf T}$ 的列向量对应 $A$ 的行向量，
+所以 $A$ 的行秩也为 $r$。同时，相应的完整行向量构成行向量组的一个极大线性无关组。
+\end{proof}
+
+\section{用初等变换求秩}
+
+\begin{proposition}
+初等行变换与初等列变换均不改变矩阵的秩。
+\end{proposition}
+\begin{proof}
+设 $A$ 经过一次初等行变换得到 $C$。$C$ 的每一行都是 $A$ 各行的线性组合。
+初等行变换可逆，故 $A$ 的每一行也可由 $C$ 的各行线性表出。
+因此两矩阵的行向量组等价，行秩相同。由秩定理，$\rank A=\rank C$。
+对初等列变换，用列向量组作同样的论证即可。
+\end{proof}
+这里的初等行变换指交换两行、一行乘非零数，以及把一行的倍数加到另一行；
+初等列变换的定义相同，只需把行换成列。
+
+\begin{definition}
+若矩阵的零行都位于非零行下方，且各非零行的第一个非零元素的位置逐行向右移动，
+则称该矩阵为\textbf{行阶梯形矩阵}。各非零行的第一个非零元素称为\textbf{主元}，
+主元所在的列称为\textbf{主元列}。
+\end{definition}
+每个矩阵都可以用初等行变换化为行阶梯形：从左到右寻找尚未处理部分的第一个非零列，
+交换行使其中一个非零元素成为主元，用行倍加消去它下面的元素，再处理右下方剩余部分。
+每取一个主元，剩余行数便减少，故过程经过有限步结束。
+
+\begin{proposition}
+行阶梯形矩阵的秩等于其非零行数。因此，矩阵 $A$ 的秩等于它经初等行变换所得阶梯形矩阵的非零行数。
+\end{proposition}
+\begin{proof}
+设阶梯形矩阵 $C$ 的非零行依次为 $\boldsymbol\gamma_1,\ldots,\boldsymbol\gamma_r$，
+主元列号为 $j_1<\cdots<j_r$。若
+\[
+ c_1\boldsymbol\gamma_1+\cdots+c_r\boldsymbol\gamma_r=\boldsymbol0,
+\]
+看第 $j_1$ 个分量，只有第一行在该位置可能非零，且其主元非零，故 $c_1=0$。
+再看第 $j_2$ 个分量，结合 $c_1=0$ 得 $c_2=0$。依次得到 $c_1=\cdots=c_r=0$。
+所以这些非零行线性无关，其余零行均可由它们表出，行秩为 $r$，由秩定理知 $\rank C=r$。
+若没有非零行，则 $C=0$，结论仍成立。最后由初等行变换不改变秩，得 $\rank A=\rank C$。
+\end{proof}
+
+\begin{proposition}
+设 $A$ 经初等行变换化为行阶梯形矩阵 $C$，其非零行数为 $r>0$，主元列号为
+$j_1<\cdots<j_r$。则\textbf{原矩阵 $A$} 的第 $j_1,\ldots,j_r$ 列构成列向量组的一个极大线性无关组。
+\end{proposition}
+\begin{proof}
+在 $A$ 中取这些列得到矩阵 $A_1$，在 $C$ 中取对应列得到矩阵 $C_1$。
+对 $A_1$ 进行与 $A$ 相同的初等行变换，便得到 $C_1$，故二者秩相同。
+$C_1$ 的前 $r$ 行组成一个上三角方阵，其对角元是 $C$ 的各个非零主元，因而行列式不为零。
+所以 $\rank C_1\ge r$；又因 $C_1$ 只有 $r$ 列，故 $\rank C_1=r$。
+于是 $\rank A_1=r$，其 $r$ 个列向量线性无关。
+
+另一方面，$\rank A=\rank C=r$。如果原矩阵中还有一列不能由所选的 $r$ 列表出，
+将它加入会得到 $r+1$ 个线性无关的列，与列秩为 $r$ 矛盾。
+所以所选列构成原列向量组的一个极大线性无关组。
+\end{proof}
+行变换改变了列向量的分量。因此，要选出原向量组的极大线性无关组，应先在阶梯形中确定列号，
+再按这些列号取原矩阵的列。
+
+\begin{example}
+求向量组
+\[
+ \boldsymbol\alpha_1=(2,4,2)^{\mathsf T},\quad
+ \boldsymbol\alpha_2=(-1,-2,-1)^{\mathsf T},\quad
+ \boldsymbol\alpha_3=(3,5,4)^{\mathsf T},\quad
+ \boldsymbol\alpha_4=(1,4,0)^{\mathsf T}
+\]
+的秩及一个极大线性无关组。
+\end{example}
+\begin{proof}[解]
+将各向量按列排成矩阵，进行初等行变换：
+\begin{align*}
+ A&=\begin{pmatrix}2&-1&3&1\\4&-2&5&4\\2&-1&4&0\end{pmatrix}\\
+ &\xrightarrow[R_3\leftarrow R_3-R_1]{R_2\leftarrow R_2-2R_1}
+ \begin{pmatrix}2&-1&3&1\\0&0&-1&2\\0&0&1&-1\end{pmatrix}
+ \xrightarrow{R_3\leftarrow R_3+R_2}
+ \begin{pmatrix}2&-1&3&1\\0&0&-1&2\\0&0&0&1\end{pmatrix}.
+\end{align*}
+阶梯形矩阵有三个非零行，故原向量组的秩为 $3$。
+主元分别位于第 $1,3,4$ 列，所以
+\[
+ \boxed{\boldsymbol\alpha_1,\ \boldsymbol\alpha_3,\ \boldsymbol\alpha_4}
+\]
+是原向量组的一个极大线性无关组。
+未选的向量满足 $\boldsymbol\alpha_2=-\tfrac12\boldsymbol\alpha_1$，确实可以由所选向量表出。
+\end{proof}
+
+\section{方阵的满秩条件}
+
+\begin{proposition}
+对 $n$ 阶方阵 $A$，下列条件等价：
+\begin{enumerate}
+\item $\rank A=n$；
+\item $\det A\ne0$；
+\item $A$ 的全部列向量线性无关；
+\item $A$ 的全部行向量线性无关。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+$A$ 的子式阶数至多为 $n$，而唯一的 $n$ 阶子式就是 $\det A$，
+故 $\rank A=n$ 当且仅当 $\det A\ne0$。
+由秩定理，矩阵的秩等于行秩和列秩。
+含 $n$ 个向量的组线性无关，当且仅当该组的秩为 $n$，
+因此第一项也分别等价于第三、第四项。
+\end{proof}
+相应地，$\det A=0$ 当且仅当 $\rank A<n$，也当且仅当全部列向量线性相关，
+或全部行向量线性相关。对于非方阵，不能使用 $\det A$，仍应按秩及行、列向量组讨论。
+
+\end{document}
