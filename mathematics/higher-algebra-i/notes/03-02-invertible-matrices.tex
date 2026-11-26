@@ -1,0 +1,316 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "higher-algebra-i",
+%   "section": "3.2",
+%   "title": "高等代数（一）3.2：逆矩阵",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "方阵的可逆判据与运算性质，伴随矩阵公式、初等行变换求逆，以及课堂矩阵方程的完整解答。"
+% }
+% halo:end
+% 3.2为笔记自身主题编号。课堂日期未确认。
+% 教材：北大《高等代数》第六版第四章 §4「矩阵的逆」印刷124--127页（PDF129--132）；
+% §6末行变换求逆及例2为印刷134--135页（PDF139--140）。例2与课堂例题的A相同，B取自照片。
+% 课堂来源：IMG_3618右、IMG_3619、IMG_3620、IMG_3621、IMG_3622左、IMG_3625右、IMG_3626左。
+% IMG_3620右有覆改的行列式草算，仅保留可确认的克拉默法则推导。
+% IMG_3625右关于A与A*同时可逆的命题须限制n>=2；一阶情形另述。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\vx}{\boldsymbol{x}}
+\newcommand{\vb}{\boldsymbol{\beta}}
+\newcommand{\ve}{\boldsymbol{\varepsilon}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）3.2}
+\fancyhead[R]{\small 逆矩阵}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{逆矩阵}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月27日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{逆矩阵的定义与可逆判据}
+
+以下设 $P$ 为数域，$E_n$ 为 $n$ 阶单位矩阵。矩阵乘法一般不存在普遍意义的“除法”，但在方阵的范围内，如果某个方阵乘以另一个同阶方阵恰好得到单位矩阵，就能在乘法中起到倒数的作用。
+
+\begin{definition}
+设 $A$ 为 $P$ 上的 $n$ 阶方阵。若存在同阶方阵 $B$ 使得
+\[
+ AB=BA=E_n,
+\]
+则称 $A$ \textbf{可逆}，称 $B$ 为 $A$ 的\textbf{逆矩阵}，记作 $A^{-1}$。
+\end{definition}
+
+一个方阵的逆矩阵如果存在，必然是唯一的：若 $B_1,B_2$ 都是 $A$ 的逆矩阵，则由矩阵乘法的结合律可得
+\[
+ B_1=B_1E_n=B_1(AB_2)=(B_1A)B_2=E_nB_2=B_2.
+\]
+
+\begin{example}
+判断下列两个方阵是否可逆，并求可逆者的逆矩阵：
+\[
+ \begin{pmatrix}2&0\\0&3\end{pmatrix},\qquad
+ \begin{pmatrix}0&1\\0&0\end{pmatrix}.
+\]
+\end{example}
+\noindent\textbf{解}\quad
+第一个矩阵与对角矩阵 $\operatorname{diag}(\tfrac12,\tfrac13)$ 按任一顺序相乘均得 $E_2$，因此它可逆，且逆矩阵为 $\operatorname{diag}(\tfrac12,\tfrac13)$。第二个矩阵的第二行全为零，它与任意二阶矩阵右乘所得乘积的第二行仍全为零，不可能等于 $E_2$，因而不可逆。
+
+一般而言，直接按定义寻找逆矩阵并不容易；下面的定理将方阵的可逆性与行列式、秩以及行、列向量组的线性无关性等价起来。
+
+\begin{theorem}[可逆判据]\label{thm:invertibility}
+设 $A$ 为 $n$ 阶方阵，则下列四个条件等价：
+\begin{enumerate}[label=\textup{(\arabic*)}]
+ \item $A$ 可逆；
+ \item $\det A\ne0$；
+ \item $\rank A=n$；
+ \item $A$ 的 $n$ 个列向量线性无关（也等价于其 $n$ 个行向量线性无关）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+先证 \textup{(1)} $\Rightarrow$ \textup{(2)} $\Leftrightarrow$ \textup{(3)} $\Leftrightarrow$ \textup{(4)}。若 $A$ 可逆，对等式 $AA^{-1}=E_n$ 两端取行列式，得 $\det A\cdot\det(A^{-1})=1$，因此 $\det A\ne0$，且顺带给出
+\[
+ \det(A^{-1})=\frac{1}{\det A}.
+\]
+由方阵的满秩条件，\textup{(2)} 与 \textup{(3)} 等价；再由矩阵的秩等于行秩和列秩，\textup{(3)} 与 \textup{(4)} 等价。
+
+再证 \textup{(3)} $\Rightarrow$ \textup{(1)}。设 $\rank A=n$，则对任意 $\vb\in P^n$，增广矩阵的秩同样满足 $\rank(A\mid\vb)=n$，因而线性方程组 $A\vx=\vb$ 必有唯一解。特别地，记 $E_n$ 的第 $j$ 列为 $\ve_j$，并记 $A\vx=\ve_j$ 的唯一解为 $\boldsymbol{x}_j$（$j=1,\ldots,n$）。把这 $n$ 个列向量拼成方阵 $B=(\boldsymbol{x}_1,\ldots,\boldsymbol{x}_n)$，由按列乘法即有 $AB=E_n$。
+
+为了再验证 $BA=E_n$，注意到 $A(BA-E_n)=(AB)A-A=E_nA-A=0$。这意味着矩阵 $BA-E_n$ 的每一列都是齐次方程组 $A\vx=0$ 的解；而 $\rank A=n$ 保证该齐次方程组只有零解，从而 $BA-E_n=0$，即 $BA=E_n$。故 $A$ 可逆。
+\end{proof}
+
+由上述定理还可以看出，判定同阶方阵互逆时只需验证一侧的乘积即可：若同阶方阵 $A,B$ 满足 $AB=E_n$（或 $BA=E_n$），两端取行列式得 $\det A\cdot\det B=1$，故 $\det A\ne0$，$A$ 可逆，在等式相应一侧乘上 $A^{-1}$ 立得 $B=A^{-1}$。类似地，由 $\det(AB)=\det A\cdot\det B$ 可知，同阶方阵乘积 $AB$ 可逆当且仅当 $A$ 与 $B$ 都可逆。
+
+\section{逆矩阵的运算性质}
+
+借助“同阶方阵只需验证单侧乘积为单位矩阵”的结论，逆矩阵对常见矩阵运算的性质都可以直接验证。
+
+\begin{proposition}\label{prop:inverse-laws}
+设 $A,B$ 为同阶可逆方阵，$\lambda\in P$ 且 $\lambda\ne0$。则 $A^{-1},\ AB,\ \lambda A,\ A^{\mathsf T}$ 均可逆，且满足
+\[
+ \begin{aligned}
+  (A^{-1})^{-1}&=A, & (AB)^{-1}&=B^{-1}A^{-1},\\
+  (\lambda A)^{-1}&=\lambda^{-1}A^{-1}, & (A^{\mathsf T})^{-1}&=(A^{-1})^{\mathsf T}.
+ \end{aligned}
+\]
+\end{proposition}
+\begin{proof}
+由 $A^{-1}A=AA^{-1}=E_n$ 直接可知 $(A^{-1})^{-1}=A$。对其余三式，分别利用结合律和乘积的转置公式计算单侧乘积：
+\[
+ \begin{aligned}
+  (AB)(B^{-1}A^{-1})&=A(BB^{-1})A^{-1}=E_n,\\
+  (\lambda A)(\lambda^{-1}A^{-1})&=AA^{-1}=E_n,\\
+  A^{\mathsf T}(A^{-1})^{\mathsf T}&=(A^{-1}A)^{\mathsf T}=E_n.
+ \end{aligned}
+\]
+根据同阶方阵的单侧逆结论，上述三个等式分别给出了 $AB,\ \lambda A,\ A^{\mathsf T}$ 的逆矩阵。
+\end{proof}
+
+反复应用乘积求逆公式，对任意有限个同阶可逆方阵 $A_1,\ldots,A_m$，有
+\[
+ (A_1A_2\cdots A_m)^{-1}=A_m^{-1}\cdots A_2^{-1}A_1^{-1}.
+\]
+
+前面已经知道一般矩阵相乘不会增大秩；而如果乘上的因子是可逆方阵，矩阵的秩则保持完全不变。
+
+\begin{proposition}[可逆乘法保持秩]
+设 $A$ 为 $s\times n$ 矩阵，$S$ 为 $s$ 阶可逆方阵，$T$ 为 $n$ 阶可逆方阵，则
+\[
+ \rank A=\rank(SA)=\rank(AT)=\rank(SAT).
+\]
+\end{proposition}
+\begin{proof}
+将矩阵乘积的秩不等式先后应用于 $SA$ 与 $S^{-1}(SA)$，得到
+\[
+ \rank(SA)\le\rank A=\rank\bigl(S^{-1}(SA)\bigr)\le\rank(SA),
+\]
+从而 $\rank(SA)=\rank A$。同理，利用 $A=(AT)T^{-1}$ 可证 $\rank(AT)=\rank A$。最后将右乘结论应用于矩阵 $SA$，即得 $\rank(SAT)=\rank(SA)=\rank A$。
+\end{proof}
+
+\section{伴随矩阵与求逆公式}
+
+可逆判据保证了 $\det A\ne0$ 时 $A^{-1}$ 存在，但尚未给出用矩阵元素表示 $A^{-1}$ 的显式公式。下面借助代数余子式引入伴随矩阵，建立逆矩阵的显式表达式。
+
+\begin{definition}[伴随矩阵]
+设 $A=(a_{ij})$ 为 $n$ 阶方阵，$A_{ij}$ 为元素 $a_{ij}$ 的代数余子式。将所有代数余子式按原位置排成矩阵后再转置，所得矩阵称为 $A$ 的\textbf{伴随矩阵}，记作 $A^*$：
+\[
+ A^*=(A_{ji})=
+ \begin{pmatrix}
+  A_{11}&A_{21}&\cdots&A_{n1}\\
+  A_{12}&A_{22}&\cdots&A_{n2}\\
+  \vdots&\vdots&&\vdots\\
+  A_{1n}&A_{2n}&\cdots&A_{nn}
+ \end{pmatrix}.
+\]
+当 $n=1$ 时，约定零阶行列式为 $1$，相应地规定 $A^*=(1)$。
+\end{definition}
+
+需要注意，伴随矩阵第 $(i,j)$ 个位置上的元素是 $A_{ji}$ 而非 $A_{ij}$，正是这一转置使得 $A$ 与 $A^*$ 相乘时对角线外元素全部抵消为零。
+
+\begin{theorem}[伴随矩阵恒等式]\label{thm:adjugate}
+任意 $n$ 阶方阵 $A$ 均满足
+\[
+ AA^*=A^*A=(\det A)E_n.
+\]
+特别地，当 $\det A\ne0$ 时，有求逆公式
+\[
+ A^{-1}=\frac{1}{\det A}A^*.
+\]
+\end{theorem}
+\begin{proof}
+先考察 $AA^*$。其第 $(i,j)$ 个元素为 $\sum_{k=1}^n a_{ik}A_{jk}$。当 $i=j$ 时，这正是 $\det A$ 按第 $j$ 行的展开式，故等于 $\det A$。当 $i\ne j$ 时，将 $A$ 的第 $j$ 行替换为第 $i$ 行得到一个新矩阵；沿新矩阵的第 $j$ 行展开，由于删去第 $j$ 行后对应的各代数余子式与原矩阵完全相同，所得行列式恰好等于 $\sum_{k=1}^n a_{ik}A_{jk}$。而新矩阵有两行相同，其行列式为零，故该和式等于 $0$。由此证得 $AA^*=(\det A)E_n$。
+
+再考察 $A^*A$。其第 $(i,j)$ 个元素为 $\sum_{k=1}^n A_{ki}a_{kj}$。当 $i=j$ 时，它等于 $\det A$ 按第 $i$ 列的展开式；当 $i\ne j$ 时，它等于将 $A$ 的第 $i$ 列替换为第 $j$ 列后的行列式，因含有两列相同而等于 $0$。因此 $A^*A=(\det A)E_n$。若 $\det A\ne0$，等式两边同除以 $\det A$，即得 $A^{-1}=\frac{1}{\det A}A^*$。
+\end{proof}
+
+这一求逆公式也可以从克拉默法则直接导出。设 $A$ 可逆，则 $A^{-1}$ 的第 $j$ 列 $\boldsymbol{x}_j$ 是方程组 $A\vx=\ve_j$ 的唯一解。以 $\ve_j$ 替换 $A$ 的第 $i$ 列得到矩阵 $D_{ij}$，将 $\det D_{ij}$ 按第 $i$ 列展开，由于该列仅有第 $j$ 行为 $1$，其余分量皆为零，便有 $\det D_{ij}=A_{ji}$，从而
+\[
+ (A^{-1})_{ij}=(\boldsymbol{x}_j)_i=\frac{\det D_{ij}}{\det A}=\frac{A_{ji}}{\det A}.
+\]
+
+利用伴随矩阵恒等式，还可以立即求出伴随矩阵自身的行列式。
+
+\begin{proposition}[伴随矩阵的行列式]
+设 $A$ 为 $n$ 阶方阵。当 $n\ge2$ 时，有
+\[
+ \det(A^*)=(\det A)^{n-1}.
+\]
+特别地，此时 $A$ 可逆当且仅当 $A^*$ 可逆。当 $n=1$ 时，$A^*=(1)$ 恒可逆。
+\end{proposition}
+\begin{proof}
+若 $\det A\ne0$，对 $AA^*=(\det A)E_n$ 两端取行列式，得
+\[
+ \det A\cdot\det(A^*)=(\det A)^n,
+\]
+两边同除以非零数 $\det A$，即得 $\det(A^*)=(\det A)^{n-1}$。
+
+若 $\det A=0$，则 $AA^*=0$。反设 $A^*$ 可逆，在等式两侧右乘 $(A^*)^{-1}$ 得 $A=0$；但在 $n\ge2$ 时，零矩阵的每个 $(n-1)$ 阶余子式均为 $0$，从而 $A^*=0$，与 $A^*$ 可逆矛盾。故必有 $\det(A^*)=0=(\det A)^{n-1}$。
+\end{proof}
+
+下面通过两个例子，分别演示伴随矩阵公式在具体计算和理论证明中的应用。
+
+\begin{example}[二阶方阵求逆]\label{ex:inverse-two}
+设 $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ 且 $ad-bc\ne0$，求 $A^{-1}$。
+\end{example}
+\noindent\textbf{解}\quad
+逐项计算代数余子式并转置，得 $A^*=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$，代入伴随矩阵求逆公式即得
+\[
+ A^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
+\]
+
+\begin{example}[上三角矩阵的逆]
+设 $A$ 为可逆的上三角矩阵，证明 $A^{-1}$ 也是上三角矩阵。
+\end{example}
+\begin{proof}
+任取满足 $i>j$ 的下标 $(i,j)$。由伴随矩阵求逆公式，只需证明代数余子式 $A_{ji}=0$，即删去 $A$ 的第 $j$ 行与第 $i$ 列后所得 $(n-1)$ 阶子矩阵的行列式为零。
+
+因为 $A$ 是上三角矩阵，其前 $j$ 列在第 $j+1$ 行及下方全为零。删去第 $j$ 行和第 $i$ 列（注意到 $i>j$）后，原矩阵的前 $j$ 列被完整保留在子矩阵的前 $j$ 列中，且这 $j$ 列仅在前 $j-1$ 行上可能含有非零元素，其余行全为零。在 $P^{j-1}$ 中任意 $j$ 个向量必线性相关，因此子矩阵的前 $j$ 列线性相关，从而 $A_{ji}=0$。由此得 $(A^{-1})_{ij}=0$，故 $A^{-1}$ 也是上三角矩阵。
+\end{proof}
+
+\section{矩阵方程与行消元求逆}
+
+引入逆矩阵后，系数矩阵可逆的矩阵方程便可以直接写出显式解。设 $A$ 为 $n$ 阶可逆方阵，$B$ 为 $n\times m$ 矩阵，则矩阵方程 $AX=B$ 有唯一解
+\[
+ X=A^{-1}B.
+\]
+事实上，直接代入有 $A(A^{-1}B)=B$，说明它是解；反之，对 $AX=B$ 左乘 $A^{-1}$ 必得 $X=A^{-1}B$，从而解唯一。当 $m=1$ 时，这就退化为非齐次线性方程组 $A\vx=\vb$ 的唯一解 $\vx=A^{-1}\vb$。
+
+\begin{example}
+用逆矩阵解方程组
+\[
+ \begin{cases}2x-3y=1,\\-x+2y=3.\end{cases}
+\]
+\end{example}
+\noindent\textbf{解}\quad
+系数矩阵 $A=\begin{pmatrix}2&-3\\-1&2\end{pmatrix}$ 的行列式为 $4-3=1\ne0$。由例\ref{ex:inverse-two}的二阶求逆公式得 $A^{-1}=\begin{pmatrix}2&3\\1&2\end{pmatrix}$，于是
+\[
+ \begin{pmatrix}x\\y\end{pmatrix}
+ =A^{-1}\begin{pmatrix}1\\3\end{pmatrix}
+ =\begin{pmatrix}2&3\\1&2\end{pmatrix}\begin{pmatrix}1\\3\end{pmatrix}
+ =\begin{pmatrix}11\\7\end{pmatrix}.
+\]
+
+伴随矩阵公式在二阶情形和理论证明中十分简洁，但当矩阵阶数较高时，逐一计算 $n^2$ 个 $(n-1)$ 阶代数余子式的工作量很大。在实际计算中，可以把求 $A^{-1}$ 视为同时求解 $n$ 个共享同一系数矩阵的线性方程组 $A\vx=\ve_j$（$j=1,\ldots,n$），从而把 $n$ 个常数列合并到 $A$ 的右侧，构成 $n\times 2n$ 矩阵 $(A\mid E_n)$。因为 $A$ 满秩，可以用初等行变换将左半部分化为单位矩阵 $E_n$，同时对右半部分施行完全相同的行变换：
+\[
+ (A\mid E_n)\longrightarrow(E_n\mid A^{-1}).
+\]
+由于初等行变换保持每个方程组同解，变换结束时右半部分的第 $j$ 列恰好就是 $A\vx=\ve_j$ 的唯一解，从而右半部分整体即为 $A^{-1}$。同理，若只需解矩阵方程 $AX=B$，也可以直接对 $(A\mid B)$ 施行初等行变换，将其化为 $(E_n\mid X)$。
+
+\begin{example}[三阶方阵求逆与矩阵方程]
+设
+\[
+ A=\begin{pmatrix}0&1&2\\1&1&4\\2&-1&0\end{pmatrix},\qquad
+ B=\begin{pmatrix}1&1\\0&1\\1&0\end{pmatrix}.
+\]
+求 $A^{-1}$，并解矩阵方程 $AX=B$。
+\end{example}
+\noindent\textbf{解}\quad
+将 $A$ 与 $E_3$ 拼成增广矩阵 $(A\mid E_3)$，记第 $i$ 行为 $R_i$。先交换 $R_1,R_2$，再作 $R_3\gets R_3-2R_1$；随后作 $R_1\gets R_1-R_2$ 与 $R_3\gets R_3+3R_2$；最后依次作 $R_3\gets-\frac12 R_3$、$R_1\gets R_1-2R_3$ 与 $R_2\gets R_2-2R_3$，过程如下：
+\[
+ \begin{aligned}
+ &\left(\begin{array}{rrr|rrr}
+  0&1&2&1&0&0\\
+  1&1&4&0&1&0\\
+  2&-1&0&0&0&1
+ \end{array}\right)
+ \longrightarrow
+ \left(\begin{array}{rrr|rrr}
+  1&1&4&0&1&0\\
+  0&1&2&1&0&0\\
+  0&-3&-8&0&-2&1
+ \end{array}\right)\\[0.6em]
+ &\longrightarrow
+ \left(\begin{array}{rrr|rrr}
+  1&0&2&-1&1&0\\
+  0&1&2&1&0&0\\
+  0&0&-2&3&-2&1
+ \end{array}\right)
+ \longrightarrow
+ \left(\begin{array}{rrr|rrr}
+  1&0&0&2&-1&1\\
+  0&1&0&4&-2&1\\
+  0&0&1&-\tfrac32&1&-\tfrac12
+ \end{array}\right).
+ \end{aligned}
+\]
+左半部分已化为 $E_3$，由此读出 $A^{-1}$，进而求得矩阵方程的解 $X=A^{-1}B$：
+\[
+ A^{-1}=\begin{pmatrix}2&-1&1\\4&-2&1\\-\tfrac32&1&-\tfrac12\end{pmatrix},\qquad
+ X=A^{-1}B=\begin{pmatrix}3&1\\5&2\\-2&-\tfrac12\end{pmatrix}.
+\]
+
+\end{document}

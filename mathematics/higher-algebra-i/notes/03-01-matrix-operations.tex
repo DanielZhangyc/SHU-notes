@@ -1,0 +1,288 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "higher-algebra-i",
+%   "section": "3.1",
+%   "title": "高等代数（一）3.1：矩阵的运算",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "从线性映射的复合推出矩阵乘法，用平面旋转、方阵的幂和转置说明运算规律，并证明矩阵乘积的行列式公式与秩不等式。"
+% }
+% halo:end
+% 课堂来源：IMG_3611--3617、IMG_3618左。前一组照片为已有内容及期中讲评。
+% 教材：北大《高等代数》第六版第四章§1--3，印刷114--124页（PDF119--129）。
+% 第一页的数值乘法取自该书印刷118页（PDF123）例1。
+% 3614 保留课堂的平方比较，并另与通常的二项式平方比较；幂公式另列 k=0,1。
+% 3615 右页未写完的按行展开与 3618 左的秩不等式，按乘法定义与教材§3补全。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\trans}{\mathsf T}
+\newcommand{\ve}{\boldsymbol{\varepsilon}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）3.1}
+\fancyhead[R]{\small 矩阵的运算}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{矩阵的运算}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月27日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries \@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small \@date\par}
+  \end{center}}
+\makeatother
+\begin{document}
+\maketitle
+
+\section{从线性方程组到矩阵乘法}
+
+在讨论线性方程组的解时，我们将方程组简记为 $Ax=\beta$。设 $A=(a_{ij})$ 是数域 $P$ 上的 $s\times n$ 矩阵，若固定 $A$ 而让列向量 $x$ 取遍 $P^n$，便得到一个从 $P^n$ 到 $P^s$ 的对应 $x\mapsto Ax$。将 $A$ 按列写成 $A=(\alpha_1,\ldots,\alpha_n)$，则有
+\[
+  x=(x_1,\ldots,x_n)^{\trans}
+  \quad\Longrightarrow\quad
+  Ax=x_1\alpha_1+\cdots+x_n\alpha_n.
+\]
+由此可直接验证 $A(\lambda x+\mu y)=\lambda Ax+\mu Ay$，即 $x\mapsto Ax$ 是一个\textbf{线性映射}。特别地，取 $x$ 为第 $j$ 个标准单位列向量 $\ve_j$，就有 $A\ve_j=\alpha_j$；反过来，只要知道一个线性映射在全部标准单位向量 $\ve_j$ 上的像，把这些像依次排成列，就能唯一还原出它的矩阵。
+
+在定义矩阵乘法之前，先明确相等、加法与数乘。两个矩阵相等，是指它们的行数、列数分别相同，且对应位置上的元素全部相等。对同型矩阵，加法与减法按对应元素逐项进行，数乘则将矩阵的每个元素同乘一个数：
+\[
+  A+D=(a_{ij}+d_{ij}),\qquad \lambda A=(\lambda a_{ij}),\qquad A-D=A+(-D).
+\]
+元素全为零的矩阵称为零矩阵，记作 $O$，满足 $A+O=A$；矩阵的加法显然满足交换律与结合律。
+
+矩阵乘法则自然地来自两个线性映射的复合。
+
+\begin{definition}[矩阵乘法]
+设 $A=(a_{ik})$ 为 $s\times n$ 矩阵，$B=(b_{kj})$ 为 $n\times m$ 矩阵。对任意 $x\in P^m$，先作映射 $y=Bx\in P^n$，再将所得向量 $y$ 送入 $A$ 所确定的映射，计算 $z=Ay\in P^s$。把 $y_k=\sum_{j=1}^{m} b_{kj}x_j$ 代入 $z_i=\sum_{k=1}^{n}a_{ik}y_k$ 并交换求和次序，得到
+\[
+ z_i=\sum_{k=1}^{n}a_{ik}y_k
+    =\sum_{j=1}^{m}\left(\sum_{k=1}^{n}a_{ik}b_{kj}\right)x_j,
+ \qquad
+ c_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj}.
+\]
+称由此确定的 $s\times m$ 矩阵 $C=(c_{ij})$ 为 $A$ 与 $B$ 的\textbf{乘积}，记作 $AB$。按此定义，复合映射对应的矩阵恰为乘积 $AB$，即 $A(Bx)=(AB)x$；从元素上看，$AB$ 的第 $(i,j)$ 个元素等于 $A$ 的第 $i$ 行与 $B$ 的第 $j$ 列对应元素相乘再相加。
+\end{definition}
+
+需要注意，只有当左矩阵 $A$ 的列数等于右矩阵 $B$ 的行数时，乘积 $AB$ 才有意义。例如，下面两个矩阵的尺寸分别为 $3\times4$ 与 $4\times3$，相乘得到一个三阶方阵：
+\[
+ \begin{pmatrix}1&0&-1&2\\-1&1&3&0\\0&5&-1&4\end{pmatrix}
+ \begin{pmatrix}0&3&4\\1&2&1\\3&1&-1\\-1&2&1\end{pmatrix}
+ =\begin{pmatrix}-5&6&7\\10&2&-6\\-2&17&10\end{pmatrix},
+\]
+其中第二行第一列的元素 $10$ 由 $(-1)\cdot0+1\cdot1+3\cdot3+0\cdot(-1)$ 算得。
+
+\section{乘积的行、列与平面旋转}
+
+除逐元素计算外，还可以从整列或整行的角度理解矩阵乘积。记 $B$ 的各列依次为 $\beta_1,\ldots,\beta_m$，令 $B$ 与 $A$ 依次作用于第 $j$ 个标准单位向量 $\ve_j$，便得到 $AB$ 的第 $j$ 列：
+\[
+ (AB)\ve_j=A\beta_j=\sum_{k=1}^{n}b_{kj}\alpha_k,\qquad
+ AB=(A\beta_1,\ldots,A\beta_m).
+\]
+这表明，$AB$ 的每一列都是 $A$ 的各列的线性组合。对称地，若记 $B$ 的第 $k$ 行为 $\rho_k$，则 $AB$ 的第 $i$ 行等于 $a_{i1}\rho_1+\cdots+a_{in}\rho_n$，即 $AB$ 的每一行都是 $B$ 的各行的线性组合。这两个观察将在后文用于估计矩阵乘积的秩。
+
+由于矩阵乘法对应映射的复合，乘法次序通常不能随意交换。
+
+\begin{example}[改变乘法次序]
+设列向量 $u=(1,1,1)^{\trans}$ 与行向量 $v=(1,1,1)$。按不同次序相乘，分别得到
+\[
+ uv=\begin{pmatrix}1&1&1\\1&1&1\\1&1&1\end{pmatrix},
+ \qquad vu=\begin{pmatrix}3\end{pmatrix}.
+\]
+前一个乘积是三阶方阵（每一列都等于 $u$），后一个乘积则是一阶矩阵，两者的尺寸已经不同，更谈不上相等。
+\end{example}
+
+不过，某些具有特殊几何或代数结构的矩阵之间可以交换，平面旋转矩阵便是典型例子。
+
+\begin{example}[平面内绕原点的旋转]
+保持坐标轴固定，将平面向量绕原点逆时针旋转角 $\theta$。求相应的旋转矩阵，并求连续施行两次旋转所对应的矩阵。
+\end{example}
+\begin{proof}[解]
+将两个标准单位向量逆时针旋转角 $\theta$，它们分别映为 $(\cos\theta,\sin\theta)^{\trans}$ 和 $(-\sin\theta,\cos\theta)^{\trans}$。把这两个像按次序排成列，即得旋转矩阵
+\[
+ R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix},
+ \qquad R_\theta\binom{x}{y}
+ =\binom{x\cos\theta-y\sin\theta}{x\sin\theta+y\cos\theta}.
+\]
+先旋转角 $\varphi$ 再旋转角 $\theta$，复合映射对应的矩阵为 $R_\theta R_\varphi$。计算其第一列，结合三角函数的和角公式得
+\[
+ \binom{\cos\theta\cos\varphi-\sin\theta\sin\varphi}
+       {\sin\theta\cos\varphi+\cos\theta\sin\varphi}
+ =\binom{\cos(\theta+\varphi)}{\sin(\theta+\varphi)}.
+\]
+同理可得第二列为 $(-\sin(\theta+\varphi),\cos(\theta+\varphi))^{\trans}$，因此
+\[
+ R_\theta R_\varphi=R_{\theta+\varphi}=R_\varphi R_\theta.
+\]
+\end{proof}
+
+更一般地，记 $M(a,b)=\left(\begin{smallmatrix}a&-b\\ b&a\end{smallmatrix}\right)$，直接相乘可得
+\[
+ M(a,b)M(c,d)=M(ac-bd,ad+bc)=M(c,d)M(a,b).
+\]
+上述旋转矩阵正是取 $a=\cos\theta,\ b=\sin\theta$ 时的特例，这里的交换性源于这类矩阵自身的特殊结构。
+
+\section{乘法的运算律}
+
+尽管矩阵乘法一般不满足交换律，它仍然保持结合律和分配律。设各乘积的行、列数均匹配。从线性映射的角度看，无论先合并哪两步，$(AB)C$ 与 $A(BC)$ 都表示让 $C,B,A$ 依次作用于同一个向量，因而必然满足结合律 $(AB)C=A(BC)$。若从元素定义直接验证，设 $A,B,C$ 的尺寸依次为 $s\times n,\ n\times m,\ m\times t$，交换有限求和次序即得
+\[
+ ((AB)C)_{ij}
+ =\sum_{\ell=1}^{m}\left(\sum_{k=1}^{n}a_{ik}b_{k\ell}\right)c_{\ell j}
+ =\sum_{k=1}^{n}a_{ik}\left(\sum_{\ell=1}^{m}b_{k\ell}c_{\ell j}\right)
+ =(A(BC))_{ij}.
+\]
+类似地，逐项利用数域中加法的分配律与乘法结合律，可得
+\[
+ A(B+C)=AB+AC,\qquad (B+C)A=BA+CA,\qquad
+ (\lambda A)B=A(\lambda B)=\lambda(AB).
+\]
+此外，记主对角线元素为 $1$、其余元素为 $0$ 的 $n$ 阶方阵为单位矩阵 $E_n$。它对应恒等映射，对任意 $s\times n$ 矩阵 $A$ 均有 $E_sA=AE_n=A$。
+
+下面的两个例子进一步说明矩阵乘法与数的乘法之间的差异：不仅交换律一般不成立，乘积为零时也未必有某个因子为零，因而消去律同样不成立。
+
+\begin{example}[对角矩阵的左乘与右乘]
+令 $D=\left(\begin{smallmatrix}\lambda&0\\0&\mu\end{smallmatrix}\right)$、$B=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$，直接计算得
+\[
+ DB=\begin{pmatrix}\lambda a&\lambda b\\\mu c&\mu d\end{pmatrix},\qquad
+ BD=\begin{pmatrix}\lambda a&\mu b\\\lambda c&\mu d\end{pmatrix}.
+\]
+可见左乘对角矩阵 $D$ 相当于按行伸缩，而右乘 $D$ 相当于按列伸缩。两者相等当且仅当 $(\lambda-\mu)b=(\lambda-\mu)c=0$：若 $\lambda\ne\mu$，则 $B$ 与 $D$ 可交换当且仅当 $b=c=0$，即 $B$ 也是对角矩阵；若 $\lambda=\mu$，则 $D=\lambda E_2$ 为数量矩阵，与任意二阶方阵都可交换。
+\end{example}
+
+\begin{example}[零乘积与消去律]
+取 $N=\left(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\right)$。将 $N$ 作用于自身的两个列向量，结果均为零向量，故 $N^2=O$。由此可见两个非零矩阵的乘积可以为零矩阵。又由于此时 $NN=NO$ 而 $N\ne O$，即便左因子非零，也不能一般地从 $AB=AC$ 消去 $A$ 推出 $B=C$。
+\end{example}
+
+在求解矩阵方程时，同样会遇到零因子的现象。例如，考虑方程 $X^2=E_2$，令 $S=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$。该矩阵把向量的两个坐标互换，作用两次即还原，故 $S^2=E_2$。由此有 $(S-E_2)(S+E_2)=O$，尽管两个因子均非零。因此方程 $X^2=E_2$ 除 $E_2$ 与 $-E_2$ 外，还存在 $S$、$-S$ 等其他解。
+
+\section{方阵的幂与矩阵多项式}
+
+借助结合律，可以对同阶方阵自然地定义非负整数次幂。设 $A$ 为 $n$ 阶方阵，规定 $A^0=E_n$，并递推定义 $A^{k+1}=A^kA$。对任意非负整数 $k,l$，由结合律有
+\[
+ A^kA^l=A^{k+l},\qquad (A^k)^l=A^{kl}.
+\]
+但对两个同阶方阵 $A,B$ 之和求幂时，由于乘法一般不可交换，展开式不能合并顺序不同的交叉项，例如
+\[
+  (A+B)^2=A^2+AB+BA+B^2.
+\]
+以前面的 $N,S$ 为例，直接计算得 $NS=\left(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\right)$、$SN=\left(\begin{smallmatrix}0&0\\0&1\end{smallmatrix}\right)$，故 $(N+S)^2=N^2+NS+SN+S^2=2E_2$。若漏写 $SN$ 一项，会错得 $N^2+NS+S^2=\operatorname{diag}(2,1)$；若套用数的二项式公式将交叉项合并为 $2NS$，则会错得 $N^2+2NS+S^2=\operatorname{diag}(3,1)$。
+
+相反，当 $A$ 与 $B$ 可交换（即 $AB=BA$）时，展开 $(A+B)^k$ 所得各项中，凡含 $j$ 个因子 $B$ 与 $k-j$ 个因子 $A$ 的项都可以调整顺序写为 $A^{k-j}B^j$，这样的项共有 $\binom{k}{j}$ 个，因而二项式公式成立：
+\[
+ (A+B)^k=\sum_{j=0}^k\binom{k}{j}A^{k-j}B^j.
+\]
+
+在计算具体方阵的高次幂时，常将矩阵分解为可交换的数量矩阵与幂零上三角矩阵之和。为此先确认上三角矩阵在乘法下的封闭性。
+
+\begin{proposition}[上三角矩阵的乘积]
+两个同阶上三角矩阵的乘积仍是上三角矩阵；若两者都是严格上三角矩阵（主对角线及其下方元素全为零），则其乘积仍是严格上三角矩阵。
+\end{proposition}
+\begin{proof}
+设 $A=(a_{ij}),\ B=(b_{ij})$ 为同阶上三角矩阵。在乘积元素 $(AB)_{ij}=\sum_{k=1}^n a_{ik}b_{kj}$ 中，一项 $a_{ik}b_{kj}$ 可能非零的前提是 $i\le k$ 且 $k\le j$，即 $i\le k\le j$。因此当 $i>j$ 时，各项皆为零，故 $(AB)_{ij}=0$，乘积仍为上三角矩阵。当 $A,B$ 均为严格上三角矩阵时，非零项须满足 $i<k<j$，故当 $i\ge j$ 时 $(AB)_{ij}=0$，乘积的主对角线及其下方元素全为零。
+\end{proof}
+
+\begin{example}[含参数的上三角方阵求幂]
+设 $J=\left(\begin{smallmatrix}\lambda&1&0\\0&\lambda&1\\0&0&\lambda\end{smallmatrix}\right)$，求 $J^k$（$k$ 为非负整数）。
+\end{example}
+\begin{proof}[解]
+将 $J$ 拆分为 $J=\lambda E_3+U$，其中 $U$ 仅在 $(1,2)$ 与 $(2,3)$ 两处为 $1$，其余元素皆为零。直接计算可知，$U^2$ 仅在 $(1,3)$ 处为 $1$，而 $U^3=O$，此后更高次幂均为零矩阵。
+
+因为数量矩阵 $\lambda E_3$ 与 $U$ 可交换，可应用二项式公式展开，且展开式只保留 $U$ 的零次、一次与二次项。当 $k\ge2$ 时，
+\[
+ J^k=\lambda^k E_3+k\lambda^{k-1}U+\binom{k}{2}\lambda^{k-2}U^2
+ =\begin{pmatrix}
+ \lambda^k&k\lambda^{k-1}&\binom{k}{2}\lambda^{k-2}\\
+ 0&\lambda^k&k\lambda^{k-1}\\0&0&\lambda^k
+ \end{pmatrix},
+\]
+式中约定 $\lambda^0=1$。对于 $k=0,1$，另有 $J^0=E_3$ 与 $J^1=J$。
+\end{proof}
+
+进一步地，对数域 $P$ 上的任意多项式 $f(t)=a_0+a_1t+\cdots+a_dt^d$，可以定义矩阵多项式
+\[
+ f(A)=a_0E_n+a_1A+\cdots+a_dA^d.
+\]
+由于同一方阵的不同次幂彼此交换（$A^iA^j=A^{i+j}=A^jA^i$），逐项展开即得 $f(A)g(A)=(fg)(A)=g(A)f(A)$。特别地，方阵 $A$ 总与自身的任意矩阵多项式 $f(A)$ 可交换。
+
+\section{转置与反对称矩阵}
+
+除了加法、数乘与乘法外，转置是矩阵的另一项基本运算。设 $A=(a_{ij})_{s\times n}$，将 $A$ 的第 $i$ 行改写为新矩阵的第 $i$ 列，得到的 $n\times s$ 矩阵称为 $A$ 的\textbf{转置}，记作 $A^{\trans}$，其元素满足 $(A^{\trans})_{ij}=a_{ji}$。由定义直接有
+\[
+ (A^{\trans})^{\trans}=A,\qquad
+ (A+B)^{\trans}=A^{\trans}+B^{\trans},\qquad
+ (\lambda A)^{\trans}=\lambda A^{\trans}.
+\]
+对乘积 $AB$ 取转置时，原来参与相乘的 $B$ 的列变为行、$A$ 的行变为列，因此转置后因子的次序颠倒：
+\[
+ ((AB)^{\trans})_{ij}=(AB)_{ji}=\sum_{k=1}^{n} a_{jk}b_{ki}
+ =\sum_{k=1}^{n} (B^{\trans})_{ik}(A^{\trans})_{kj},
+\]
+即 $(AB)^{\trans}=B^{\trans}A^{\trans}$。
+
+借助转置运算，可以定义两类重要的方阵。
+
+\begin{definition}
+设 $A$ 为方阵。若 $A^{\trans}=A$，称 $A$ 为\textbf{对称矩阵}；若 $A^{\trans}=-A$，称 $A$ 为\textbf{反对称矩阵}。按元素刻画，这两种情形分别对应 $a_{ij}=a_{ji}$ 与 $a_{ij}=-a_{ji}$。特别地，在数域 $P$ 上，由 $a_{ii}=-a_{ii}$ 可知反对称矩阵的主对角线元素必全为零。
+\end{definition}
+
+\begin{example}
+设 $A$ 为数域 $P$ 上的 $n$ 阶反对称矩阵。证明：对任意 $x\in P^n$，都有 $x^{\trans}Ax=0$。
+\end{example}
+\begin{proof}
+乘积 $x^{\trans}Ax$ 是一阶矩阵，即一个数，因而它的转置等于自身。对三个因子的乘积取转置，并利用反对称条件 $A^{\trans}=-A$，得
+\[
+ x^{\trans}Ax=(x^{\trans}Ax)^{\trans}
+ =x^{\trans}A^{\trans}(x^{\trans})^{\trans}
+ =x^{\trans}A^{\trans}x=-x^{\trans}Ax.
+\]
+移项得 $2x^{\trans}Ax=0$。由于在数域 $P$ 中可以除以 $2$，故 $x^{\trans}Ax=0$。
+\end{proof}
+
+\section{乘积的秩与行列式}
+
+最后考察矩阵乘法与秩、行列式之间的关系。设 $A\in P^{s\times n}$，$B\in P^{n\times m}$。由前文关于乘积行、列的观察，$AB$ 的每一列均可由 $A$ 的列向量组线性表出，因此 $AB$ 的列秩不超过 $A$ 的列秩；同理，$AB$ 的每一行均可由 $B$ 的行向量组线性表出，故 $AB$ 的行秩不超过 $B$ 的行秩。结合矩阵的行秩等于列秩，立即得到乘积的秩不等式：
+\[
+ \boxed{\rank(AB)\le\min\{\rank A,\rank B\}.}
+\]
+逐次应用该不等式可知，任意有限个矩阵相乘，乘积的秩都不超过其中任一因子的秩。
+
+对于同阶方阵，乘积的行列式则满足更为精确的乘法公式：若 $A,B$ 均为 $n$ 阶方阵，则
+\[
+ \boxed{\det(AB)=\det A\det B.}
+\]
+下面用行列式的多重线性性给出直接证明。记 $A$ 的各列依次为 $\alpha_1,\ldots,\alpha_n$，则 $AB$ 的第 $j$ 列为 $\sum_{i=1}^n b_{ij}\alpha_i$。将各列的这一线性组合代入 $\det(AB)$，并利用行列式关于每一列的线性性逐列展开，得到
+\[
+ \det(AB)=\sum_{i_1,\ldots,i_n=1}^{n}b_{i_1 1}\cdots b_{i_n n}
+ \det(\alpha_{i_1},\ldots,\alpha_{i_n}).
+\]
+在上式右端，凡是有两个下标相同的项，对应行列式含有相同的两列，因而为零；余下的非零项恰对应于 $(i_1,\ldots,i_n)$ 取遍 $1,\ldots,n$ 的全部排列 $\sigma=(\sigma(1),\ldots,\sigma(n))$。根据行列式交换两列变号的性质，有 $\det(\alpha_{\sigma(1)},\ldots,\alpha_{\sigma(n)})=\operatorname{sgn}(\sigma)\det A$，于是提取公因子 $\det A$ 即得
+\[
+ \det(AB)=\sum_{\sigma}b_{\sigma(1),1}\cdots b_{\sigma(n),n}
+ \det(\alpha_{\sigma(1)},\ldots,\alpha_{\sigma(n)})=\det B\,\det A.
+\]
+
+反复应用这一公式，对任意有限个同阶方阵 $A_1,\ldots,A_l$ 都有
+\[
+ \det(A_1\cdots A_l)=\det A_1\cdots\det A_l.
+\]
+特别地，$\det(AB)=0$ 当且仅当 $\det A=0$ 或 $\det B=0$。由此可见，若存在同阶方阵 $B$ 使得 $AB=E_n$，两边取行列式便要求 $\det A\ne0$。接下来需要进一步考察，当 $\det A\ne0$ 时，是否反过来必存在满足 $AB=BA=E_n$ 的方阵 $B$。
+
+\end{document}

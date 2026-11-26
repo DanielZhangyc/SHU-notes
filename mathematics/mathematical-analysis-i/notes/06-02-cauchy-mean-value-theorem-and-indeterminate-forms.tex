@@ -1,0 +1,254 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "mathematical-analysis-i",
+%   "section": "6.2",
+%   "title": "数学分析（一）6.2：柯西中值定理和不定式极限",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "从柯西中值定理导出洛必达法则，讨论一致连续性、增长快慢、各类不定式及数列极限。"
+% }
+% halo:end
+% 来源：IMG_3592 右页至 IMG_3594 左页；华东师范大学《数学分析》第5版上册，第六章§2，书页117–125（PDF 128–136）。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{example}[theorem]{例题}
+\renewcommand{\proofname}{证明}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 6.2\quad 柯西中值定理和不定式极限}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{柯西中值定理和不定式极限}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月26日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\bfseries\@title\par}\vspace{0.6em}\@author\par\vspace{0.2em}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+
+\section{两个函数的增量比}
+拉格朗日中值定理把函数图像的割线斜率表为区间内一点的导数。若进一步考察参数曲线 $(u,v)=(g(t),f(t))$（$t\in[a,b]$），则两端点割线的横向增量由 $b-a$ 变为 $g(b)-g(a)$，而曲线在参数 $\xi$ 处的切线斜率为 $f'(\xi)/g'(\xi)$。由此自然引出关于两个函数增量之比的中值定理。
+
+\begin{theorem}[柯西中值定理，教材定理 6.6]
+设 $f,g$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导，两者的导数在 $(a,b)$ 内不同时为零，且 $g(a)\ne g(b)$。则存在 $\xi\in(a,b)$，使
+\[
+ \frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(\xi)}{g'(\xi)}.
+\]
+\end{theorem}
+
+\begin{proof}
+记待证等式的左端为 $k$，构造辅助函数
+\[
+ F(t)=f(t)-f(a)-k\bigl[g(t)-g(a)\bigr].
+\]
+函数 $F$ 在 $[a,b]$ 上连续、在 $(a,b)$ 内可导，且满足 $F(a)=F(b)=0$。由罗尔定理，存在 $\xi\in(a,b)$ 使 $F'(\xi)=0$，即 $f'(\xi)=k\,g'(\xi)$。若 $g'(\xi)=0$，则由该等式必有 $f'(\xi)=0$，与题设中两导数不同时为零矛盾。因此 $g'(\xi)\ne0$，两端同除以 $g'(\xi)$ 即得结论。
+\end{proof}
+
+当取 $g(t)=t$ 时，柯西中值定理便退化为拉格朗日中值公式。更一般地，如果希望在结论中出现形如 $w(\xi)f'(\xi)$ 的加权导数，可以选取满足 $g'(t)=1/w(t)$ 的辅助函数 $g$。例如，当 $0<a<b$ 且 $f$ 在 $[a,b]$ 上连续、在 $(a,b)$ 内可导时，取 $g(t)=\ln t$，便存在 $\xi\in(a,b)$ 使得
+\[
+ f(b)-f(a)=\xi f'(\xi)\ln\frac ba.
+\]
+下面两道例题分别展示如何根据目标形式与已知条件恰当选取辅助函数 $g$。
+
+\begin{example}
+设 $f$ 在 $[0,1]$ 上连续，在 $(0,1)$ 内可导。证明存在 $\xi\in(0,1)$，使 $f'(\xi)=2\xi\bigl[f(1)-f(0)\bigr]$。
+\end{example}
+
+\begin{proof}
+取 $g(t)=t^2$，则 $g(1)-g(0)=1$，且在 $(0,1)$ 内有 $g'(t)=2t>0$。在 $[0,1]$ 上对 $f$ 与 $g$ 应用柯西中值定理，即得存在 $\xi\in(0,1)$ 满足 $f'(\xi)=2\xi\bigl[f(1)-f(0)\bigr]$。
+\end{proof}
+
+\begin{example}
+设 $f$ 在 $(0,1]$ 上可导，且 $\lim_{x\to0^+}\sqrt{x}\,f'(x)=A\in\mathbb R$。证明 $f$ 在 $(0,1]$ 上一致连续。
+\end{example}
+
+\begin{proof}
+首先处理原点附近的区段。令 $M=|A|+1$，由极限的局部有界性，存在 $c\in(0,1)$，使得当 $0<t\le c$ 时恒有 $|\sqrt{t}\,f'(t)|\le M$。对任意 $0<x<y\le c$，选取 $g(t)=\sqrt{t}$ 在 $[x,y]$ 上应用柯西中值定理，得存在 $\xi\in(x,y)$ 使得
+\[
+ |f(y)-f(x)|=2|\sqrt{\xi}\,f'(\xi)|(\sqrt{y}-\sqrt{x})
+ \le 2M\sqrt{y-x}.
+\]
+由此可知 $f$ 在 $(0,c]$ 上一致连续。
+
+另一方面，$f$ 在闭区间 $[c,1]$ 上连续，故在该区间上也一致连续。任给 $\varepsilon>0$，对 $(0,c]$ 与 $[c,1]$ 分别按 $\varepsilon/2$ 选取一致连续性对应的距离界，并取二者中较小者记为 $\delta$。若 $x,y\in(0,1]$ 满足 $|y-x|<\delta$，当两点落在同一子区间时显然有 $|f(y)-f(x)|<\varepsilon/2<\varepsilon$；当 $x<c<y$ 时，由三角不等式仍有
+\[
+ |f(y)-f(x)|\le |f(y)-f(c)|+|f(c)-f(x)|<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon.
+\]
+因此 $f$ 在 $(0,1]$ 上一致连续。
+\end{proof}
+
+在定理证明中，若直接对辅助函数 $\bigl[g(b)-g(a)\bigr]f(t)-\bigl[f(b)-f(a)\bigr]g(t)$ 应用罗尔定理，无需任何非零条件即可得到交叉相乘形式的等式；但要将其改写为商式，就必须保证分母非零。例如在 $[-1,1]$ 上取 $f(t)=t^2$ 与 $g(t)=t^3$，两端点的增量之比为零，而导数之比在 $t\ne0$ 时为 $2/(3t)$、在 $t=0$ 处没有定义，在区间内不可能取到零。
+
+\section{洛必达法则的两种形式}
+当分子与分母同时趋于零时，商的极限取决于二者趋零的相对速度；若将两函数在极限点 $x_0$ 处补充定义为零，原商便恰好化为柯西中值定理中的增量比。若分母趋于无穷，则可在邻域内引入一个固定点来构造增量比，从而借助柯西中值定理把原商的极限归结为导数之比的极限。
+
+\begin{theorem}[洛必达法则，教材定理 6.7、6.8]
+以 $x\to x_0^+$ 为例。设 $f,g$ 在 $x_0$ 的某个右去心邻域内可导，$g'(x)\ne0$，且存在极限
+\[
+ \lim_{x\to x_0^+}\frac{f'(x)}{g'(x)}=A,
+\]
+其中 $A$ 可为有限实数、$+\infty$ 或 $-\infty$。若当 $x\to x_0^+$ 时，$f(x)$ 与 $g(x)$ 均趋于零，或者 $|g(x)|\to\infty$，则必有 $f(x)/g(x)\to A$。左极限、双侧极限以及 $x\to\pm\infty$ 的情形有完全相应的结论。
+\end{theorem}
+
+\begin{proof}
+先证 $0/0$ 型的情形。补充定义 $f(x_0)=g(x_0)=0$，使 $f,g$ 在 $x_0$ 处右连续。由于在该右去心邻域内恒有 $g'\ne0$，由罗尔定理可知对邻域内任意 $x>x_0$ 均有 $g(x)\ne g(x_0)=0$。在 $[x_0,x]$ 上应用柯西中值定理，存在 $\xi\in(x_0,x)$ 使得
+\[
+ \frac{f(x)}{g(x)}=\frac{f(x)-f(x_0)}{g(x)-g(x_0)}=\frac{f'(\xi)}{g'(\xi)}.
+\]
+当 $x\to x_0^+$ 时必有 $\xi\to x_0^+$，因而右端趋于 $A$，故原商亦趋于 $A$。
+
+再证 $|g(x)|\to\infty$ 的情形，首先假设 $A$ 为有限实数。任给 $\varepsilon>0$，取定充分靠近 $x_0$ 的点 $c>x_0$，使得对一切 $t\in(x_0,c)$ 都有 $|f'(t)/g'(t)-A|<\varepsilon$。对任意 $x\in(x_0,c)$，由柯西中值定理存在 $\xi\in(x,c)$ 使得
+\[
+ Q(x)=\frac{f(x)-f(c)}{g(x)-g(c)}=\frac{f'(\xi)}{g'(\xi)},
+\]
+从而 $|Q(x)-A|<\varepsilon$。为了从增量比 $Q(x)$ 还原原来的商 $f(x)/g(x)$，作恒等变形
+\[
+ \frac{f(x)}{g(x)}-A
+  =\bigl(Q(x)-A\bigr)\left(1-\frac{g(c)}{g(x)}\right)
+   +\frac{f(c)-Ag(c)}{g(x)}.
+\]
+固定 $c$ 后，令 $x\to x_0^+$，由 $|g(x)|\to\infty$ 知括号中的因子趋于 $1$，末项趋于 $0$。因此当 $x$ 充分靠近 $x_0$ 时，左端的绝对值小于 $2\varepsilon+\varepsilon=3\varepsilon$，由 $\varepsilon$ 的任意性即得 $f(x)/g(x)\to A$。
+
+若 $A=+\infty$，对任意预先给定的正数，只要取定充分靠近 $x_0$ 的 $c$ 便可使 $Q(x)$ 超过该正数，再结合恒等式 $f(x)/g(x)=Q(x)\bigl(1-g(c)/g(x)\bigr)+f(c)/g(x)$ 同样可得 $f(x)/g(x)\to+\infty$。当 $A=-\infty$ 时，对 $-f$ 重复上述论证即可。至于 $x\to\pm\infty$ 的情形，只需作变量代换 $t=1/x$，便可化归为 $t\to0^+$ 或 $t\to0^-$ 的单侧极限。
+\end{proof}
+
+若已知 $|f'(x)/g'(x)|\to\infty$，同样可以推出 $|f(x)/g(x)|\to\infty$。对于 $0/0$ 型，直接在柯西等式两端取绝对值即可；对于 $|g|\to\infty$ 型，任给 $K>0$，先取定 $c$ 使在 $(x_0,c)$ 上恒有 $|f'/g'|>2K+2$，从而 $|Q(x)|>2K+2$，再让 $x$ 充分靠近 $x_0$ 以满足 $|1-g(c)/g(x)|>1/2$ 及 $|f(c)/g(x)|<1$，便得到 $|f(x)/g(x)|>K$。在这一情形下，对分子 $f(x)$ 是否发散并没有额外限制。
+
+使用洛必达法则时，应先核实极限属于 $0/0$ 型或分母发散型，再逐一检查可导性、分母导数非零以及导数之比的极限是否存在。需要特别注意，导数之比不存在极限时，原商仍可能收敛。例如当 $x\to+\infty$ 时，$(x+\sin x)/x=1+\sin x/x\to1$，但其导数之比 $1+\cos x$ 却持续振荡而无极限。此外，若一次求导所得的新商依然是不定式，可在重新核对条件后继续应用洛必达法则。
+
+\section{零比零型的计算}
+在具体计算 $0/0$ 型极限时，每次求导后应先观察能否约去公因子或作等价无穷小替换，以免表达式越求导越繁琐。例如当 $x\to\pi$ 时，$(1+\cos x)/\tan^2x$ 为 $0/0$ 型，求导后在去心邻域内可先约去 $\sin x$，从而迅速得出
+\[
+ \lim_{x\to\pi}\frac{1+\cos x}{\tan^2x}
+ =\lim_{x\to\pi}\frac{-\sin x}{2\tan x\sec^2x}
+ =\lim_{x\to\pi}\frac{-\cos^3x}{2}=\frac12.
+\]
+
+\begin{example}
+求 $\displaystyle\lim_{x\to0}\frac{e^x-\sqrt{1+2x}}{\ln(1+x^2)}$。
+\end{example}
+
+\begin{proof}[解]
+当 $x\to0$ 时，分母满足 $\ln(1+x^2)\sim x^2$，故可先将分母替换为 $x^2$。此时分子在 $0$ 处的函数值与一阶导数均为零，连续两次应用洛必达法则，得
+\[
+ \lim_{x\to0}\frac{e^x-\sqrt{1+2x}}{x^2}
+ =\lim_{x\to0}\frac{e^x-(1+2x)^{-1/2}}{2x}
+ =\lim_{x\to0}\frac{e^x+(1+2x)^{-3/2}}2=1.
+\]
+\end{proof}
+
+若分子与分母中反复出现同一复合结构，先作变量代换往往更为简洁。例如令 $t=\sqrt{x}$，当 $x\to0^+$ 时有 $t\to0^+$，于是
+\[
+ \lim_{x\to0^+}\frac{\sqrt{x}}{1-e^{\sqrt{x}}}
+ =\lim_{t\to0^+}\frac{t}{1-e^t}
+ =\lim_{t\to0^+}\frac{-1}{e^t}=-1.
+\]
+
+在涉及抽象函数高阶导数的极限问题中，更需要严格留意题设所给的可导阶数，不可无条件地反复求导。
+
+\begin{example}
+设 $g(0)=g'(0)=0$，$g''(0)=3$。令 $f(0)=0$，当 $x\ne0$ 时 $f(x)=g(x)/x$。求 $f'(0)$。
+\end{example}
+
+\begin{proof}[解]
+由 $g''(0)$ 存在可知，$g'$ 在 $0$ 的某邻域内存在，因而 $g$ 在该邻域内可导且在 $0$ 处连续，结合 $g(0)=0$ 可确认 $g(x)/x^2$ 为 $0/0$ 型。依导数定义并应用一次洛必达法则，得
+\[
+ f'(0)=\lim_{x\to0}\frac{g(x)}{x^2}
+ =\frac12\lim_{x\to0}\frac{g'(x)-g'(0)}{x-0}
+ =\frac{g''(0)}2=\frac32.
+\]
+此处最后一步直接利用了 $g'$ 在 $0$ 处的导数定义，而不能再次使用洛必达法则，因为题设并未假定 $g''$ 在 $0$ 的去心邻域内存在或具有极限。
+\end{proof}
+
+\section{分母发散与积、差的转化}
+当分母趋于无穷时，洛必达法则常用于比较不同类型函数在无穷远处的增长快慢。例如，
+\begin{align*}
+ \lim_{x\to+\infty}\frac{\ln x}{x}&=\lim_{x\to+\infty}\frac1x=0,\\
+ \lim_{x\to+\infty}\frac{e^x}{x^3}
+ &=\lim_{x\to+\infty}\frac{e^x}{3x^2}
+ =\lim_{x\to+\infty}\frac{e^x}{6x}
+ =\lim_{x\to+\infty}\frac{e^x}{6}=+\infty.
+\end{align*}
+更一般地，对任意 $p>0$，由导数之比 $1/(p x^p)\to0$ 可知 $\lim_{x\to+\infty}\ln x/x^p=0$。另一方面，取正整数 $m>p$，对 $x^m/e^x$ 连续应用 $m$ 次洛必达法则可得其极限为零；再由 $x\ge1$ 时 $0<x^p\le x^m$ 及迫敛性，即知 $\lim_{x\to+\infty}x^p/e^x=0$。这就确立了在 $x\to+\infty$ 时，对数函数、正幂函数与指数函数由慢到快的增长顺序。
+
+除了直接比较增长速度，有时还可以人为引入趋于无穷的辅助因子作分母，将微分组合改写为标准商式。
+
+\begin{example}
+设 $f$ 在 $[0,+\infty)$ 上可导，且当 $x\to+\infty$ 时 $f(x)+f'(x)\to A$。证明 $\lim_{x\to+\infty}f(x)=A$。
+\end{example}
+
+\begin{proof}
+注意到 $\bigl(e^x f(x)\bigr)'=e^x\bigl(f(x)+f'(x)\bigr)$，而分母 $e^x$ 在 $x\to+\infty$ 时趋于 $+\infty$。将 $f(x)$ 写成 $e^x f(x)/e^x$ 并应用分母发散型的洛必达法则，得
+\[
+ \lim_{x\to+\infty}f(x)=\lim_{x\to+\infty}\frac{e^x f(x)}{e^x}
+ =\lim_{x\to+\infty}\bigl[f(x)+f'(x)\bigr]=A.
+\]
+\end{proof}
+
+其他代数形式的不定式也可以先化为商式再处理。对于 $0\cdot\infty$ 型，通常把其中一个因子的倒数放到分母上；例如当 $x\to0^+$ 时，将 $x\ln x$ 改写为 $(\ln x)/(1/x)$，其导数之比为 $-x$，故
+\[
+ \lim_{x\to0^+}x\ln x=\lim_{x\to0^+}\frac{\ln x}{1/x}=0.
+\]
+对于 $\infty-\infty$ 型，则常通过通分或有理化转化为 $0/0$ 型。例如当 $x\to1$ 时，$1/(x-1)$ 与 $1/\ln x$ 同向发散，通分后连续两次应用洛必达法则可得
+\begin{align*}
+ \lim_{x\to1}\left(\frac1{x-1}-\frac1{\ln x}\right)
+ &=\lim_{x\to1}\frac{\ln x-x+1}{(x-1)\ln x}\\
+ &=\lim_{x\to1}\frac{1-x}{x-1+x\ln x}
+ =\lim_{x\to1}\frac{-1}{2+\ln x}=-\frac12.
+\end{align*}
+
+\section{幂式与数列的不定式极限}
+对于 $1^\infty$、$0^0$ 与 $\infty^0$ 三类幂指型不定式，在底数 $u>0$ 的范围内先作对数恒等变形 $u^v=e^{v\ln u}$，将问题化归为求指数 $v\ln u$（通常为 $0\cdot\infty$ 型）的极限。根据指数函数的连续性与单调性，当 $v\ln u$ 分别趋于有限实数 $A$、$+\infty$ 或 $-\infty$ 时，原式相应地趋于 $e^A$、$+\infty$ 或 $0$。
+
+以下依次举例说明这三种类型：
+\begin{itemize}
+\item $1^\infty$ 型：考察 $\lim_{x\to0}(\cos x)^{1/x^2}$。取对数后化为 $0/0$ 型，有
+\[
+ \lim_{x\to0}\frac{\ln(\cos x)}{x^2}
+ =\lim_{x\to0}\frac{-\tan x}{2x}=-\frac12,
+\]
+故 $\lim_{x\to0}(\cos x)^{1/x^2}=e^{-1/2}$。
+\item $0^0$ 型：考察 $\lim_{x\to0^+}(\sin x)^{k/(1+\ln x)}$。当 $k=0$ 时原式恒等于 $1$；当 $k\ne0$ 时，对数化为分母发散型，求导得
+\[
+ \lim_{x\to0^+}\frac{k\ln(\sin x)}{1+\ln x}
+ =\lim_{x\to0^+}\frac{kx\cos x}{\sin x}=k,
+\]
+从而原式趋于 $e^k$。
+\item $\infty^0$ 型：考察 $\lim_{x\to+\infty}\bigl(x+\sqrt{1+x^2}\bigr)^{1/\ln x}$。取对数后同样为分母发散型，求导并化简得
+\[
+ \lim_{x\to+\infty}\frac{\ln\bigl(x+\sqrt{1+x^2}\bigr)}{\ln x}
+ =\lim_{x\to+\infty}\frac{x}{\sqrt{1+x^2}}=1,
+\]
+故原式趋于 $e$。
+\end{itemize}
+
+最后，洛必达法则不能直接用于离散变量的数列极限，因为数列指标 $n$ 只取整数而无法求导。若能构造一个在充分大的实数 $x$ 上有定义的可导函数 $F(x)$，使其在正整数处满足 $F(n)=a_n$，则先对连续变量函数 $F(x)$ 使用洛必达法则求出 $\lim_{x\to+\infty}F(x)=L$，再由函数极限的归结原则即可推出 $\lim_{n\to\infty}a_n=L$。
+
+\begin{example}
+求 $\displaystyle\lim_{n\to\infty}\bigl(1+1/n+1/n^2\bigr)^n$。
+\end{example}
+
+\begin{proof}[解]
+考虑连续变量函数 $F(x)=(1+1/x+1/x^2)^x$（$x>0$）。取对数并应用洛必达法则，得
+\[
+ \lim_{x\to+\infty}\ln F(x)
+ =\lim_{x\to+\infty}\frac{\ln(1+1/x+1/x^2)}{1/x}
+ =\lim_{x\to+\infty}\frac{x^2+2x}{x^2+x+1}=1.
+\]
+于是 $\lim_{x\to+\infty}F(x)=e$。取 $x=n$ 并由归结原则可知，原数列的极限也为 $e$。
+\end{proof}
+
+\end{document}

@@ -63,7 +63,9 @@
 \maketitle
 
 \section{线性表示与线性方程组}
-以下设 $P$ 为数域，向量均写成列向量。
+
+以下设 $P$ 为数域，所有向量均约定写为列向量。将线性表示问题按分量展开，可以直接建立起向量与线性方程组之间的联系。
+
 \begin{definition}[线性表示]
 设 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_m,\boldsymbol\beta\in P^n$。
 若存在 $x_1,\ldots,x_m\in P$，使得
@@ -72,39 +74,43 @@
 \]
 则称 $\boldsymbol\beta$ 可由向量组 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_m$ 线性表示。
 \end{definition}
+
 记 $\boldsymbol\alpha_j=(a_{1j},\ldots,a_{nj})^{\mathsf T}$、
-$\boldsymbol\beta=(b_1,\ldots,b_n)^{\mathsf T}$，则上述向量等式等价于方程组
+$\boldsymbol\beta=(b_1,\ldots,b_n)^{\mathsf T}$，其中 $a_{ij}$ 表示第 $j$ 个向量的第 $i$ 个分量，即系数矩阵第 $i$ 行、第 $j$ 列的元素。按分量比较，上述向量等式等价于线性方程组
 \[
 \sum_{j=1}^m a_{ij}x_j=b_i,\qquad i=1,\ldots,n.
 \]
-线性表示的存在性与唯一性，分别对应方程组是否有解及解是否唯一。
-$a_{ij}$ 表示第 $j$ 个向量的第 $i$ 个分量，即系数矩阵第 $i$ 行、第 $j$ 列的元素。
+因此，线性表示的存在性与唯一性，分别对应于该方程组是否有解以及解是否唯一。
 
 \begin{example}
 求 $(2,1,4)^{\mathsf T}$ 由 $(1,1,2)^{\mathsf T}$、$(1,2,1)^{\mathsf T}$、
 $(1,1,1)^{\mathsf T}$ 构成的向量组的线性表示。
 \end{example}
 \begin{proof}[解]
-待定系数满足
+设表示系数为 $x_1,x_2,x_3$，按分量写出方程组：
 \[
 \begin{cases}x_1+x_2+x_3=2,\\x_1+2x_2+x_3=1,\\2x_1+x_2+x_3=4.\end{cases}
 \]
-第二式减第一式得 $x_2=-1$，第三式减第一式得 $x_1=2$，回代得 $x_3=1$。故所求表示的系数唯一，为 $(2,-1,1)^{\mathsf T}$。
+用第二式减去第一式得 $x_2=-1$，用第三式减去第一式得 $x_1=2$，再回代第一式得 $x_3=1$。因此所求线性表示的系数唯一，为 $(2,-1,1)^{\mathsf T}$。
 \end{proof}
+
+在 $P^n$ 中，最基本的一组向量是标准单位向量，任意向量都可以通过它们按坐标自然地分解。
 
 \begin{definition}[标准单位向量]
 $P^n$ 中第 $i$ 个分量为 $1$、其余分量为 $0$ 的向量记为 $\boldsymbol e_i$，
 称为第 $i$ 个标准单位向量。
 \end{definition}
-任意 $\boldsymbol a=(a_1,\ldots,a_n)^{\mathsf T}\in P^n$ 都有唯一表示
+
+对任意 $\boldsymbol a=(a_1,\ldots,a_n)^{\mathsf T}\in P^n$，都有唯一的线性表示
 \[
 \boldsymbol a=a_1\boldsymbol e_1+\cdots+a_n\boldsymbol e_n.
 \]
-因为 $\sum_{i=1}^n c_i\boldsymbol e_i$ 的第 $i$ 个分量为 $c_i$，
-所以该向量等于 $\boldsymbol a$ 当且仅当 $c_i=a_i$（$i=1,\ldots,n$）。
+事实上，线性组合 $\sum_{i=1}^n c_i\boldsymbol e_i$ 的第 $i$ 个分量恰好为 $c_i$，故该向量等于 $\boldsymbol a$ 当且仅当对每个 $i=1,\ldots,n$ 均有 $c_i=a_i$。
 
-\newpage
 \section{二阶行列式}
+
+上一节说明了线性表示对应于线性方程组的求解。若表示已经存在，要进一步判定它是否唯一，只需考察相应的齐次线性方程组。
+
 \begin{proposition}[表示的唯一性]
 若 $\boldsymbol\beta$ 可由 $\boldsymbol\alpha_1,\ldots,\boldsymbol\alpha_m$ 线性表示，
 则表示唯一当且仅当齐次方程
@@ -114,25 +120,30 @@ z_1\boldsymbol\alpha_1+\cdots+z_m\boldsymbol\alpha_m=\boldsymbol0
 只有零解。
 \end{proposition}
 \begin{proof}
-若 $x_1,\ldots,x_m$ 与 $y_1,\ldots,y_m$ 是两组表示系数，两式相减得
-$\sum_{j=1}^m(x_j-y_j)\boldsymbol\alpha_j=\boldsymbol0$。
-若齐次方程只有零解，则 $x_j=y_j$，表示唯一。
-反之，若齐次方程有非零解 $(z_1,\ldots,z_m)^{\mathsf T}$，
-则在一组表示系数 $x_j$ 上加上 $z_j$，得到另一组不同的表示系数。
-\end{proof}
-非零解指各分量不全为零，并非每个分量都非零。
+设 $x_1,\ldots,x_m$ 与 $y_1,\ldots,y_m$ 是 $\boldsymbol\beta$ 的两组表示系数，将两式相减即得
+\[
+\sum_{j=1}^m(x_j-y_j)\boldsymbol\alpha_j=\boldsymbol0.
+\]
+若上述齐次方程只有零解，则必有 $x_j-y_j=0$（$j=1,\ldots,m$），故表示唯一。
 
+反之，若该齐次方程存在非零解 $(z_1,\ldots,z_m)^{\mathsf T}$，则将其加到已有的一组表示系数 $(x_1,\ldots,x_m)^{\mathsf T}$ 上，所得的 $(x_1+z_1,\ldots,x_m+z_m)^{\mathsf T}$ 同样满足表示等式，且与原系数不同，从而表示不唯一。
+\end{proof}
+
+需要注意，这里所说的非零解是指各分量不全为零，而非要求每个分量都非零。
+
+对于两个未知量、两个方程的齐次线性方程组，其是否存在非零解完全由系数构成的一个数所决定，这就是二阶行列式。
 
 \begin{definition}
 设 $\boldsymbol\alpha_1=(a_{11},a_{21})^{\mathsf T}$、
-$\boldsymbol\alpha_2=(a_{12},a_{22})^{\mathsf T}\in P^2$，定义二阶行列式
+$\boldsymbol\alpha_2=(a_{12},a_{22})^{\mathsf T}\in P^2$，定义二阶行列式为
 \[
 D=\det(\boldsymbol\alpha_1,\boldsymbol\alpha_2)
 =\begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix}
 =a_{11}a_{22}-a_{12}a_{21}.
 \]
 \end{definition}
-行列式是由方阵确定的一个数。一阶行列式定义为 $\det(a)=a$，不能将其与绝对值混淆。
+
+行列式是由方阵唯一确定的一个数。特别地，一阶行列式定义为 $\det(a)=a$，不可将其记号与数的绝对值混淆。
 
 \begin{proposition}
 齐次方程组
@@ -142,26 +153,23 @@ D=\det(\boldsymbol\alpha_1,\boldsymbol\alpha_2)
 有非零解，当且仅当 $D=0$。
 \end{proposition}
 \begin{proof}
-若 $D\ne0$，第一式乘 $a_{22}$ 后减去第二式的 $a_{12}$ 倍，得 $Dx_1=0$；
-第二式乘 $a_{11}$ 后减去第一式的 $a_{21}$ 倍，得 $Dx_2=0$。
-于是 $x_1=x_2=0$，方程组只有零解。
+先证必要性（等价地，证明 $D\ne0$ 时只有零解）。将第一式乘以 $a_{22}$ 后减去第二式的 $a_{12}$ 倍，得 $Dx_1=0$；将第二式乘以 $a_{11}$ 后减去第一式的 $a_{21}$ 倍，得 $Dx_2=0$。若 $D\ne0$，则必有 $x_1=x_2=0$，方程组只有零解。
 
-若 $D=0$，分以下情形讨论：
+再证充分性。设 $D=0$，按系数行是否为零分三种情形构造非零解：
 \begin{enumerate}
-\item 当 $(a_{11},a_{12})\ne(0,0)$ 时，取 $(x_1,x_2)=(-a_{12},a_{11})$。
-第一式显然成立，第二式左端为 $-a_{21}a_{12}+a_{22}a_{11}=D=0$，故这是非零解。
-\item 当第一行全为零而第二行非零时，$(-a_{22},a_{21})$ 是非零解。
-\item 当两行全为零时，$(1,0)$ 是非零解。
+\item 当 $(a_{11},a_{12})\ne(0,0)$ 时，取 $(x_1,x_2)=(-a_{12},a_{11})$。此时第一式显然成立，第二式左端为 $-a_{21}a_{12}+a_{22}a_{11}=D=0$，故它是非零解。
+\item 当第一行全为零而第二行非零时，类似地可取 $(-a_{22},a_{21})$ 作为非零解。
+\item 当两行全为零时，$(1,0)$ 即为一个非零解。
 \end{enumerate}
-综上，结论成立。
+综上，方程组有非零解当且仅当 $D=0$。
 \end{proof}
-上述消元没有除以某个指定系数，因而也包含 $a_{11}=0$ 的情形。
-在 $\R^2$ 中，存在不全为零的 $x_1,x_2$ 使
-$x_1\boldsymbol\alpha_1+x_2\boldsymbol\alpha_2=\boldsymbol0$，等价于两向量共线，
-其中包括含零向量的退化情形。
 
-\newpage
+上述消元过程没有除以任何指定的系数，因此天然涵盖了 $a_{11}=0$ 的情形。在 $\R^2$ 中，存在不全为零的实数 $x_1,x_2$ 使得 $x_1\boldsymbol\alpha_1+x_2\boldsymbol\alpha_2=\boldsymbol0$，等价于两向量共线（包括其中含有零向量的退化情形）。
+
 \section{二阶行列式的几何意义}
+
+除了判定二元齐次方程组解的情形外，实数域上的二阶行列式在平面几何中还有直观的面积解释。
+
 \begin{proposition}
 设 $u=(a,b)^{\mathsf T}$、$v=(c,d)^{\mathsf T}\in\R^2$，则以 $u,v$ 为邻边的平行四边形面积为
 \[
@@ -169,41 +177,38 @@ S=|ad-bc|=|\det(u,v)|.
 \]
 \end{proposition}
 \begin{proof}
-若有一个向量为零，等式两边均为零。否则，设两向量的夹角为 $\theta\in[0,\pi]$。
-由点积公式与平行四边形面积公式，
+若 $u,v$ 中至少有一个为零向量，则平行四边形退化，等式两边均为零。否则，设两向量的夹角为 $\theta\in[0,\pi]$。由点积公式与平行四边形面积公式，有
 \[
 u\cdot v=ac+bd=\|u\|\|v\|\cos\theta,\qquad
 S=\|u\|\|v\|\sin\theta.
 \]
-因此
+利用 $\sin^2\theta=1-\cos^2\theta$ 消去夹角，可得
 \begin{align*}
 S^2
 &=\|u\|^2\|v\|^2-(u\cdot v)^2\\
 &=(a^2+b^2)(c^2+d^2)-(ac+bd)^2\\
 &=a^2d^2+b^2c^2-2abcd=(ad-bc)^2.
 \end{align*}
-由于 $S\ge0$，所以 $S=|ad-bc|$。
+因为面积 $S\ge0$，两边开方即得 $S=|ad-bc|$。
 \end{proof}
-在标准直角坐标系中，以 $(\boldsymbol e_1,\boldsymbol e_2)$ 为正向，
-$\det(u,v)$ 表示有向面积。对不共线的 $u,v$，从 $u$ 到 $v$ 的较小转角
-为逆时针时取正号，为顺时针时取负号。交换向量顺序，行列式变号，普通面积不变。
-特别地，$\det(u,v)=0$ 当且仅当平行四边形退化，即 $u,v$ 共线。
 
-\newpage
+在标准直角坐标系中，以 $(\boldsymbol e_1,\boldsymbol e_2)$ 确定正向时，$\det(u,v)$ 表示由 $u,v$ 张成的平行四边形的有向面积：对不共线的 $u,v$，若从 $u$ 转向 $v$ 的较小转角为逆时针方向则取正号，为顺时针方向则取负号。交换两向量的顺序会使行列式变号，但普通面积保持不变。特别地，$\det(u,v)=0$ 当且仅当平行四边形退化，即 $u,v$ 共线。
+
 \section{叉积与混合积}
-在 $\R^3$ 的标准右手直角坐标系中，设
-$u=(u_1,u_2,u_3)^{\mathsf T}$、$v=(v_1,v_2,v_3)^{\mathsf T}$，其叉积为
+
+为了将二阶行列式的有向面积推广到三维空间的有向体积，进而在 $\R^3$ 中引出三阶行列式，先回顾三维向量的叉积与混合积。
+
+在 $\R^3$ 的标准右手直角坐标系中，设 $u=(u_1,u_2,u_3)^{\mathsf T}$、$v=(v_1,v_2,v_3)^{\mathsf T}$，定义它们的叉积为
 \[
 u\times v=
 \begin{pmatrix}
 u_2v_3-u_3v_2\\u_3v_1-u_1v_3\\u_1v_2-u_2v_1
 \end{pmatrix}.
 \]
-点积的结果是数，叉积的结果是向量。叉积的三个坐标都是二阶行列式的形式，
-这使它对两个向量分别线性，也决定了交换向量时的符号。
+与点积输出一个数不同，叉积的结果仍是一个向量。观察坐标表达式可见，叉积的三个分量都是二阶行列式的形式，这一结构既保证了它对两个向量分别线性，也决定了交换两向量时的变号规律。
 
 \begin{proposition}[叉积的双线性与反对称性]
-对 $u,u',v,v'\in\R^3$ 及 $s,t\in\R$，有
+对任意 $u,u',v,v'\in\R^3$ 及 $s,t\in\R$，有
 \begin{align*}
 (su+tu')\times v&=s(u\times v)+t(u'\times v),\\
 u\times(sv+tv')&=s(u\times v)+t(u\times v'),\\
@@ -211,63 +216,62 @@ u\times v&=-v\times u.
 \end{align*}
 \end{proposition}
 \begin{proof}
-固定 $v$，第一坐标满足
+固定 $v$，考察第一个坐标，由实数乘法的分配律有
 \begin{align*}
  &(su_2+tu'_2)v_3-(su_3+tu'_3)v_2\\
  &\quad=s(u_2v_3-u_3v_2)+t(u'_2v_3-u'_3v_2).
 \end{align*}
-其余两个坐标同样使用分配律，故叉积对第一个向量线性。
-固定 $u$ 时，各坐标对 $v$ 的分量也线性，得到第二式。
-交换 $u,v$ 后，每个坐标中的两个乘积互换，因而都变为原来的相反数，得到第三式。
+其余两个坐标作同样展开即可得到对第一个向量的线性；固定 $u$ 时，各坐标对 $v$ 的分量同样线性，从而第二式成立。交换 $u$ 与 $v$ 后，每个坐标中的两个乘积项恰好互换位置，因而全部变为原来的相反数，故第三式成立。
 \end{proof}
 
+接下来考察叉积的方向与模长，它们分别体现为与原向量的正交性以及平行四边形的面积公式。
+
 \begin{proposition}[叉积的正交性与长度]
-对 $u,v\in\R^3$，有
+对任意 $u,v\in\R^3$，有
 \begin{gather*}
 (u\times v)\cdot u=(u\times v)\cdot v=0,\\
 \|u\times v\|^2=\|u\|^2\|v\|^2-(u\cdot v)^2.
 \end{gather*}
 \end{proposition}
 \begin{proof}
-先看正交性。将坐标代入点积，得
+先验证正交性。将坐标表达式代入点积展开，得
 \begin{align*}
 (u\times v)\cdot u
 &=u_1(u_2v_3-u_3v_2)+u_2(u_3v_1-u_1v_3)\\
-&\quad+u_3(u_1v_2-u_2v_1)=0.
+&\quad+u_3(u_1v_2-u_2v_1)=0,
 \end{align*}
-这里每个乘积都与另一个符号相反的乘积抵消。
-对 $v,u$ 应用这一等式，再由 $v\times u=-u\times v$，便得 $(u\times v)\cdot v=0$。
+其中六个乘积项两两符号相反而相互抵消。将 $u,v$ 对调应用同一等式，再结合反对称性 $v\times u=-u\times v$，立即得到 $(u\times v)\cdot v=0$。
 
-再看长度。叉积三个坐标的平方和为
+再验证长度公式。由定义，叉积三个坐标的平方和可写为
 \[
 \|u\times v\|^2=\sum_{1\le i<j\le3}(u_iv_j-u_jv_i)^2.
 \]
-另一方面，分别展开范数平方的乘积 $\|u\|^2\|v\|^2$ 与点积的平方 $(u\cdot v)^2$，两者相减时，对角项 $u_i^2v_i^2$ 相互抵消，
-其余项按指标对 $\{i,j\}$ 合并，得
+另一方面，展开 $\|u\|^2\|v\|^2-(u\cdot v)^2$ 时，所有形如 $u_i^2v_i^2$ 的对角项恰好抵消，其余各项按指标对 $\{i,j\}$（$i<j$）归并后得到
 \begin{align*}
 \|u\|^2\|v\|^2-(u\cdot v)^2
 &=\sum_{i<j}(u_i^2v_j^2+u_j^2v_i^2-2u_iu_jv_iv_j)\\
 &=\sum_{i<j}(u_iv_j-u_jv_i)^2.
 \end{align*}
-两式比较即得长度公式。
+比较两式即得所证的长度等式。
 \end{proof}
-若 $u,v$ 均非零，夹角为 $\theta\in[0,\pi]$，由 $u\cdot v=\|u\|\|v\|\cos\theta$ 得
+
+当 $u,v$ 均非零且夹角为 $\theta\in[0,\pi]$ 时，结合 $u\cdot v=\|u\|\|v\|\cos\theta$ 可由上述长度公式推出
 \[
 \|u\times v\|=\|u\|\|v\|\sin\theta.
 \]
-所以叉积的长度等于所张平行四边形的面积；叉积非零时，它垂直于底面，方向由右手定则确定。
-在 $u,v$ 均非零的条件下，叉积的长度为零当且仅当 $\theta=0$ 或 $\pi$，即两向量共线。
-若有一个向量为零，叉积也为零。因此，叉积为零当且仅当两向量共线，其中包括含零向量的情形。
-对于标准单位向量，坐标公式给出
+这表明叉积的长度恰好等于以 $u,v$ 为邻边的平行四边形面积；当叉积非零时，它垂直于底面，方向由右手定则确定。对于非零向量 $u,v$，叉积为零当且仅当 $\theta=0$ 或 $\pi$，即两向量共线；而若其中至少有一个为零向量，叉积同样为零。综合两种情形可知，$u\times v=\boldsymbol0$ 当且仅当 $u,v$ 共线（含零向量的退化情形）。特别地，对标准单位向量，直接按坐标计算可得
 \[
 \boldsymbol e_1\times\boldsymbol e_2=\boldsymbol e_3,\quad
 \boldsymbol e_2\times\boldsymbol e_3=\boldsymbol e_1,\quad
 \boldsymbol e_3\times\boldsymbol e_1=\boldsymbol e_2.
 \]
 
+将两向量的叉积再与第三个向量作点积，便得到用于刻画空间体积的混合积。
+
 \begin{definition}[混合积]
-对 $u,v,w\in\R^3$，数 $(u\times v)\cdot w$ 称为它们的混合积。
+对 $u,v,w\in\R^3$，称数 $(u\times v)\cdot w$ 为它们的混合积。
 \end{definition}
+
 \begin{proposition}
 以 $u,v,w$ 为棱的平行六面体体积为
 \[
@@ -275,36 +279,30 @@ V=|(u\times v)\cdot w|.
 \]
 \end{proposition}
 \begin{proof}
-若 $u\times v=\boldsymbol0$，底面退化，等式两边均为零。
-否则，令 $\boldsymbol n=(u\times v)/\|u\times v\|$，则 $\boldsymbol n$ 是底面的单位法向量，
-$|w\cdot\boldsymbol n|$ 是高。由底面积乘高，
+若 $u\times v=\boldsymbol0$，则底面平行四边形退化，等式两边均为零。若 $u\times v\ne\boldsymbol0$，令 $\boldsymbol n=(u\times v)/\|u\times v\|$，则 $\boldsymbol n$ 是底面的单位法向量，从而平行六面体的高为 $|w\cdot\boldsymbol n|$。由底面积乘以高即得
 \[
 V=\|u\times v\|\,|w\cdot\boldsymbol n|=|(u\times v)\cdot w|.
 \]
 \end{proof}
-混合积是有向体积，正、负分别对应有序向量组 $(u,v,w)$ 的右手、左手定向。
-混合积为零当且仅当三向量共面，这里将三个向量的起点置于同一点。
-若 $u,v$ 不共线，则 $u\times v$ 是其所在平面的法向量，
-$(u\times v)\cdot w=0$ 等价于 $w$ 在该平面内；若 $u,v$ 共线，
-它们与任意 $w$ 都共面，混合积也为零。
 
-\newpage
+由此可见，混合积表示平行六面体的有向体积，其正、负号分别对应有序向量组 $(u,v,w)$ 的右手定向与左手定向。将三个向量的起点置于同一点，混合积为零当且仅当它们共面：当 $u,v$ 不共线时，$u\times v$ 是其所在平面的法向量，故 $(u\times v)\cdot w=0$ 等价于 $w$ 落在该平面内；当 $u,v$ 共线时，它们与任意向量 $w$ 都共面，混合积亦为零。
+
 \section{三阶行列式}
+
 \subsection{混合积的坐标展开}
-设
+
+下面通过标准单位向量展开混合积，从中提取出三阶行列式的显式坐标公式。设
 \[
 \boldsymbol\alpha_j=\sum_{i=1}^3a_{ij}\boldsymbol e_i
 =(a_{1j},a_{2j},a_{3j})^{\mathsf T},\qquad j=1,2,3.
 \]
-由叉积、点积对加法的分配律，
+利用叉积与点积对加法的分配律，将 $(\boldsymbol\alpha_1\times\boldsymbol\alpha_2)\cdot\boldsymbol\alpha_3$ 展开为三重求和：
 \[
 (\boldsymbol\alpha_1\times\boldsymbol\alpha_2)\cdot\boldsymbol\alpha_3
 =\sum_{i=1}^3\sum_{j=1}^3\sum_{k=1}^3
  a_{i1}a_{j2}a_{k3}(\boldsymbol e_i\times\boldsymbol e_j)\cdot\boldsymbol e_k.
 \]
-右端共有 $27$ 项。若 $i=j$，则 $\boldsymbol e_i\times\boldsymbol e_j=\boldsymbol0$；
-若 $i\ne j$ 而 $k=i$ 或 $k=j$，则叉积垂直于 $\boldsymbol e_k$，相应点积为零。
-故只有 $i,j,k$ 两两不同的六项可能非零。由标准单位向量的叉积关系，
+右端形式上共有 $27$ 项，但其中绝大多数为零：若 $i=j$，则 $\boldsymbol e_i\times\boldsymbol e_j=\boldsymbol0$；若 $i\ne j$ 而 $k=i$ 或 $k=j$，则 $\boldsymbol e_i\times\boldsymbol e_j$ 垂直于 $\boldsymbol e_k$，相应的点积也为零。因此，只有 $i,j,k$ 两两互异的六项可能非零。由标准单位向量的叉积关系可得
 \begin{align*}
 (\boldsymbol e_1\times\boldsymbol e_2)\cdot\boldsymbol e_3
 &=(\boldsymbol e_2\times\boldsymbol e_3)\cdot\boldsymbol e_1
@@ -313,17 +311,16 @@ $(u\times v)\cdot w=0$ 等价于 $w$ 在该平面内；若 $u,v$ 共线，
 &=(\boldsymbol e_1\times\boldsymbol e_3)\cdot\boldsymbol e_2
 =(\boldsymbol e_3\times\boldsymbol e_2)\cdot\boldsymbol e_1=-1.
 \end{align*}
-从而
+代入求和式后即得六项展开式：
 \begin{align*}
 (\boldsymbol\alpha_1\times\boldsymbol\alpha_2)\cdot\boldsymbol\alpha_3
 &=a_{11}a_{22}a_{33}+a_{21}a_{32}a_{13}+a_{31}a_{12}a_{23}\\
 &\quad-a_{21}a_{12}a_{33}-a_{11}a_{32}a_{23}-a_{31}a_{22}a_{13}.
 \end{align*}
-每项从三个列向量中各取一个分量；非零的基向量混合积要求所取行号互不相同，
-因而每项也恰好从每行取一个元素。
+观察每一项的结构：三个因子分别取自三个列向量，而基向量混合积非零的条件又要求它们的行指标互不相同，因而每一项恰好从矩阵的每一行、每一列各取一个元素。
 
 \begin{definition}[三阶行列式]
-设 $A=(a_{ij})_{3\times3}$ 的元素属于数域 $P$，其三阶行列式定义为
+设 $A=(a_{ij})_{3\times3}$ 的元素属于数域 $P$，定义其三阶行列式为
 \begin{align*}
 \det A
 &=\begin{vmatrix}a_{11}&a_{12}&a_{13}\\a_{21}&a_{22}&a_{23}\\a_{31}&a_{32}&a_{33}\end{vmatrix}\\
@@ -331,30 +328,29 @@ $(u\times v)\cdot w=0$ 等价于 $w$ 在该平面内；若 $u,v$ 共线，
 &\quad-a_{13}a_{22}a_{31}-a_{11}a_{23}a_{32}-a_{12}a_{21}a_{33}.
 \end{align*}
 \end{definition}
-实数情形下，三阶行列式等于三个列向量的混合积，其绝对值为平行六面体体积。
-由于坐标公式只涉及加、减、乘运算，可将它作为任意数域上的定义，
-但面积、体积的几何解释限于实数情形。
 
-\newpage
+在实数情形下，三阶行列式正是三个列向量的混合积，其绝对值等于平行六面体的体积。由于展开式只涉及加、减、乘法，它可以直接作为任意数域 $P$ 上的代数定义，但面积与体积的几何解释仅限于实数域。
+
 \section{三阶行列式的性质}
-以下记 $D(u,v,w)=\det(u,v,w)$，其中 $u,v,w\in P^3$ 按列排列。
+
+从三阶行列式的六项公式出发，可以提炼出它在列运算下的两条核心代数性质，即多重线性与反对称性。以下记 $D(u,v,w)=\det(u,v,w)$，其中 $u,v,w\in P^3$ 按列排成三阶方阵。
+
 \begin{proposition}[多重线性]
-行列式对每一列分别线性。即对任意 $s,t\in P$，
+行列式对每一列分别线性。具体而言，对任意 $s,t\in P$，有
 \[
 D(su+tu',v,w)=sD(u,v,w)+tD(u',v,w),
 \]
-对第二列、第三列也有相应等式。
+对第二列与第三列同样有相应的等式。
 \end{proposition}
 \begin{proof}
-六项公式中的每一项恰好含有第一列的一个分量。
-将该分量替换为 $su_i+tu_i'$，利用分配律展开，并按 $s,t$ 分组，便得到所需等式。
-对其余两列同理。
+在六项展开式中，每一项都恰好含有第一列的一个分量。将该分量替换为 $su_i+tu_i'$ 后，利用分配律展开并按系数 $s,t$ 分别归并，即得所证等式。对其余两列的证明完全相同。
 \end{proof}
-这里的线性是指固定其余各列，只对一列进行运算。因此
+
+这里的线性是指固定其余各列，仅对某一列进行线性组合。因此，当三列同时作数乘时，各列的标量因子依次提出：
 \[
-D(su,tv,rw)=strD(u,v,w),
+D(su,tv,rw)=strD(u,v,w);
 \]
-而当两列同时为向量之和时，必须分别展开：
+而当两列同时为向量之和时，需要逐列分别展开，例如
 \begin{align*}
 D(u+u',v+v',w)
 &=D(u,v,w)+D(u,v',w)\\
@@ -362,7 +358,7 @@ D(u+u',v+v',w)
 \end{align*}
 
 \begin{proposition}[反对称性]
-交换任意两列，行列式变号：
+交换任意两列，行列式变号，即
 \begin{align*}
 D(u,v,w)&=-D(v,u,w),\\
 D(u,v,w)&=-D(u,w,v),\\
@@ -370,49 +366,41 @@ D(u,v,w)&=-D(w,v,u).
 \end{align*}
 \end{proposition}
 \begin{proof}
-在六项公式中交换相应两列，三个正项与三个负项一一对换，
-所以所得行列式等于原行列式的相反数。
+在六项展开式中交换任意两列后，原来的三个正项与三个负项恰好一一互换，因此新行列式等于原行列式的相反数。
 \end{proof}
-循环移动三列相当于交换两次，故
+
+由反对称性可以立即推出几条常用推论。首先，循环轮换三列相当于作两次两列交换，故行列式不变：
 \[
 D(u,v,w)=D(v,w,u)=D(w,u,v).
 \]
-若两列相同，交换后行列式不变，而由反对称性又得到 $D=-D$，
-故 $D=0$。这里 $P\subseteq\C$，因此 $2\ne0$。
-结合多重线性，有
+其次，若某两列相同，交换这两列后行列式既保持不变又变为相反数，从而 $D=-D$；因为数域 $P\subseteq\C$ 中有 $2\ne0$，所以必有 $D=0$。再结合多重线性，可得
 \[
-D(u,v+cu,w)=D(u,v,w)+cD(u,u,w)=D(u,v,w).
+D(u,v+cu,w)=D(u,v,w)+cD(u,u,w)=D(u,v,w),
 \]
-即把一列的倍数加到另一列上，行列式不变。
+这表明将某一列的倍数加到另一列上时，行列式的值不变。
 
-\newpage
 \section{一般行列式}
-二阶与三阶行列式的每一项均从每行、每列各取一个元素。
-为描述一般情形及各项的符号，引入排列与逆序数。
+
+观察二阶与三阶行列式可以发现，展开式中的每一项都恰好从每行、每列各取一个元素。为了将这一结构推广到任意 $n$ 阶方阵，并准确刻画每一项所带的正负号，需要引入排列与逆序数的概念。
 
 \begin{definition}[排列与逆序数]
-将 $1,2,\ldots,n$ 各使用一次得到的序列
-$\sigma(1),\ldots,\sigma(n)$ 称为一个排列，所有排列的集合记为 $S_n$。
-若 $i<j$ 而 $\sigma(i)>\sigma(j)$，则称这两个位置构成一个逆序。
-逆序总数记为 $\tau(\sigma)$；逆序数为偶数的排列称为偶排列，为奇数的称为奇排列。
+将 $1,2,\ldots,n$ 各使用一次排成的有序序列 $\sigma(1),\ldots,\sigma(n)$ 称为一个 $n$ 阶\textbf{排列}，全体 $n$ 阶排列的集合记为 $S_n$。若下标满足 $i<j$ 而数值满足 $\sigma(i)>\sigma(j)$，则称这两个位置构成一个\textbf{逆序}。一个排列中逆序的总数记为 $\tau(\sigma)$；逆序数为偶数的排列称为\textbf{偶排列}，为奇数的称为\textbf{奇排列}。
 \end{definition}
-例如排列 $312$ 中，$3$ 与后面的 $1,2$ 分别构成逆序，故逆序数为 $2$，是偶排列。
-排列 $321$ 的逆序数为 $3$，是奇排列。
+
+例如，在排列 $312$ 中，$3$ 与其后的 $1,2$ 分别构成逆序，而 $1,2$ 顺序正常，故逆序数为 $2$，它是偶排列；排列 $321$ 中任意两数均构成逆序，逆序数为 $3$，是奇排列。借助排列的奇偶性，即可给出一般 $n$ 阶行列式的定义。
 
 \begin{definition}[一般行列式]
-设 $A=(a_{ij})_{n\times n}$ 的元素属于数域 $P$，定义
+设 $A=(a_{ij})_{n\times n}$ 的元素属于数域 $P$，定义其 $n$ 阶行列式为
 \[
 \det A=\sum_{j_1\cdots j_n}(-1)^{\tau(j_1\cdots j_n)}
   a_{j_1 1}a_{j_2 2}\cdots a_{j_n n},
 \]
+其中求和遍历全部 $n$ 阶排列 $j_1\cdots j_n$。
 \end{definition}
-其中求和遍历所有 $n$ 阶排列。对每个排列 $j_1\cdots j_n$，
-从第 $i$ 列选取第 $j_i$ 行的元素。
-所得行号排列为偶排列时取正号，为奇排列时取负号。
-共有 $n!$ 个排列，故定义式含 $n!$ 个形式项，每项含 $n$ 个因子。
-数值计算时，其中一些项可以为零。
 
-三阶情形中，各项与排列的对应为
+对每一个排列 $j_1\cdots j_n$，相应项从第 $i$ 列选取第 $j_i$ 行的元素；当行指标排列 $j_1\cdots j_n$ 为偶排列时该项取正号，为奇排列时取负号。由于 $n$ 阶排列共有 $n!$ 个，定义式包含 $n!$ 个形式项，每项为 $n$ 个元素的乘积（在具体数值计算中，其中部分项可能为零）。
+
+在三阶情形下，六个排列对应的逆序数与展开项列表如下：
 \[
 \begin{array}{c|c|c}
 \text{行号排列}&\text{逆序数}&\text{展开项}\\\hline
@@ -424,7 +412,6 @@ $\sigma(1),\ldots,\sigma(n)$ 称为一个排列，所有排列的集合记为 $S
 213&1&-a_{12}a_{21}a_{33}
 \end{array}
 \]
-这与混合积得到的六项公式一致。
-三阶行列式的对角线记忆法不能直接推广到四阶及以上。
+这与前文由混合积导出的六项公式完全一致。需要注意的是，三阶行列式常用的对角线记忆法仅适用于三阶，不能直接推广到四阶及更高阶的情形。
 
 \end{document}

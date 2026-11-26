@@ -61,9 +61,7 @@
 
 \section{从排列展开式理解代数余子式}
 
-设 $A=(a_{ij})$ 为 $n$ 阶方阵（$n\ge2$），沿用上一讲的记号，
-$M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、代数余子式。
-固定第二列到第 $n$ 列，把第一列换成变量 $x_1,\ldots,x_n$，记
+前文利用列的多重线性导出了行列式的按行（列）展开公式。这里换一个角度，直接从排列展开式本身观察代数余子式的含义。设 $A=(a_{ij})$ 为 $n$ 阶方阵（$n\ge2$），沿用前文的记号，用 $M_{ij}$ 与 $A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式与代数余子式。固定第二列至第 $n$ 列，将第一列替换为变量 $x_1,\ldots,x_n$，记
 \[
  \Delta(x_1,\ldots,x_n)=
  \begin{vmatrix}x_1&a_{12}&\cdots&a_{1n}\\x_2&a_{22}&\cdots&a_{2n}\\
@@ -75,29 +73,25 @@ $M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、
  =\sum_{(i_1,\ldots,i_n)}(-1)^{\tau(i_1,\ldots,i_n)}
  x_{i_1}a_{i_2,2}\cdots a_{i_n,n},
 \]
-其中求和遍历 $1,\ldots,n$ 的所有排列，$\tau$ 表示逆序数。
-每一项恰含一个 $x_k$。固定首个行号 $i_1=k$，它与其余行号形成 $k-1$ 个逆序。
-将剩余行号按递增次序重新编号为 $1,\ldots,n-1$，不改变它们之间的逆序关系，
-所以含 $x_k$ 的各项去掉这个因子后，其和为 $(-1)^{k-1}M_{k1}=A_{k1}$。
-把含同一个 $x_k$ 的项合并，便得到
+其中求和遍历 $1,\ldots,n$ 的全体排列，$\tau$ 表示逆序数。
+
+在和式中，每一项恰好含有一个 $x_k$。固定第一个行号 $i_1=k$ 时，$k$ 与排在其后的 $n-1$ 个行号恰好形成 $k-1$ 个逆序（分别对应于比 $k$ 小的 $1,\ldots,k-1$）。将其余 $n-1$ 个行号按递增次序重新编号为 $1,\ldots,n-1$，不改变它们相互之间的大小关系，因而逆序数不变；于是，把所有含 $x_k$ 的项提出因子 $x_k$ 后，其余部分之和正好等于 $(-1)^{k-1}M_{k1}=A_{k1}$。合并同类项即得
 \[
  \Delta(x_1,\ldots,x_n)=\sum_{k=1}^n x_k A_{k1}.
 \]
-因此，代数余子式 $A_{k1}$ 就是把第一列看作变量时，$x_k$ 的系数。
-它不依赖第一列中的元素，只由其余列决定。换成任意一列或一行，道理相同。
+从这一角度看，代数余子式 $A_{k1}$ 就是将第一列视为自变量时展开式中 $x_k$ 的系数。显然，它完全由其余各列决定，与第一列的具体元素无关；将其推广到任意一列或一行，结论完全相同。
 
 \subsection{不同行（列）的对应乘积之和}
 
-上述观点也解释了上一讲的零和公式。若把第 $j$ 列换成第 $l$ 列（$l\ne j$），
-新行列式有两列相同，故为零；第 $j$ 列的代数余子式却不变。因此
+上述系数视角也直接说明了异行（列）零和公式的由来。若将第 $j$ 列替换为第 $l$ 列（$l\ne j$），所得新行列式有两列相同，值必为零；而第 $j$ 列各位置的代数余子式只依赖于其余列，因而保持不变。由此立即得到
 \[
  \sum_{i=1}^n a_{il}A_{ij}=0\quad(l\ne j).
 \]
-同理，按行有
+对行作同样讨论，有
 \[
  \sum_{j=1}^n a_{kj}A_{ij}=0\quad(k\ne i).
 \]
-与按行（列）展开公式合在一起，即为
+将这两组零和公式与按行、按列展开公式合并，即为
 \[
  \sum_{r=1}^n a_{hr}A_{ir}
  =\begin{cases}\det A,&h=i,\\0,&h\ne i,\end{cases}
@@ -105,9 +99,11 @@ $M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、
  \sum_{r=1}^n a_{rk}A_{rj}
  =\begin{cases}\det A,&k=j,\\0,&k\ne j.\end{cases}
 \]
-同一行（列）对应相乘求和得到原行列式，换成另一行（列）则得到零。
+简而言之，同一行（列）的元素与对应代数余子式相乘求和给出原行列式，换用另一行（列）的元素与之相乘求和则恒为零。
 
 \section{行列式的降阶与递推计算}
+
+在具体计算高阶行列式时，常将初等变换与按行（列）展开配合使用：前者用于制造零元素，后者用于逐步降阶；若行列式具有规整的递推结构，还可以建立递推关系求解。
 
 \begin{example}
 计算
@@ -118,20 +114,22 @@ $M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、
 \]
 \end{example}
 \begin{proof}[解]
-先按第五列展开，再按所得四阶行列式的第一列展开，得
+第五列仅有一个非零元素，因此先按第五列展开；所得四阶行列式的第一列也仅有一个非零元素，再按第一列展开，得
 \[
  D=2(-1)^{2+5}
  \begin{vmatrix}5&3&-1&2\\0&-2&3&1\\0&-4&-1&4\\0&2&3&5\end{vmatrix}
  =-10\begin{vmatrix}-2&3&1\\-4&-1&4\\2&3&5\end{vmatrix}.
 \]
-对右侧三阶行列式作 $r_3\leftarrow r_3+r_1$，再从第三行提出 $6$，得
+对右侧三阶行列式施行行倍加 $r_3\leftarrow r_3+r_1$ 以在第三行制造零元素，再从第三行提出公因子 $6$，然后按第一行展开计算，得
 \[
  D=-60\begin{vmatrix}-2&3&1\\-4&-1&4\\0&1&1\end{vmatrix}
  =-60\bigl[(-2)(-1-4)-3(-4)+(-4)\bigr]
  =\boxed{-1080}.
 \]
-每次展开都选择非零元素最少的一行或一列；行倍加用于进一步制造零元素。
+这里的策略很明确：每次展开优先选择非零元素最少的行或列，并在必要时用行倍加进一步消元。
 \end{proof}
+
+对于阶数一般化的结构型行列式，按行（列）展开往往能建立关于阶数 $n$ 的递推公式。
 
 \begin{example}
 求主对角线为 $a+b$、上副对角线为 $a$、下副对角线为 $b$ 的三对角行列式
@@ -143,79 +141,73 @@ $M_{ij}$、$A_{ij}=(-1)^{i+j}M_{ij}$ 分别表示元素 $a_{ij}$ 的余子式、
 \]
 \end{example}
 \begin{proof}[解]
-约定 $D_0=1$，则 $D_1=a+b$。按第一列展开，第二项的余子式再按第一行展开，得
+约定 $D_0=1$，直接可得 $D_1=a+b$。当 $n\ge2$ 时，将 $D_n$ 按第一列展开，其中第一个余子式为 $D_{n-1}$，第二个余子式的第一行仅首元 $a$ 非零，继续按第一行展开即得递推关系
 \[
  D_n=(a+b)D_{n-1}-abD_{n-2}\quad(n\ge2).
 \]
-令 $E_n=D_n-bD_{n-1}$，则 $E_n=aE_{n-1}$，且 $E_1=a$，故 $E_n=a^n$。
-于是 $D_n=a^n+bD_{n-1}$，逐次代入得
+为求解该二阶线性递推式，令 $E_n=D_n-bD_{n-1}$。将其代入递推式可知 $E_n=aE_{n-1}$，且初值 $E_1=D_1-bD_0=a$，故对所有 $n\ge1$ 有 $E_n=a^n$。由此得到一阶递推式 $D_n=a^n+bD_{n-1}$，从 $D_0=1$ 出发逐次迭代展开即得
 \[
  \boxed{D_n=\sum_{k=0}^n a^{n-k}b^k
  =\begin{cases}\dfrac{a^{n+1}-b^{n+1}}{a-b},&a\ne b,\\[6pt]
  (n+1)a^n,&a=b.\end{cases}}
 \]
-有限和的形式不需要除以 $a-b$，因而也适用于 $a=b$ 或参数为零的情形。
+注意到有限和形式不涉及除以 $a-b$，因此对 $a=b$ 以及参数为零的情形同样适用。
 \end{proof}
 
 \section{多行（列）的拉普拉斯展开}
 
+按单行或单列展开每次只能将行列式降一阶。当矩阵具有分块结构，或某几行、几列中含有大片零元素时，同时按指定的 $r$ 行或 $r$ 列展开往往更加直接，这就是拉普拉斯展开。
+
 \subsection{子式、余子式与展开公式}
 
-设 $A$ 为 $n$ 阶方阵，$1\le r<n$。选取递增的行指标集
-$I=\{i_1<\cdots<i_r\}$ 和列指标集 $J=\{j_1<\cdots<j_r\}$。
-记 $A[I,J]$ 为这些行、列交叉位置构成的子矩阵，$I^c,J^c$ 为相应的补集。
-所有子矩阵中的行、列均保持原来的顺序。
+设 $A$ 为 $n$ 阶方阵，$1\le r<n$。任取递增的行指标集 $I=\{i_1<\cdots<i_r\}$ 与列指标集 $J=\{j_1<\cdots<j_r\}$，记 $A[I,J]$ 为由这些行与列交叉位置的元素按原有顺序构成的子矩阵，并记 $I^c,J^c$ 为它们在 $\{1,\ldots,n\}$ 中的补集（同样按递增顺序排列）。
 
 \begin{definition}
-$r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
-删去所选行、列后所得的行列式，称为它的\textbf{余子式}，即 $\det A[I^c,J^c]$。
-其\textbf{代数余子式}为
+$r$ 阶行列式 $\det A[I,J]$ 称为矩阵 $A$ 的一个 $r$ 阶\textbf{子式}。删去所选的 $r$ 行与 $r$ 列后剩余元素构成的行列式 $\det A[I^c,J^c]$，称为该子式的\textbf{余子式}。带符号的数
 \[
  (-1)^{\sum I+\sum J}\det A[I^c,J^c],
- \qquad \sum I=i_1+\cdots+i_r,\quad\sum J=j_1+\cdots+j_r.
+ \qquad \sum I=i_1+\cdots+i_r,\quad\sum J=j_1+\cdots+j_r,
 \]
+称为该子式的\textbf{代数余子式}。
 \end{definition}
 
+借助 $r$ 阶子式及其代数余子式，可以将单行（列）展开自然推广到多行（列）的情形。
+
 \begin{theorem}[拉普拉斯展开]
-固定 $r$ 列 $J$，对所有 $r$ 行的选择 $I$ 求和，有
+固定 $r$ 列 $J$，对所有含 $r$ 个元素的行指标集 $I$ 求和，有
 \[
  \boxed{\det A=\sum_{|I|=r}(-1)^{\sum I+\sum J}
        \det A[I,J]\det A[I^c,J^c].}
 \]
-固定 $r$ 行 $I$ 时，则对所有 $r$ 列的选择 $J$ 求和：
+相应地，固定 $r$ 行 $I$，对所有含 $r$ 个元素的列指标集 $J$ 求和，有
 \[
  \det A=\sum_{|J|=r}(-1)^{\sum I+\sum J}
        \det A[I,J]\det A[I^c,J^c].
 \]
 \end{theorem}
-每次固定一组行或列，只遍历另一组，共有 $\binom nr$ 项。
-当 $r=1$ 时，这正是上一讲的按一行或一列展开公式。
+
+展开时固定一组 $r$ 行（或 $r$ 列）而让另一组遍历全部 $\binom nr$ 种选法，因而和式共有 $\binom nr$ 项。当 $r=1$ 时，这一公式退化为通常的按一行或一列展开公式。
 
 \subsection{排列分组与展开式的符号}
 
 \begin{proof}
-固定 $J=\{1,\ldots,r\}$。排列展开式的每一项在前 $r$ 列取出的元素，
-必定来自 $r$ 个不同的行。按这组行 $I=\{k_1<\cdots<k_r\}$ 把所有项分组。
-再将其余行指标递增排列，记为 $I^c=\{l_1<\cdots<l_{n-r}\}$。
+先证明固定前 $r$ 列 $J=\{1,\ldots,r\}$ 的特殊情形。在按列写出的排列展开式中，每一项从前 $r$ 列选取的元素必来自 $r$ 个互异的行，因此可以按照这组行指标 $I=\{k_1<\cdots<k_r\}$ 将全体 $n!$ 项分组，并把其余行指标递增记为 $I^c=\{l_1<\cdots<l_{n-r}\}$。
 
-这一组中的每个完整排列都唯一写成
+在固定 $I$ 的这一组中，每个完整排列都唯一地具有如下形式：
 \[
  k_{\pi(1)},\ldots,k_{\pi(r)},
  l_{\rho(1)},\ldots,l_{\rho(n-r)},
- \qquad \pi\in S_r,\quad\rho\in S_{n-r}.
+ \qquad \pi\in S_r,\quad\rho\in S_{n-r},
 \]
-其中 $\pi,\rho$ 分别决定两组内部的次序，可以彼此独立地选取。
-完整排列的逆序分为两组内部的逆序和组间的逆序。
-因为 $k_s,l_t$ 各按递增次序编号，两组内部的逆序数分别为 $\tau(\pi)$、$\tau(\rho)$。
+其中 $\pi$ 与 $\rho$ 分别决定前后两组内部的次序，且彼此独立地遍历 $S_r$ 与 $S_{n-r}$。
 
-所选行号总在前面，所以组间逆序只取决于 $I$，不取决于两组内部怎样排列。
-对每个 $k_s$，比它小的行号共 $k_s-1$ 个，其中 $s-1$ 个在所选组内，
-剩余的 $k_s-s$ 个均在后一组，因而各产生一个逆序。组间逆序数为
+下面统计上述完整排列的逆序数。排列中的全部逆序可以分为三类：前组内部的逆序、后组内部的逆序，以及跨越前后的组间逆序。因为 $k_s$ 与 $l_t$ 均已按递增顺序编号，前后两组内部的逆序数分别就是 $\tau(\pi)$ 与 $\tau(\rho)$。至于组间逆序，由于 $I$ 中的行号全部排在 $I^c$ 之前，组间逆序总数只取决于集合 $I$ 本身，与两组内部如何排列无关：对每个 $k_s$，比它小的正整数共有 $k_s-1$ 个，其中有 $s-1$ 个已在 $I$ 内，其余 $k_s-s$ 个全部位于 $I^c$ 中，从而每个都与 $k_s$ 构成一个组间逆序。于是组间逆序总数为
 \[
- h_I=\sum_{s=1}^r(k_s-s)=\sum I-\frac{r(r+1)}2.
+ h_I=\sum_{s=1}^r(k_s-s)=\sum I-\frac{r(r+1)}2,
 \]
-因此完整排列的符号为 $(-1)^{h_I+\tau(\pi)+\tau(\rho)}$。
-对所有 $\pi,\rho$ 求和，由分配律，这一组的和可以写成两个和的乘积：
+完整排列的总符号为 $(-1)^{h_I+\tau(\pi)+\tau(\rho)}$。
+
+对所有独立的 $\pi\in S_r$ 与 $\rho\in S_{n-r}$ 求和，利用乘法分配律即可将该组全部 $r!(n-r)!$ 项之和分解为两个行列式的乘积：
 \begin{align*}
  &(-1)^{h_I}
  \left(\sum_{\pi\in S_r}(-1)^{\tau(\pi)}
@@ -226,52 +218,46 @@ $r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
  &=(-1)^{h_I}
    \det A[I,\{1,\ldots,r\}]\det A[I^c,\{r+1,\ldots,n\}].
 \end{align*}
-两个括号分别按排列定义计算子式、余子式。
-每一对内部排列恰对应原展开式中的一项，故这一组共有 $r!(n-r)!$ 项。
-不同的 $I$ 不会收进同一个排列，而每个排列都属于某个 $I$，
-所以对所有 $I$ 求和，恰好得到原行列式的全部项。
+因为不同的行指标集 $I$ 对应的排列组互不相交，且每个 $n$ 阶排列都唯一落入某一组中，所以对全部 $\binom nr$ 个 $I$ 求和，恰好涵盖原行列式展开式的全部项，这就证得了 $J=\{1,\ldots,r\}$ 的情形。
 
-对一般列集 $J=\{j_1<\cdots<j_r\}$，将这些列依次移到前面，且两组内部次序不变，
-需要 $h_J=\sum_{s=1}^r(j_s-s)=\sum J-r(r+1)/2$ 次相邻对换。
-设移列后所得矩阵为 $B$，则
+最后推广到一般的列指标集 $J=\{j_1<\cdots<j_r\}$。将这 $r$ 列依次向左移至前 $r$ 列的位置，同时保持所选列内部与剩余列内部的相对次序不变。第 $s$ 个所选列（原在第 $j_s$ 列）需向左移动 $j_s-s$ 位，故总共施行 $h_J=\sum_{s=1}^r(j_s-s)=\sum J-r(r+1)/2$ 次相邻列对换。设移列后所得方阵为 $B$，则
 \[
  \det B=(-1)^{h_J}\det A,\qquad \det A=(-1)^{h_J}\det B.
 \]
-在 $B$ 中应用前 $r$ 列的公式，两个小矩阵分别就是原矩阵的 $A[I,J]$、$A[I^c,J^c]$。
-还原为 $\det A$ 时，每组再乘以 $(-1)^{h_J}$，所以总指数为
+对 $B$ 应用已证的前 $r$ 列展开公式，注意到 $B$ 的前 $r$ 列与后 $n-r$ 列对应的子矩阵恰好就是原矩阵的 $A[I,J]$ 与 $A[I^c,J^c]$。将 $\det B$ 还原为 $\det A$ 时，每一项再乘以 $(-1)^{h_J}$，于是符号的总指数为
 \[
  h_I+h_J=\sum I+\sum J-r(r+1).
 \]
-由于 $r(r+1)$ 是偶数，总符号为 $(-1)^{\sum I+\sum J}$，得到固定任意 $r$ 列的公式。
-对转置矩阵应用该公式，就得到固定任意 $r$ 行的公式。
+由于 $r(r+1)$ 恒为偶数，总符号即为 $(-1)^{\sum I+\sum J}$，由此证得按任意 $r$ 列的展开公式。对转置矩阵 $A^{\mathsf T}$ 应用此式，便得到按任意 $r$ 行的拉普拉斯展开公式。
 \end{proof}
 
 \section{拉普拉斯展开的应用}
 
 \subsection{分块三角行列式}
 
+拉普拉斯展开最直接的应用，是计算分块三角形矩阵的行列式。
+
 \begin{proposition}
 设 $A$、$D$ 分别是 $p$ 阶、$q$ 阶方阵，$B$ 为 $p\times q$ 矩阵，则
 \[
  \det\begin{pmatrix}A&B\\0&D\end{pmatrix}=\det A\det D.
 \]
-同理，$\det\begin{pmatrix}A&0\\C&D\end{pmatrix}=\det A\det D$。
+同理，对于下分块三角形矩阵，有 $\det\begin{pmatrix}A&0\\C&D\end{pmatrix}=\det A\det D$。
 \end{proposition}
 \begin{proof}
-按前 $p$ 列展开。这些列在后 $q$ 行全为零，因此只有选取前 $p$ 行时子式才可能非零。
-该项的符号为 $(-1)^{2(1+\cdots+p)}=1$，子式为 $\det A$，余子式为 $\det D$。
-下分块三角的情形由转置得到。
+对上分块三角形矩阵按前 $p$ 列作拉普拉斯展开。由于这 $p$ 列在后 $q$ 行全部为零，只要所选的行指标集 $I$ 含有后 $q$ 行中的任一行，对应的 $p$ 阶子式就有零行，从而为零。因此只有选取前 $p$ 行 $I=\{1,\ldots,p\}$ 的一项可能非零；该项的符号因子为 $(-1)^{2(1+\cdots+p)}=1$，子式为 $\det A$，余子式为 $\det D$，故整个行列式等于 $\det A\det D$。下分块三角形情形对转置矩阵应用同一结论即得。
 \end{proof}
 
-这里要求对角块是方阵，但不要求它们可逆。一般的分块矩阵不能直接套用下面的二阶形式：
+该公式要求对角块 $A,D$ 均为方阵，但并不要求它们可逆。同时需要注意，一般分块矩阵的行列式不能照搬二阶行列式的形式写作
 \[
  \det\begin{pmatrix}A&B\\C&D\end{pmatrix}
  =\det A\det D-\det B\det C.
 \]
-例如四个块均为 $2\times2$ 矩阵，取 $A=D=0$、$B=C=I_2$。
-整体矩阵对应两次对换，行列式为 $1$，而右端为 $-1$。
+例如四个子块均为 $2\times2$ 矩阵，取 $A=D=0$、$B=C=I_2$ 时，整体四阶矩阵可通过两次行交换化为单位矩阵，其行列式为 $1$，而右端算出的结果却是 $-1$。
 
 \subsection{一个四阶行列式}
+
+下面再看一个利用拉普拉斯展开直接化简的四阶行列式恒等式。
 
 \begin{example}
 从矩阵 $\begin{pmatrix}a_1&b_1&c_1\\a_2&b_2&c_2\end{pmatrix}$ 中分别删去第 $1,2,3$ 列，
@@ -288,20 +274,18 @@ $r$ 阶行列式 $\det A[I,J]$ 称为一个 $r$ 阶\textbf{子式}。
 \]
 \end{example}
 \begin{proof}
-按前两行展开。含第四列的二阶子式均为零；选取第 $2,3$ 列时，余子式有一列为零。
-故六种列选择中只有 $\{1,2\}$、$\{1,3\}$ 两项可能非零，分别为
+将 $H$ 按前两行作拉普拉斯展开。在全部 $\binom42=6$ 种两列选法中，凡包含第四列的二阶子式均有零列而为零；若选取第 $2,3$ 列，则删去前两行与第 $2,3$ 列后余子式的第一列全为零，同样为零。因此只有列集 $\{1,2\}$ 与 $\{1,3\}$ 对应的两项可能非零，它们的值分别为
 \[
  (-1)^{1+2+1+2}CA=CA,\qquad
  (-1)^{1+2+1+3}BB=-B^2.
 \]
-相加即得 $H=AC-B^2$。此处 $A,B,C$ 均是二阶行列式的值，即三个数。
+将两项相加即得 $H=AC-B^2$（这里 $A,B,C$ 均为二阶行列式的值，是三个数）。
 \end{proof}
 
 \section{代数余子式与三维叉积}
 
-设 $\boldsymbol\alpha=(a_{11},a_{21},a_{31})^{\mathsf T}$、
-$\boldsymbol\beta=(a_{12},a_{22},a_{32})^{\mathsf T}$ 为 $\mathbb R^3$ 中的向量。
-把它们作为前两列，第三列记为 $\boldsymbol x=(x,y,z)^{\mathsf T}$。按第三列展开：
+除了用于计算特殊结构的行列式，按列展开还清晰地揭示了三维空间向量叉积的代数由来。设 $\boldsymbol\alpha=(a_{11},a_{21},a_{31})^{\mathsf T}$、
+$\boldsymbol\beta=(a_{12},a_{22},a_{32})^{\mathsf T}$ 为 $\mathbb R^3$ 中的两个向量。将它们作为三阶矩阵的前两列，第三列取为任意向量 $\boldsymbol x=(x,y,z)^{\mathsf T}$，并沿第三列展开：
 \begin{align*}
  \det(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol x)
  &=\begin{vmatrix}a_{11}&a_{12}&x\\a_{21}&a_{22}&y\\a_{31}&a_{32}&z\end{vmatrix}\\
@@ -309,7 +293,7 @@ $\boldsymbol\beta=(a_{12},a_{22},a_{32})^{\mathsf T}$ 为 $\mathbb R^3$ 中的�
  -y\begin{vmatrix}a_{11}&a_{12}\\a_{31}&a_{32}\end{vmatrix}
  +z\begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix}.
 \end{align*}
-因此，若令
+如果将第三列三个位置的代数余子式依次排成一个三维向量
 \[
  \boldsymbol\gamma=
  \begin{pmatrix}
@@ -318,60 +302,50 @@ $\boldsymbol\beta=(a_{12},a_{22},a_{32})^{\mathsf T}$ 为 $\mathbb R^3$ 中的�
  a_{11}a_{22}-a_{21}a_{12}
  \end{pmatrix},
 \]
-就有
+那么上述展开式恰好可以写作点积形式：
 \[
  \det(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol x)
  =\boldsymbol\gamma\cdot\boldsymbol x.
 \]
-取 $\boldsymbol x=\boldsymbol\alpha$ 或 $\boldsymbol\beta$，左侧都有两列相同，因而
+特别地，分别取 $\boldsymbol x=\boldsymbol\alpha$ 与 $\boldsymbol x=\boldsymbol\beta$，左侧行列式均因存在两列相同而为零，从而立即有
 \[
  \boldsymbol\gamma\cdot\boldsymbol\alpha=0,
  \qquad \boldsymbol\gamma\cdot\boldsymbol\beta=0.
 \]
-这解释了为什么由这三个代数余子式组成的向量，同时与原来的两个向量正交。
+这就从行列式的角度直接解释了为什么由这三个代数余子式构成的向量同时与 $\boldsymbol\alpha,\boldsymbol\beta$ 正交。
 
 \begin{definition}
 上述向量 $\boldsymbol\gamma$ 称为 $\boldsymbol\alpha$ 与 $\boldsymbol\beta$ 的\textbf{叉积}，记为
 $\boldsymbol\alpha\times\boldsymbol\beta$。
 \end{definition}
 
-例如
+例如，按定义计算可得
 \[
  (1,0,0)^{\mathsf T}\times(0,1,0)^{\mathsf T}=(0,0,1)^{\mathsf T}.
 \]
-这里称 $\boldsymbol\alpha,\boldsymbol\beta$ \textbf{线性相关}，是指存在不全为零的实数 $s,t$，
-使 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$；若只有 $s=t=0$ 才能使等式成立，则称为\textbf{线性无关}。
+下面讨论叉积何时为零向量。称向量 $\boldsymbol\alpha,\boldsymbol\beta$ \textbf{线性相关}，是指存在不全为零的实数 $s,t$ 使得 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$；若仅有 $s=t=0$ 才能使该等式成立，则称它们\textbf{线性无关}。
 
 \begin{proposition}
 $\boldsymbol\alpha\times\boldsymbol\beta=\boldsymbol0$ 当且仅当 $\boldsymbol\alpha,\boldsymbol\beta$ 线性相关。
 \end{proposition}
 \begin{proof}
-若 $\boldsymbol\alpha=\boldsymbol0$，则叉积为零，且取 $(s,t)=(1,0)$ 即得一组不全为零的关系式系数。
-以下设 $\boldsymbol\alpha\ne\boldsymbol0$。
+若 $\boldsymbol\alpha=\boldsymbol0$，则由坐标公式显然有 $\boldsymbol\alpha\times\boldsymbol\beta=\boldsymbol0$，同时取 $(s,t)=(1,0)$ 即得不全为零的系数使 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$，结论两边均成立。以下假定 $\boldsymbol\alpha\ne\boldsymbol0$。
 
-若两向量线性相关，取一组不全为零的 $s,t$ 使关系式成立。
-必有 $t\ne0$，否则 $s\boldsymbol\alpha=\boldsymbol0$ 会迫使 $s=0$。
-于是 $\boldsymbol\beta=-(s/t)\boldsymbol\alpha$。
-代入各二阶子式可知它们都为零，故叉积为零。
+先证充分性。设 $\boldsymbol\alpha,\boldsymbol\beta$ 线性相关，取不全为零的实数 $s,t$ 使 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$。此时必有 $t\ne0$，否则由 $s\boldsymbol\alpha=\boldsymbol0$ 且 $\boldsymbol\alpha\ne\boldsymbol0$ 将推出 $s=0$，产生矛盾。于是 $\boldsymbol\beta=-(s/t)\boldsymbol\alpha$，代入构成叉积分量的三个二阶子式，可知它们均因两列成比例而为零，故 $\boldsymbol\alpha\times\boldsymbol\beta=\boldsymbol0$。
 
-反过来，若叉积为零，由于它的三个坐标分别是三个二阶子式或其相反数，这些二阶子式均为零。
-取 $\boldsymbol\alpha$ 的一个非零分量 $a_{p1}$，则对每个 $q=1,2,3$，有
+再证必要性。设 $\boldsymbol\alpha\times\boldsymbol\beta=\boldsymbol0$，则其三个坐标所对应的三个二阶子式全部为零。因为 $\boldsymbol\alpha\ne\boldsymbol0$，可取其一个非零分量 $a_{p1}$；对每个 $q=1,2,3$，由相应二阶子式为零（当 $q=p$ 时等式显然成立）均有
 \[
  a_{p1}a_{q2}-a_{q1}a_{p2}=0,
- \qquad a_{q2}=\frac{a_{p2}}{a_{p1}}a_{q1}.
+ \qquad \text{即}\quad a_{q2}=\frac{a_{p2}}{a_{p1}}a_{q1}.
 \]
-因此 $\boldsymbol\beta=(a_{p2}/a_{p1})\boldsymbol\alpha$，
-取 $(s,t)=(-a_{p2}/a_{p1},1)$ 即得一组不全为零的关系式系数，所以两向量线性相关。
+这说明 $\boldsymbol\beta=(a_{p2}/a_{p1})\boldsymbol\alpha$，于是取 $(s,t)=(-a_{p2}/a_{p1},1)$ 即满足 $s\boldsymbol\alpha+t\boldsymbol\beta=\boldsymbol0$，从而 $\boldsymbol\alpha,\boldsymbol\beta$ 线性相关。
 \end{proof}
-线性无关的两向量具有非零叉积，它给出所张平面的一个法向量。
-线性相关时叉积为零向量，不能用来指定法向方向。
-交换两向量，相当于交换行列式的前两列，故
+
+由此可见，线性无关的两个向量具有非零叉积，能够给出它们所张平面的一个法向量；而线性相关时叉积退化为零向量，不再确定法向方向。此外，交换 $\boldsymbol\alpha$ 与 $\boldsymbol\beta$ 相当于交换行列式的前两列，因而对任意 $\boldsymbol x\in\mathbb R^3$ 有
 \[
  (\boldsymbol\beta\times\boldsymbol\alpha)\cdot\boldsymbol x
  =-(\boldsymbol\alpha\times\boldsymbol\beta)\cdot\boldsymbol x.
 \]
-分别取 $\boldsymbol x=\boldsymbol e_1,\boldsymbol e_2,\boldsymbol e_3$，就得到三个坐标均变号，
-即 $\boldsymbol\beta\times\boldsymbol\alpha=-\boldsymbol\alpha\times\boldsymbol\beta$。
-所以叉积的三个坐标并非另行记忆的一组公式，它们就是第三列的代数余子式，符号依次为 $+,-,+$。
+依次取 $\boldsymbol x=\boldsymbol e_1,\boldsymbol e_2,\boldsymbol e_3$，便得出三个坐标全部变号，即 $\boldsymbol\beta\times\boldsymbol\alpha=-\boldsymbol\alpha\times\boldsymbol\beta$。从这一推导可以看出，叉积的坐标公式并非需要孤立记忆的规则，它本质上就是三阶行列式第三列的代数余子式，其符号依次为 $+,-,+$。
 
 \end{document}

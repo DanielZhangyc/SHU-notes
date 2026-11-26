@@ -66,14 +66,11 @@
 
 \section{线性相关与线性无关}
 
-以下 $P$ 为数域，所讨论的向量均属于 $P^n$，其中 $n\ge1$。
-若存在 $c_1,\ldots,c_s\in P$，使
+以下设 $P$ 为数域，所讨论的向量均属于 $P^n$，其中 $n\ge1$。若存在 $c_1,\ldots,c_s\in P$，使
 \[
  \vb=c_1\va_1+\cdots+c_s\va_s,
 \]
-则称 $\vb$ 可由向量组 $\va_1,\ldots,\va_s$ 线性表出。
-特别地，取所有系数为零，总能得到零向量。线性相关性研究的是：
-能否用一组不全为零的系数得到零向量。
+则称 $\vb$ 可由向量组 $\va_1,\ldots,\va_s$ 线性表出。取所有系数为零时，任何向量组都能表出零向量。线性相关性讨论的是，除此之外能否用一组不全为零的系数也得到零向量；如果可以，就说明组内向量之间存在非平凡的线性关系。
 
 \begin{definition}
 设 $s\ge1$。若存在不全为零的 $c_1,\ldots,c_s\in P$，使
@@ -81,67 +78,64 @@
  c_1\va_1+\cdots+c_s\va_s=\vo,
 \]
 则称向量组 $\va_1,\ldots,\va_s$ \textbf{线性相关}；否则称它\textbf{线性无关}。
-因此，$\va_1,\ldots,\va_s$ 线性无关，当且仅当
+换言之，$\va_1,\ldots,\va_s$ 线性无关，当且仅当
 \[
  c_1\va_1+\cdots+c_s\va_s=\vo
  \quad\Longrightarrow\quad c_1=\cdots=c_s=0.
 \]
 \end{definition}
 
+由定义可以直接得到关于零向量、两个向量以及子组与整体之间关系的几条基本性质。
+
 \begin{proposition}
 含有零向量的向量组线性相关；单个向量 $\va$ 组成的向量组线性无关，当且仅当 $\va\ne\vo$。
 \end{proposition}
 \begin{proof}
-若组中第 $i$ 个向量为零，取 $c_i=1$，其余系数为零，就得到系数不全为零的零线性组合，
-故该组线性相关。
+若向量组中第 $i$ 个向量为零向量，则取 $c_i=1$、其余系数皆为零，即可得到一个系数不全为零的零线性组合，因而该向量组线性相关。
 
-若 $\va\ne\vo$，则它至少有一个分量 $a_j\ne0$。由 $c\va=\vo$ 得 $ca_j=0$，
-从而 $c=0$，故单个向量 $\va$ 线性无关。若 $\va=\vo$，由前一结论知它线性相关。
+对于单个向量 $\va$，若 $\va\ne\vo$，则它至少有一个非零分量 $a_j\ne0$。此时由 $c\va=\vo$ 推出 $ca_j=0$，从而 $c=0$，故 $\va$ 线性无关；反之，若 $\va=\vo$，由前一结论知它线性相关。
 \end{proof}
 
 \begin{proposition}
 两个向量 $\va,\vb$ 线性相关，当且仅当其中一个是另一个的数倍。
 \end{proposition}
 \begin{proof}
-若 $\va,\vb$ 线性相关，则存在不全为零的 $\lambda,\mu\in P$，使
-$\lambda\va+\mu\vb=\vo$。若 $\lambda\ne0$，则
-$\va=-(\mu/\lambda)\vb$；若 $\lambda=0$，则 $\mu\ne0$，从而
-$\vb=-(\lambda/\mu)\va$。
+若 $\va,\vb$ 线性相关，则存在不全为零的 $\lambda,\mu\in P$，使 $\lambda\va+\mu\vb=\vo$。若 $\lambda\ne0$，则有 $\va=-(\mu/\lambda)\vb$；若 $\lambda=0$，则必有 $\mu\ne0$，从而 $\vb=-(\lambda/\mu)\va$。
 
-反之，若 $\va=c\vb$，则 $\va-c\vb=\vo$，其中 $\va$ 的系数为 $1$，故两向量相关。
-若 $\vb=c\va$，同理可证。
+反之，若 $\va=c\vb$，则 $\va-c\vb=\vo$ 中 $\va$ 的系数为 $1$，不全为零，故两向量线性相关；若 $\vb=c\va$，同理可证。
 \end{proof}
-当一个向量为零、另一个非零时，只有零向量能由另一个向量线性表出，
-因此命题中的“其中一个”不能固定为某一个。
+
+需要注意，当一个向量为零向量而另一个非零时，只有零向量能够写成另一个向量的数倍，因此命题中的“其中一个”不能预先固定为某一个。
 
 \begin{proposition}
-线性无关向量组的任意非空子组仍线性无关；一个向量组若含有线性相关的子组，则它线性相关。
+线性无关向量组的任意非空子组仍线性无关；一个向量组若含有线性相关的子组，则它自身也线性相关。
 \end{proposition}
 \begin{proof}
-若子组存在系数不全为零的零线性组合，给其余向量补上系数 $0$，
-就得到整个向量组的一个系数不全为零的零线性组合。因此，相关子组所在的大组也相关。
-取逆否命题，即得无关组的任意非空子组无关。
+若某个子组存在系数不全为零的零线性组合，则给其余向量补上系数 $0$ 后，便得到整个向量组的一个系数不全为零的零线性组合。由此可知，含有线性相关子组的向量组必线性相关。对这一结论取逆否命题，即得线性无关向量组的任意非空子组仍线性无关。
 \end{proof}
 
+两个向量线性相关等价于其中一个是另一个的数倍；将这一观察推广到一般情形，便得到线性相关性的线性表示刻画。
+
 \begin{theorem}\label{th:representation}
-设 $s\ge2$。向量组 $\va_1,\ldots,\va_s$ 线性相关，当且仅当其中某个向量
-可由其余向量线性表出。
+设 $s\ge2$。向量组 $\va_1,\ldots,\va_s$ 线性相关，当且仅当其中某个向量可由其余向量线性表出。
 \end{theorem}
 \begin{proof}
-若 $\sum_{j=1}^s c_j\va_j=\vo$，且系数不全为零，选取 $c_i\ne0$，则
+若 $\sum_{j=1}^s c_j\va_j=\vo$ 且系数不全为零，则可选取某个非零系数 $c_i\ne0$，移项并除以 $c_i$ 得
 \[
- \va_i=-\sum_{j\ne i}\frac{c_j}{c_i}\va_j.
+ \va_i=-\sum_{j\ne i}\frac{c_j}{c_i}\va_j,
 \]
-因此 $\va_i$ 可由其余向量线性表出。
+这表明 $\va_i$ 可由其余向量线性表出。
 
-反之，若 $\va_i=\sum_{j\ne i}d_j\va_j$，则
+反之，若存在 $\va_i=\sum_{j\ne i}d_j\va_j$，则移项有
 \[
  -\va_i+\sum_{j\ne i}d_j\va_j=\vo.
 \]
-其中 $\va_i$ 的系数为 $-1$，故原向量组线性相关。
+由于其中 $\va_i$ 的系数为 $-1\ne0$，原向量组线性相关。
 \end{proof}
 
 \section{线性相关性的例题}
+
+下面通过几类典型向量组，说明如何依据定义和齐次线性方程组来判定线性相关性。
 
 \begin{example}
 证明 $P^n$ 中的标准单位向量
@@ -153,12 +147,14 @@ $\vb=-(\lambda/\mu)\va$。
 线性无关。
 \end{example}
 \begin{proof}[解]
-设 $c_1\boldsymbol e_1+\cdots+c_n\boldsymbol e_n=\vo$，则
+设 $c_1\boldsymbol e_1+\cdots+c_n\boldsymbol e_n=\vo$，将左端合并为单个向量即得
 \[
  (c_1,\ldots,c_n)^{\mathsf T}=\vo,
 \]
-故 $c_1=\cdots=c_n=0$。由定义，标准单位向量组线性无关。
+从而 $c_1=\cdots=c_n=0$。由定义可知，标准单位向量组线性无关。
 \end{proof}
+
+对于一般的具体向量组，按定义写出零线性组合并按分量展开后，判定线性相关性便归结为考察相应的齐次线性方程组是否存在非零解。
 
 \begin{example}\label{ex:three}
 判断下列向量组的线性相关性：
@@ -169,7 +165,7 @@ $\vb=-(\lambda/\mu)\va$。
 \]
 \end{example}
 \begin{proof}[解]
-令 $c_1\va_1+c_2\va_2+c_3\va_3=\vo$，按分量展开得
+令 $c_1\va_1+c_2\va_2+c_3\va_3=\vo$，按分量展开得齐次方程组
 \[
  \begin{cases}
  2c_1+2c_2+4c_3=0,\\
@@ -178,14 +174,14 @@ $\vb=-(\lambda/\mu)\va$。
  -c_1+c_2+4c_3=0.
  \end{cases}
 \]
-第四式减去第二式得 $2c_2+6c_3=0$，故 $c_2=-3c_3$。
-代入第二式得 $c_1=c_3$。取 $c_3=1$，得到 $(c_1,c_2,c_3)=(1,-3,1)$，
-它也满足第一、三式。因此
+第四式减去第二式得 $2c_2+6c_3=0$，即 $c_2=-3c_3$；将其代入第二式得 $c_1=c_3$。取 $c_3=1$，得到 $(c_1,c_2,c_3)=(1,-3,1)$，直接检验可知它同样满足第一、三式。于是
 \[
  \va_1-3\va_2+\va_3=\vo,
 \]
-而系数不全为零，故三个向量线性相关。
+系数不全为零，故这三个向量线性相关。
 \end{proof}
+
+若已知原向量组线性无关，还可以通过合并同类项，把新向量组的线性相关性化归为原向量组系数的齐次方程组。
 
 \begin{example}
 设 $\va_1,\va_2,\va_3$ 线性无关。证明：
@@ -199,77 +195,70 @@ $\vb=-(\lambda/\mu)\va$。
 \[
  c_1(\va_1+\va_2)+c_2(\va_2+\va_3)+c_3(\va_3+\va_1)=\vo.
 \]
-展开并按 $\va_1,\va_2,\va_3$ 合并，得到
+展开并按 $\va_1,\va_2,\va_3$ 合并系数，得到
 \[
  (c_1+c_3)\va_1+(c_1+c_2)\va_2+(c_2+c_3)\va_3=\vo.
 \]
-由原向量组无关，得
+因为 $\va_1,\va_2,\va_3$ 线性无关，各项系数必全为零，即
 \[
  c_1+c_3=0,\qquad c_1+c_2=0,\qquad c_2+c_3=0.
 \]
-前两式给出 $c_2=c_3=-c_1$，代入第三式得 $-2c_1=0$，故 $c_1=c_2=c_3=0$。
-因此第一组线性无关。
+由前两式得 $c_2=c_3=-c_1$，代入第三式有 $-2c_1=0$，从而 $c_1=c_2=c_3=0$。因此第一组线性无关。
 
-对于第二组，有
+对于第二组，直接将三个向量相加即有
 \[
- (\va_1-\va_2)+(\va_2-\va_3)+(\va_3-\va_1)=\vo.
+ (\va_1-\va_2)+(\va_2-\va_3)+(\va_3-\va_1)=\vo,
 \]
-系数 $(1,1,1)$ 不全为零，故第二组线性相关。
+其系数 $(1,1,1)$ 不全为零，故第二组线性相关。
 \end{proof}
 
 \section{等价向量组}
 
+把“单个向量可由向量组线性表出”的关系推广到两个向量组之间，就可以比较不同向量组的表示能力，从而引入向量组等价的概念。
+
 \begin{definition}
-设 $\mathcal A=(\va_1,\ldots,\va_s)$、$\mathcal B=(\vb_1,\ldots,\vb_t)$
-是两个向量组。若每个 $\va_i$ 均可由 $\mathcal B$ 线性表出，则称
-$\mathcal A$ 可由 $\mathcal B$ 线性表出。
-若 $\mathcal A$ 与 $\mathcal B$ 可以互相线性表出，则称它们\textbf{等价}，记为
-$\mathcal A\sim\mathcal B$。
+设 $\mathcal A=(\va_1,\ldots,\va_s)$ 与 $\mathcal B=(\vb_1,\ldots,\vb_t)$ 是两个向量组。若 $\mathcal A$ 中的每个向量 $\va_i$ 均可由 $\mathcal B$ 线性表出，则称 $\mathcal A$ 可由 $\mathcal B$ 线性表出。若 $\mathcal A$ 与 $\mathcal B$ 可以互相线性表出，则称它们\textbf{等价}，记作 $\mathcal A\sim\mathcal B$。
 \end{definition}
-等价向量组所含向量个数可以不同。例如
-$(\va_1,\va_2)$ 与 $(\va_1,\va_2,\va_1+\va_2)$ 等价。
+
+等价向量组所含的向量个数可以不同，例如 $(\va_1,\va_2)$ 与 $(\va_1,\va_2,\va_1+\va_2)$ 互相等价。这一关系满足一般等价关系的全部三条基本性质。
 
 \begin{proposition}
 向量组的等价关系具有自反性、对称性和传递性。
 \end{proposition}
 \begin{proof}
-\textbf{自反性：}每个向量都可由它所在的向量组线性表出，故 $\mathcal A\sim\mathcal A$。
+\textbf{自反性：}向量组中的每个向量都能以系数 $1$ 由它所在的向量组自身表出，故 $\mathcal A\sim\mathcal A$。
 
-\textbf{对称性：}若 $\mathcal A\sim\mathcal B$，则双方可以互相线性表出，
-故 $\mathcal B\sim\mathcal A$。
+\textbf{对称性：}若 $\mathcal A\sim\mathcal B$，则 $\mathcal A$ 与 $\mathcal B$ 可以互相线性表出，因此 $\mathcal B\sim\mathcal A$。
 
-\textbf{传递性：}设 $\mathcal A\sim\mathcal B$、$\mathcal B\sim\mathcal C$，
-其中 $\mathcal C=(\vg_1,\ldots,\vg_u)$。由线性表示的定义，可写成
+\textbf{传递性：}设 $\mathcal A\sim\mathcal B$ 且 $\mathcal B\sim\mathcal C$，其中 $\mathcal C=(\vg_1,\ldots,\vg_u)$。由线性表示的定义，存在系数 $c_{ij},d_{jk}\in P$ 使得
 \[
  \va_i=\sum_{j=1}^{t}c_{ij}\vb_j,\qquad
  \vb_j=\sum_{k=1}^{u}d_{jk}\vg_k.
 \]
-代入并交换有限求和次序，得到
+将后式代入前式并交换有限求和次序，得到
 \[
- \va_i=\sum_{k=1}^{u}\left(\sum_{j=1}^{t}c_{ij}d_{jk}\right)\vg_k.
+ \va_i=\sum_{k=1}^{u}\left(\sum_{j=1}^{t}c_{ij}d_{jk}\right)\vg_k,
 \]
-因此 $\mathcal A$ 可由 $\mathcal C$ 表出。同理，由 $\mathcal C$ 可由 $\mathcal B$ 表出、
-$\mathcal B$ 可由 $\mathcal A$ 表出，得 $\mathcal C$ 可由 $\mathcal A$ 表出。
-故 $\mathcal A\sim\mathcal C$。
+故 $\mathcal A$ 可由 $\mathcal C$ 线性表出。同理，由 $\mathcal C$ 可由 $\mathcal B$ 表出以及 $\mathcal B$ 可由 $\mathcal A$ 表出，可得 $\mathcal C$ 可由 $\mathcal A$ 线性表出，从而 $\mathcal A\sim\mathcal C$。
 \end{proof}
 
 \section{齐次方程组与向量个数的比较}
+
+虽然一般等价向量组的向量个数可以不同，但若两个等价向量组都是线性无关的，它们的向量个数就必然相等。为了建立这一关键结论，先从齐次线性方程组的一个基本存在性定理出发。
 
 \begin{theorem}\label{th:homogeneous}
 数域 $P$ 上的齐次线性方程组若方程个数 $m$ 小于未知量个数 $n$，则必有非零解。
 \end{theorem}
 \begin{proof}
-对方程个数 $m$ 作归纳，证明结论对每个 $n>m$ 成立。
-当 $m=0$ 时，未知量没有约束，取 $x_1=1$，其余未知量为零，即得非零解。
+对方程个数 $m$ 施归纳，证明结论对一切满足 $n>m$ 的正整数 $n$ 成立。当 $m=0$ 时，未知量不受任何方程约束，取 $x_1=1$、其余未知量全为零，便得到一个非零解。
 
-设结论对 $m-1$ 个方程成立，考虑 $m$ 个方程、$n>m$ 个未知量的齐次方程组
+假设结论对 $m-1$ 个方程成立，下面考虑 $m$ 个方程、$n>m$ 个未知量的齐次线性方程组
 \[
  \sum_{j=1}^{n}a_{ij}x_j=0\qquad(i=1,\ldots,m).
 \]
-若第一列系数全为零，取 $x_1=1$、$x_2=\cdots=x_n=0$，即得非零解。
+若第一列系数全为零，则取 $x_1=1$、$x_2=\cdots=x_n=0$，即得原方程组的非零解。
 
-若第一列有非零系数，交换方程次序可设 $a_{11}\ne0$。
-将第一式除以 $a_{11}$，再用第一式消去其余各式中的 $x_1$，得到同解方程组
+若第一列含有非零系数，交换方程次序可不妨设 $a_{11}\ne0$。将第一式除以 $a_{11}$，再用第一式消去其余各式中的 $x_1$，得到同解方程组
 \[
  \begin{cases}
  x_1+a'_{12}x_2+\cdots+a'_{1n}x_n=0,\\
@@ -278,138 +267,129 @@ $\mathcal B$ 可由 $\mathcal A$ 表出，得 $\mathcal C$ 可由 $\mathcal A$ �
  a'_{m2}x_2+\cdots+a'_{mn}x_n=0.
  \end{cases}
 \]
-后 $m-1$ 个方程有 $n-1$ 个未知量，且 $m-1<n-1$。
-由归纳假设，存在不全为零的 $x_2,\ldots,x_n$ 满足这些方程。
-再取
+其中后 $m-1$ 个方程只含 $n-1$ 个未知量 $x_2,\ldots,x_n$，且仍满足 $m-1<n-1$。由归纳假设，存在不全为零的 $x_2,\ldots,x_n$ 满足这 $m-1$ 个方程。由此令
 \[
  x_1=-a'_{12}x_2-\cdots-a'_{1n}x_n,
 \]
-即满足第一式。所得 $n$ 个分量不全为零，故为原方程组的非零解。归纳完成。
+则 $(x_1,x_2,\ldots,x_n)$ 同时满足第一式，且各分量不全为零，故为原方程组的非零解。由归纳法，定理得证。
 \end{proof}
 
+利用这一结果，可以立即比较两个存在线性表示关系的向量组所含向量的个数，这也就是“以少表多必相关”的基本定理。
+
 \begin{theorem}\label{th:count}
-若向量组 $\va_1,\ldots,\va_s$ 可由向量组 $\vb_1,\ldots,\vb_t$ 线性表出，且 $s>t$，
-则 $\va_1,\ldots,\va_s$ 线性相关。
+若向量组 $\va_1,\ldots,\va_s$ 可由向量组 $\vb_1,\ldots,\vb_t$ 线性表出，且 $s>t$，则 $\va_1,\ldots,\va_s$ 线性相关。
 \end{theorem}
 \begin{proof}
-设
+按题设写出线性表示式：
 \[
  \va_i=\sum_{j=1}^{t}a_{ji}\vb_j\qquad(i=1,\ldots,s).
 \]
-考虑关于 $c_1,\ldots,c_s$ 的齐次方程组
+为了寻找 $\va_1,\ldots,\va_s$ 的非平凡零线性组合，考虑关于未知量 $c_1,\ldots,c_s$ 的齐次线性方程组
 \[
  \sum_{i=1}^{s}a_{ji}c_i=0\qquad(j=1,\ldots,t).
 \]
-因为方程个数 $t$ 小于未知量个数 $s$，由定理\ref{th:homogeneous}，
-它有不全为零的解 $(c_1,\ldots,c_s)$。于是
+由于方程个数 $t$ 小于未知量个数 $s$，由定理\ref{th:homogeneous}，该方程组存在不全为零的解 $(c_1,\ldots,c_s)$。将这组解作为系数，代入线性组合并交换求和次序，即得
 \[
  \sum_{i=1}^{s}c_i\va_i
  =\sum_{i=1}^{s}c_i\sum_{j=1}^{t}a_{ji}\vb_j
  =\sum_{j=1}^{t}\left(\sum_{i=1}^{s}a_{ji}c_i\right)\vb_j=\vo.
 \]
-故 $\va_1,\ldots,\va_s$ 线性相关。
+因此 $\va_1,\ldots,\va_s$ 线性相关。
 \end{proof}
 
 \begin{proposition}\label{prop:independent-count}
-若 $s$ 个线性无关向量可由 $t$ 个向量线性表出，则 $s\le t$。
-两个等价的线性无关向量组含有相同个数的向量。
+若 $s$ 个线性无关的向量可由 $t$ 个向量线性表出，则 $s\le t$。特别地，两个等价的线性无关向量组含有相同个数的向量。
 \end{proposition}
 \begin{proof}
-第一个结论是定理\ref{th:count}的逆否命题。
-若两个等价的线性无关向量组分别含 $s$ 个和 $t$ 个向量，
-由双方可以互相表出，分别得到 $s\le t$ 和 $t\le s$，故 $s=t$。
+第一个结论正是定理\ref{th:count}的逆否命题。若两个等价的线性无关向量组分别含 $s$ 个与 $t$ 个向量，则由双方可以互相线性表出，分别得到 $s\le t$ 与 $t\le s$，从而 $s=t$。
 \end{proof}
+
+将定理\ref{th:count}应用于 $P^n$ 中的标准单位向量组，还可以直接确定 $P^n$ 中线性无关向量个数的上界。
 
 \begin{proposition}
 $P^n$ 中任意多于 $n$ 个向量组成的向量组线性相关。
 \end{proposition}
 \begin{proof}
-任意 $\va=(a_1,\ldots,a_n)^{\mathsf T}\in P^n$ 均可写成
-$\va=\sum_{j=1}^{n}a_j\boldsymbol e_j$。
-因此 $P^n$ 中的任意向量组都可由 $n$ 个标准单位向量表出。
-由定理\ref{th:count}，多于 $n$ 个向量的组必线性相关。
+任意向量 $\va=(a_1,\ldots,a_n)^{\mathsf T}\in P^n$ 都可表示为 $\va=\sum_{j=1}^{n}a_j\boldsymbol e_j$，因此 $P^n$ 中的任意向量组都可由 $n$ 个标准单位向量线性表出。由定理\ref{th:count}，只要向量个数多于 $n$，该向量组必线性相关。
 \end{proof}
 
 \section{极大线性无关组}
 
+对于一个含有非零向量的向量组，其中可能包含冗余向量。为了提取出既不含多余向量、又保留原组全部线性表示能力的核心子组，我们引入极大线性无关组的概念。
+
 \begin{definition}
-设向量组 $\mathcal A$ 至少含有一个非零向量。它的一个非空子组 $\mathcal B$
-称为 $\mathcal A$ 的\textbf{极大线性无关组}，若：
+设向量组 $\mathcal A$ 至少含有一个非零向量。它的一个非空子组 $\mathcal B$ 称为 $\mathcal A$ 的\textbf{极大线性无关组}，如果满足以下两个条件：
 \begin{enumerate}
  \item $\mathcal B$ 线性无关；
- \item 向 $\mathcal B$ 添加 $\mathcal A$ 中任何一个未选向量，所得组都线性相关。
+ \item 向 $\mathcal B$ 添加 $\mathcal A$ 中任何一个未选向量，所得向量组都线性相关。
 \end{enumerate}
 \end{definition}
+
+在实际论证中，直接按定义验证“添加任一未选向量都线性相关”往往不够方便；下面的等价刻画表明，这一条件恰恰对应于原组的所有向量都能由 $\mathcal B$ 线性表出。
 
 \begin{theorem}[极大无关组的等价刻画]\label{th:maximal}
 原向量组的一个非空子组是极大线性无关组，当且仅当它线性无关，且原组的每个向量都可由它线性表出。
 \end{theorem}
 \begin{proof}
-设 $\mathcal B=(\vb_1,\ldots,\vb_r)$ 为极大无关组。
-任取原组中未选的向量 $\va$，将它加入 $\mathcal B$ 后所得向量组线性相关。
-故存在不全为零的系数，使
+先证必要性。设 $\mathcal B=(\vb_1,\ldots,\vb_r)$ 为极大线性无关组，任取原组中未选的向量 $\va$。由定义，将 $\va$ 加入 $\mathcal B$ 后所得向量组线性相关，因而存在不全为零的系数 $c_1,\ldots,c_r,d\in P$，使得
 \[
  c_1\vb_1+\cdots+c_r\vb_r+d\va=\vo.
 \]
-若 $d=0$，由 $\mathcal B$ 无关得 $c_1=\cdots=c_r=0$，矛盾。
-故 $d\ne0$，从而
+若 $d=0$，则由 $\mathcal B$ 线性无关推出 $c_1=\cdots=c_r=0$，与系数不全为零矛盾。故必有 $d\ne0$，从而
 \[
  \va=-\frac{c_1}{d}\vb_1-\cdots-\frac{c_r}{d}\vb_r.
 \]
-$\mathcal B$ 中的向量当然也可由自身表出，所以原组的每个向量均可由 $\mathcal B$ 表出。
+又因为 $\mathcal B$ 自身的每个向量显然可由 $\mathcal B$ 表出，所以原组的每个向量都可由 $\mathcal B$ 线性表出。
 
-反之，设 $\mathcal B$ 无关且能表出原组的每个向量。添加任一未选向量 $\va$ 后，
-由 $\va$ 可由 $\mathcal B$ 表出及定理\ref{th:representation}，所得组相关。
-因此 $\mathcal B$ 是极大无关组。
+再证充分性。设 $\mathcal B$ 线性无关且能表出原组的每个向量。向 $\mathcal B$ 添加原组中任一未选向量 $\va$ 后，由于 $\va$ 可由 $\mathcal B$ 线性表出，根据定理\ref{th:representation}，所得向量组线性相关。因此 $\mathcal B$ 是极大线性无关组。
 \end{proof}
+
+借助这一等价刻画，可以通过逐步扩充线性无关子组的方法，证明有限非零向量组必定存在极大线性无关组。
 
 \begin{theorem}[存在性]
 有限向量组只要含有非零向量，就存在极大线性无关组。
 \end{theorem}
 \begin{proof}
-先选取一个非零向量，它单独组成线性无关组。
-若原组每个向量均可由已选组表出，则由定理\ref{th:maximal}，已选组就是极大无关组。
-否则选取一个不能由已选组表出的向量并加入。
+从原向量组中任取一个非零向量，它单独构成一个线性无关子组。若原组的每个向量都已能由当前已选子组线性表出，则由定理\ref{th:maximal}，该子组即是极大线性无关组；否则，从原组中选取一个不能由已选子组线性表出的向量并加入其中。
 
-加入后的组仍无关：若它相关，由已选组无关，零线性组合中新加入向量的系数必非零，
-从而该向量可由已选组表出，与选取条件矛盾。
-重复上述过程，每一步增加一个原组中的向量。由于原组有限，过程必在有限步后停止，
-停止时所得组无关且能表出原组的所有向量，因此是极大无关组。
+下面验证加入新向量后的子组仍然线性无关。如果新子组线性相关，那么在它的某个非平凡零线性组合中，新加入向量的系数必不为零（否则原已选子组就会线性相关，矛盾），由此便可将新加入的向量用原已选子组线性表出，与选取方式矛盾。
+
+重复上述扩充步骤，每一步都会增加一个原组中的向量。由于原向量组只含有限个向量，这一过程必在有限步后停止。停止时所得的子组既线性无关，又能线性表出原组的全部向量，因而是原向量组的一个极大线性无关组。
 \end{proof}
+
+一个向量组的极大线性无关组通常不唯一，但任意两个极大线性无关组在等价性与向量个数上完全一致。
 
 \begin{theorem}
 一个向量组的任意两个极大线性无关组都等价，且含有相同个数的向量。
 \end{theorem}
 \begin{proof}
-每个极大无关组都是原组的子组，又能表出原组中的每个向量，因此它与原组等价。
-由等价关系的传递性，任意两个极大无关组等价。
-它们又都线性无关，由命题\ref{prop:independent-count}，所含向量个数相同。
+任意极大线性无关组既是原向量组的子组，又能线性表出原向量组的全部向量，因此它与原向量组等价。由等价关系的传递性，原向量组的任意两个极大线性无关组彼此等价。又因为它们都线性无关，根据命题\ref{prop:independent-count}，二者所含的向量个数必相同。
 \end{proof}
+
+下面回到例\ref{ex:three}，求出该向量组的全部极大线性无关组。
 
 \begin{example}
 求例\ref{ex:three}中向量组的极大线性无关组。
 \end{example}
 \begin{proof}[解]
-由 $\va_1-3\va_2+\va_3=\vo$，三个向量线性相关。
-其中任意两个都不成比例：$\va_1,\va_2$ 的第一分量相同而第三分量不同；
-$\va_3$ 的第一分量是前两者的 $2$ 倍，但其第三分量既不是 $4$ 的 $2$ 倍，也不是 $3$ 的 $2$ 倍。
-因此任意两个都线性无关。
+由例\ref{ex:three}已有 $\va_1-3\va_2+\va_3=\vo$，故三个向量整体线性相关。另一方面，其中任意两个向量都不成比例：$\va_1$ 与 $\va_2$ 的第一分量相同而第三分量不同；$\va_3$ 的第一分量是 $\va_1$ 与 $\va_2$ 第一分量的 $2$ 倍，但其第三分量 $5$ 既不等于 $4$ 的 $2$ 倍，也不等于 $3$ 的 $2$ 倍。因此任意两个向量都线性无关。
 
-选取任意两个向量后，添加余下的向量都得到原来的相关组，故
+任取其中两个向量组成子组后，再添加余下的第三个向量都会还原为原来的相关组，故
 \[
  (\va_1,\va_2),\qquad(\va_1,\va_3),\qquad(\va_2,\va_3)
 \]
-均为极大线性无关组。
+都是原向量组的极大线性无关组。
 \end{proof}
 
 \section{向量组的秩}
 
+既然同一向量组的任意两个极大线性无关组都含有相同个数的向量，这个数目就只依赖于向量组本身，而与极大线性无关组的具体取法无关。由此可以给出向量组的秩的定义。
+
 \begin{definition}
-含有非零向量的向量组，其极大线性无关组所含向量的个数称为这个向量组的\textbf{秩}。
-全由零向量组成的向量组，其秩规定为 $0$。
+含有非零向量的向量组，其极大线性无关组所含向量的个数称为这个向量组的\textbf{秩}。全由零向量组成的向量组，其秩规定为 $0$。
 \end{definition}
-极大无关组可以不唯一，但它们含有相同个数的向量，故秩的定义与极大无关组的选择无关。
-例如例\ref{ex:three}中的向量组秩为 $2$。
+
+由前面的定理可知，尽管极大线性无关组可以不唯一，向量组的秩却是唯一确定的。例如，例\ref{ex:three}中的向量组秩为 $2$。向量组的线性相关性也可以直接用秩的大小来刻画。
 
 \begin{proposition}
 设 $\mathcal A$ 是含 $s\ge1$ 个向量的向量组，则
@@ -420,59 +400,52 @@ $\va_3$ 的第一分量是前两者的 $2$ 倍，但其第三分量既不是 $4$
 \]
 \end{proposition}
 \begin{proof}
-若 $\mathcal A$ 无关，则它本身就是极大无关组，故秩为 $s$。
-若秩为 $s$，则一个极大无关组含有原组全部 $s$ 个向量，故原组无关。
-由于极大无关组是原组的子组，其向量个数不超过 $s$，全零组的秩也小于 $s$。
-因此第二个等价关系由第一个等价关系取否定得到。
+若 $\mathcal A$ 线性无关，则它自身就是极大线性无关组，因此 $\operatorname{rank}\mathcal A=s$。反之，若 $\operatorname{rank}\mathcal A=s$，则 $\mathcal A$ 的一个极大线性无关组恰含原组的全部 $s$ 个向量，从而 $\mathcal A$ 线性无关。
+
+由于极大线性无关组总是原组的子组，其向量个数不超过 $s$，且全零向量组的秩 $0$ 也小于 $s$，故总有 $\operatorname{rank}\mathcal A\le s$。对前一个等价关系两边取否定，便得到第二个等价关系。
 \end{proof}
+
+进一步地，等价向量组虽然向量个数不必相同，但它们的秩一定相等。
 
 \begin{proposition}
 等价向量组的秩相同。
 \end{proposition}
 \begin{proof}
-设 $\mathcal A\sim\mathcal B$。若 $\mathcal A$ 全由零向量组成，则 $\mathcal B$ 中的每个向量
-可由零向量表出，故也全为零，双方秩均为 $0$。
+设 $\mathcal A\sim\mathcal B$。若 $\mathcal A$ 全由零向量组成，则 $\mathcal B$ 中的每个向量都可由零向量线性表出，因而也只能是零向量，此时两组的秩均为 $0$。
 
-若 $\mathcal A$ 含有非零向量，则 $\mathcal B$ 也含有非零向量。
-分别取双方的极大无关组 $\mathcal A'$、$\mathcal B'$，有
+若 $\mathcal A$ 含有非零向量，则由对称性可知 $\mathcal B$ 也必含有非零向量。分别取它们的极大线性无关组 $\mathcal A'$ 与 $\mathcal B'$，由等价关系的传递性得
 \[
  \mathcal A'\sim\mathcal A\sim\mathcal B\sim\mathcal B'.
 \]
-因此 $\mathcal A'$ 与 $\mathcal B'$ 是等价的线性无关向量组，所含向量个数相同，
-故 $\mathcal A$ 与 $\mathcal B$ 的秩相同。
+于是 $\mathcal A'$ 与 $\mathcal B'$ 是两个等价的线性无关向量组，所含向量个数相同，故 $\mathcal A$ 与 $\mathcal B$ 的秩相等。
 \end{proof}
+
+不过，这一命题的逆命题并不成立：秩相等只是向量组等价的必要条件，而非充分条件。
 
 \begin{example}
 说明两个秩相同的向量组未必等价。
 \end{example}
 \begin{proof}[解]
-在 $P^2$ 中，分别取单向量组
+在 $P^2$ 中分别取单向量组
 \[
  \mathcal A=\bigl((1,0)^{\mathsf T}\bigr),\qquad
  \mathcal B=\bigl((0,1)^{\mathsf T}\bigr).
 \]
-两个向量均非零，所以两组的秩都是 $1$。
-但 $(0,1)^{\mathsf T}$ 的任意数倍第一分量都为零，不可能等于 $(1,0)^{\mathsf T}$，
-故两组不等价。
+两个向量均非零，因而两组向量各自的秩都是 $1$。但 $(0,1)^{\mathsf T}$ 的任意数倍第一分量均为零，不可能等于 $(1,0)^{\mathsf T}$，故 $\mathcal A$ 与 $\mathcal B$ 并不等价。
 \end{proof}
 
 \section{课后作业}
 
 \subsection{习题 III 第13题：由单位向量的表示证明线性无关}
 
-设 $\va_1,\ldots,\va_n$ 是 $P^n$ 中的一组向量，已知标准单位向量
-$\boldsymbol e_1,\ldots,\boldsymbol e_n$ 都可以由它们线性表出。
-证明：$\va_1,\ldots,\va_n$ 线性无关。
+设 $\va_1,\ldots,\va_n$ 是 $P^n$ 中的一组向量，已知标准单位向量 $\boldsymbol e_1,\ldots,\boldsymbol e_n$ 都可以由它们线性表出。证明：$\va_1,\ldots,\va_n$ 线性无关。
 
 \begin{proof}
-一方面，由题设，$\boldsymbol e_1,\ldots,\boldsymbol e_n$ 可由 $\va_1,\ldots,\va_n$ 线性表出。
-另一方面，$P^n$ 中的任意向量都可以由标准单位向量组线性表出，因而每个 $\va_i$ 也可以。
-所以这两个向量组等价，具有相同的秩。
+一方面，由题设可知，标准单位向量组 $\boldsymbol e_1,\ldots,\boldsymbol e_n$ 可由 $\va_1,\ldots,\va_n$ 线性表出。另一方面，$P^n$ 中的任意向量都能由标准单位向量组线性表出，因此每个 $\va_i$ 也可由 $\boldsymbol e_1,\ldots,\boldsymbol e_n$ 线性表出。由此可得这两个向量组互相等价，从而具有相同的秩。
 
-标准单位向量组线性无关，所含向量个数为 $n$，故它的秩为 $n$。
-因此 $\va_1,\ldots,\va_n$ 的秩也是 $n$；它恰有 $n$ 个向量，由线性无关与秩的关系，
-这组向量线性无关。
+因为标准单位向量组线性无关且恰含 $n$ 个向量，其秩为 $n$，所以 $\va_1,\ldots,\va_n$ 的秩也为 $n$。又因为该向量组共有 $n$ 个向量，由线性无关与秩的关系即知 $\va_1,\ldots,\va_n$ 线性无关。
 \end{proof}
+
 本题题号按北大《高等代数》第六版标注。
 
 \end{document}

@@ -50,117 +50,112 @@
 \setcounter{theorem}{1}
 \section{收敛数列的性质}
 
-以下均设 $\{x_n\}$ 为实数列。若存在 $a\in\R$ 使
+建立数列极限的定义后，若每次求极限都直接回到 $\varepsilon$-$N$ 语言，过程往往较为繁琐。本节从定义出发，依次讨论收敛数列的唯一性、有界性、保号性、保序性、夹逼定理与四则运算法则，为后续的极限计算与判别提供工具。
+
+以下均设 $\{x_n\}$ 为实数列。若存在 $a\in\R$，使得
 \[
   \forall\varepsilon>0,\quad \exists N\in\Nplus,\quad
   \forall n>N,\quad |x_n-a|<\varepsilon,
 \]
-则记 $x_n\to a$。
+则称 $\{x_n\}$ 收敛于 $a$，记作 $x_n\to a$。
 
 \begin{theorem}[唯一性]
 若 $x_n\to a$ 且 $x_n\to b$，则 $a=b$。
 \end{theorem}
 \begin{proof}
-反设 $a\ne b$。取 $\varepsilon=|a-b|/3>0$。由 $x_n\to a$，存在
-$N_1$ 使 $n>N_1$ 时 $|x_n-a|<\varepsilon$；由 $x_n\to b$，存在
-$N_2$ 使 $n>N_2$ 时 $|x_n-b|<\varepsilon$。
-取 $n>\max\{N_1,N_2\}$，由三角不等式得
+反设 $a\ne b$，取 $\varepsilon=|a-b|/3>0$。由 $x_n\to a$ 与 $x_n\to b$，分别存在 $N_1,N_2\in\Nplus$，使得当 $n>N_1$ 时有 $|x_n-a|<\varepsilon$，当 $n>N_2$ 时有 $|x_n-b|<\varepsilon$。
+
+任取 $n>\max\{N_1,N_2\}$，此时上述两式同时成立。由三角不等式得
 \[
  |a-b|\le |a-x_n|+|x_n-b|<2\varepsilon
  =\frac23|a-b|,
 \]
-矛盾。因此 $a=b$。
+这与 $|a-b|>0$ 矛盾，因此 $a=b$。
 \end{proof}
+
+唯一性说明收敛数列只能趋近于一个确定的实数。进一步看，极限定义表明数列的尾部落在极限的任意邻域内，由此可以推出整个数列的有界性。
 
 \begin{theorem}[有界性]
 若 $x_n\to a$，则数列 $\{x_n\}$ 有界，即存在 $M>0$，使得对一切
 $n\in\Nplus$ 都有 $|x_n|\le M$。
 \end{theorem}
 \begin{proof}
-取 $\varepsilon=1$。由 $x_n\to a$，存在 $N\in\Nplus$，使 $n>N$ 时
-\[
- |x_n-a|<1.
-\]
-于是对 $n>N$，
+在极限定义中取 $\varepsilon=1$，则存在 $N\in\Nplus$，使当 $n>N$ 时有 $|x_n-a|<1$。由三角不等式，对所有 $n>N$ 均有
 \[
  |x_n|\le |x_n-a|+|a|<1+|a|.
 \]
-前 $N$ 项只有有限项，令
+
+而前 $N$ 项仅有有限多个，令
 \[
- M=\max\bigl\{|x_1|,\ldots,|x_N|,1+|a|\bigr\},
+ M=\max\bigl\{|x_1|,\ldots,|x_N|,1+|a|\bigr\}>0,
 \]
-则对所有 $n\in\Nplus$ 都有 $|x_n|\le M$，故数列有界。
+则对一切 $n\in\Nplus$ 都有 $|x_n|\le M$，故 $\{x_n\}$ 有界。
 \end{proof}
 
-\newpage
+有界性给出了数列整体的绝对值上界。如果进一步知道极限严格大于零或严格小于零，那么从某一项起，数列各项的符号也与极限保持一致。
+
 \begin{theorem}[保号性]
-若 $x_n\to a$ 且 $a>0$，则存在 $N\in\Nplus$，使 $n>N$ 时 $x_n>0$。
+若 $x_n\to a$ 且 $a>0$，则存在 $N\in\Nplus$，使 $n>N$ 时 $x_n>0$；
 若 $a<0$，则存在 $N\in\Nplus$，使 $n>N$ 时 $x_n<0$。
 \end{theorem}
 \begin{proof}
-先设 $a>0$。在极限定义中取 $\varepsilon=a/2$，则存在 $N$，使 $n>N$ 时
-\[
- |x_n-a|<\frac a2.
-\]
-因此
+先设 $a>0$。在极限定义中取 $\varepsilon=a/2>0$，则存在 $N\in\Nplus$，使当 $n>N$ 时有 $|x_n-a|<a/2$，从而
 \[
  x_n\ge a-|x_n-a|>a-\frac a2=\frac a2>0.
 \]
-若 $a<0$，取 $\varepsilon=|a|/2$，则
+
+若 $a<0$，则取 $\varepsilon=|a|/2>0$。存在 $N\in\Nplus$，使当 $n>N$ 时有 $|x_n-a|<|a|/2$，于是
 \[
- x_n\le a+|x_n-a|<a+\frac{|a|}{2}=\frac a2<0
+ x_n\le a+|x_n-a|<a+\frac{|a|}{2}=\frac a2<0.
 \]
-对充分大的 $n$ 成立。
+两种情形均得证。
 \end{proof}
 
 \subsection*{最终区间性质}
-保号性可推广为：若 $x_n\to a$，且 $b<a<c$，则存在 $N\in\Nplus$，使
+保号性的实质是，当数列收敛于 $a$ 时，从某一项起所有项都会落入以 $a$ 为中心的给定邻域。将这一结论推广到任意包含 $a$ 的开区间，便有如下性质：若 $x_n\to a$ 且 $b<a<c$，则存在 $N\in\Nplus$，使得
 \[
  n>N\quad\Longrightarrow\quad b<x_n<c.
 \]
-证明时取
-\[
- \varepsilon=\min\{a-b,c-a\}>0.
-\]
-当 $n>N$ 时，$|x_n-a|<\varepsilon$，于是
+证明时取 $\varepsilon=\min\{a-b,c-a\}>0$。由极限定义，存在 $N\in\Nplus$，使当 $n>N$ 时 $|x_n-a|<\varepsilon$，于是
 \[
  b\le a-\varepsilon<x_n<a+\varepsilon\le c.
 \]
 因此，收敛数列从某一项起始终落在任意包含其极限的开区间内。
 
-\newpage
 \subsection*{极限与大小关系}
-若 $x_n\to a$、$y_n\to b$ 且 $a<b$，则充分大的 $n$ 都有 $x_n<y_n$。
-事实上，取 $\varepsilon=(b-a)/3$，当 $n$ 充分大时，
+将上述思路用于两个收敛数列，便可建立数列各项与极限之间的大小关系。若 $x_n\to a$、$y_n\to b$ 且 $a<b$，则对充分大的 $n$ 必有 $x_n<y_n$。事实上，取 $\varepsilon=(b-a)/3>0$，当 $n$ 充分大时同时有 $|x_n-a|<\varepsilon$ 与 $|y_n-b|<\varepsilon$，于是
 \[
  x_n<a+\varepsilon<b-\varepsilon<y_n.
 \]
 
+由此反过来可以得到极限的保序性。
+
 \begin{theorem}[保序性]
-设 $x_n\to a$、$y_n\to b$，且存在 $N_0$，使 $n>N_0$ 时
+设 $x_n\to a$、$y_n\to b$，且存在 $N_0\in\Nplus$，使当 $n>N_0$ 时
 $x_n\le y_n$，则 $a\le b$。
 \end{theorem}
 \begin{proof}
-若 $a>b$，由上面的结论，充分大的 $n$ 都有 $x_n>y_n$，与条件矛盾。
-故 $a\le b$。
+反设 $a>b$。由前面的结论可知，对充分大的 $n$ 都有 $x_n>y_n$，这与 $n>N_0$ 时 $x_n\le y_n$ 矛盾，故 $a\le b$。
 \end{proof}
-特别地，若 $x_n\ge0$ 从某一项起成立，则 $a\ge0$。
-严格不等式取极限后不一定仍严格。例如 $0<1/n$，但两边极限均为 $0$。
+
+特别地，若 $x_n\ge0$ 从某一项起成立，则极限满足 $a\ge0$。需要注意的是，严格不等式在取极限后未必仍然严格，例如对一切 $n\in\Nplus$ 都有 $0<1/n$，但两边取极限后均为 $0$。
+
+保序性说明不等关系在取极限时得以保留；若一个数列从某一项起被夹在两个收敛于同一极限的数列之间，则它自身也必收敛于该极限。
 
 \begin{theorem}[夹逼定理]
-设从某一项起 $x_n\le y_n\le z_n$，且 $x_n\to a$、$z_n\to a$，
+设从某一项起有 $x_n\le y_n\le z_n$，且 $x_n\to a$、$z_n\to a$，
 则 $y_n\to a$。
 \end{theorem}
 \begin{proof}
-任取 $\varepsilon>0$。存在 $N$，使 $n>N$ 时上述大小关系成立，且
-$|x_n-a|<\varepsilon$、$|z_n-a|<\varepsilon$。于是
+任取 $\varepsilon>0$。由条件及极限定义，存在 $N\in\Nplus$，使当 $n>N$ 时同时满足 $x_n\le y_n\le z_n$、$|x_n-a|<\varepsilon$ 以及 $|z_n-a|<\varepsilon$。于是对一切 $n>N$ 都有
 \[
  a-\varepsilon<x_n\le y_n\le z_n<a+\varepsilon,
 \]
 即 $|y_n-a|<\varepsilon$，故 $y_n\to a$。
 \end{proof}
 
-\newpage
+前述各性质刻画了收敛数列的范围与序关系。在实际计算中，更常用的是收敛数列在四则运算下的极限法则。
+
 \begin{theorem}[四则运算法则]
 若 $x_n\to a$、$y_n\to b$，则
 \[
@@ -172,31 +167,32 @@ $|x_n-a|<\varepsilon$、$|z_n-a|<\varepsilon$。于是
 \]
 \end{theorem}
 \begin{proof}
-\textbf{加减法。} 由
+\textbf{加减法。} 任取 $\varepsilon>0$。由 $x_n\to a$ 与 $y_n\to b$，当 $n$ 充分大时可同时满足 $|x_n-a|<\varepsilon/2$ 与 $|y_n-b|<\varepsilon/2$，从而
 \[
- |(x_n\pm y_n)-(a\pm b)|\le |x_n-a|+|y_n-b|,
+ |(x_n\pm y_n)-(a\pm b)|\le |x_n-a|+|y_n-b|<\varepsilon,
 \]
-只需将右侧两项分别控制在 $\varepsilon/2$ 内即可。
+故 $x_n\pm y_n\to a\pm b$。
 
-\textbf{乘法。} 由收敛数列的有界性，存在 $M>0$，使所有 $n$ 都有
-$|x_n|\le M$。于是
+\textbf{乘法。} 先通过插项将误差拆分为两项，再利用有界性控制随 $n$ 变化的系数。由收敛数列的有界性，存在 $M>0$，使对所有 $n\in\Nplus$ 都有 $|x_n|\le M$，于是
 \[
  |x_ny_n-ab|\le |x_n|\,|y_n-b|+|b|\,|x_n-a|
  \le M|y_n-b|+|b|\,|x_n-a|.
 \]
-任取 $\varepsilon>0$，当 $n$ 充分大时，两项误差均小于
-$\varepsilon/(M+|b|+1)$，从而 $|x_ny_n-ab|<\varepsilon$。
+任取 $\varepsilon>0$，当 $n$ 充分大时，可使 $|x_n-a|$ 与 $|y_n-b|$ 均小于 $\varepsilon/(M+|b|+1)$，进而
+\[
+ |x_ny_n-ab|<\frac{M+|b|}{M+|b|+1}\varepsilon<\varepsilon,
+\]
+故 $x_ny_n\to ab$。
 
-\textbf{除法。} 由 $y_n\to b\ne0$，充分大的 $n$ 满足
-$|y_n-b|<|b|/2$，从而 $|y_n|>|b|/2>0$。因此
+\textbf{除法。} 先证明 $1/y_n\to 1/b$。由 $y_n\to b\ne0$，当 $n$ 充分大时满足 $|y_n-b|<|b|/2$，因而 $|y_n|>|b|/2>0$，特别地此时 $y_n\ne0$。由此可得
 \[
  \left|\frac1{y_n}-\frac1b\right|
  =\frac{|y_n-b|}{|b|\,|y_n|}
- \le\frac2{|b|^2}|y_n-b|\longrightarrow0.
+ <\frac2{|b|^2}|y_n-b|\longrightarrow0,
 \]
-再用乘法法则，即得 $x_n/y_n\to a/b$。
+即 $1/y_n\to 1/b$。再结合乘法法则，即得 $x_n/y_n\to a/b$。
 \end{proof}
-四则运算法则可逐次用于固定有限个收敛数列；若运算的项数随 $n$ 增长，
-则不能直接逐项取极限。
+
+由数学归纳法可知，四则运算法则可逐次推广到固定有限个收敛数列的运算；但如果参与运算的项数随 $n$ 增长，则不能直接逐项取极限。
 
 \end{document}

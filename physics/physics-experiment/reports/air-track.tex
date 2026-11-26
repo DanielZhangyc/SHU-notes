@@ -1,0 +1,218 @@
+\documentclass[UTF8,fontset=fandol,11pt,a4paper]{ctexart}
+\usepackage[left=2.25cm,right=2.25cm,top=1.85cm,bottom=1.85cm]{geometry}
+\usepackage{amsmath,booktabs}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1pt}
+\renewcommand{\arraystretch}{1.12}
+\usepackage{xeCJKfntef}
+\xeCJKsetup{CJKmath=true}
+\newcommand{\ms}{\,\mathrm{ms}}
+\newcommand{\acc}{\,\mathrm{m\,s^{-2}}}
+\newcommand{\vel}{\,\mathrm{m\,s^{-1}}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries 上海大学物理实验报告}\\[5pt]
+星期三第 9--10 节 \qquad 座位号：11
+\end{center}
+\section*{一、实验名称}
+速度、加速度和重力加速度的测定——气垫导轨法
+\section*{二、实验目的}
+掌握气垫导轨的调平方法，学会用光电门测量滑块的瞬时速度；根据滑块在倾斜导轨上往返运动的加速度，测定当地重力加速度并估算其不确定度。
+\section*{三、实验原理}
+
+设高处的光电门为 $P_1$，低处的为 $P_2$，两门相距 $s$。挡光片两条同侧触发边之间的距离为 $\Delta x$。滑块通过一个光电门时，计时器记录两次触发的时间间隔 $t$。因 $\Delta x$ 很短，可用这段距离的平均速率 $v=\Delta x/t$ 近似滑块在该门处的瞬时速率。
+
+滑块下行时依次通过 $P_1,P_2$，反弹上行时依次通过 $P_2,P_1$。分别用 $v_1,v_2$ 和 $v'_2,v'_1$ 表示这四次过门的速率。下文的 $a_{\rm 下}$ 表示下行加速度大小，$a_{\rm 上}$ 表示上行减速度大小，两者方向均沿斜面向下。由速度平方与位移的关系，
+\[
+ a_{\rm 下}=\frac{v_2^2-v_1^2}{2s},\qquad
+ a_{\rm 上}=\frac{{v'_2}^2-{v'_1}^2}{2s}.
+\]
+阻力在下行时减小加速度，在上行时增大减速度。若两程阻力的平均大小相近，取两者的平均值即可近似得到重力沿导轨的分量 $a_g$。设两支脚间距为 $L$，垫块厚度为 $h$，则
+\[
+ a_g\simeq\frac{a_{\rm 下}+a_{\rm 上}}2,\qquad
+ a_g=g\sin\theta\simeq g\frac hL,\qquad g\simeq\frac Lh\,a_g .
+\]
+\section*{四、实验器材}
+气垫导轨及气源、带开口挡光片的滑块、反弹弹簧片、两个光电门、光电计时器、标准垫块、游标卡尺及导轨米尺。
+\section*{五、实验步骤}
+（1）接通气源，调节导轨支脚。轻推滑块，使其往返通过两光电门，记录三组过门时间，比较每一程中两门的时间差，检验调平效果。
+
+（2）在导轨一端的支脚下放入垫块。让滑块沿斜面下滑，经低端弹簧片反弹后上行。按过门顺序记录四个时间间隔，共测六次。
+
+（3）用游标卡尺测量挡光距离和垫块厚度，用导轨米尺读取两支脚间距和两光电门间距。
+\newpage
+\section*{六、数据处理}
+原始读数按记录精度列出。每步结果保留两位小数，后续公式直接代入前面列出的近似值。
+\subsection*{1. 导轨水平检验}
+用 $t_1,t_2,t'_2,t'_1$ 简记四次过门的计时间隔。若导轨水平，阻力使滑块在每一程中略微减速，后过门的时间应稍长。教材要求下列两项均大于零且小于 $2\%$：
+\[
+ r_{\rm 去}=(t_2-t_1)/t_2,\qquad r_{\rm 回}=(t'_1-t'_2)/t'_1 .
+\]
+\begin{center}
+表 1 \quad 水平调整时的计时与相对时间差（时间单位：ms）\\[3pt]
+\begin{tabular}{crrrrrr}\toprule
+组次 & $t_1$ & $t_2$ & $t'_2$ & $t'_1$ & $r_{\rm 去}$ & $r_{\rm 回}$\\\midrule
+1&29.47&30.15&31.64&32.15&2.26\%&1.59\%\\
+2&20.99&20.43&22.11&22.54&$-2.74$\%&1.91\%\\
+3&25.00&25.59&26.8&27.37&2.31\%&2.08\%\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{align*}
+r_{\rm 去,1}&=\frac{30.15-29.47}{30.15}\times100\%\approx 2.26\%,&
+r_{\rm 回,1}&=\frac{32.15-31.64}{32.15}\times100\%\approx 1.59\%,\\
+r_{\rm 去,2}&=\frac{20.43-20.99}{20.43}\times100\%\approx -2.74\%,&
+r_{\rm 回,2}&=\frac{22.54-22.11}{22.54}\times100\%\approx 1.91\%,\\
+r_{\rm 去,3}&=\frac{25.59-25.00}{25.59}\times100\%\approx 2.31\%,&
+r_{\rm 回,3}&=\frac{27.37-26.8}{27.37}\times100\%\approx 2.08\%.
+\end{align*}
+第 1 组只有回程达标，第 2 组去程时间反而缩短，第 3 组两项均超过限值。三组记录均不足以确认导轨已调平。
+\subsection*{2. 倾斜导轨的计时及其不确定度}
+\begin{center}
+表 2 \quad 垫高导轨后六次往返的过门时间（单位：ms）\\[3pt]
+\begin{tabular}{lrrrr}\toprule
+测量次数 & 下行 $t_1$ & 下行 $t_2$ & 上行 $t'_2$ & 上行 $t'_1$\\\midrule
+1&37.24&22.05&23.61&46.50\\
+2&38.20&22.07&23.48&47.36\\
+3&38.65&22.15&23.07&44.23\\
+4&38.35&22.10&23.26&45.64\\
+5&38.55&22.14&23.31&46.03\\
+6&38.45&22.12&23.53&47.79\\\midrule
+平均值 $\bar t$&38.24&22.11&23.38&46.26\\
+样本标准差 $S_t$&0.51&0.04&0.20&1.28\\
+合成不确定度 $U_t$&0.51&0.06&0.21&1.28\\\bottomrule
+\end{tabular}
+\end{center}
+\newpage
+\subsubsection*{平均时间}
+对每列的六次读数取平均，$\bar t_j=\sum_{i=1}^6 t_{j,i}/6$。
+\begin{align*}
+\bar t_1&=\frac{37.24+38.20+38.65+38.35+38.55+38.45}{6}\,\mathrm{ms}
+=\frac{229.44}{6}\,\mathrm{ms}=38.24\ms,\\
+\bar t_2&=\frac{22.05+22.07+22.15+22.10+22.14+22.12}{6}\,\mathrm{ms}
+=\frac{132.63}{6}\,\mathrm{ms}\approx 22.11\ms,\\
+\bar t'_2&=\frac{23.61+23.48+23.07+23.26+23.31+23.53}{6}\,\mathrm{ms}
+=\frac{140.26}{6}\,\mathrm{ms}\approx 23.38\ms,\\
+\bar t'_1&=\frac{46.50+47.36+44.23+45.64+46.03+47.79}{6}\,\mathrm{ms}
+=\frac{277.55}{6}\,\mathrm{ms}\approx 46.26\ms .
+\end{align*}
+\subsubsection*{样本标准差}
+按教材，A 类分量取样本标准差。每个括号里的数都是该次读数减去上面算出的本列平均时间。例如第一列前两项的差值为 $37.24-38.24=-1.00$ 和 $38.20-38.24=-0.04$（单位均为 ms）。
+\[
+ S=\sqrt{\frac{\sum_{i=1}^{6}(t_i-\bar t)^2}{6-1}}.
+\]
+四列都按第 1 至第 6 次读数的顺序代入，平均时间取上面列出的两位小数。
+\begin{align*}
+ S_1&=\sqrt{\frac{(-1.00)^2+(-0.04)^2+(0.41)^2+(0.11)^2+(0.31)^2+(0.21)^2}{5}}\,\mathrm{ms}
+ \approx0.51\ms,\\
+ S_2&\approx\sqrt{\frac{(-0.06)^2+(-0.04)^2+(0.04)^2+(-0.01)^2+(0.03)^2+(0.01)^2}{5}}\,\mathrm{ms}
+ \approx0.04\ms,\\
+ S'_2&\approx\sqrt{\frac{(0.23)^2+(0.10)^2+(-0.31)^2+(-0.12)^2+(-0.07)^2+(0.15)^2}{5}}\,\mathrm{ms}
+ \approx0.20\ms,\\
+ S'_1&\approx\sqrt{\frac{(0.24)^2+(1.10)^2+(-2.03)^2+(-0.62)^2+(-0.23)^2+(1.53)^2}{5}}\,\mathrm{ms}
+ \approx1.28\ms .
+\end{align*}
+\subsubsection*{合成不确定度}
+B 类分量取计时器误差 $0.05\ms$。将上面四列的 $S$ 值直接代入 $U=\sqrt{S^2+(0.05\ms)^2}$。
+\begin{align*}
+ U_1&\approx\sqrt{0.51^2+0.05^2}\,\mathrm{ms}\approx0.51\ms,&
+ U_2&\approx\sqrt{0.04^2+0.05^2}\,\mathrm{ms}\approx0.06\ms,\\
+ U'_2&\approx\sqrt{0.20^2+0.05^2}\,\mathrm{ms}\approx0.21\ms,&
+ U'_1&\approx\sqrt{1.28^2+0.05^2}\,\mathrm{ms}\approx1.28\ms .
+\end{align*}
+\newpage
+\subsection*{3. 长度、过门速率和沿斜面的加速度}
+\begin{center}
+表 3 \quad 四个长度的测量值及仪器误差\\[3pt]
+\begin{tabular}{lrrrr}\toprule
+&挡光距离 $\Delta x$&支脚间距 $L$&光电门间距 $s$&垫块厚度 $h$\\\midrule
+测量值/cm&1.000&86.00&60.00&1.000\\
+仪器误差/cm&0.002&0.05&0.05&0.002\\
+相对不确定度&0.20\%&0.06\%&0.08\%&0.20\%\\\bottomrule
+\end{tabular}
+\end{center}
+长度的仪器误差采用教材所列游标卡尺和米尺的误差限。单次测量取 $U_x=\Delta_{\rm 仪}$，相对不确定度的计算式为 $E_x=U_x/|x|$。
+\begin{align*}
+ E_{\Delta x}&=\frac{0.002}{1.000}\times100\%\approx 0.20\%,&
+ E_L&=\frac{0.05}{86.00}\times100\%\approx 0.06\%,\\
+ E_s&=\frac{0.05}{60.00}\times100\%\approx 0.08\%,&
+ E_h&=\frac{0.002}{1.000}\times100\%\approx 0.20\%.
+\end{align*}
+以 $\Delta x=0.01000\,\mathrm m$ 除以平均时间（换算成秒），得到四个过门速率。
+\begin{align*}
+v_1&=\frac{\Delta x}{\bar t_1}
+\approx\frac{0.01000}{38.24\times10^{-3}}\,\mathrm{m\,s^{-1}}
+\approx 0.26\vel,&
+v_2&=\frac{\Delta x}{\bar t_2}\approx\frac{0.01000}{22.11\times10^{-3}}\,\mathrm{m\,s^{-1}}
+\approx 0.45\vel,\\
+v'_2&=\frac{\Delta x}{\bar t'_2}\approx\frac{0.01000}{23.38\times10^{-3}}\,\mathrm{m\,s^{-1}}
+\approx 0.43\vel,&
+v'_1&=\frac{\Delta x}{\bar t'_1}\approx\frac{0.01000}{46.26\times10^{-3}}\,\mathrm{m\,s^{-1}}
+\approx 0.22\vel.
+\end{align*}
+代入上面的过门速率和两门间距 $s=0.6000\,\mathrm m$，计算往返加速度的大小。
+\begin{align*}
+ a_{\rm 下}&=\frac{v_2^2-v_1^2}{2s}
+ \approx\frac{0.45^2-0.26^2}{2\times0.6000}\,\mathrm{m\,s^{-2}}
+ \approx 0.11\acc,\\
+ a_{\rm 上}&=\frac{{v'_2}^2-{v'_1}^2}{2s}
+ \approx\frac{0.43^2-0.22^2}{2\times0.6000}\,\mathrm{m\,s^{-2}}
+ \approx 0.11\acc,\\
+ a_g&\approx\frac{a_{\rm 下}+a_{\rm 上}}{2}
+ \approx\frac{0.11+0.11}{2}\,\mathrm{m\,s^{-2}}\approx0.11\acc .
+\end{align*}
+\newpage
+\subsection*{4. 计算重力加速度和估算不确定度}
+将表 2 的四个平均时间（单位为 ms）直接代入。
+\begin{align*}
+T&=\left[\frac{1}{\bar t_2^{\,2}}+\frac{1}{(\bar t'_2)^2}
+ -\frac{1}{\bar t_1^{\,2}}-\frac{1}{(\bar t'_1)^2}\right]\\
+ &\approx\left[\frac{1}{22.11^2}+\frac{1}{23.38^2}
+ -\frac{1}{38.24^2}-\frac{1}{46.26^2}\right]\,\mathrm{ms^{-2}}
+ \approx2723.87\times10^{-6}\,\mathrm{ms^{-2}}.
+\end{align*}
+长度用表 3 的厘米数值，最后按 $1\,\mathrm{cm\,ms^{-2}}=10^4\,\mathrm{m\,s^{-2}}$ 换算。
+\begin{align*}
+ \bar g&=\frac{L(\Delta x)^2}{4sh}T\\
+ &\approx\frac{86.00\times(1.000)^2}{4\times60.00\times1.000}
+ \times(2723.87\times10^{-6})\times10^4\,\mathrm{m\,s^{-2}}
+ \approx9.76\acc .
+\end{align*}
+\subsubsection*{不确定度估算}
+将表 2 的时间及其不确定度、表 3 的长度相对不确定度一起代入。
+\begin{align*}
+E_g&=\frac{U_g}{\bar g}=\sqrt{\begin{aligned}
+ &4E_{\Delta x}^2+E_L^2+E_s^2+E_h^2\\
+ &+\frac{4}{T^2}\left[
+ \frac{U_1^2}{\bar t_1^{\,6}}+\frac{U_2^2}{\bar t_2^{\,6}}
+ +\frac{(U'_2)^2}{(\bar t'_2)^6}+\frac{(U'_1)^2}{(\bar t'_1)^6}
+ \right]
+ \end{aligned}}\\[3pt]
+ &\approx\sqrt{\begin{aligned}
+ &4(0.20\%)^2+(0.06\%)^2+(0.08\%)^2+(0.20\%)^2\\
+ &+\frac{4}{(2723.87\times10^{-6})^2}\left[
+ \frac{0.51^2}{38.24^6}+\frac{0.06^2}{22.11^6}
+ +\frac{0.21^2}{23.38^6}+\frac{1.28^2}{46.26^6}
+ \right]
+ \end{aligned}}
+ \approx1.78\%,\\[3pt]
+U_g&=\bar g E_g\approx9.76\times1.78\%\,\mathrm{m\,s^{-2}}
+ \approx0.17\acc .
+\end{align*}
+\section*{七、实验结论}
+\[
+ \left\{\begin{aligned}
+ g &= \bar g\pm U_g=(9.76\pm0.17)\acc,\\
+ E_g&\approx1.78\%.
+ \end{aligned}\right.
+\]
+教材给出的上海参考值为 $g_{\rm 上海}=9.794\acc$。测量值与参考值的百分差为
+\[
+ A_g=\frac{|\bar g-g_{\rm 上海}|}{g_{\rm 上海}}\times100\%
+ \approx\frac{|9.76-9.794|}{9.794}\times100\%\approx0.35\%.
+\]
+上海参考值落在上述估计区间内。计时项是本次不确定度的主要来源。
+
+调平记录没有达到教材判据，因此垫块产生的坡度 $h/L$ 可能与实际坡度有偏差。这一偏差在上下行时都存在，取平均不能消除，上述不确定度也没有单独计入它。复测时应先微调支脚，直至往返时间差均达标，再垫高导轨；同时保持释放位置及弹簧片碰撞状态一致，以减小回程计时的波动。
+
+{\small 参考：《大学基础物理实验》（第二版），实验八，第 108--116 页。}
+\end{document}

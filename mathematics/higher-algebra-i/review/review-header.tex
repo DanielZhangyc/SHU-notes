@@ -1,0 +1,25 @@
+\usepackage{amsmath,amssymb}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数期中计算复习}
+\fancyhead[R]{\small 行列式\quad 秩\quad 方程组}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\raggedbottom
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\makeatletter
+\renewcommand{\maketitle}{%
+  \thispagestyle{plain}%
+  \begin{center}
+    {\Large\bfseries\@title\par}\vspace{0.4em}
+    {\small\@date\par}
+  \end{center}\vspace{0.4em}
+}
+\makeatother
+\AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=black,urlcolor=black}}

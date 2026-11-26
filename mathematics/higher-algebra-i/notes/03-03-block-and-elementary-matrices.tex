@@ -1,0 +1,320 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "higher-algebra-i",
+%   "section": "3.3",
+%   "title": "高等代数（一）3.3：分块矩阵与初等矩阵",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "分块乘法与转置、方阵的幂及交换性、矩阵和与积的秩，以及初等矩阵、矩阵等价和秩的标准形。"
+% }
+% halo:end
+% 3.3 为笔记节号。课堂来源：IMG_3622 右页、IMG_3623、IMG_3624、
+% IMG_3625 左页、IMG_3626 右页、IMG_3627、IMG_3628，已对照原始 HEIC。
+% 北大《高等代数》第六版第四章：乘积的秩与可逆乘子，印刷页 124、127（PDF 129、132）；
+% §5 分块，印刷页 127--131（PDF 132--136）；§6 初等矩阵及等价，
+% 印刷页 131--134（PDF 136--139）；§7 分块初等变换，印刷页 135--136（PDF 140--141）。
+% IMG_3627 按 B 的行分块处仅写了 A 的元素，按教材补出 B 的行与乘积的行展开。
+% IMG_3624 的整块行、列相加分别拆为普通初等变换，并补证矩形块对角阵的秩公式。
+% 沿用 IMG_3628 左页的倍乘非零条件，并补明右乘倍加的下标次序。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8, fontset=fandol, a4paper, 12pt]{ctexart}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{example}[definition]{例题}
+\renewcommand{\proofname}{证明}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.2em, topsep=0.3em}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 高等代数（一）3.3}
+\fancyhead[R]{\small 分块矩阵与初等矩阵}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{分块矩阵与初等矩阵}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月27日}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\LARGE\bfseries\@title\par}\vspace{0.6em}
+    \@author\par\vspace{0.2em}
+    {\small\@date\par}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+\maketitle
+
+\section{矩阵的分块运算}
+
+以下设 $P$ 为数域，$E_n$ 为 $n$ 阶单位矩阵，$0$ 表示大小由所在位置确定的零矩阵。当矩阵阶数较高，或者内部含有大片零元素与单位子块时，将其划分为若干子矩阵来运算往往更为清晰。
+
+\begin{definition}[分块矩阵]
+将矩阵的行与列分别按原有次序划分为若干组，各行组与列组的交叉处所构成的子矩阵称为一个\textbf{块}。若第 $i$ 个行组含 $s_i$ 行、第 $j$ 个列组含 $n_j$ 列，则第 $(i,j)$ 块 $A_{ij}$ 是一个 $s_i\times n_j$ 矩阵。
+\end{definition}
+
+如果两个矩阵的行、列分组方式完全一致，那么加法可以逐块进行，即 $(A+B)_{ij}=A_{ij}+B_{ij}$；数乘时只需将每一块同乘该数。对分块矩阵取转置时，既要交换块的位置，又要对每个子块自身取转置，即原第 $(i,j)$ 块 $A_{ij}$ 变为新矩阵的第 $(j,i)$ 块 $A_{ij}^{\mathsf T}$。例如，
+\[
+ \begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}^{\mathsf T}
+ =\begin{pmatrix}
+   A_{11}^{\mathsf T} & A_{21}^{\mathsf T} \\
+   A_{12}^{\mathsf T} & A_{22}^{\mathsf T}
+ \end{pmatrix}.
+\]
+
+分块矩阵的乘法同样遵循与普通矩阵乘法一致的形式，前提是左侧矩阵的列分组与右侧矩阵的行分组相匹配。
+
+\begin{proposition}[分块乘法]
+设 $A\in P^{s\times n}$、$B\in P^{n\times m}$。若 $A$ 的列与 $B$ 的行按同一组尺寸 $n_1,\ldots,n_\ell$ 划分，则乘积 $C=AB$ 可按分块方式计算：结果矩阵沿用 $A$ 的行分组与 $B$ 的列分组，其第 $(i,j)$ 块为
+\[
+ C_{ij}=\sum_{k=1}^{\ell} A_{ik}B_{kj}.
+\]
+\end{proposition}
+\begin{proof}
+固定结果块 $C_{ij}$ 中的任一元素。按普通矩阵乘法的定义，该元素等于 $A$ 的对应行与 $B$ 的对应列中各分量乘积的总和。由于 $A$ 的列与 $B$ 的行按相同的尺寸 $n_1,\ldots,n_\ell$ 分组，将这一求和按分组拆分为 $\ell$ 段，第 $k$ 段的和恰好等于乘积块 $A_{ik}B_{kj}$ 中对应位置的元素。将各段相加，即得上述分块乘法公式。
+\end{proof}
+
+当方阵 $A$ 的行分组与列分组对应等大时，每个主对角块都是方阵。如果主对角块之外全部为零块，则称 $A$ 为\textbf{块对角矩阵}（或准对角矩阵），记作 $\diag(A_{11},\ldots,A_{tt})$；如果主对角块下方（或上方）全为零块，则称为\textbf{块上（或下）三角矩阵}。由分块乘法直接可知，两个分块方式相同的块对角矩阵相乘，只需将对应的对角块按顺序相乘即可。
+
+\subsection{按列或按行分块}
+
+作为分块乘法的特例，把矩阵按单列或单行划分，便重新得到矩阵乘积的列观点与行观点。设 $A=(a_{ij})_{s\times n}$、$B=(b_{ij})_{n\times m}$：若将 $B$ 按列分块为 $B=(\boldsymbol{\beta}_1,\ldots,\boldsymbol{\beta}_m)$，则
+\[
+ AB=(A\boldsymbol{\beta}_1,\ldots,A\boldsymbol{\beta}_m),
+\]
+由此可见 $AB$ 的第 $j$ 列等于 $A$ 各列以 $b_{1j},\ldots,b_{nj}$ 为系数的线性组合。若改为将 $B$ 按行分块为 $B_1,\ldots,B_n$，则 $AB$ 的第 $i$ 行为
+\[
+ a_{i1}B_1+\cdots+a_{in}B_n.
+\]
+
+\section{分块求幂与矩阵的交换性}
+
+合理地选择分块方式，可以把高阶矩阵的求幂和交换条件化归为低阶子块的简单运算。下面通过三个例题说明这一技巧。
+
+\begin{example}[块下三角矩阵的幂]
+设
+\[
+ A=\begin{pmatrix}
+ 1&0&0&0\\
+ 0&1&0&0\\
+ -1&2&1&0\\
+ 1&1&0&1
+ \end{pmatrix}.
+\]
+求 $A^n$，其中 $n$ 为正整数。
+\end{example}
+\noindent\textbf{解}\quad
+将前两行与后两行分为两组，列也作相同划分，则 $A$ 写为块下三角矩阵
+\[
+ A=\begin{pmatrix}E_2&0\\ A_1&E_2\end{pmatrix},
+ \qquad A_1=\begin{pmatrix}-1&2\\1&1\end{pmatrix}.
+\]
+由分块乘法可得递推关系
+\[
+ \begin{pmatrix}E_2&0\\ kA_1&E_2\end{pmatrix}
+ \begin{pmatrix}E_2&0\\ A_1&E_2\end{pmatrix}
+ =\begin{pmatrix}E_2&0\\ (k+1)A_1&E_2\end{pmatrix}.
+\]
+从 $n=1$ 起对正整数 $n$ 施归纳，立即得到
+\[
+ A^n=\begin{pmatrix}E_2&0\\ nA_1&E_2\end{pmatrix}
+     =\begin{pmatrix}
+       1&0&0&0\\
+       0&1&0&0\\
+       -n&2n&1&0\\
+       n&n&0&1
+      \end{pmatrix}.
+\]
+
+\begin{example}[四个块相同的方阵的幂]
+设
+\[
+ A=\begin{pmatrix}
+  1&2&1&2\\
+  -1&-2&-1&-2\\
+  1&2&1&2\\
+  -1&-2&-1&-2
+ \end{pmatrix}.
+\]
+求 $A^n$，其中 $n$ 为正整数。
+\end{example}
+\noindent\textbf{解}\quad
+令 $A_1=\begin{pmatrix}1&2\\-1&-2\end{pmatrix}$，则 $A$ 按 $2\times 2$ 分块后四个子块全等于 $A_1$。每右乘一次 $A$，四个结果子块各自都是两个相同乘积之和：
+\[
+ \begin{pmatrix}A_1^k&A_1^k\\ A_1^k&A_1^k\end{pmatrix}
+ \begin{pmatrix}A_1&A_1\\ A_1&A_1\end{pmatrix}
+ =2\begin{pmatrix}A_1^{k+1}&A_1^{k+1}\\ A_1^{k+1}&A_1^{k+1}\end{pmatrix}.
+\]
+由此归纳得 $A^n=2^{n-1}\begin{pmatrix}A_1^n&A_1^n\\ A_1^n&A_1^n\end{pmatrix}$。再直接计算 $A_1^2=\begin{pmatrix}-1&-2\\1&2\end{pmatrix}=-A_1$，从而 $A_1^n=(-1)^{n-1}A_1$。代回即得
+\[
+ A^n=(-2)^{n-1}A
+ =\begin{cases}
+    2^{n-1}A, & n\text{ 为奇数},\\
+    -2^{n-1}A, & n\text{ 为偶数}.
+  \end{cases}
+\]
+
+\begin{example}[与给定对角矩阵可交换的方阵]
+设 $A=\diag(1,1,2)$，求满足 $BA=AB$ 的全体三阶矩阵 $B$。
+\end{example}
+\noindent\textbf{解}\quad
+将 $A$ 写成分块对角矩阵 $A=\begin{pmatrix}E_2&0\\0&2\end{pmatrix}$，并将 $B$ 按相同的行、列尺寸分块为 $\begin{pmatrix}B_{11}&B_{12}\\B_{21}&B_{22}\end{pmatrix}$，其中 $B_{11}$ 为二阶方阵、$B_{22}$ 为一阶矩阵。按分块乘法计算得
+\[
+ AB=\begin{pmatrix}B_{11}&B_{12}\\2B_{21}&2B_{22}\end{pmatrix},
+ \qquad
+ BA=\begin{pmatrix}B_{11}&2B_{12}\\B_{21}&2B_{22}\end{pmatrix}.
+\]
+比较各对应子块可知，$BA=AB$ 当且仅当 $B_{12}=2B_{12}$ 且 $2B_{21}=B_{21}$，即 $B_{12}=0$ 且 $B_{21}=0$，而两个对角块 $B_{11}$ 与 $B_{22}$ 不受约束。故全部解为
+\[
+ B=\begin{pmatrix}
+ b_{11}&b_{12}&0\\
+ b_{21}&b_{22}&0\\
+ 0&0&b_{33}
+ \end{pmatrix},
+ \qquad b_{11},b_{12},b_{21},b_{22},b_{33}\in P.
+\]
+
+\section{矩阵和与积的秩}
+
+分块观点同样适用于证明关于矩阵秩的基本不等式。下面分别用列向量组与分块变换两种途径，证明两个同型矩阵之和的秩不超过它们各自秩的和。
+
+\begin{theorem}[和的秩]
+若 $A,B$ 是同型矩阵，则 $\rank(A+B)\le\rank A+\rank B$。
+\end{theorem}
+\begin{proof}[证明一（列向量组）]
+记 $A,B$ 的第 $j$ 列分别为 $\boldsymbol{\alpha}_j$ 与 $\boldsymbol{\beta}_j$（$1\le j\le n$）。于是 $A+B$ 的第 $j$ 列为 $\boldsymbol{\alpha}_j+\boldsymbol{\beta}_j$，可由分块矩阵 $(A\mid B)$ 的列向量组线性表出，故 $\rank(A+B)\le\rank(A\mid B)$。
+
+另一方面，分别取 $A$ 与 $B$ 的列向量组的一个极大线性无关组，将它们合并所得的向量组共含 $\rank A+\rank B$ 个向量，并且能线性表出 $(A\mid B)$ 的全部列，因此 $\rank(A\mid B)\le\rank A+\rank B$。合起来即得 $\rank(A+B)\le\rank A+\rank B$。
+\end{proof}
+\begin{proof}[证明二（分块变换）]
+设 $A,B\in P^{s\times n}$，构造块对角矩阵 $\begin{pmatrix}A&0\\0&B\end{pmatrix}$。先确定该矩阵的秩：它的前 $n$ 列仅在上方 $s$ 个分量上可能非零，后 $n$ 列仅在下方 $s$ 个分量上可能非零。分别在前 $n$ 列和后 $n$ 列中各取一个极大线性无关组，两组在非零分量位置上互不重叠，因此合起来仍然线性无关，且能表出全部列。由此可知该块对角矩阵的秩恰为 $\rank A+\rank B$。
+
+接下来，将右半部分各列依次加到左半部分对应列上，再将下半部分各行依次加到上半部分对应行上，得到
+\[
+ \begin{pmatrix}A&0\\0&B\end{pmatrix}
+ \longrightarrow
+ \begin{pmatrix}A&0\\B&B\end{pmatrix}
+ \longrightarrow
+ \begin{pmatrix}A+B&B\\B&B\end{pmatrix}.
+\]
+上述两步分别由若干次普通初等列变换和初等行变换复合而成，因此保持矩阵的秩不变。由于 $A+B$ 是末矩阵的一个子矩阵，而删去若干行或列不会增加矩阵的秩，故 $\rank(A+B)\le\rank A+\rank B$。
+\end{proof}
+
+对于矩阵的乘积，结合前面按列与按行的分块展开，$AB$ 的各列均可由 $A$ 的列线性表出，各行均可由 $B$ 的行线性表出，从而有
+\[
+ \rank(AB)\le\min\{\rank A,\rank B\}.
+\]
+此外，由第 3.2 节的结论，若 $L,R$ 分别为 $s$ 阶与 $n$ 阶可逆矩阵，则左右乘以可逆矩阵不改变秩，即 $\rank(LA)=\rank A=\rank(AR)$。
+
+\section{初等矩阵与矩阵等价}
+
+此前我们一直将初等行、列变换看作对矩阵直接施行的操作；借助按行与按列的分块乘法，每一种初等变换都可以表示为左乘或右乘一个特定的方阵，即初等矩阵。
+
+\subsection{三类初等矩阵}
+
+\begin{definition}[初等矩阵]
+由单位矩阵经过一次初等行变换或初等列变换得到的矩阵，称为\textbf{初等矩阵}。设 $i\ne j$，$a\in P\setminus\{0\}$，$c\in P$，以 $d$ 阶单位矩阵 $E_d$ 为出发点，三类初等矩阵定义如下：
+\begin{enumerate}
+ \item 交换 $E_d$ 的第 $i,j$ 两行所得矩阵记作 $P_{ij}$（交换第 $i,j$ 两列得到同一个矩阵）；
+ \item 将 $E_d$ 的第 $(i,i)$ 个元素由 $1$ 改为 $a$ 所得矩阵记作 $D_i(a)$；
+ \item 将 $E_d$ 的第 $(i,j)$ 个位置由 $0$ 改为 $c$、其余元素不变所得矩阵记作 $T_{ij}(c)$。
+\end{enumerate}
+\end{definition}
+
+三类初等矩阵左乘或右乘任意矩阵 $A$ 的效果，恰好一一对应于对 $A$ 施行相应的初等行变换或初等列变换。
+
+\begin{proposition}[初等变换的矩阵表示]
+设 $A$ 为 $s\times n$ 矩阵，记其第 $i$ 行为 $R_i$、第 $j$ 列为 $C_j$。对 $A$ 施行初等行变换等价于左乘对应的 $s$ 阶初等矩阵，施行初等列变换等价于右乘对应的 $n$ 阶初等矩阵，具体对应关系如下：
+\[
+ \renewcommand{\arraystretch}{1.25}
+ \begin{array}{c@{\qquad}c@{\qquad}c}
+   \text{变换} & \text{初等行变换} & \text{初等列变换}\\ \hline
+   \text{交换} & R_i\leftrightarrow R_j,\quad P_{ij}A
+                & C_i\leftrightarrow C_j,\quad AP_{ij}\\
+   \text{倍乘} & R_i\gets aR_i,\quad D_i(a)A
+                & C_i\gets aC_i,\quad AD_i(a)\\
+   \text{倍加} & R_i\gets R_i+cR_j,\quad T_{ij}(c)A
+                & C_i\gets C_i+cC_j,\quad AT_{ji}(c)
+ \end{array}
+\]
+\end{proposition}
+\begin{proof}
+设 $L=(\ell_{ij})$ 为 $s$ 阶矩阵。按行分块，$LA$ 的第 $i$ 行等于 $\sum_{k=1}^s\ell_{ik}R_k$；当 $L$ 取上述三类初等矩阵之一时，将各行元素直接代入即得表中的初等行变换。
+
+对称地，设 $R=(r_{ij})$ 为 $n$ 阶矩阵。按列分块，$AR$ 的第 $i$ 列等于 $\sum_{k=1}^n C_k r_{ki}$。特别地，要将第 $j$ 列的 $c$ 倍加到第 $i$ 列上，就要求第 $i$ 列的表达式中 $C_j$ 的系数为 $c$，即 $r_{ji}=c$，因此该元素 $c$ 位于右乘矩阵的第 $(j,i)$ 位置，对应的初等矩阵是 $T_{ji}(c)$ 而非 $T_{ij}(c)$。
+\end{proof}
+
+\begin{example}[二阶矩阵的交换与倍加]
+用初等矩阵表示交换 $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ 的两行，以及将第 $2$ 行的 $\lambda$ 倍加到第 $1$ 行。
+\end{example}
+\noindent\textbf{解}\quad
+按照行变换对应左乘初等矩阵的规则，两种变换分别对应
+\[
+ \begin{pmatrix}0&1\\1&0\end{pmatrix}A
+ =\begin{pmatrix}c&d\\a&b\end{pmatrix},
+ \qquad
+ \begin{pmatrix}1&\lambda\\0&1\end{pmatrix}A
+ =\begin{pmatrix}a+\lambda c&b+\lambda d\\c&d\end{pmatrix}.
+\]
+
+每种初等变换都是可逆的：交换两次即还原，乘以非零数 $a$ 的逆操作是乘以 $a^{-1}$，加某一行的 $c$ 倍的逆操作是加同一行的 $-c$ 倍。因此三类初等矩阵均可逆，且它们的逆仍是同类型的初等矩阵：
+\[
+ P_{ij}^{-1}=P_{ij},\qquad D_i(a)^{-1}=D_i(a^{-1}),\qquad
+ T_{ij}(c)^{-1}=T_{ij}(-c).
+\]
+
+\subsection{矩阵等价及其标准形}
+
+既然初等变换都可以化归为乘以可逆的初等矩阵，下面考察在同时允许初等行变换与初等列变换时，矩阵能够化简到怎样的最简形式。
+
+\begin{definition}[矩阵等价]
+若同型矩阵 $B$ 可由 $A$ 经过有限次初等行变换与初等列变换得到（两类变换可以交替使用），则称 $A$ 与 $B$ \textbf{等价}。
+\end{definition}
+
+\begin{theorem}[等价的标准形]
+任意 $s\times n$ 矩阵 $A$ 都等价于形如
+\[
+ J_r=\begin{pmatrix}E_r&0\\0&0\end{pmatrix},\qquad r=\rank A
+\]
+的同型矩阵，其中 $J_0$ 表示 $s\times n$ 零矩阵。由此，两个同型矩阵等价，当且仅当它们的秩相同。
+\end{theorem}
+\begin{proof}
+先证任意矩阵 $A$ 都等价于某个 $J_r$。当 $A=0$ 时，矩阵本身即为 $J_0$，结论成立。若 $A\ne 0$，则必有某个非零元素；通过交换行与列将其移至左上角，再将第一行乘以该元素的倒数，使左上角元素变为 $1$。随后用第一行消去第一列下方的全部元素，再用第一列消去第一行右方的全部元素，矩阵化为分块形式 $\begin{pmatrix}1&0\\0&A_1\end{pmatrix}$。
+
+对右下角的子矩阵 $A_1$ 重复上述步骤，每一步都使左上角单位块的阶数增加 $1$，直到剩余子块全为零或不再有剩余的行、列为止，最终得到形如 $J_r$ 的矩阵。因为初等变换保持矩阵的秩，而 $J_r$ 的秩显然等于 $r$，所以必有 $r=\rank A$。
+
+由此可证同型矩阵等价的充要条件。一方面，若两个矩阵等价，由于初等变换保持秩不变，它们的秩必相同。另一方面，若两个同型矩阵具有相同的秩 $r$，则它们都可经有限次初等变换化为同一个标准形 $J_r$；再将第二个矩阵化为 $J_r$ 的各步初等变换按逆序还原，就能由第一个矩阵经有限次初等变换得到第二个矩阵，故二者等价。
+\end{proof}
+
+将上述等价关系翻译为初等矩阵的乘积，即得矩阵等价的代数刻画。
+
+\begin{proposition}[等价的乘积表示]
+设 $A,B$ 均为 $s\times n$ 矩阵。$A$ 与 $B$ 等价，当且仅当存在 $s$ 阶可逆矩阵 $L$ 与 $n$ 阶可逆矩阵 $R$，使得 $B=LAR$。
+\end{proposition}
+\begin{proof}
+若 $A$ 经有限次初等行、列变换得到 $B$，则将各次行变换对应的初等矩阵依次左乘到 $A$ 上，将各次列变换对应的初等矩阵依次右乘到 $A$ 上（若某一侧未作变换，相应乘子取单位矩阵）。由结合律可记为 $B=LAR$，其中 $L$ 与 $R$ 都是初等矩阵的乘积，因而均为可逆矩阵。
+
+反之，若存在可逆矩阵 $L,R$ 使 $B=LAR$，由可逆乘法保持秩可知 $\rank B=\rank A$，根据等价标准形定理，即得 $A$ 与 $B$ 等价。
+\end{proof}
+
+特别地，对于 $n$ 阶可逆矩阵 $A$，因为 $\rank A=n$，它的等价标准形就是单位矩阵 $E_n$。于是存在初等矩阵的乘积 $L,R$ 使得 $LAR=E_n$，从而 $A=L^{-1}R^{-1}$ 仍是初等矩阵的乘积；反过来，初等矩阵的乘积显然可逆。由此得到一个重要结论：可逆方阵恰好就是能够表示为有限个初等矩阵乘积的方阵，并且任意可逆方阵都可以仅用初等行变换化为单位矩阵。
+
+\end{document}

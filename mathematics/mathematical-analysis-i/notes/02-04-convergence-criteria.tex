@@ -55,37 +55,43 @@
 \setcounter{theorem}{8}
 \section{数列收敛的判别}
 
+直接用极限定义验证收敛时，往往需要先知道或猜出极限值。然而在许多问题中，极限值并不容易事先求出，甚至我们只需先判断数列是否收敛。本节建立若干不依赖极限值的收敛判别准则，包括单调有界定理、致密性定理与柯西收敛准则，并结合子列与闭区间套展开证明和应用。
+
 \subsection*{单调有界定理}
-本文所说的单调递增、单调递减都允许相邻项相等；严格单调另行说明。
+本节所说的单调递增与单调递减均允许相邻项相等；若要求严格不等，则另行注明严格单调。
+
 \begin{theorem}[单调有界定理]
 单调递增且有上界的实数列必收敛，其极限是该数列的上确界；
 单调递减且有下界的实数列也必收敛，其极限是该数列的下确界。
 \end{theorem}
 \begin{proof}
-设 $\{a_n\}$ 单调递增且有上界，令 $L=\sup\{a_n:n\in\Nplus\}$。
-对任意 $\varepsilon>0$，由上确界的性质，存在 $n_0$ 使
-$a_{n_0}>L-\varepsilon$。当 $n\ge n_0$ 时，
+设 $\{a_n\}$ 单调递增且有上界，由确界原理，上确界 $L=\sup\{a_n:n\in\Nplus\}$ 存在。对任意 $\varepsilon>0$，由上确界的性质，存在下标 $n_0\in\Nplus$，使得 $a_{n_0}>L-\varepsilon$。
+
+因为 $\{a_n\}$ 单调递增且 $L$ 为上界，所以当 $n\ge n_0$ 时有
 \[
 L-\varepsilon<a_{n_0}\le a_n\le L,
 \]
-故 $|a_n-L|<\varepsilon$，即 $a_n\to L$。
-对单调递减且有下界的数列，向 $\{-a_n\}$ 应用上述结论即可。
+从而 $|a_n-L|<\varepsilon$，即 $a_n\to L$。对于单调递减且有下界的数列，只需对 $\{-a_n\}$ 应用上述结论即可。
 \end{proof}
+
+下面通过几类典型例题说明单调有界定理的应用，包括级数部分和的敛散性判别、递推数列求极限、确界点的数列刻画以及重要常数 $e$ 的构造。
 
 \begin{example}[$p$ 级数的敛散性]
 设 $s_n=\sum_{k=1}^{n}k^{-\alpha}$，其中 $\alpha\in\R$。
 当 $\alpha>1$ 时，$\{s_n\}$ 收敛；当 $\alpha\le1$ 时，$s_n\to+\infty$。
 \end{example}
 \begin{proof}
-$s_n$ 严格递增。若 $\alpha>1$，把正整数按
-$[2^j,2^{j+1}-1]$ 分组，则第 $j$ 组之和不超过
-$2^j(2^j)^{-\alpha}=2^{-j(\alpha-1)}$。
-令 $q=2^{1-\alpha}<1$，由有限等比和公式，任一部分和都不超过
-$1/(1-q)$，故 $\{s_n\}$ 有上界，因而收敛。
-若 $\alpha\le1$，则 $k^{-\alpha}\ge k^{-1}$。调和级数的第 $j$ 组
-$\sum_{k=2^j}^{2^{j+1}-1}k^{-1}\ge\frac12$，故其部分和无上界，
-从而 $s_n\to+\infty$。
-特别地，当 $\alpha=2$ 时，还可直接估计
+由于各项均为正数，$\{s_n\}$ 严格递增，故其收敛当且仅当它有上界。
+
+先考虑 $\alpha>1$ 的情形。将正整数按区间 $[2^j,2^{j+1}-1]$（$j=0,1,2,\ldots$）分组，第 $j$ 组共有 $2^j$ 项，每项都不超过 $(2^j)^{-\alpha}$，因而第 $j$ 组之和不超过 $2^j(2^j)^{-\alpha}=2^{-j(\alpha-1)}$。令 $q=2^{1-\alpha}\in(0,1)$，由有限等比数列求和公式可知，任一部分和 $s_n$ 都不超过 $1/(1-q)$，故 $\{s_n\}$ 有上界，从而收敛。
+
+再考虑 $\alpha\le1$ 的情形。此时对一切 $k\in\Nplus$ 均有 $k^{-\alpha}\ge k^{-1}$。对调和级数同样按 $[2^j,2^{j+1}-1]$ 分组，每组有 $2^j$ 项且每项不小于 $2^{-(j+1)}$，于是第 $j$ 组之和满足
+\[
+\sum_{k=2^j}^{2^{j+1}-1}\frac1k\ge 2^j\cdot\frac1{2^{j+1}}=\frac12.
+\]
+由此可知调和级数的部分和无上界，进而 $\{s_n\}$ 也无上界；结合其单调递增性，便有 $s_n\to+\infty$。
+
+特别地，当 $\alpha=2$ 时，不必分组也可通过裂项直接给出上界估计：
 \[
 1+\sum_{k=2}^{n}\frac1{k^2}
 <1+\sum_{k=2}^{n}\frac1{k(k-1)}
@@ -93,78 +99,82 @@ $\sum_{k=2^j}^{2^{j+1}-1}k^{-1}\ge\frac12$，故其部分和无上界，
 \]
 \end{proof}
 
-\newpage
+对于由递推关系给出的数列，单调有界定理通常用来先确立极限的存在性，再对递推式两边取极限以求出极限值。
+
 \begin{example}[递推根式]
 令 $a_1=\sqrt2$，$a_{n+1}=\sqrt{2+a_n}$。求 $\lim_{n\to\infty}a_n$。
 \end{example}
 \begin{proof}
-由归纳法，$0<a_n<2$：初始项满足此式，且 $0<a_n<2$ 时
-$0<a_{n+1}=\sqrt{2+a_n}<2$。又
+先用数学归纳法证明对一切 $n\in\Nplus$ 均有 $0<a_n<2$。当 $n=1$ 时，$0<\sqrt2<2$ 成立；若 $0<a_n<2$，则 $0<a_{n+1}=\sqrt{2+a_n}<\sqrt4=2$，归纳完成。
+
+再验证单调性。由于各项均为正数，有
 \[
 a_{n+1}>a_n
 \quad\Longleftrightarrow\quad
 2+a_n>a_n^2
 \quad\Longleftrightarrow\quad
-(2-a_n)(a_n+1)>0.
+(2-a_n)(a_n+1)>0,
 \]
-故数列递增且有上界，设其极限为 $A$。由平方根的极限性质，
-$A=\sqrt{2+A}$，故 $A\in\{2,-1\}$。由于 $A\ge a_1=\sqrt2>0$，所以 $A=2$。
+由 $0<a_n<2$ 可知右端恒成立，故 $\{a_n\}$ 严格递增。
+
+由单调有界定理，$\{a_n\}$ 收敛，设其极限为 $A$。对递推式两端取极限，利用平方根的极限性质得 $A=\sqrt{2+A}$，解得 $A=2$ 或 $A=-1$。又因 $a_n\ge a_1=\sqrt2>0$，由保序性知 $A\ge\sqrt2>0$，因此 $A=2$。
 \end{proof}
 
 \begin{example}[从集合中取趋于上确界的递增数列]
 设 $S\subset\R$ 非空、有上界，$a=\sup S$，且 $a\notin S$。
-则存在严格递增的 $\{x_n\}\subset S$，使 $x_n\to a$。
+则存在严格递增的数列 $\{x_n\}\subset S$，使 $x_n\to a$。
 \end{example}
 \begin{proof}
-先取 $x_1\in S$，使 $a-1<x_1<a$。已取 $x_n$ 后，因
-$\max\{x_n,a-1/(n+1)\}<a$，由上确界的性质可取 $x_{n+1}\in S$，使
+利用上确界的性质逐步构造数列，每一步同时兼顾严格递增与逼近上确界。由 $a=\sup S$ 且 $a\notin S$，先取 $x_1\in S$，使 $a-1<x_1<a$。
+
+设已取到 $x_n\in S$ 且满足 $x_n<a$，则 $\max\{x_n,a-1/(n+1)\}<a$。再由上确界的性质，可取 $x_{n+1}\in S$，使
 \[
-x_{n+1}>\max\left\{x_n,a-\frac1{n+1}\right\}.
+\max\left\{x_n,a-\frac1{n+1}\right\}<x_{n+1}<a.
 \]
-于是 $\{x_n\}$ 严格递增，且 $a-1/n<x_n<a$ 对一切 $n$ 成立，
-故 $x_n\to a$。
+如此构造出的数列 $\{x_n\}\subset S$ 严格递增，且对一切 $n\in\Nplus$ 都有 $a-1/n<x_n<a$，由夹逼定理即得 $x_n\to a$。
 \end{proof}
 
-\newpage
+单调有界定理还可用于确立分析学中最重要的常数之一，即自然常数 $e$ 的存在性。
+
 \begin{example}[数列 $\bigl(1+\frac1n\bigr)^n$]
-令 $b_n=(1+1/n)^n$。则 $\{b_n\}$ 严格递增且有上界，记
+令 $b_n=(1+1/n)^n$。证明 $\{b_n\}$ 严格递增且有上界，从而极限
 \[
-e:=\lim_{n\to\infty}\left(1+\frac1n\right)^n.
+e:=\lim_{n\to\infty}\left(1+\frac1n\right)^n
 \]
+存在。
 \end{example}
 \begin{proof}
-二项式展开给出
+将 $b_n$ 按二项式定理展开并整理系数，可得
 \[
 b_n=2+\sum_{k=2}^{n}\frac1{k!}
 \prod_{j=1}^{k-1}\left(1-\frac jn\right).
 \]
-对固定的 $k\ge2$，当 $n$ 增加时，上式中的每个因子严格增加，
-且 $b_{n+1}$ 比 $b_n$ 多一个正项，所以 $b_{n+1}>b_n$。
-另一方面，对 $n\ge2$，
+先证严格递增性：对固定的 $k\ge2$，当 $n$ 增大时，乘积中的每个正因子 $1-j/n$ 都严格增大；与此同时，$b_{n+1}$ 的展开式比 $b_n$ 还多出一个正项，因此 $b_{n+1}>b_n$。
+
+再证有上界：对所有 $n\ge2$，将每个因子 $1-j/n$ 放缩为 $1$，并利用 $k!\ge k(k-1)$，有
 \[
 b_n<2+\sum_{k=2}^{n}\frac1{k!}
 \le2+\sum_{k=2}^{n}\frac1{k(k-1)}
 =3-\frac1n<3.
 \]
-$b_1=2$ 也有上界 $3$，故由单调有界定理，极限 $e$ 存在。
+由于 $b_1=2<3$，整个数列以 $3$ 为上界。由单调有界定理可知，极限 $e$ 存在。
 \end{proof}
 
-这个极限也可用于相应的实数列。若 $t_n>0$ 且 $t_n\to+\infty$，则
-$\bigl(1+1/t_n\bigr)^{t_n}\to e$。事实上，取
-$m_n=\lfloor t_n\rfloor$，当 $m_n\ge1$ 时有
+上述极限可以进一步推广到一般的实数列。若 $t_n>0$ 且 $t_n\to+\infty$，则 $\bigl(1+1/t_n\bigr)^{t_n}\to e$。事实上，取 $m_n=\lfloor t_n\rfloor$，当 $n$ 充分大时有 $m_n\ge1$ 且 $m_n\le t_n<m_n+1$，于是
 \[
 \left(1+\frac1{m_n+1}\right)^{m_n}
 \le\left(1+\frac1{t_n}\right)^{t_n}
-\le\left(1+\frac1{m_n}\right)^{m_n+1},
+\le\left(1+\frac1{m_n}\right)^{m_n+1}.
 \]
-两侧均趋于 $e$。由此，若 $u_n\to0$，且 $u_n>-1$、$u_n\ne0$，
-则 $\bigl(1+u_n\bigr)^{1/u_n}\to e$。其中 $u_n>0$ 的项令
-$t_n=1/u_n$；$u_n<0$ 的项令 $t_n=-1/u_n$，并用
+因为 $m_n\to+\infty$，左右两端均趋于 $e$，由夹逼定理即得 $\bigl(1+1/t_n\bigr)^{t_n}\to e$。
+
+由此还可推出：若 $u_n\to0$，且对所有 $n$ 都有 $u_n>-1$ 及 $u_n\ne0$，则 $\bigl(1+u_n\bigr)^{1/u_n}\to e$。对 $u_n>0$ 的项，令 $t_n=1/u_n\to+\infty$ 即可直接套用前式；对 $u_n<0$ 的项，令 $t_n=-1/u_n\to+\infty$，利用恒等式
 \[
 \left(1-\frac1{t_n}\right)^{-t_n}
 =\left(1+\frac1{t_n-1}\right)^{t_n-1}
-\left(1+\frac1{t_n-1}\right).
+\left(1+\frac1{t_n-1}\right)
 \]
+可知这部分项同样趋于 $e$，从而整个数列趋于 $e$。
 
 \begin{example}[$1^\infty$ 型极限]
 求下列极限：
@@ -173,39 +183,34 @@ $t_n=1/u_n$；$u_n<0$ 的项令 $t_n=-1/u_n$，并用
 \qquad
 \text{（2）}\ \lim_{n\to\infty}\left(1-\frac2n\right)^n.
 \]
-第二个数列从 $n\ge3$ 起讨论。
+其中第二个数列从 $n\ge3$ 起讨论。
 \end{example}
 \begin{proof}[解]
-为利用前面的极限，将原式写成以 $(1+u_n)^{1/u_n}$ 为底、
-以 $v_nu_n$ 为指数的幂。更一般地，若
-$u_n\to0$、$1+u_n>0$ 且 $v_nu_n\to c\in\R$，则
+为应用前面的结论，先建立一般情形：若 $u_n\to0$、$1+u_n>0$ 且 $v_nu_n\to c\in\R$，则
 \[
 (1+u_n)^{v_n}\longrightarrow e^c.
 \]
-当 $u_n\ne0$ 时，由
+事实上，对 $u_n\ne0$ 的项，可将通项改写为
 \[
 (1+u_n)^{v_n}
-=\left[(1+u_n)^{1/u_n}\right]^{v_nu_n}
+=\left[(1+u_n)^{1/u_n}\right]^{v_nu_n}.
 \]
-得此结论，其中引用实数幂的极限性质：
-若 $x_n>0$、$x_n\to x>0$ 且 $y_n\to y$，则 $x_n^{y_n}\to x^y$。
-若 $u_n=0$ 的项有无穷多个，则
-$v_nu_n\to c$ 必有 $c=0$，而这些项的幂恒为 $1=e^0$，结论仍成立。
+由实数幂的极限性质（若 $x_n>0$、$x_n\to x>0$ 且 $y_n\to y$，则 $x_n^{y_n}\to x^y$），这部分项趋于 $e^c$。若存在无穷多个使 $u_n=0$ 的项，则由 $v_nu_n\to c$ 必有 $c=0$，而这些项的值恒为 $1=e^0$，结论依然成立。
 
-\textbf{（1）} 取 $u_n=1/(2n^2+n)$、$v_n=n^2$，则
+\textbf{（1）} 取 $u_n=1/(2n^2+n)$、$v_n=n^2$，则 $u_n\to0$ 且
 \[
 v_nu_n=\frac{n^2}{2n^2+n}=\frac1{2+1/n}\longrightarrow\frac12,
 \]
 故所求极限为 $e^{1/2}$。
 
-\textbf{（2）} 取 $u_n=-2/n$、$v_n=n$，则 $v_nu_n=-2$，
-故所求极限为 $e^{-2}$。
+\textbf{（2）} 取 $u_n=-2/n$、$v_n=n$，则 $u_n\to0$ 且 $v_nu_n=-2$，故所求极限为 $e^{-2}$。
 \end{proof}
 
 \subsection*{子列与收敛}
-从一个数列中按原来的先后顺序选取无穷多项，就得到它的一个子列。
+单调有界定理要求数列整体单调，而一般的有界数列往往会在一定范围内往复振荡。为了刻画这类数列的极限行为，需要从原数列中抽取局部序列，即引入子列的概念。
+
 \begin{definition}[子列]
-若 $n_1<n_2<\cdots$ 是严格递增的正整数列，则
+若 $n_1<n_2<\cdots$ 是严格递增的正整数列，则按原顺序抽取得到的数列
 $\{a_{n_k}\}_{k=1}^{\infty}$ 称为 $\{a_n\}$ 的一个\textbf{子列}。
 \end{definition}
 
@@ -213,19 +218,13 @@ $\{a_{n_k}\}_{k=1}^{\infty}$ 称为 $\{a_n\}$ 的一个\textbf{子列}。
 若 $a_n\to a$，则 $\{a_n\}$ 的每个子列都收敛于 $a$。
 \end{proposition}
 \begin{proof}
-任取 $\varepsilon>0$，存在 $N\in\Nplus$，使 $n>N$ 时
-$|a_n-a|<\varepsilon$。由于 $n_k\ge k$，当 $k>N$ 时也有
-$n_k>N$，从而 $|a_{n_k}-a|<\varepsilon$。故 $a_{n_k}\to a$。
+任取 $\varepsilon>0$，由 $a_n\to a$ 可知存在 $N\in\Nplus$，使当 $n>N$ 时有 $|a_n-a|<\varepsilon$。因为 $\{n_k\}$ 是严格递增的正整数列，对一切 $k\in\Nplus$ 均有 $n_k\ge k$，所以当 $k>N$ 时也有 $n_k>N$，从而 $|a_{n_k}-a|<\varepsilon$，故 $a_{n_k}\to a$。
 \end{proof}
 
-反过来，一个子列收敛不能保证原数列收敛。例如 $a_n=(-1)^n$ 的
-偶数项子列恒为 $1$，奇数项子列恒为 $-1$，两者的极限不同，
-所以原数列不收敛。若一个数列的每个子列都收敛于同一个数 $a$，
-则原数列也收敛于 $a$，因为原数列本身就是它的一个子列。
+反过来，仅有一个子列收敛并不能保证原数列收敛。例如数列 $a_n=(-1)^n$ 的偶数项子列恒为 $1$，奇数项子列恒为 $-1$，两者虽各自收敛但极限不同，因此原数列不收敛。另一方面，若一个数列的每个子列都收敛于同一个数 $a$，则原数列本身也必收敛于 $a$，因为原数列就是自身的一个子列。
 
 \subsection*{有界数列的收敛子列}
-有界数列是否一定含有收敛子列？单调有界定理提供了一条思路：
-先从有界数列中选出单调子列，再用该定理说明它收敛。
+有界数列虽未必收敛，但是否一定含有收敛子列？结合单调有界定理，一条自然的思路是先从任意实数列中抽取一个单调子列，再在有界条件下得出该子列收敛。
 
 \begin{lemma}[单调子列]
 每个实数列都含有一个单调子列。
@@ -233,36 +232,29 @@ $n_k>N$，从而 $|a_{n_k}-a|<\varepsilon$。故 $a_{n_k}\to a$。
 \begin{proof}
 考察满足以下条件的下标 $n$：
 \[
-a_n\ge a_m\qquad\text{对所有 }m>n.
+a_n\ge a_m\qquad\text{对所有 }m>n,
 \]
-也就是说，第 $n$ 项不小于它后面的任何一项。分两种情形讨论。
+即第 $n$ 项不小于其后的任何一项。按此类下标的个数分两种情形讨论。
 
-\textbf{（1）这样的下标有无穷多个。}
-将它们按从小到大的顺序记为 $n_1<n_2<\cdots$，则
-$a_{n_1}\ge a_{n_2}\ge\cdots$，得到单调递减子列。
+\textbf{（1）这样的下标有无穷多个。} 将它们按从小到大的顺序记为 $n_1<n_2<\cdots$。对每个 $k\in\Nplus$，由于 $n_{k+1}>n_k$，由下标的选取条件便有 $a_{n_k}\ge a_{n_{k+1}}$，于是得到单调递减子列 $\{a_{n_k}\}$。
 
-\textbf{（2）这样的下标只有有限多个，或一个也没有。}
-取 $N$，使所有 $n>N$ 都不满足上述条件。因此，对每个 $n>N$，
-都存在 $m>n$，使 $a_m>a_n$。先取 $n_1>N$，再依次取
-$n_{k+1}>n_k$，使 $a_{n_{k+1}}>a_{n_k}$，
-就得到严格递增子列。
+\textbf{（2）这样的下标只有有限多个，或一个也没有。} 此时存在正整数 $N$，使一切 $n>N$ 都不满足上述条件；换言之，对每个 $n>N$，都存在 $m>n$ 使 $a_m>a_n$。先任取 $n_1>N$，再依次取 $n_{k+1}>n_k$ 使 $a_{n_{k+1}}>a_{n_k}$，就得到严格递增子列 $\{a_{n_k}\}$。
 \end{proof}
+
+由上述引理与单调有界定理，立即得到实数系中的基本定理。
 
 \begin{theorem}[致密性定理（魏尔斯特拉斯定理）]
 每个有界实数列都含有一个收敛子列。
 \end{theorem}
 \begin{proof}
-由单调子列引理，原数列含有一个单调子列。选出的子列仍然有界，
-所以由单调有界定理，这个子列收敛。
+由单调子列引理，原数列含有一个单调子列。因为原数列有界，所选出的子列依然有界，再由单调有界定理可知该子列收敛。
 \end{proof}
 
-\newpage
 \subsection*{闭区间套与另一种子列构造}
-对于有界数列，还可以通过逐次缩小区间来选出收敛子列。
-为说明这种构造，先介绍闭区间套的性质。
+对于有界数列，除了先选单调子列，还可以借助二分法逐次缩小区间来构造收敛子列。为使这一构造严谨成立，先介绍闭区间套的概念与性质。
 
 \begin{definition}[闭区间套]
-设 $I_n=[\alpha_n,\beta_n]$ 是非空闭区间。若
+设 $I_n=[\alpha_n,\beta_n]$（$n\in\Nplus$）是一列非空闭区间。若满足
 \[
 I_1\supseteq I_2\supseteq\cdots,\qquad
 \beta_n-\alpha_n\longrightarrow0,
@@ -271,170 +263,133 @@ I_1\supseteq I_2\supseteq\cdots,\qquad
 \end{definition}
 
 \begin{proposition}[闭区间套定理]
-若 $\{[\alpha_n,\beta_n]\}$ 为闭区间套，则存在唯一的实数 $\xi$，
+若 $\{[\alpha_n,\beta_n]\}$ 为闭区间套，则存在唯一的实数 $\xi$
 属于其中的每一个区间，即
 \[
-\bigcap_{n=1}^{\infty}[\alpha_n,\beta_n]=\{\xi\}.
+\bigcap_{n=1}^{\infty}[\alpha_n,\beta_n]=\{\xi\},
 \]
 并且 $\alpha_n\to\xi$、$\beta_n\to\xi$。
 \end{proposition}
 \begin{proof}
-由区间的包含关系，$\{\alpha_n\}$ 单调递增，且以 $\beta_1$ 为上界。
-令 $\xi=\sup\{\alpha_n:n\in\Nplus\}$，则 $\alpha_n\to\xi$。
+先利用单调有界定理构造公共点。由区间嵌套关系可知，左端点列 $\{\alpha_n\}$ 单调递增，且以 $\beta_1$ 为上界，故收敛；令 $\xi=\sup\{\alpha_n:n\in\Nplus\}$，则 $\alpha_n\to\xi$。
 
-对任意固定的 $n$，$\beta_n$ 都是所有左端点的上界：
-若 $k\le n$，则 $\alpha_k\le\alpha_n\le\beta_n$；
-若 $k>n$，则 $I_k\subseteq I_n$，仍有 $\alpha_k\le\beta_n$。
-故 $\alpha_n\le\xi\le\beta_n$，即 $\xi$ 属于每个区间。
-又
+再证 $\xi$ 属于每个区间且 $\beta_n\to\xi$。对任意固定的 $n$，若 $k\le n$ 则 $\alpha_k\le\alpha_n\le\beta_n$，若 $k>n$ 则由 $I_k\subseteq I_n$ 仍有 $\alpha_k\le\beta_n$，因此 $\beta_n$ 是全体左端点的上界，从而 $\alpha_n\le\xi\le\beta_n$，即 $\xi\in I_n$。进一步地，
 \[
 0\le\beta_n-\xi\le\beta_n-\alpha_n\longrightarrow0,
 \]
-所以 $\beta_n\to\xi$。
+故 $\beta_n\to\xi$。
 
-若 $\eta$ 也属于每个区间，则
-$|\eta-\xi|\le\beta_n-\alpha_n$ 对所有 $n$ 成立。
-令 $n\to\infty$，得 $\eta=\xi$，故公共点唯一。
+最后证唯一性。若实数 $\eta$ 也属于每一个 $I_n$，则对一切 $n\in\Nplus$ 均有 $|\eta-\xi|\le\beta_n-\alpha_n$。令 $n\to\infty$，即得 $\eta=\xi$，故公共点唯一。
 \end{proof}
 
-闭性与长度趋于零各有作用。嵌套开区间 $(0,1/n)$ 的交集为空；
-嵌套闭区间 $[0,1+1/n]$ 的长度不趋于零，其交集为 $[0,1]$，公共点不唯一。
+闭区间套定理中的“闭区间”与“长度趋于零”两个条件缺一不可：嵌套开区间 $(0,1/n)$ 的交集为空集，而嵌套闭区间 $[0,1+1/n]$ 的长度不趋于零，其交集为 $[0,1]$，公共点并不唯一。
+
+下面用闭区间套定理给出致密性定理的另一种证明。
 
 \begin{proof}[致密性定理的另一种证明]
-设 $\{a_n\}$ 有界，取闭区间 $I_1=[\alpha_1,\beta_1]$，
-使所有数列项都属于 $I_1$。若 $\alpha_1=\beta_1$，
-则原数列为常数列，结论成立。以下设 $\alpha_1<\beta_1$。
+设 $\{a_n\}$ 有界，取闭区间 $I_1=[\alpha_1,\beta_1]$ 使所有数列项都落在 $I_1$ 中。若 $\alpha_1=\beta_1$，则原数列为常数列，结论显然成立；以下设 $\alpha_1<\beta_1$。
 
-将 $I_1$ 二等分为两个闭区间，其中至少有一个包含无穷多个数列项，
-否则两个区间都只包含有限多个数列项，与原数列有无穷多项矛盾。
-选取这样的一个区间作为 $I_2$。依次二等分并选取，可得
+先构造一个闭区间套。将 $I_1$ 二等分为两个闭区间，其中至少有一个包含无穷多个数列项，否则两个半区间合起来只包含有限多项，与数列有无穷多项矛盾。选取这样的一个半区间记作 $I_2$，再依次对所得区间二等分并选取包含无穷多项的一半，便得到区间列 $\{I_k\}$，满足
 \[
 I_1\supseteq I_2\supseteq\cdots,\qquad
 \beta_k-\alpha_k=\frac{\beta_1-\alpha_1}{2^{k-1}}\longrightarrow0.
 \]
-这里“包含无穷多个数列项”是指落在区间内的项具有无穷多个下标，
-这些项的值可以相同。由闭区间套定理，存在唯一的公共点 $\xi$。
+需要说明的是，“包含无穷多个数列项”是指落在区间内的项对应着无穷多个下标，这些项的取值允许重复。由闭区间套定理，存在唯一的公共点 $\xi\in\bigcap_{k=1}^{\infty}I_k$。
 
-每个 $I_k$ 内都有无穷多个下标对应的项，因而删去任意有限个下标后，
-仍能在其中选取一项。于是可以依次选取 $n_1<n_2<\cdots$，
-使 $a_{n_k}\in I_k$。由于 $\xi\in I_k$，有
+再从各区间依次抽取子列。由于每个 $I_k$ 中都有无穷多个下标对应的项，删去任意有限个下标后，仍能在其中找到一项。于是可依次选取严格递增的下标 $n_1<n_2<\cdots$，使得 $a_{n_k}\in I_k$。因为 $\xi$ 与 $a_{n_k}$ 同属于 $I_k$，故
 \[
-|a_{n_k}-\xi|\le\beta_k-\alpha_k\longrightarrow0.
+|a_{n_k}-\xi|\le\beta_k-\alpha_k\longrightarrow0,
 \]
-故 $a_{n_k}\to\xi$，得到一个收敛子列。
+由此得 $a_{n_k}\to\xi$，即找到了一个收敛子列。
 \end{proof}
 
-\newpage
 \subsection*{无上界数列的子列}
-上面讨论了有界数列。对于无上界的数列，也可以通过选取子列来描述
-它的取值特点。
+前面讨论了有界数列的子列性质。对于无上界的数列，同样可以通过子列来刻画它的无界行为。
 
 \begin{proposition}
 实数列 $\{a_n\}$ 无上界，当且仅当它含有一个趋于 $+\infty$ 的子列。
 \end{proposition}
 \begin{proof}
-先设 $\{a_n\}$ 无上界。去掉有限个初始项后，余下的数列仍无上界；
-否则，将余下数列的上界与这些初始项的最大值比较，就能得到原数列的
-上界，产生矛盾。
+先证必要性，设 $\{a_n\}$ 无上界。注意到去掉任意有限个初始项后，余下的数列仍无上界；否则将余下数列的上界与所去掉各项的最大值取较大者，就能得到原数列的上界，产生矛盾。
 
-因此，可先取 $n_1$，使 $a_{n_1}>1$；已取 $n_k$ 后，再从
-$n>n_k$ 的项中取 $n_{k+1}$，使 $a_{n_{k+1}}>k+1$。
-这样得到 $n_1<n_2<\cdots$，且 $a_{n_k}>k$，
-故 $a_{n_k}\to+\infty$。
+据此可先取下标 $n_1$，使 $a_{n_1}>1$；设已取到 $n_k$，由于 $n>n_k$ 的余下各项仍无上界，故可取 $n_{k+1}>n_k$，使 $a_{n_{k+1}}>k+1$。如此得到严格递增下标列 $n_1<n_2<\cdots$，满足 $a_{n_k}>k$，因而 $a_{n_k}\to+\infty$。
 
-反过来，若某个子列趋于 $+\infty$，则对任意 $M\in\R$，
-该子列中总有一项大于 $M$。它也是原数列的一项，故原数列无上界。
+再证充分性。若某个子列 $\{a_{n_k}\}$ 趋于 $+\infty$，则对任意 $M\in\R$，该子列中总存在一项大于 $M$；该项也是原数列的一项，故 $\{a_n\}$ 无上界。
 \end{proof}
 
-对 $\{-a_n\}$ 应用上述结论，可得：$\{a_n\}$ 无下界，当且仅当
-它含有一个趋于 $-\infty$ 的子列。
-这里趋于无穷的是选出的子列，原数列的其他项仍可能有不同的变化情形。
-例如 $a_{2k}=k$、$a_{2k-1}=0$ 的数列无上界，但原数列并不趋于 $+\infty$。
+对 $\{-a_n\}$ 应用上述命题即得：$\{a_n\}$ 无下界，当且仅当它含有一个趋于 $-\infty$ 的子列。需要注意的是，这里趋于无穷的是所选出的子列，原数列的其他项仍可能有不同的变化方式。例如由 $a_{2k}=k$、$a_{2k-1}=0$ 定义的数列无上界，但其本身并不趋于 $+\infty$。
 
 \subsection*{柯西收敛准则}
-前面的讨论着眼于选出的子列。要判断整个数列是否收敛，还需要考察
-所有充分靠后的项。判断收敛时，不一定要先知道极限值；
-柯西条件直接比较这些项之间的差。
+致密性定理保证有界数列存在收敛子列，但要判断整个数列是否收敛，还需要考察所有充分靠后的项之间的接近程度。柯西收敛准则正是通过比较数列自身各项之差，给出不依赖极限值的充要条件。
 
 \begin{definition}[柯西列]
-若实数列 $\{a_n\}$ 满足：对任意 $\varepsilon>0$，
-存在 $N\in\Nplus$，使对所有 $m,n>N$ 都有
+若实数列 $\{a_n\}$ 满足：对任意 $\varepsilon>0$，存在 $N\in\Nplus$，使得对所有 $m,n>N$ 都有
 \[
 |a_m-a_n|<\varepsilon,
 \]
 则称 $\{a_n\}$ 为\textbf{柯西列}，也称它满足\textbf{柯西条件}。
 \end{definition}
 
-柯西条件也可等价地写为
+柯西条件也可等价地写成
 \[
 \forall\varepsilon>0,\ \exists N\in\Nplus,\quad
 \forall n>N,\ \forall p\in\Nplus,\quad
 |a_{n+p}-a_n|<\varepsilon.
 \]
-事实上，两种写法的差别只是将较大的下标写成较小的下标加上 $p$；
-两下标相同时，差为零。这里选定的 $N$ 要同时适用于所有正整数 $p$，
-不能随着 $p$ 改变。因此，柯西条件不能简化为只检查相邻两项之差。
+事实上，两种写法的差别仅在于将较大的下标表示为较小下标加上正整数 $p$（两下标相等时差为零）。这里所取的 $N$ 必须同时适用于一切正整数 $p$，不能随 $p$ 变化，因此柯西条件不能简化为只检验相邻两项之差。
 
-\newpage
 \begin{theorem}[柯西收敛准则]
 实数列收敛的充要条件是它为柯西列。
 \end{theorem}
-这里收敛指收敛于有限实数，趋于 $+\infty$ 或 $-\infty$ 都属于发散。
+这里收敛指收敛于有限实数，趋于 $+\infty$ 或 $-\infty$ 均属于发散。
 \begin{proof}
-\textbf{必要性。} 设 $a_n\to a$。任取 $\varepsilon>0$，
-存在 $N$，使 $n>N$ 时 $|a_n-a|<\varepsilon/2$。
-当 $m,n>N$ 时，
+\textbf{必要性。} 设 $a_n\to a$。任取 $\varepsilon>0$，存在 $N\in\Nplus$，使当 $n>N$ 时 $|a_n-a|<\varepsilon/2$。于是对任意 $m,n>N$，由三角不等式得
 \[
 |a_m-a_n|\le|a_m-a|+|a_n-a|
 <\frac{\varepsilon}{2}+\frac{\varepsilon}{2}
-=\varepsilon.
+=\varepsilon,
 \]
 故 $\{a_n\}$ 为柯西列。
 
-\textbf{充分性。} 设 $\{a_n\}$ 为柯西列。先证明它有界，再选出一个
-收敛子列，最后说明原数列也趋于这个子列的极限。
+\textbf{充分性。} 设 $\{a_n\}$ 为柯西列。证明分三步进行：先证 $\{a_n\}$ 有界，再借助致密性定理选出一个收敛子列，最后说明原数列收敛于该子列的极限。
 
-取 $\varepsilon=1$，存在 $N_0$，使 $m,n>N_0$ 时
-$|a_m-a_n|<1$。固定 $m=N_0+1$，则当 $n>N_0$ 时，
+第一步，证有界性。在柯西条件中取 $\varepsilon=1$，则存在 $N_0\in\Nplus$，使当 $m,n>N_0$ 时 $|a_m-a_n|<1$。固定 $m=N_0+1$，则对所有 $n>N_0$ 都有
 \[
 |a_n|\le|a_n-a_{N_0+1}|+|a_{N_0+1}|
 <1+|a_{N_0+1}|.
 \]
-取
+令
 \[
 M=\max\bigl\{|a_1|,\ldots,|a_{N_0}|,\,
 1+|a_{N_0+1}|\bigr\},
 \]
-便有 $|a_n|\le M$ 对所有 $n$ 成立，故 $\{a_n\}$ 有界。
-由致密性定理，存在子列 $\{a_{n_k}\}$ 收敛于某个 $a\in\R$。
+便有 $|a_n|\le M$ 对一切 $n\in\Nplus$ 成立，故 $\{a_n\}$ 有界。
 
-任取 $\varepsilon>0$。由柯西条件，存在 $N_1$，使 $m,n>N_1$ 时
-$|a_m-a_n|<\varepsilon/2$。由 $a_{n_k}\to a$ 及 $n_k\to\infty$，
-可取一个固定的 $k_0$，使
+第二步，取收敛子列。由致密性定理，$\{a_n\}$ 存在一个子列 $\{a_{n_k}\}$ 收敛于某个实数 $a\in\R$。
+
+第三步，证 $a_n\to a$。任取 $\varepsilon>0$，由柯西条件存在 $N_1\in\Nplus$，使当 $m,n>N_1$ 时有 $|a_m-a_n|<\varepsilon/2$。再由 $a_{n_k}\to a$ 及 $n_k\to\infty$，可固定一个充分大的下标 $k_0$，同时满足
 \[
 n_{k_0}>N_1,\qquad |a_{n_{k_0}}-a|<\frac{\varepsilon}{2}.
 \]
-当 $n>N_1$ 时，
+于是当 $n>N_1$ 时，有
 \[
 |a_n-a|\le|a_n-a_{n_{k_0}}|+|a_{n_{k_0}}-a|
 <\frac{\varepsilon}{2}+\frac{\varepsilon}{2}
-=\varepsilon.
+=\varepsilon,
 \]
 故 $a_n\to a$。
 \end{proof}
 
-将柯西条件取否定，就得到数列不收敛的充要条件：
+将柯西条件取否定，即得数列不收敛的充要条件：
 \[
 \exists\varepsilon_0>0,\ \forall N\in\Nplus,\quad
 \exists m,n>N,\quad |a_m-a_n|\ge\varepsilon_0.
 \]
-也就是说，无论下标取得多大，总能找到更靠后的两项，
-使它们之间的距离不小于某个固定的正数。
-等价地，可以选取两列下标 $m_j\to\infty$、$n_j\to\infty$，
-使 $|a_{m_j}-a_{n_j}|\ge\varepsilon_0$ 对所有 $j$ 成立。
+也就是说，无论下标取得多大，总能在其后找到两项，使它们之间的距离不小于某个固定的正数 $\varepsilon_0$。等价地，可以构造两列趋于无穷的下标 $m_j\to\infty$、$n_j\to\infty$，使得 $|a_{m_j}-a_{n_j}|\ge\varepsilon_0$ 对一切 $j$ 成立。
 
-\newpage
 \subsection*{柯西准则的应用}
+柯西收敛准则既适用于证明难以直接写出极限值的数列收敛，也适用于通过否定形式判定数列发散。
+
 \begin{example}[无限小数的截断值]
 设每个 $d_k$ 都是 $0,1,\ldots,9$ 中的一个数字，令
 \[
@@ -443,8 +398,7 @@ t_n=\frac{d_1}{10}+\frac{d_2}{10^2}+\cdots+\frac{d_n}{10^n}.
 证明 $\{t_n\}$ 收敛，并说明 $0.999\ldots=1$。
 \end{example}
 \begin{proof}
-任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。
-对任意 $n>N$ 及任意 $p\in\Nplus$，
+任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。对任意 $n>N$ 及任意 $p\in\Nplus$，有
 \begin{align*}
 |t_{n+p}-t_n|
 &=\sum_{k=n+1}^{n+p}\frac{d_k}{10^k}
@@ -452,27 +406,24 @@ t_n=\frac{d_1}{10}+\frac{d_2}{10^2}+\cdots+\frac{d_n}{10^n}.
 &=\frac1{10^n}\left(1-\frac1{10^p}\right)
 <\frac1{10^n}<\frac1n<\varepsilon.
 \end{align*}
-故 $\{t_n\}$ 为柯西列，因而收敛。无限小数 $0.d_1d_2\cdots$
-表示的实数，就是这个截断值数列的极限。
+上述估计与 $p$ 无关，故 $\{t_n\}$ 为柯西列，从而收敛。无限小数 $0.d_1d_2\cdots$ 所表示的实数，正是这个截断值数列的极限。
 
 特别地，当每个 $d_k=9$ 时，
 \[
 t_n=\frac9{10}+\frac9{10^2}+\cdots+\frac9{10^n}
 =1-\frac1{10^n}\longrightarrow1,
 \]
-所以 $0.999\ldots=1$。
+因此 $0.999\ldots=1$。
 \end{proof}
 
-前面已经用单调有界定理讨论过平方倒数部分和与调和部分和。
-下面改用柯西准则，分别说明它们为什么收敛或不收敛。
+前面已经用单调有界定理讨论过平方倒数部分和与调和部分和的敛散性。下面改用柯西收敛准则分别加以证明，以展示如何通过控制 $|a_{n+p}-a_n|$ 或选取特定配对 $(n,2n)$ 来判定敛散。
 
 \begin{example}[平方倒数部分和]
 用柯西准则证明数列
 $s_n=\displaystyle\sum_{k=1}^{n}\frac1{k^2}$ 收敛。
 \end{example}
 \begin{proof}
-任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。
-对任意 $n>N$ 及任意 $p\in\Nplus$，有
+任取 $\varepsilon>0$，取正整数 $N>1/\varepsilon$。对任意 $n>N$ 及任意 $p\in\Nplus$，利用裂项放缩可得
 \begin{align*}
 |s_{n+p}-s_n|
 &=\sum_{k=n+1}^{n+p}\frac1{k^2}\\
@@ -481,34 +432,27 @@ $s_n=\displaystyle\sum_{k=1}^{n}\frac1{k^2}$ 收敛。
 &=\frac1n-\frac1{n+p}
 <\frac1n<\varepsilon.
 \end{align*}
-这里的上界 $1/n$ 与 $p$ 无关，故 $s_n$ 满足柯西条件，
-由柯西收敛准则可知它收敛。
+这里的上界 $1/n$ 与 $p$ 无关，故 $\{s_n\}$ 满足柯西条件，由柯西收敛准则可知它收敛。
 \end{proof}
 
-\newpage
 \begin{example}[调和部分和]
 用柯西准则证明数列
 $h_n=\displaystyle\sum_{k=1}^{n}\frac1k$ 不收敛。
 \end{example}
 \begin{proof}
-取 $\varepsilon_0=1/2$。对任意 $N\in\Nplus$，取 $n>N$，
-并令 $m=2n$，则
+取 $\varepsilon_0=1/2$。对任意 $N\in\Nplus$，任取 $n>N$ 并令 $m=2n$，则
 \[
 |h_{2n}-h_n|
 =\sum_{k=n+1}^{2n}\frac1k
 \ge n\cdot\frac1{2n}
 =\frac12.
 \]
-故 $\{h_n\}$ 不满足柯西条件，从而不收敛。
-又 $\{h_n\}$ 单调递增；若它有上界，则由单调有界定理必收敛，
-与上述结论矛盾。因此 $\{h_n\}$ 无上界，且 $h_n\to+\infty$。
+由此可知 $\{h_n\}$ 不满足柯西条件，因而不收敛。又因 $\{h_n\}$ 单调递增，若它有上界，则由单调有界定理必收敛，与上述结论矛盾；故 $\{h_n\}$ 无上界，从而 $h_n\to+\infty$。
 \end{proof}
 
-虽然调和部分和不收敛，但
+值得注意的是，虽然调和部分和不收敛，但相邻两项之差满足
 \[
 h_{n+1}-h_n=\frac1{n+1}\longrightarrow0.
 \]
-这说明相邻两项之差趋于零，仍不足以保证数列收敛。
-柯西条件要求同时控制充分靠后的任意两项之差，
-包括这里的第 $n$ 项与第 $2n$ 项之差。
+这表明仅凭相邻两项之差趋于零，不足以保证数列收敛；柯西条件要求的是同时控制充分靠后的任意两项之差，包括上例中的第 $n$ 项与第 $2n$ 项之差。
 \end{document}

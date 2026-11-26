@@ -47,7 +47,7 @@
 \maketitle
 
 \section{正弦函数的重要极限}
-当分子、分母同时趋于零时，四则运算法则不能直接给出商的极限。先比较 $\sin x$ 与 $x$ 的大小。
+当分子与分母同时趋于零时，极限的四则运算法则不再直接适用，需要借助函数本身的性质比较两者的相对大小。本节首先考察 $\sin x$ 与 $x$ 在原点附近的比值。
 
 \begin{theorem}
 角度采用弧度制时，有
@@ -56,27 +56,29 @@
 \]
 \end{theorem}
 \begin{proof}
-当 $0<x<\pi/2$ 时，在单位圆中比较内接三角形、扇形和外切三角形的面积，得到
+当 $0<x<\pi/2$ 时，在单位圆中依次比较圆心角为 $x$ 的内接三角形、扇形和外切三角形的面积，可得
 \[
- \frac12\sin x<\frac12x<\frac12\tan x.
+ \frac12\sin x<\frac12x<\frac12\tan x,
 \]
-因此 $\sin x<x<\tan x$，进而有
+即 $\sin x<x<\tan x$。将不等式各项同除以正数 $\sin x$ 并取倒数，便得到
 \[
  \cos x<\frac{\sin x}{x}<1.
 \]
-由于 $\cos x\to1$，利用夹逼定理可得右极限为 $1$。又因
+当 $x\to0^+$ 时，$\cos x\to1$，由夹逼定理可知右极限等于 $1$。
+
+另一方面，函数 $\sin x/x$ 为偶函数，满足
 \[
  \frac{\sin(-x)}{-x}=\frac{\sin x}{x},
 \]
-左极限也为 $1$，故双侧极限为 $1$。
+因此其左极限也等于 $1$，从而双侧极限为 $1$。
 \end{proof}
 
-若表达式 $u(x)\to0$，且在所讨论的趋近过程中最终非零，也可以把它整体看作上述极限中的自变量，从而得到
+一般而言，若在所讨论的趋近过程中有 $u(x)\to0$ 且 $u(x)$ 最终非零，便可以把 $u(x)$ 整体视为上述定理中的自变量，由此得到
 \[
  \frac{\sin u(x)}{u(x)}\to1,\qquad
  \frac{u(x)}{\sin u(x)}\to1.
 \]
-这里要求趋于零的是整个 $u(x)$，原来的自变量不一定趋于零。
+这里要求趋于零的是整个表达式 $u(x)$，而原来的自变量本身未必趋于零，下面两道例题正体现了这种换元思路。
 
 \begin{example}
 计算
@@ -86,12 +88,13 @@
 \]
 \end{example}
 \begin{proof}[解]
-第一式令 $t=\pi-x$，则 $t\to0$，并且 $\sin x=\sin(\pi-t)=\sin t$，故
+对于第一式，令 $t=\pi-x$；当 $x\to\pi$ 时有 $t\to0$，且 $\sin x=\sin(\pi-t)=\sin t$，故
 \[
  \lim_{x\to\pi}\frac{\sin x}{\pi-x}
  =\lim_{t\to0}\frac{\sin t}{t}=1.
 \]
-第二式令 $t=1/x$。当 $x\to+\infty$ 或 $x\to-\infty$ 时，都有 $t\to0$，因此
+
+对于第二式，令 $t=1/x$。无论 $x\to+\infty$ 还是 $x\to-\infty$，均有 $t\to0$，于是
 \[
  \lim_{x\to\infty}x\sin\frac1x
  =\lim_{t\to0}\frac{\sin t}{t}=1.
@@ -99,11 +102,11 @@
 \end{proof}
 
 \section{指数函数的重要极限}
-在数列收敛的判别中，我们已经得到
+在数列收敛性的讨论中，已经证明了
 \[
  a_n=\left(1+\frac1n\right)^n\longrightarrow e.
 \]
-现在把整数 $n$ 换成实变量 $x$，考察 $x\to+\infty$ 时是否仍有同样的结论。
+若将自然数 $n$ 推广为连续变化的实变量 $x$，当 $x\to+\infty$ 与 $x\to-\infty$ 时，这一极限结论依然成立。
 
 \begin{theorem}
 有
@@ -118,33 +121,33 @@
 \]
 \end{theorem}
 \begin{proof}
-先设 $x\to+\infty$。取 $n=\lfloor x\rfloor$，则 $n\le x<n+1$，且
+先考察 $x\to+\infty$ 的情形。当 $x\ge1$ 时，取 $n=\lfloor x\rfloor$，则有 $n\le x<n+1$，从而
 \[
  \left(1+\frac1{n+1}\right)^n
  \le\left(1+\frac1x\right)^x
  \le\left(1+\frac1n\right)^{n+1}.
 \]
-两端分别可以写成
+不等式左右两端可分别改写为
 \[
- \frac{a_{n+1}}{1+1/(n+1)},\qquad a_n\left(1+\frac1n\right),
+ \frac{a_{n+1}}{1+1/(n+1)},\qquad a_n\left(1+\frac1n\right).
 \]
-它们都趋于 $e$。由于 $x\to+\infty$ 时 $n\to+\infty$，由夹逼定理得到正无穷处的结论。
+当 $x\to+\infty$ 时必有 $n\to+\infty$，这两端均趋于 $e$，由夹逼定理即得正无穷处的极限为 $e$。
 
-再设 $x\to-\infty$。令 $u=-x$、$v=u-1$，则 $v\to+\infty$，并有
+再考察 $x\to-\infty$ 的情形。令 $u=-x$、$v=u-1$，则 $x\to-\infty$ 时 $v\to+\infty$，并且
 \[
  \left(1+\frac1x\right)^x
  =\left(1-\frac1u\right)^{-u}
  =\left(1+\frac1v\right)^{v+1}
  =\left(1+\frac1v\right)^v\left(1+\frac1v\right)\to e.
 \]
-在这两个过程中，底数最终都为正，实数幂有定义。
+在上述两个过程中，底数最终都为正，因此实数幂均有定义。
 
-最后令 $t=1/x$，便把正、负无穷处的两个结论合写为 $t\to0$ 时的形式。其中只需在 $t>-1$、$t\ne0$ 的范围内讨论。
+最后，作变量替换 $t=1/x$，便可将正、负无穷处的两个极限合并写为 $t\to0$ 时的等价形式，其中只需在 $t>-1$ 且 $t\ne0$ 的范围内讨论。
 \end{proof}
 
 \section{由重要极限得到的比值极限}
 \subsection*{三角函数与反三角函数}
-先由第一个重要极限推导几个常用结果：
+借助第一个重要极限及三角恒等式，可以进一步导出几组常用的比值极限：
 \[
  \lim_{x\to0}\frac{x}{\tan x}=1,\qquad
  \lim_{x\to0}\frac{\arcsin x}{x}=1,\qquad
@@ -154,90 +157,90 @@
 \[
  \frac{x}{\tan x}=\frac{x}{\sin x}\cos x\to1
 \]
-得到。第二式令 $t=\arcsin x$，于是 $x=\sin t$，且 $x\to0$ 时 $t\to0$，故
+直接得出。对于第二式，令 $t=\arcsin x$，则 $x=\sin t$，且 $x\to0$ 时 $t\to0$，于是
 \[
  \frac{\arcsin x}{x}=\frac{t}{\sin t}\to1.
 \]
-第三式令 $t=\arctan x$，同理有
+对于第三式，令 $t=\arctan x$，同理可得
 \[
  \frac{\arctan x}{x}=\frac{t}{\tan t}\to1.
 \]
-这里换元后 $t\to0$ 可以由反三角函数的单调性说明：例如给定 $0<\eta<\pi/2$，只要 $|x|<\sin\eta$，就有 $|\arcsin x|<\eta$；反正切的情形用 $|x|<\tan\eta$ 同理说明。
+这两处换元中 $t\to0$ 的依据可由反三角函数的单调性说明：给定 $0<\eta<\pi/2$，只要 $|x|<\sin\eta$，就有 $|\arcsin x|<\eta$；反正切的情形取 $|x|<\tan\eta$ 同理可知。
 
-半角公式还给出
+此外，结合半角公式还有
 \[
  \frac{1-\cos x}{x^2/2}
- =\left(\frac{\sin(x/2)}{x/2}\right)^2\to1.
+ =\left(\frac{\sin(x/2)}{x/2}\right)^2\to1,
 \]
-因此
+由此得到
 \[
  \lim_{x\to0}\frac{1-\cos x}{x^2}=\frac12.
 \]
 
 \subsection*{指数与对数的基本极限}
-第二个重要极限可以用来推导对数函数与指数函数的比值极限。为说明取对数、取指数的依据，先证明它们在有限点处的基本极限。
+第二个重要极限可用于推导对数函数与指数函数的比值极限。由于推导中需要对极限式取对数或取指数，为保证这两步变形有充分依据，我们先证明指数函数与对数函数在有限点处的基本极限性质。
 
-由数列篇的方根极限，$e^{1/n}\to1$、$e^{-1/n}\to1$。当 $|h|<1/n$ 时，由单调性，
+由数列极限中的方根结论可知，当 $n\to\infty$ 时有 $e^{1/n}\to1$ 且 $e^{-1/n}\to1$。当 $|h|<1/n$ 时，由指数函数的单调性可得
 \[
- e^{-1/n}<e^h<e^{1/n}.
+ e^{-1/n}<e^h<e^{1/n},
 \]
-由夹逼定理得 $e^h\to1$，从而 $e^{s+h}=e^s e^h\to e^s$。
+再由夹逼定理推出 $\lim_{h\to0}e^h=1$，进而对任意实数 $s$ 有 $e^{s+h}=e^s e^h\to e^s$（$h\to0$）。
 
-对于 $y_0>0$，任取 $\varepsilon>0$，当 $y$ 充分接近 $y_0$ 时，有
+对于对数函数，设 $y_0>0$，任取 $\varepsilon>0$。当 $y$ 充分接近 $y_0$ 时，有
 \[
- y_0e^{-\varepsilon}<y<y_0e^{\varepsilon}.
+ y_0e^{-\varepsilon}<y<y_0e^{\varepsilon},
 \]
-利用对数的单调性，便得 $|\ln y-\ln y_0|<\varepsilon$。所以 $y\to y_0>0$ 时 $\ln y\to\ln y_0$。这些结论只用到了单调性和方根极限，没有借用下面待证的比值极限。
+由对数函数的单调性即得 $|\ln y-\ln y_0|<\varepsilon$，这表明 $y\to y_0>0$ 时 $\ln y\to\ln y_0$。以上两项推导仅用到了函数的单调性与方根极限，并未借用下文待证的比值极限。
 
-现在对 $(1+x)^{1/x}\to e$ 取对数，得到
+现在，对 $(1+x)^{1/x}\to e$ 两端取对数，便得到
 \[
  \boxed{\lim_{x\to0}\frac{\ln(1+x)}x=1.}
 \]
-再令 $t=e^x-1$。由刚才的指数极限，$x\to0$ 时 $t\to0$，并且 $x=\ln(1+t)$，所以
+再令 $t=e^x-1$；由方才证得的指数极限可知 $x\to0$ 时 $t\to0$，且 $x=\ln(1+t)$，从而
 \[
  \boxed{\lim_{x\to0}\frac{e^x-1}{x}
  =\lim_{t\to0}\frac{t}{\ln(1+t)}=1.}
 \]
 
-有了这两个结果，还可以处理幂函数的增量比。对任意实数 $\alpha$，有
+有了这两个基本结果，还可以进一步处理幂函数的增量比：对任意实数 $\alpha$，均有
 \[
  \lim_{x\to0}\frac{(1+x)^\alpha-1}{x}=\alpha.
 \]
-当 $\alpha=0$ 时，分子恒为零，结论显然。若 $\alpha\ne0$，令 $v=\alpha\ln(1+x)$，则 $v\to0$，并有
+当 $\alpha=0$ 时，分子恒为零，结论显然成立；若 $\alpha\ne0$，则令 $v=\alpha\ln(1+x)$，此时 $v\to0$，并有
 \[
  \frac{(1+x)^\alpha-1}{x}
  =\frac{e^v-1}{v}\,\alpha\frac{\ln(1+x)}x\to\alpha.
 \]
-这些比值极限说明了相应趋零量之间的相对大小。例如 $(e^x-1)/x\to1$ 表示它们的比值趋于 $1$；下一节将用等价无穷小的记号统一表示这种关系。
+上述比值极限刻画了相应趋零量在原点附近的相对大小，例如 $(e^x-1)/x\to1$ 说明 $e^x-1$ 与 $x$ 的比值趋于 $1$；下一节将引入等价无穷小的记号，对这类关系作统一表达。
 
 \section{幂指型极限的计算}
-刚得到的对数极限，还能帮助我们计算底数趋于 $1$ 的幂指式。取对数后，幂指式就转化为指数与底数对数的乘积。
+刚才建立的对数比值极限同样适用于底数趋于 $1$ 的幂指函数。通过取对数，可将幂指式转化为指数与底数对数的乘积，进而归结为较易计算的乘积极限。
 
 \begin{theorem}
 在同一趋近过程中，若 $f(x)>0$ 最终成立，且
 \[
  f(x)\to1,\qquad [f(x)-1]g(x)\to A\in\R,
 \]
-则
+则有
 \[
  f(x)^{g(x)}\to e^A.
 \]
 \end{theorem}
 \begin{proof}
-记 $u(x)=f(x)-1$。定义
+记 $u(x)=f(x)-1$，并构造辅助函数
 \[
  r(u)=\begin{cases}\dfrac{\ln(1+u)}u,&u\ne0,\\[0.4em]1,&u=0.\end{cases}
 \]
-由对数比值极限，$u\to0$ 时 $r(u)\to1$。于是即使某些点上 $f(x)=1$，仍可统一写成
+由对数比值极限可知，当 $u\to0$ 时 $r(u)\to1$。借助 $r(u)$，即便在某些点处出现 $f(x)=1$（即 $u(x)=0$），也无需分情况讨论，可直接统一写为
 \[
  \ln\bigl(f(x)^{g(x)}\bigr)
  =g(x)\ln(1+u(x))
  =g(x)u(x)r(u(x))\to A.
 \]
-再取指数即得结论。
+最后两端取指数，由指数函数在点 $A$ 处的极限性质即得 $f(x)^{g(x)}\to e^A$。
 \end{proof}
 
-当 $g(x)\to+\infty$ 或 $g(x)\to-\infty$ 时，通常称这类问题为 $1^\infty$ 型。这个名称只描述底数和指数的趋向，不能直接确定结果；真正需要计算的是 $[f(x)-1]g(x)$ 的极限。
+当 $g(x)\to+\infty$ 或 $g(x)\to-\infty$ 时，这类极限通常称为 $1^\infty$ 型。应当注意，$1^\infty$ 仅描述底数与指数各自的趋向，并不能直接决定极限值；决定结果的仍是 $[f(x)-1]g(x)$ 的极限。
 
 \begin{example}
 计算
@@ -248,26 +251,26 @@
 \]
 \end{example}
 \begin{proof}[解]
-三式的底数最终都为正且趋于 $1$，相应的偏差与指数的乘积分别为
+三式的底数在各自趋近过程中最终均为正且趋于 $1$，底数与 $1$ 之差同指数的乘积依次为
 \[
  2x\cdot\frac1x=2,\qquad
  (-x)\cdot\frac1x=-1,\qquad
  \left(\frac1n-\frac1{n^2}\right)n=1-\frac1n\to1.
 \]
-所以三个极限依次为 $e^2$、$e^{-1}$、$e$。第三式也可视为上述结论沿整数数列的应用。
+由上述定理可知，三个极限分别为 $e^2$、$e^{-1}$ 与 $e$，其中第三式可视为该定理沿整数数列的应用。
 \end{proof}
 
 \begin{example}
 计算 $\displaystyle\lim_{x\to0^+}(\cos\sqrt{x})^{1/x}$。
 \end{example}
 \begin{proof}[解]
-当 $x>0$ 足够小时，$\cos\sqrt{x}>0$，并趋于 $1$。令 $t=\sqrt{x}$，则
+当 $x>0$ 充分小时，底数 $\cos\sqrt{x}>0$ 且趋于 $1$。令 $t=\sqrt{x}$，则 $t\to0^+$，且
 \[
  \frac{\cos\sqrt{x}-1}{x}
  =\frac{\cos t-1}{t^2}
  =-\frac12\left(\frac{\sin(t/2)}{t/2}\right)^2\to-\frac12.
 \]
-因此由幂指型极限定理，原极限为 $e^{-1/2}$。
+因此由幂指型极限定理，所求极限为 $e^{-1/2}$。
 \end{proof}
 
 \end{document}

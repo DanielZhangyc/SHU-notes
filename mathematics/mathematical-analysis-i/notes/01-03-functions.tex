@@ -55,15 +55,17 @@
 \begin{document}
 \maketitle
 \section{映射与反函数}
+函数是一类特殊的映射。先从一般集合之间的映射出发，明确单射、满射与双射，再给出反函数的定义。
+
 \begin{definition}[映射]
-设 $D,M$ 为非空集合。若按照某一法则 $f$，对每个 $x\in D$，
-存在唯一的 $y\in M$ 与之对应，就称 $f$ 为从 $D$ 到 $M$ 的映射，记作
+设 $D,M$ 为非空集合。若按照某一对应法则 $f$，对每个 $x\in D$ 都存在唯一的 $y\in M$ 与之对应，则称 $f$ 为从 $D$ 到 $M$ 的映射，记作
 \[
  f:D\to M,\qquad y=f(x).
 \]
-$D$ 是定义域，$M$ 是陪域，$f(D)=\{f(x):x\in D\}$ 是值域。
-当 $D,M\subseteq\R$ 时，这就是本节讨论的实函数。
+其中 $D$ 称为定义域，$M$ 称为陪域，而 $f(D)=\{f(x):x\in D\}$ 称为值域。当 $D,M\subseteq\R$ 时，$f$ 就是本节所讨论的实函数。
 \end{definition}
+
+为了刻画映射是否可逆，按像与原像的对应关系可区分如下三类映射：
 \begin{enumerate}
 \item \textbf{单射：}每个 $y\in M$ 至多有一个原像，等价于
 \[
@@ -73,46 +75,42 @@ $D$ 是定义域，$M$ 是陪域，$f(D)=\{f(x):x\in D\}$ 是值域。
 \[
  \forall y\in M,\quad\exists x\in D:\ f(x)=y.
 \]
-\item \textbf{双射（一一映射）：}既是单射又是满射，每个 $y\in M$ 恰有一个原像。
+\item \textbf{双射（一一映射）：}既是单射又是满射，即每个 $y\in M$ 恰有一个原像。
 \end{enumerate}
 
+当映射成为双射时，由像反过来确定原像便也是唯一确定的对应关系，从而诱导出反函数。
+
 \begin{definition}[反函数]
-若 $f:D\to M$ 是双射，则对每个 $y\in M$，存在唯一 $x\in D$ 使 $f(x)=y$。
-由此得到反函数 $f^{-1}:M\to D$，满足
+若 $f:D\to M$ 是双射，则对每个 $y\in M$，存在唯一的 $x\in D$ 使 $f(x)=y$。由此得到的映射称为 $f$ 的反函数，记为 $f^{-1}:M\to D$，满足
 \[
  f^{-1}(f(x))=x\ (x\in D),\qquad f(f^{-1}(y))=y\ (y\in M).
 \]
 \end{definition}
-反函数交换原函数的定义域与值域。若将陪域取为 $f(D)$，则 $f$ 有反函数
-当且仅当 $f$ 是单射。符号 $f^{-1}$ 表示反函数，不表示倒数 $1/f$。
+
+反函数交换了原函数的定义域与值域。若把陪域限制为值域 $f(D)$，映射自动成为满射，此时 $f$ 存在反函数当且仅当 $f$ 是单射。此外应注意，记号 $f^{-1}$ 表示反函数，而不表示倒数 $1/f$。
 
 \begin{example}
-函数 $f:[0,+\infty)\to[0,+\infty)$，$f(x)=x^2$ 是双射。
-由 $y=x^2$、$x\ge0$ 解得 $x=\sqrt y$，故 $f^{-1}(x)=\sqrt x$（$x\ge0$）。
-若将 $x^2$ 的定义域扩大到 $\R$，则因 $f(1)=f(-1)$，不再有反函数。
+函数 $f:[0,+\infty)\to[0,+\infty)$，$f(x)=x^2$ 是双射。由 $y=x^2$ 及 $x\ge0$ 解得 $x=\sqrt y$，故其反函数为 $f^{-1}(x)=\sqrt x$（$x\ge0$）。若将 $x^2$ 的定义域扩大到 $\R$，则因 $f(1)=f(-1)$ 破坏了单射性，便不再有反函数。
 \end{example}
 
 \newpage
 \section{常见函数}
 \subsection{初等函数、双曲函数与反三角函数}
-基本初等函数包括常数函数、幂函数、指数函数、对数函数、三角函数和反三角函数。
-由基本初等函数经过有限次四则运算与复合所得到的函数称为初等函数；
-初等函数在其定义区间内连续。
+基本初等函数包括常数函数、幂函数、指数函数、对数函数、三角函数和反三角函数。由基本初等函数经过有限次四则运算与复合所得到的函数统称为初等函数，它们在其定义区间内都是连续的。
 
-双曲正弦与双曲余弦定义为
+由指数函数可构造出双曲正弦与双曲余弦函数：
 \[
  \sinh x=\frac{e^x-e^{-x}}2,\qquad
  \cosh x=\frac{e^x+e^{-x}}2\qquad(x\in\R).
 \]
-$\sinh$ 在 $\R$ 上严格递增，值域为 $\R$；$\cosh$ 限制在 $[0,+\infty)$ 上
-严格递增，值域为 $[1,+\infty)$。相应的反函数为
+其中 $\sinh$ 在整个 $\R$ 上严格递增，值域为 $\R$；而 $\cosh$ 是偶函数，须将其限制在 $[0,+\infty)$ 上才严格递增，此时值域为 $[1,+\infty)$。由此可分别求得它们的反函数：
 \[
  \arsinh x=\ln\bigl(x+\sqrt{x^2+1}\bigr)\quad(x\in\R),
 \]
 \[
  \arcosh x=\ln\bigl(x+\sqrt{x^2-1}\bigr)\quad(x\ge1).
 \]
-反三角函数也需要先限制原函数的定义域：
+类似地，正弦函数与余弦函数在 $\R$ 上并非单射，定义反三角函数之前同样需要先限制原函数的定义域，使之在相应区间上严格单调：
 \[
 \begin{array}{c|c|c}
  \text{反函数}&\text{定义域}&\text{值域}\\ \hline
@@ -122,15 +120,16 @@ $\sinh$ 在 $\R$ 上严格递增，值域为 $\R$；$\cosh$ 限制在 $[0,+\inft
 \]
 
 \subsection{几个特殊函数}
-\textbf{符号函数与取整函数。}
+除了初等函数外，分析中还常借助若干分段定义或具有特殊结构的函数，用来检验定理条件与构造反例。
+
+\textbf{符号函数与取整函数。}符号函数按自变量的正负取值：
 \[
  \sgn x=\begin{cases}1,&x>0,\\0,&x=0,\\-1,&x<0,\end{cases}
- \qquad x\sgn x=|x|.
+ \qquad \text{且满足 } x\sgn x=|x|.
 \]
-取整函数 $[x]=\lfloor x\rfloor$ 表示不超过 $x$ 的最大整数，满足
-$\lfloor x\rfloor\le x<\lfloor x\rfloor+1$，例如 $\lfloor-1.2\rfloor=-2$。
+取整函数 $[x]=\lfloor x\rfloor$ 表示不超过 $x$ 的最大整数，满足 $\lfloor x\rfloor\le x<\lfloor x\rfloor+1$；特别地，对负数取整时向下舍入，例如 $\lfloor-1.2\rfloor=-2$。
 
-\textbf{狄利克雷函数与黎曼函数。}
+\textbf{狄利克雷函数与黎曼函数。}这两类函数依据自变量是有理数还是无理数分别赋值：
 \[
  D(x)=\begin{cases}1,&x\in\Q,\\0,&x\in\R\setminus\Q;\end{cases}
  \qquad
@@ -139,27 +138,23 @@ $\lfloor x\rfloor\le x<\lfloor x\rfloor+1$，例如 $\lfloor-1.2\rfloor=-2$。
  0,&x=0,1\text{ 或 }x\in(0,1)\setminus\Q.
  \end{cases}
 \]
-这里采用端点值为 $0$ 的黎曼函数定义，有理数须写成既约分数。
+此处黎曼函数在端点 $0$ 与 $1$ 处取值为 $0$，且有理点 $x=p/q$ 必须写成既约分数形式。
 
-\textbf{狄拉克 $\delta$（单位冲激）。}
-常形式地写成 $\delta(x)=0$（$x\ne0$）、$\delta(0)=+\infty$，并记
-$\int_{-\infty}^{+\infty}\delta(x)\,\mathrm dx=1$。
-它不是通常意义的实值函数；上述写法是直观表示，不能作为普通函数的定义。
+\textbf{狄拉克 $\delta$（单位冲激）。}在应用背景中，常形式地记作 $\delta(x)=0$（$x\ne0$）、$\delta(0)=+\infty$，并要求满足 $\int_{-\infty}^{+\infty}\delta(x)\,\mathrm dx=1$。需要明确的是，它并不是通常意义下的实值函数，上述表达式只是直观的形式记法，不能当作普通函数的严格定义。
 
-\newpage
 \section{函数的单调性与有界性}
+在实函数中，严格单调性保证了函数是单射从而存在反函数；进一步地，这一单调性质在取反函数之后仍然保持。
+
 \begin{proposition}[反函数的单调性]
-设 $D\subseteq\R$，$f:D\to\R$ 是单射，则 $f$ 严格递增当且仅当
-其反函数 $f^{-1}:f(D)\to D$ 严格递增。
+设 $D\subseteq\R$，$f:D\to\R$ 是单射，则 $f$ 严格递增当且仅当其反函数 $f^{-1}:f(D)\to D$ 严格递增。
 \end{proposition}
 \begin{proof}
-若 $f$ 严格递增，任取 $y_1,y_2\in f(D)$ 且 $y_1<y_2$，
-令 $x_1=f^{-1}(y_1)$、$x_2=f^{-1}(y_2)$。
-若 $x_1\ge x_2$，则由严格递增性及相等情形有
-$y_1=f(x_1)\ge f(x_2)=y_2$，矛盾。
-故 $f^{-1}(y_1)<f^{-1}(y_2)$。反之，对 $f^{-1}$ 应用同一结论，
-并利用 $(f^{-1})^{-1}=f$ 即得。
+先设 $f$ 严格递增。任取 $y_1,y_2\in f(D)$ 且 $y_1<y_2$，记 $x_1=f^{-1}(y_1)$、$x_2=f^{-1}(y_2)$。若 $x_1\ge x_2$，则由 $f$ 的严格递增性（及相等情形）必有 $y_1=f(x_1)\ge f(x_2)=y_2$，这与 $y_1<y_2$ 矛盾。由此可得 $f^{-1}(y_1)<f^{-1}(y_2)$，即 $f^{-1}$ 严格递增。
+
+反之，对 $f^{-1}$ 应用已证的充分性结论，并利用 $(f^{-1})^{-1}=f$，即知 $f$ 严格递增。
 \end{proof}
+
+与数集的有界性相对应，通过考察函数值域 $f(D)$ 的有界性，即可定义函数的有界性。
 
 \begin{definition}[有界性]
 设 $f:D\to\R$，$D\ne\varnothing$。
@@ -172,40 +167,37 @@ $y_1=f(x_1)\ge f(x_2)=y_2$，矛盾。
 \]
 \end{enumerate}
 \end{definition}
-常数 $M$ 必须对所有 $x$ 同时适用，不能依赖于 $x$。
-由量词否定，$f$ 在 $D$ 上无界等价于
+
+定义中的常数 $M$ 必须对所有 $x\in D$ 一致适用，而不能依赖于 $x$。对该量词表述取否定，便得到 $f$ 在 $D$ 上无界的等价条件：
 \[
  \forall M\ge0,\quad\exists x\in D,\quad |f(x)|>M.
 \]
-无界只要求没有上界或没有下界，未必两者都没有。
+需要注意的是，无界只要求没有上界或没有下界，未必两者同时不成立。
 
 \begin{example}
 证明 $f(x)=\tan x$ 在 $[0,\pi/2)$ 上有下界而无上界。
 \end{example}
 \begin{proof}
-对所有 $x\in[0,\pi/2)$，都有 $\tan x\ge0$，故 $0$ 是下界。
+对所有 $x\in[0,\pi/2)$ 均有 $\tan x\ge0$，因此 $0$ 是 $f$ 的一个下界。
 
-任取 $M\ge0$，由于 $0\le\arctan M<\pi/2$，可取
+下面证明 $f$ 无上界。任取 $M\ge0$，由于 $0\le\arctan M<\pi/2$，可取中点
 \[
- x=\frac{\arctan M+\pi/2}{2},\qquad
- \arctan M<x<\frac\pi2.
+ x=\frac{\arctan M+\pi/2}{2},
 \]
-由正切函数在 $[0,\pi/2)$ 上严格递增，得
+它满足 $\arctan M<x<\pi/2$。由正切函数在 $[0,\pi/2)$ 上严格递增可得
 \[
  \tan x>\tan(\arctan M)=M.
 \]
-所以任意非负数都不是上界；负数也不可能是上界，因为 $f(0)=0$。
-故该函数无上界。
+这表明任何非负数都不是 $f$ 的上界；又因 $f(0)=0$，任何负数显然也不是上界。故 $\tan x$ 在 $[0,\pi/2)$ 上无上界。
 \end{proof}
 
-\newpage
 \section{函数和的确界不等式}
-对非空集合 $D$ 上的有界函数 $f$，记
+对非空集合 $D$ 上的有界函数 $f$，将其值域的下确界与上确界分别记为
 \[
  \inf_{x\in D}f(x)=\inf f(D),\qquad
  \sup_{x\in D}f(x)=\sup f(D).
 \]
-它们分别是值域的下确界和上确界，不要求在某点取得。
+它们刻画了函数值在 $D$ 上的最紧下界与最紧上界，但未必在 $D$ 中某一点实际取得。
 
 \begin{proposition}
 设 $f,g$ 在同一非空集合 $D$ 上有界，则 $f+g$ 也有界，且
@@ -219,49 +211,44 @@ $y_1=f(x_1)\ge f(x_2)=y_2$，矛盾。
 \]
 \end{proposition}
 \begin{proof}
-记 $m_f=\inf_{x\in D}f(x)$、$m_g=\inf_{x\in D}g(x)$，
-$M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
-由有界性与确界原理，这四个数均为有限实数。
+分别记 $f,g$ 在 $D$ 上的下确界为 $m_f=\inf_{x\in D}f(x)$、$m_g=\inf_{x\in D}g(x)$，上确界为 $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。由 $f,g$ 有界及确界原理可知，这四个数均为有限实数。
 
-对任意 $x\in D$，由上下确界的界性，
+对任意 $x\in D$，由上下确界的界性有
 \[
  m_f\le f(x)\le M_f,\qquad m_g\le g(x)\le M_g,
 \]
-相加得到
+将两式相加便得
 \[
  m_f+m_g\le f(x)+g(x)\le M_f+M_g.
 \]
-这也说明 $f+g$ 有界。
+这首先说明 $f+g$ 在 $D$ 上有界，因此其上下确界均存在。
 
-其中 $m_f+m_g$ 是 $\{f(x)+g(x):x\in D\}$ 的一个下界，
-而下确界是最大的下界，故
+进一步地，$m_f+m_g$ 是值域 $\{f(x)+g(x):x\in D\}$ 的一个下界，而下确界是最大下界，故
 \[
  m_f+m_g\le\inf_{x\in D}\bigl(f(x)+g(x)\bigr).
 \]
-同理，$M_f+M_g$ 是该集合的一个上界，而上确界是最小的上界，故
+同理，$M_f+M_g$ 是该集合的一个上界，而上确界是最小上界，故
 \[
  \sup_{x\in D}\bigl(f(x)+g(x)\bigr)\le M_f+M_g.
 \]
 \end{proof}
 
 \subsection*{与数集求和的区别}
-函数和 $f(x)+g(x)$ 中两项必须取同一个 $x$，因此一般只能得到不等式。
-例如在 $D=[0,1]$ 上取 $f(x)=x$、$g(x)=1-x$，则 $f(x)+g(x)=1$，但
+函数和 $f(x)+g(x)$ 要求两项取同一个自变量 $x\in D$，因此 $f$ 与 $g$ 未必能在同一处同时逼近各自的确界，一般只能成立不等式。例如在 $D=[0,1]$ 上取 $f(x)=x$、$g(x)=1-x$，则 $f(x)+g(x)\equiv1$，然而
 \[
  \inf_D f+\inf_D g=0<1=\inf_D(f+g),
 \]
 \[
  \sup_D(f+g)=1<2=\sup_D f+\sup_D g.
 \]
-相比之下，数集和 $A+B=\{a+b:a\in A,\ b\in B\}$ 中 $a,b$ 可以独立选择，
-因此非空有界数集满足 $\sup(A+B)=\sup A+\sup B$。
+相比之下，数集和 $A+B=\{a+b:a\in A,\ b\in B\}$ 中的 $a\in A$ 与 $b\in B$ 可以相互独立地选取，因此对非空有界数集能够成立等式 $\sup(A+B)=\sup A+\sup B$。
 
 \section{课后作业}
 
 \subsection{习题 1.3，第 1 题（4）}
 \noindent\textbf{题目：}作函数 $y=\sgn(\sin x)$ 的图像。
 
-\noindent\textbf{解：}由符号函数的定义，对任意 $k\in\mathbb Z$，有
+\noindent\textbf{解：}由符号函数的定义，按 $\sin x$ 的正负分区间讨论，对任意 $k\in\mathbb Z$ 有
 \[
  \sgn(\sin x)=
  \begin{cases}
@@ -270,8 +257,7 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
   -1,&(2k-1)\pi<x<2k\pi.
  \end{cases}
 \]
-因此图像在每个长度为 $\pi$ 的开区间上分别为 $y=1$ 或 $y=-1$，
-而在所有 $x=k\pi$ 处取值为 $0$。例如在 $[-2\pi,2\pi]$ 上，图像如下：
+因此其图像在相邻的、长度为 $\pi$ 的开区间上交替为水平线段 $y=1$ 与 $y=-1$，并在所有点 $x=k\pi$ 处取值为 $0$。在区间 $[-2\pi,2\pi]$ 上的图像如下：
 
 \begin{center}
 \begin{tikzpicture}[x=1.35cm,y=0.8cm]
@@ -297,23 +283,18 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \]
 的存在域。
 
-\begin{proof}
-要使反正弦有意义，必须有
+\begin{proof}[解]
+先使内层反正弦函数有意义，要求
 \[
  -1\le \frac{x}{10}\le 1.
 \]
-同时，对数的真数必须为正，所以还要有
+同时，外层对数的真数必须严格为正。由于 $\arcsin t$ 在 $[-1,1]$ 上严格递增且 $\arcsin 0=0$，因此
 \[
  \arcsin\frac{x}{10}>0
  \quad\Longleftrightarrow\quad
- \frac{x}{10}>0,
+ \frac{x}{10}>0.
 \]
-因为 $\arcsin t$ 在 $[-1,1]$ 上严格递增且 $\arcsin 0=0$。
-合并条件得到
-\[
- 0<x\le 10.
-\]
-故存在域为 $D=(0,10]$。
+将上述两个条件合并即得 $0<x\le 10$，故该函数的存在域为 $D=(0,10]$。
 \end{proof}
 
 \subsection{习题 1.3，第 5 题（2）}
@@ -327,7 +308,7 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \]
 求 $f(\Delta x)-f(0)$、$f(-\Delta x)-f(0)$（$\Delta x>0$）。
 
-\noindent\textbf{解：}由 $f(0)=2$，且 $\Delta x>0$，有
+\noindent\textbf{解：}由分段表达式可知 $f(0)=2$。因为 $\Delta x>0$，故 $\Delta x>0$ 与 $-\Delta x<0$ 分别落入两段定义域，从而
 \[
  f(\Delta x)-f(0)=2^{\Delta x}-2,
  \qquad
@@ -337,16 +318,16 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \subsection{习题 1.3，第 7 题（2）}
 \noindent\textbf{题目：}指出函数 $y=(\arcsin(x^2))^2$ 是由哪些初等函数复合而成的。
 
-\noindent\textbf{解：}取初等函数
+\noindent\textbf{解：}取基本初等函数
 \[
  f(x)=x^2,\qquad g(x)=\arcsin x.
 \]
-于是
+则该函数可表示为三次复合
 \[
  y=f\bigl(g(f(x))\bigr)=(\arcsin(x^2))^2,
- \qquad x\in[-1,1].
+ \qquad x\in[-1,1],
 \]
-定义域来自 $x^2\in[-1,1]$，即 $|x|\le1$。
+其中定义域由 $x^2\in[-1,1]$ 确定，即 $|x|\le1$。
 
 \subsection{习题 1.3，第 10 题（1）}
 \noindent\textbf{题目：}判断等式
@@ -355,13 +336,12 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \]
 是否成立。
 
-\begin{proof}
-对任意 $x\in\R$，令 $u=\arctan x$。按照反正切函数的值域，
- $u\in(-\pi/2,\pi/2)$，并且 $\tan u=x$。因此
+\begin{proof}[解]
+成立。对任意 $x\in\R$，令 $u=\arctan x$。由反正切函数的定义与值域可知，$u\in(-\pi/2,\pi/2)$ 且满足 $\tan u=x$，因此
 \[
  \tan(\arctan x)=x
 \]
-对所有 $x\in\R$ 成立。
+对所有 $x\in\R$ 均成立。
 \end{proof}
 
 \subsection{习题 1.3，第 12 题（1）（2）}
@@ -372,28 +352,24 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \end{enumerate}
 
 \begin{proof}
-当 $x>0$ 时，令 $n=[1/x]$。取整函数的定义给出
+（1）当 $x>0$ 时，记 $n=[1/x]$。由取整函数的定义有
 \[
  n\le\frac1x<n+1.
 \]
-乘以正数 $x$，得
+两边同乘正数 $x$，不等号方向不变，得到
 \[
  nx\le1<(n+1)x.
 \]
-又由 $1<(n+1)x$ 得 $1-x<nx$。因此
+由右端 $1<(n+1)x$ 移项即得 $1-x<nx$，合起来便有
 \[
  1-x<x[1/x]\le1.
 \]
 
-当 $x<0$ 时，仍令 $n=[1/x]$，则
-\[
- n\le\frac1x<n+1.
-\]
-乘以负数 $x$ 时不等号方向改变，得到
+（2）当 $x<0$ 时，仍记 $n=[1/x]$，同样满足 $n\le1/x<n+1$。此时两边同乘负数 $x$，不等号方向反转，得到
 \[
  nx\ge1>(n+1)x.
 \]
-所以 $x[1/x]=nx\ge1$，且 $nx<1-x$，即
+一方面 $x[1/x]=nx\ge1$；另一方面由 $1>(n+1)x$ 移项得 $nx<1-x$，于是
 \[
  1\le x[1/x]<1-x.
 \]
@@ -404,19 +380,18 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \noindent\textbf{题目：}证明 $f(x)=\dfrac{x}{x^2+1}$ 是 $\R$ 上的有界函数。
 
 \begin{proof}
-对任意 $x\in\R$，有
+对任意 $x\in\R$，由完全平方式非负可得
 \[
  (|x|-1)^2\ge0
  \quad\Longrightarrow\quad
  x^2+1\ge2|x|.
 \]
-由于 $x^2+1>0$，从而
+因为分母 $x^2+1>0$，两边同除 $2(x^2+1)$ 即得
 \[
  \left|\frac{x}{x^2+1}\right|
  =\frac{|x|}{x^2+1}\le\frac12.
 \]
-故 $-1/2\le f(x)\le1/2$ 对所有 $x\in\R$ 成立，函数在 $\R$ 上有界。
-事实上，$x=1$ 和 $x=-1$ 时分别取得上界 $1/2$ 与下界 $-1/2$。
+故 $-1/2\le f(x)\le1/2$ 对所有 $x\in\R$ 成立，说明 $f$ 在 $\R$ 上有界；事实上，该函数在 $x=1$ 和 $x=-1$ 处分别取得最大值 $1/2$ 与最小值 $-1/2$。
 \end{proof}
 
 \subsection{习题 1.4，第 2 题（1）（2）（3）}
@@ -428,19 +403,17 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
 \end{enumerate}
 
 \noindent\textbf{解：}
-
 \begin{enumerate}[label=(\arabic*)]
- \item 函数 $f$ 在定义域 $D$ 上无界，是指
+ \item 函数 $f$ 在定义域 $D$ 上无界，是指对任意非负实数界限，都存在自变量使函数值的绝对值超过该界限，即
  \[
  \forall M\ge0,\ \exists x\in D,\quad |f(x)|>M.
  \]
- \item 任取 $M\ge0$。若 $M>0$，取
+ \item 任取 $M\ge0$。当 $M>0$ 时，取
  \[
  x=\frac1{\sqrt{M+1}}\in(0,1),
  \]
- 则 $f(x)=M+1>M$；若 $M=0$，取任意 $x\in(0,1)$ 即有 $f(x)>0=M$。
- 因此对任意 $M\ge0$ 都能找到 $x\in(0,1)$ 使 $|f(x)|>M$，故 $f$ 在 $(0,1)$ 上无界。
- \item 例如定义
+ 则 $|f(x)|=f(x)=M+1>M$；当 $M=0$ 时，任取 $x\in(0,1)$ 均有 $f(x)>0=M$。由此对任意 $M\ge0$ 都存在 $x\in(0,1)$ 使 $|f(x)|>M$，故 $f$ 在 $(0,1)$ 上无界。
+ \item 例如在 $[0,1]$ 上定义分段函数
  \[
  f(x)=
  \begin{cases}
@@ -448,51 +421,49 @@ $M_f=\sup_{x\in D}f(x)$、$M_g=\sup_{x\in D}g(x)$。
   0,&x=1.
  \end{cases}
  \]
- 它定义在闭区间 $[0,1]$ 上。任取 $M\ge0$，取
- $x=\dfrac2\pi\arctan(M+1)\in(0,1)$，则
- $f(x)=M+1>M$，故它在 $[0,1]$ 上无界。
+ 该函数在闭区间 $[0,1]$ 上处处有定义。任取 $M\ge0$，取 $x=\dfrac2\pi\arctan(M+1)\in(0,1)$，则有 $f(x)=M+1>M$，故它在 $[0,1]$ 上无界。
 \end{enumerate}
 
 \subsection{习题 1.4，第 3 题（3）}
 \noindent\textbf{题目：}证明函数 $y=\cos x$ 在 $[0,\pi]$ 上严格递减。
 
 \begin{proof}
-任取 $0\le x_1<x_2\le\pi$。利用和差化积公式，
+任取 $0\le x_1<x_2\le\pi$。利用和差化积公式将差值化为乘积形式：
 \[
  \cos x_1-\cos x_2
  =2\sin\frac{x_1+x_2}{2}\sin\frac{x_2-x_1}{2}.
 \]
-其中
+由 $0\le x_1<x_2\le\pi$ 可知
 \[
  0<\frac{x_1+x_2}{2}<\pi,
  \qquad
  0<\frac{x_2-x_1}{2}\le\frac\pi2,
 \]
-所以两正弦因子都为正，进而
- $\cos x_1-\cos x_2>0$，即 $\cos x_1>\cos x_2$。
-故 $\cos x$ 在 $[0,\pi]$ 上严格递减。
+故两个正弦因子均严格为正，从而 $\cos x_1-\cos x_2>0$，即 $\cos x_1>\cos x_2$。因此 $\cos x$ 在 $[0,\pi]$ 上严格递减。
 \end{proof}
 
 \subsection{习题 1.4，第 4 题（2）}
 \noindent\textbf{题目：}判别函数 $f(x)=x+\sin x$ 的奇偶性。
 
-\begin{proof}
-定义域 $\R$ 关于原点对称，且对任意 $x\in\R$，
+\begin{proof}[解]
+函数 $f$ 的定义域为 $\R$，关于原点对称；且对任意 $x\in\R$，有
 \[
  f(-x)=-x+\sin(-x)=-x-\sin x=-f(x).
 \]
-所以 $f$ 是奇函数。
+因此 $f$ 是奇函数。
 \end{proof}
 
 \subsection{习题 1.4，第 5 题（2）}
 \noindent\textbf{题目：}求函数 $y=\tan 3x$ 的周期。
 
-\begin{proof}
-若 $T>0$ 是周期，取 $x=0$，则 $\tan(3T)=\tan0=0$，
-故 $3T=k\pi$，其中 $k\in\Nplus$。反之，对每个这样的 $T$，
-平移 $x\mapsto x+T$ 保持函数的定义域不变，且
-$\tan(3(x+T))=\tan(3x+k\pi)=\tan3x$。
-因此所有正周期为 $k\pi/3$（$k\in\Nplus$），最小正周期为
+\begin{proof}[解]
+先求正周期的必要条件：若 $T>0$ 是该函数的周期，在 $x=0$ 处应有 $\tan(3T)=\tan0=0$，由此得 $3T=k\pi$（$k\in\Nplus$），即 $T=k\pi/3$。
+
+反之，对每个 $T=k\pi/3$（$k\in\Nplus$），平移 $x\mapsto x+T$ 保持函数的定义域不变，且对定义域内任意 $x$ 均有
+\[
+ \tan\bigl(3(x+T)\bigr)=\tan(3x+k\pi)=\tan 3x.
+\]
+因此该函数的所有正周期为 $k\pi/3$（$k\in\Nplus$），其中最小正周期为
 \[
  T=\frac\pi3.
 \]
@@ -504,17 +475,13 @@ $\tan(3(x+T))=\tan(3x+k\pi)=\tan3x$。
  \inf_{x\in D}[-f(x)]=-\sup_{x\in D}f(x).
 \]
 \begin{proof}
-记 $M=\sup_{x\in D}f(x)$。由上确界的上界性，对任意 $x\in D$ 都有
- $f(x)\le M$，所以 $-f(x)\ge-M$。因此 $-M$ 是集合
- $\{-f(x):x\in D\}$ 的一个下界。
+记 $M=\sup_{x\in D}f(x)$。由上确界的上界性，对任意 $x\in D$ 都有 $f(x)\le M$，两边取相反数即得 $-f(x)\ge-M$，因此 $-M$ 是集合 $\{-f(x):x\in D\}$ 的一个下界。
 
-任取 $\beta>-M$，则 $-\beta<M$。由 $M$ 是 $f(D)$ 的上确界，存在
- $x_0\in D$ 使 $f(x_0)>-\beta$。于是
+再验证 $-M$ 是最大下界。任取 $\beta>-M$，则 $-\beta<M$。由 $M=\sup f(D)$ 可知，存在 $x_0\in D$ 使 $f(x_0)>-\beta$，从而
 \[
- -f(x_0)<\beta,
+ -f(x_0)<\beta.
 \]
-说明 $\beta$ 不是集合 $\{-f(x):x\in D\}$ 的下界。
-所以 $-M$ 是该集合的最大下界，即
+这表明任何大于 $-M$ 的实数 $\beta$ 都不是 $\{-f(x):x\in D\}$ 的下界，故
 \[
  \inf_{x\in D}[-f(x)]=-M=-\sup_{x\in D}f(x).
 \]

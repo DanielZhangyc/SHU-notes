@@ -54,7 +54,7 @@
 \setcounter{theorem}{0}
 \section{函数极限的性质}
 
-以下各定理均在同一种趋近方式下讨论，例如 $x\to x_0$、$x\to x_0^+$ 或 $x\to+\infty$。为简洁起见，正文先写 $x\to x_0$；单侧极限和无穷远处的结论完全相同，只需把邻域条件换成相应的单侧或远端条件。
+与数列极限类似，函数极限同样满足一系列基本性质和运算规律，并有相应的存在性判别准则。以下各定理均在同一种趋近方式下讨论，例如 $x\to x_0$、$x\to x_0^+$ 或 $x\to+\infty$。为行文简洁，先以 $x\to x_0$ 为代表叙述和证明；单侧极限与无穷远处极限的结论完全平行，只需将去心邻域条件替换为相应的单侧邻域或远端条件。
 
 \subsection*{唯一性}
 \begin{theorem}[唯一性]
@@ -65,19 +65,19 @@
 则 $A=B$。
 \end{theorem}
 \begin{proof}
-反设 $A\ne B$，取 $\varepsilon=|A-B|/3>0$。由两个极限的定义，存在 $\delta_1,\delta_2>0$，使得当 $0<|x-x_0|<\delta_i$ 时，分别有
-\[
- |f(x)-A|<\varepsilon,\qquad |f(x)-B|<\varepsilon.
-\]
-取 $\delta=\min\{\delta_1,\delta_2\}$，任取 $0<|x-x_0|<\delta$，则
+反设 $A\ne B$，取 $\varepsilon=|A-B|/3>0$。由两个极限的定义，分别存在 $\delta_1,\delta_2>0$，使得当 $0<|x-x_0|<\delta_1$ 时有 $|f(x)-A|<\varepsilon$，当 $0<|x-x_0|<\delta_2$ 时有 $|f(x)-B|<\varepsilon$。
+
+令 $\delta=\min\{\delta_1,\delta_2\}$，任取满足 $0<|x-x_0|<\delta$ 的点 $x$，由三角不等式得
 \[
  |A-B|\le |A-f(x)|+|f(x)-B|<2\varepsilon
  =\frac23|A-B|,
 \]
-矛盾。故 $A=B$。
+这与 $|A-B|>0$ 矛盾，故 $A=B$。
 \end{proof}
 
 \subsection*{局部有界性}
+与收敛数列的整体有界性不同，函数在某一点处存在极限，只反映它在这一点的充分小去心邻域内的行为，因此得到的是局部有界性。
+
 \begin{theorem}[局部有界性]
 若 $\lim_{x\to x_0}f(x)=A$，则存在 $\delta>0$ 和 $M>0$，使得当
 \[
@@ -86,43 +86,38 @@
 时有 $|f(x)|<M$。
 \end{theorem}
 \begin{proof}
-在极限定义中取 $\varepsilon=1$，可得某个 $\delta>0$，使
+在极限定义中取 $\varepsilon=1$，则存在 $\delta>0$，使对所有 $0<|x-x_0|<\delta$ 均有 $|f(x)-A|<1$。于是
 \[
- |f(x)-A|<1
+ |f(x)|\le |f(x)-A|+|A|<1+|A|,
 \]
-对所有 $0<|x-x_0|<\delta$ 成立。因此
-\[
- |f(x)|\le |f(x)-A|+|A|<1+|A|.
-\]
-取 $M=1+|A|$ 即可。
+取 $M=1+|A|>0$ 即得结论。
 \end{proof}
 
-这里的“局部”是指某个去心邻域；极限存在并不要求函数在整个定义域上有界。局部有界性本身也不能推出极限存在，例如 $\sin(1/x)$ 在 $x\to0$ 时有界但没有极限。
+需要留意的是，极限存在并不要求函数在整个定义域上有界；反过来，局部有界性本身也不能推出极限存在，例如 $\sin(1/x)$ 在 $x=0$ 的去心邻域内以 $1$ 为界，但当 $x\to0$ 时并无极限。
 
 \subsection*{保号性}
+若函数极限非零，则在极限点的充分小去心邻域内，函数值也会保持与极限相同的符号。
+
 \begin{theorem}[保号性]
-若 $\lim_{x\to x_0}f(x)=A>0$，则存在 $\delta>0$，使 $0<|x-x_0|<\delta$ 时 $f(x)>0$。若 $A<0$，则在某个去心邻域内 $f(x)<0$。
+若 $\lim_{x\to x_0}f(x)=A>0$，则存在 $\delta>0$，使当 $0<|x-x_0|<\delta$ 时有 $f(x)>0$；若 $A<0$，则在某个去心邻域内有 $f(x)<0$。
 \end{theorem}
 \begin{proof}
-设 $A>0$。取 $\varepsilon=A/2$，则存在 $\delta>0$，使
+先设 $A>0$。在极限定义中取 $\varepsilon=A/2>0$，则存在 $\delta>0$，使当 $0<|x-x_0|<\delta$ 时有 $|f(x)-A|<A/2$，从而
 \[
- |f(x)-A|<\frac A2.
+ f(x)>A-\frac A2=\frac A2>0.
 \]
-于是
-\[
- f(x)>A-\frac A2=\frac A2>0
-\]
-对所有 $0<|x-x_0|<\delta$ 成立。
 
-当 $A<0$ 时，取 $\varepsilon=|A|/2$，可得
+当 $A<0$ 时，取 $\varepsilon=|A|/2>0$，则存在 $\delta>0$，使在去心邻域 $\U^0(x_0,\delta)$ 内有
 \[
  f(x)<A+\frac{|A|}{2}=\frac A2<0.
 \]
 \end{proof}
 
-保号性只适用于极限严格大于零或严格小于零的情形。若极限为零，函数值可以在邻域内变号，例如 $f(x)=x$ 在 $x\to0$ 时既有正值也有负值。
+保号性只适用于极限严格大于零或严格小于零的情形。当极限为零时，函数值在任意去心邻域内都可能变号，例如 $f(x)=x$ 在 $x=0$ 附近同时取到正值与负值。
 
 \subsection*{保序性与夹逼定理}
+与数列极限相同，函数的不等关系在取极限时得以保持，由此也可建立函数极限的夹逼定理。
+
 \begin{theorem}[保序性]
 若 $\lim_{x\to x_0}f(x)=A$、$\lim_{x\to x_0}g(x)=B$，并且存在 $\delta_0>0$，使
 \[
@@ -131,15 +126,15 @@
 则 $A\le B$。
 \end{theorem}
 \begin{proof}
-反设 $A>B$。取 $\varepsilon=(A-B)/3$。当 $x$ 充分接近 $x_0$ 时，
+反设 $A>B$，取 $\varepsilon=(A-B)/3>0$。由两个极限的定义，存在 $\delta\in(0,\delta_0]$，使得当 $0<|x-x_0|<\delta$ 时同时有 $|f(x)-A|<\varepsilon$ 与 $|g(x)-B|<\varepsilon$，从而
 \[
  f(x)>A-\varepsilon>B+\varepsilon>g(x),
 \]
-与 $f(x)\le g(x)$ 矛盾。因此 $A\le B$。
+这与条件 $f(x)\le g(x)$ 矛盾，因此 $A\le B$。
 \end{proof}
 
 \begin{theorem}[夹逼定理]
-若在某个去心邻域内有
+若在 $x_0$ 的某个去心邻域内有
 \[
  f(x)\le h(x)\le g(x),
 \]
@@ -150,15 +145,11 @@
 则 $\lim_{x\to x_0}h(x)=A$。
 \end{theorem}
 \begin{proof}
-任取 $\varepsilon>0$。取 $\delta>0$，使 $0<|x-x_0|<\delta$ 时既有夹逼关系，又有
-\[
- |f(x)-A|<\varepsilon,\qquad |g(x)-A|<\varepsilon.
-\]
-于是
+任取 $\varepsilon>0$。由题设与极限定义，存在 $\delta>0$，使当 $0<|x-x_0|<\delta$ 时既满足夹逼不等式，又同时有 $|f(x)-A|<\varepsilon$ 与 $|g(x)-A|<\varepsilon$。于是
 \[
  A-\varepsilon<f(x)\le h(x)\le g(x)<A+\varepsilon,
 \]
-即 $|h(x)-A|<\varepsilon$，故 $h(x)\to A$。
+即 $|h(x)-A|<\varepsilon$，故 $\lim_{x\to x_0}h(x)=A$。
 \end{proof}
 
 \begin{example}
@@ -168,23 +159,22 @@
 \]
 \end{example}
 \begin{proof}
-先设 $x>0$。由取整函数的性质，
+对任意非零实数 $x$，由取整函数的性质均有
 \[
  \frac1x-1<\left\lfloor\frac1x\right\rfloor\le\frac1x.
 \]
-乘以正数 $x$，得
+
+当 $x>0$ 时，将上式两端同乘以正数 $x$，得
 \[
  1-x<x\left\lfloor\frac1x\right\rfloor\le1.
 \]
-当 $x\to0^+$ 时，由夹逼定理，右侧函数趋于 $1$。当 $x<0$ 时，同样由
+令 $x\to0^+$，左右两端均趋于 $1$，由夹逼定理得 $\lim_{x\to0^+}x\lfloor1/x\rfloor=1$。
+
+当 $x<0$ 时，同乘以负数 $x$ 使不等号反向，得
 \[
- \frac1x-1<\left\lfloor\frac1x\right\rfloor\le\frac1x
+ 1\le x\left\lfloor\frac1x\right\rfloor<1-x.
 \]
-乘以负数 $x$ 得
-\[
- 1\le x\left\lfloor\frac1x\right\rfloor<1-x,
-\]
-故右侧也趋于 $1$。再由双侧极限判定，原极限为 $1$。
+令 $x\to0^-$，两端同样趋于 $1$，由夹逼定理得 $\lim_{x\to0^-}x\lfloor1/x\rfloor=1$。结合双侧极限的判定定理，可知原极限为 $1$。
 \end{proof}
 
 \subsection*{四则运算法则}
@@ -192,42 +182,41 @@
 若 $\lim_{x\to x_0}f(x)=A$、$\lim_{x\to x_0}g(x)=B$，则
 \[
  \lim_{x\to x_0}[f(x)\pm g(x)]=A\pm B,
-\]
-\[
+ \qquad
  \lim_{x\to x_0}f(x)g(x)=AB.
 \]
-若 $B\ne0$，则在某个去心邻域内 $g(x)\ne0$，且
+若 $B\ne0$，则在 $x_0$ 的某个去心邻域内 $g(x)\ne0$，且
 \[
  \lim_{x\to x_0}\frac{f(x)}{g(x)}=\frac AB.
 \]
 \end{theorem}
 \begin{proof}
-加减法由
+\textbf{加减法。} 任取 $\varepsilon>0$，在充分小的去心邻域内可同时使 $|f(x)-A|<\varepsilon/2$ 与 $|g(x)-B|<\varepsilon/2$，由三角不等式
 \[
  |[f(x)\pm g(x)]-(A\pm B)|
- \le |f(x)-A|+|g(x)-B|
+ \le |f(x)-A|+|g(x)-B|<\varepsilon,
 \]
-及 $\varepsilon/2$ 的选取立即得到。
+立即得到加减法的极限。
 
-乘法中，先由局部有界性取 $M>0$，使 $|f(x)|<M$。于是
+\textbf{乘法。} 先由局部有界性取 $\delta_1>0$ 和 $M>0$，使在 $\U^0(x_0,\delta_1)$ 内有 $|f(x)|<M$。于是对该去心邻域内的点 $x$，有
 \[
  |f(x)g(x)-AB|
  \le |f(x)|\,|g(x)-B|+|B|\,|f(x)-A|
  <M|g(x)-B|+|B|\,|f(x)-A|.
 \]
-右端两项可同时取得任意小，故乘积极限为 $AB$。
+当 $x$ 充分接近 $x_0$ 时，右端两项均可任意小，故乘积极限为 $AB$。
 
-若 $B\ne0$，由 $g(x)\to B$，取 $\varepsilon=|B|/2$，可得
+\textbf{除法。} 若 $B\ne0$，在 $g(x)\to B$ 的定义中取 $\varepsilon=|B|/2>0$，可知在某个去心邻域内有
 \[
- |g(x)|>\frac{|B|}{2}>0
+ |g(x)|>\frac{|B|}{2}>0,
 \]
-在某个去心邻域内成立。因此
+特别地此时 $g(x)\ne0$。因此在该去心邻域内有
 \[
  \left|\frac1{g(x)}-\frac1B\right|
  =\frac{|g(x)-B|}{|B|\,|g(x)|}
- \le\frac2{|B|^2}|g(x)-B|\to0.
+ <\frac2{|B|^2}|g(x)-B|\longrightarrow0,
 \]
-再用乘法法则即得商的结论。
+即 $\lim_{x\to x_0}1/g(x)=1/B$。再结合乘法法则即得商的极限。
 \end{proof}
 
 \begin{example}
@@ -237,9 +226,10 @@
 \]
 \end{example}
 \begin{proof}[解]
-除以 $x^2$ 后为
+当 $x>0$ 时，分子、分母同除以 $x^2$，再利用四则运算法则，得
 \[
- \frac{2+3/x}{1+2/x+1/x^2}\longrightarrow2.
+ \frac{2x^2+3x}{x^2+2x+1}
+ =\frac{2+3/x}{1+2/x+1/x^2}\longrightarrow2.
 \]
 \end{proof}
 
@@ -247,7 +237,7 @@
 计算 $\displaystyle\lim_{x\to\pi/4}(x\tan x-1)$。
 \end{example}
 \begin{proof}[解]
-由上一节已经证明的正弦、余弦极限和四则运算法则，
+由上一节已经证明的正弦、余弦函数极限与四则运算法则，可得
 \[
  \lim_{x\to\pi/4}(x\tan x-1)
  =\frac\pi4\cdot\frac{\sin(\pi/4)}{\cos(\pi/4)}-1
@@ -256,7 +246,7 @@
 \end{proof}
 
 \subsection*{归结原则}
-直接从函数极限定义判断，有时需要同时处理所有充分接近 $x_0$ 的点。归结原则把它转化为数列问题。
+前面的基本性质与数列极限高度平行。事实上，函数极限与数列极限之间存在直接的等价关系：当直接按定义同时考察所有充分接近 $x_0$ 的点较为不便时，归结原则可以将函数极限问题转化为数列极限问题。
 
 \begin{theorem}[归结原则（Heine 定理）]
 设 $f$ 在 $x_0$ 的某个去心邻域 $\U^0(x_0,\delta_0)$ 内有定义，则
@@ -267,49 +257,46 @@
 \[
  x_n\in\U^0(x_0,\delta_0),\qquad x_n\to x_0
 \]
-的数列 $\{x_n\}$，都有
-\[
- f(x_n)\to A.
-\]
+的数列 $\{x_n\}$，都有 $f(x_n)\to A$。
 \end{theorem}
 \begin{proof}
-先证必要性。设 $f(x)\to A$，任取 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$。给定 $\varepsilon>0$，由函数极限定义取 $\delta>0$，使
+\textbf{必要性。} 设 $\lim_{x\to x_0}f(x)=A$，任取满足 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$ 的数列 $\{x_n\}$。给定 $\varepsilon>0$，由函数极限定义存在 $\delta>0$，使
 \[
- 0<|x-x_0|<\delta\Longrightarrow |f(x)-A|<\varepsilon.
+ 0<|x-x_0|<\delta\quad\Longrightarrow\quad |f(x)-A|<\varepsilon.
 \]
-又由 $x_n\to x_0$，存在 $N$，使 $n>N$ 时 $|x_n-x_0|<\delta$。因 $x_n\ne x_0$，故 $|f(x_n)-A|<\varepsilon$，即 $f(x_n)\to A$。
+又由 $x_n\to x_0$，存在 $N\in\Nplus$，使当 $n>N$ 时 $|x_n-x_0|<\delta$；结合 $x_n\ne x_0$，便有 $|f(x_n)-A|<\varepsilon$，即 $f(x_n)\to A$。
 
-再证充分性。反设函数极限不等于 $A$。则存在 $\varepsilon_0>0$，使任意 $\delta>0$ 都能找到满足 $0<|x-x_0|<\delta$ 的点 $x$，使
-\[
- |f(x)-A|\ge\varepsilon_0.
-\]
-对每个 $n\in\Nplus$ 取 $x_n$ 满足
+\textbf{充分性。} 用反证法。假设函数在 $x\to x_0$ 时的极限不等于 $A$，则存在 $\varepsilon_0>0$，使得对任意 $\delta>0$，都存在满足 $0<|x-x_0|<\delta$ 的点 $x$，使 $|f(x)-A|\ge\varepsilon_0$。
+
+据此，对每个 $n\in\Nplus$ 选取点 $x_n$ 满足
 \[
  0<|x_n-x_0|<\min\left\{\delta_0,\frac1n\right\},\qquad |f(x_n)-A|\ge\varepsilon_0.
 \]
-则 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$，但 $f(x_n)$ 不趋于 $A$，与假设矛盾。因此 $\lim_{x\to x_0}f(x)=A$。
+这样得到的数列满足 $x_n\in\U^0(x_0,\delta_0)$ 且 $x_n\to x_0$，但 $\{f(x_n)\}$ 不收敛于 $A$，与题设矛盾。因此 $\lim_{x\to x_0}f(x)=A$。
 \end{proof}
+
+归结原则常用于否定函数极限的存在性，典型做法是选取两列趋于 $x_0$ 的自变量，使相应的函数值趋于不同的极限。
 
 \begin{example}
 证明 $\displaystyle\lim_{x\to0}\sin(1/x)$ 不存在。
 \end{example}
 \begin{proof}
-取
+选取两列非零点
 \[
  x_n=\frac1{2\pi n+\pi/2},\qquad
  y_n=\frac1{2\pi n+3\pi/2}.
 \]
-两列都趋于 $0$，但
+显然 $x_n\to0$ 且 $y_n\to0$，但对应的函数值分别为
 \[
  \sin\frac1{x_n}=1,\qquad \sin\frac1{y_n}=-1.
 \]
-若 $\lim_{x\to0}\sin(1/x)$ 存在，则由归结原则，两列函数值应趋于同一个极限，矛盾。故该极限不存在。
+若 $\lim_{x\to0}\sin(1/x)$ 存在，则由归结原则，两列函数值应当收敛于同一个数，矛盾，故该极限不存在。
 \end{proof}
 
-归结原则中的“任意数列”不能改成“某个数列”。一列函数值收敛，只能确定沿这一列点趋近时的函数值极限；要证明函数极限存在，必须保证所有允许的趋近数列都给出同一个极限。反过来，只要找到一列函数值不收敛，或者两列函数值趋于不同的数，就能否定有限极限的存在。
+应用归结原则时，条件中的“任意数列”不能弱化为“某个数列”。单一数列对应的函数值收敛，只能说明沿该列点趋近时函数值有极限；要证明函数极限存在，必须保证所有允许的趋近数列都给出同一个极限。反过来，只要找到一列使函数值不收敛，或者找到两列使函数值趋于不同的极限，就能否定有限极限的存在。
 
 \subsection*{单侧归结原则}
-归结原则的证明也适用于单侧趋近和无穷远处。对于单侧极限，还可以把需要检验的数列限制为单调趋近的数列。
+归结原则的论证同样适用于单侧趋近和无穷远处的情形。进一步地，对于单侧极限，还可以把待检验的数列限制为严格单调趋近的数列。
 
 \begin{theorem}[右极限的归结原则]
 设 $f$ 在 $(x_0,x_0+\delta_0)$ 上有定义，则
@@ -320,49 +307,51 @@
 \[
  x_0<x_n<x_0+\delta_0,\qquad x_n\downarrow x_0
 \]
-的严格递减数列，都有 $f(x_n)\to A$。
+的严格递减数列 $\{x_n\}$，都有 $f(x_n)\to A$。
 \end{theorem}
 \begin{proof}
-必要性由归结原则直接得到。反之，若右极限不等于 $A$，则存在 $\varepsilon_0>0$，使每个充分小的右邻域中都有点 $x$ 满足 $|f(x)-A|\ge\varepsilon_0$。
+必要性直接由一般归结原则得出。以下用反证法证充分性：若右极限不等于 $A$，则存在 $\varepsilon_0>0$，使每个充分小的右邻域 $(x_0,x_0+\delta)$ 中都存在点 $x$ 满足 $|f(x)-A|\ge\varepsilon_0$。
 
-先取这样的点 $x_1\in(x_0,x_0+\delta_0)$。已取到 $x_n$ 后，再取一个这样的点 $x_{n+1}$，使
+先取这样一个点 $x_1\in(x_0,x_0+\delta_0)$。设已取到 $x_n$，在更小的右邻域中再取一个满足 $|f(x_{n+1})-A|\ge\varepsilon_0$ 的点 $x_{n+1}$，使其满足
 \[
  0<x_{n+1}-x_0<\min\left\{\frac1{n+1},\frac{x_n-x_0}{2}\right\}.
 \]
-这样得到严格递减且趋于 $x_0$ 的数列，但始终有 $|f(x_n)-A|\ge\varepsilon_0$，与假设矛盾。
+这样构造出的数列严格递减且趋于 $x_0$，但对一切 $n$ 均有 $|f(x_n)-A|\ge\varepsilon_0$，与题设矛盾，故 $\lim_{x\to x_0^+}f(x)=A$。
 \end{proof}
 
-左极限可相应地只检验严格递增到 $x_0$ 的数列；对于 $x\to+\infty$，可只检验严格递增且趋于 $+\infty$ 的数列。这里限制的是自变量数列的单调性，并不要求函数 $f$ 单调。
+类似地，左极限只需检验严格递增趋于 $x_0$ 的数列；对于 $x\to+\infty$，则只需检验严格递增且趋于 $+\infty$ 的数列。这里限制的是自变量数列的单调性，并不要求函数 $f$ 本身单调。
 
 \subsection*{单调有界定理}
-归结原则把函数极限转化为数列极限，但还需要判断各列函数值是否趋向同一个数。对单调函数，可以直接借助确界原理确定单侧极限。
+归结原则把函数极限转化为数列极限，但在实际应用中仍需检验所有允许的数列是否给出同一极限。对于单调函数，可以直接借助确界原理确立单侧极限的存在性。
 
 \begin{theorem}[单调有界定理]
-设 $f$ 在 $x_0$ 的某个右邻域内单调且有界，则有限右极限 $\lim_{x\to x_0^+}f(x)$ 存在。具体地，在这个右邻域内，
+设 $f$ 在 $x_0$ 的某个右邻域内单调且有界，则有限右极限 $\lim_{x\to x_0^+}f(x)$ 存在。具体而言，在该右邻域内有
 \[
  \begin{array}{c|c}
  f\text{ 递增}&\displaystyle\lim_{x\to x_0^+}f(x)=\inf f\\[0.5em]
  f\text{ 递减}&\displaystyle\lim_{x\to x_0^+}f(x)=\sup f
  \end{array}
 \]
-其中 $\inf f$、$\sup f$ 分别指该邻域上函数值集合的下确界、上确界。对于左极限，递增函数对应上确界，递减函数对应下确界。
+其中 $\inf f$、$\sup f$ 分别表示该邻域上函数值集合的下确界与上确界。对于左极限，递增函数对应上确界，递减函数对应下确界。
 \end{theorem}
 \begin{proof}
-以 $f$ 在 $(x_0,x_0+\delta_0)$ 上递增为例。令
+以 $f$ 在 $(x_0,x_0+\delta_0)$ 上单调递增且有界为例。令
 \[
  A=\inf\{f(x):x_0<x<x_0+\delta_0\}.
 \]
-任取 $\varepsilon>0$，由下确界的定义，存在 $x'\in(x_0,x_0+\delta_0)$，使 $f(x')<A+\varepsilon$。取 $\delta=x'-x_0$。当 $x_0<x<x_0+\delta=x'$ 时，由单调性，
+任取 $\varepsilon>0$，由下确界的定义，存在 $x'\in(x_0,x_0+\delta_0)$ 使得 $f(x')<A+\varepsilon$。
+
+取 $\delta=x'-x_0>0$。当 $x_0<x<x_0+\delta=x'$ 时，由单调递增性与下确界的性质可得
 \[
  A\le f(x)\le f(x')<A+\varepsilon,
 \]
-故 $|f(x)-A|<\varepsilon$。这就证明了右极限为 $A$。其余情形同理。
+从而 $|f(x)-A|<\varepsilon$，这就证明了 $\lim_{x\to x_0^+}f(x)=A$。其余三种情形的证明完全类似。
 \end{proof}
 
-判定某一侧的极限时，只需考察这一侧某个足够小邻域内的单调性和有界性；左右两侧的极限仍可能不同。反过来，有限单侧极限存在必然推出这一侧的局部有界性。因此，对已经单调的函数，有限单侧极限存在与在某个更小的单侧邻域内有界等价，不要求它在原来的整个区间上有界。
+判定某一侧的极限时，只需考察函数在该侧某个足够小邻域内的单调性与有界性，而左右两侧的极限仍可能互不相等。反过来，有限单侧极限存在必然推出该侧的局部有界性；因此，对已经单调的函数而言，有限单侧极限存在与它在某个更小的单侧邻域内有界等价，并不要求它在原来的整个区间上有界。
 
 \subsection*{函数极限的柯西准则}
-还有一种判别方法只比较邻近的函数值，不预先指定极限值。
+对于既不单调又不易预先猜出极限值的函数，可以通过直接比较邻近点处函数值之差来判别有限极限是否存在，这便是函数极限的柯西准则。
 
 \begin{theorem}[柯西准则]
 设 $f$ 在 $\U^0(x_0,\delta_0)$ 上有定义，则 $\lim_{x\to x_0}f(x)$ 存在有限值的充要条件是：对任意 $\varepsilon>0$，存在 $0<\delta\le\delta_0$，使任意两点 $x',x''\in\U^0(x_0,\delta)$ 都满足
@@ -371,60 +360,60 @@
 \]
 \end{theorem}
 \begin{proof}
-必要性：设 $f(x)\to A$。任取 $\varepsilon>0$，由极限定义取 $\delta>0$，使去心邻域内的 $x$ 满足 $|f(x)-A|<\varepsilon/2$。于是其中任意两点满足
+\textbf{必要性。} 设 $\lim_{x\to x_0}f(x)=A$。任取 $\varepsilon>0$，由极限定义存在 $0<\delta\le\delta_0$，使对所有 $x\in\U^0(x_0,\delta)$ 均有 $|f(x)-A|<\varepsilon/2$。于是对其中任意两点 $x',x''$，由三角不等式得
 \[
  |f(x')-f(x'')|
  \le |f(x')-A|+|f(x'')-A|<\varepsilon.
 \]
 
-充分性：先固定一列 $x_n\in\U^0(x_0,\delta_0)$，使 $x_n\to x_0$。任取 $\varepsilon>0$，按题设取 $\delta>0$。当 $n,m$ 充分大时，$x_n,x_m$ 都在 $\U^0(x_0,\delta)$ 中，因而
-\[
- |f(x_n)-f(x_m)|<\varepsilon.
-\]
-由数列的柯西收敛准则，存在 $A\in\R$，使 $f(x_n)\to A$。
+\textbf{充分性。} 先借助数列柯西准则找到候选极限 $A$。固定一列点 $x_n\in\U^0(x_0,\delta_0)$ 使 $x_n\to x_0$。任取 $\varepsilon>0$，按题设取相应的 $\delta>0$；当 $m,n$ 充分大时，$x_m,x_n$ 均落入 $\U^0(x_0,\delta)$ 中，从而 $|f(x_n)-f(x_m)|<\varepsilon$。由此可见 $\{f(x_n)\}$ 为柯西列，由数列的柯西收敛准则，存在 $A\in\R$ 使 $f(x_n)\to A$。
 
-下面用同一个 $A$ 控制任意邻近点的函数值。给定 $\varepsilon>0$，按题设取 $\delta>0$，使该去心邻域内任意两点的函数值之差小于 $\varepsilon/2$。再固定一个充分大的下标 $n_0$，使
+再证明对任意邻近点都有 $f(x)\to A$。给定 $\varepsilon>0$，按题设取 $0<\delta\le\delta_0$，使 $\U^0(x_0,\delta)$ 内任意两点的函数值之差小于 $\varepsilon/2$。随后固定一个充分大的下标 $n_0$，同时满足
 \[
  x_{n_0}\in\U^0(x_0,\delta),\qquad
  |f(x_{n_0})-A|<\frac\varepsilon2.
 \]
-这样，对任意 $x\in\U^0(x_0,\delta)$，都有
+于是对任意 $x\in\U^0(x_0,\delta)$，均有
 \[
  |f(x)-A|\le |f(x)-f(x_{n_0})|+|f(x_{n_0})-A|
- <\frac\varepsilon2+\frac\varepsilon2=\varepsilon.
+ <\frac\varepsilon2+\frac\varepsilon2=\varepsilon,
 \]
 故 $\lim_{x\to x_0}f(x)=A$。
 \end{proof}
 
-对于 $x\to+\infty$，只需把两个点都位于去心邻域的条件换成 $x',x''>M$。相应地，有限极限不存在当且仅当存在 $\varepsilon_0>0$，使任意远处都能找到两点，其函数值之差不小于 $\varepsilon_0$。有限点处的否定形式则为
+对于 $x\to+\infty$ 的情形，只需将“两点同在去心邻域内”改为 $x',x''>M$。相应地，有限极限不存在当且仅当存在 $\varepsilon_0>0$，使得无论走多远，总能找到两点 $x',x''>M$ 满足 $|f(x')-f(x'')|\ge\varepsilon_0$。有限点处柯西条件的否定形式则写作
 \[
  \exists\varepsilon_0>0,\ \forall\delta\in(0,\delta_0],\
  \exists x',x''\in\U^0(x_0,\delta):\quad
  |f(x')-f(x'')|\ge\varepsilon_0.
 \]
 
+下面结合具体例子，对比归结原则与柯西准则在否定有限极限存在性时的用法。
+
 \begin{example}
 用归结原则和柯西准则分别证明 $\displaystyle\lim_{x\to+\infty}\sin x$ 不存在。
 \end{example}
 \begin{proof}
-取 $x_n=2n\pi$、$y_n=2n\pi+\pi/2$。两列都趋于 $+\infty$，而
+取 $x_n=2n\pi$、$y_n=2n\pi+\pi/2$。两列均趋于 $+\infty$，而对应的函数值满足
 \[
  \sin x_n=0,\qquad \sin y_n=1.
 \]
-由归结原则，原极限不存在。若用柯西准则，则取 $\varepsilon_0=1$：对任意 $M>0$，取充分大的 $n$，便有 $x_n,y_n>M$，而 $|\sin x_n-\sin y_n|=1$，不满足柯西条件。
+由归结原则可知原极限不存在。
+
+若改用柯西准则，取 $\varepsilon_0=1$。对任意 $M>0$，选取充分大的 $n$ 即可使 $x_n,y_n>M$，而 $|\sin x_n-\sin y_n|=1\ge\varepsilon_0$，不满足柯西条件，故有限极限不存在。
 \end{proof}
 
 \begin{example}
 证明函数 $f(x)=1/x$ 在 $x\to0$ 时不存在有限极限。
 \end{example}
 \begin{proof}
-取 $x_n=1/n$、$y_n=1/(n+1)$。两列都趋于 $0$，且
+取 $x_n=1/n$、$y_n=1/(n+1)$，两列均趋于 $0$，而对应的函数值之差满足
 \[
  \left|\frac1{x_n}-\frac1{y_n}\right|=|n-(n+1)|=1.
 \]
-因此在任意小的去心邻域内，均有两个函数值之差等于 $1$，由柯西准则，有限极限不存在。
+因此在 $x=0$ 的任意小去心邻域内，都存在两点的函数值之差等于 $1$，由柯西准则可知有限极限不存在。
 
-也可只取 $x_n=1/n$：对应的函数值 $n$ 不收敛于有限实数，由归结原则即得结论。这里否定的是有限极限；无穷大量的含义将在后面另行定义。
+也可直接取 $x_n=1/n$ 运用归结原则：此时 $f(x_n)=n$ 不收敛于任何有限实数，故 $\lim_{x\to0}(1/x)$ 不存在有限极限。需要说明的是，这里否定的是有限极限，无穷大量的概念将在后文另行定义。
 \end{proof}
 
 \end{document}

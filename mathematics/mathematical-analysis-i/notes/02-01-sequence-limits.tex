@@ -48,76 +48,67 @@
 \begin{document}
 \maketitle
 \section{数列极限的定义}
+要将“当项数 $n$ 无限增大时，$a_n$ 无限趋近于常数 $A$”表述为可验证的数学命题，需要用误差界 $\varepsilon$ 与下标阈值 $N$ 给出精确的量词定义。
+
 \begin{definition}[收敛与极限]
 设 $\{a_n\}$ 为实数列，$A\in\R$。若
 \[
  \forall\varepsilon>0,\quad\exists N\in\Nplus,\quad
  \forall n>N,\quad |a_n-A|<\varepsilon,
 \]
-则称数列 $\{a_n\}$ 收敛于 $A$，记为
+则称数列 $\{a_n\}$ 收敛于 $A$，记作
 \[
  \lim_{n\to\infty}a_n=A\qquad\text{或}\qquad a_n\to A\ (n\to\infty).
 \]
 \end{definition}
+
+理解并运用这一定义时，有三点细节值得留意：
 \begin{enumerate}
-\item $\varepsilon$ 可以任意小，但必须为正；$N$ 可以依赖于 $\varepsilon$，
-也可以依赖于给定数列与 $A$，但不能依赖于随后选取的 $n$。
-\item $N$ 不唯一：某个 $N$ 可用时，任何更大的正整数也可用。
-通常先由 $|a_n-A|<\varepsilon$ 估计出对 $n$ 的要求，再选取整数 $N$。
-\item 对固定的 $c>0$、$p>0$，定义右端的 $\varepsilon$ 可以换成
-$c\varepsilon$ 或 $\varepsilon^p$，也可将严格不等号改为 $\le$，所得定义均等价。
-例如，若能使误差小于 $c\varepsilon$，则对目标误差 $\eta>0$ 取
-$\varepsilon=\eta/c$ 即可；若误差仅保证 $\le\varepsilon$，则取 $\varepsilon=\eta/2$。
+\item $\varepsilon$ 可以任意小，但必须严格为正；阈值 $N$ 可以依赖于 $\varepsilon$ 以及给定的数列和极限 $A$，但不能依赖于随后选取的项数 $n$。
+\item 满足条件的 $N$ 并不唯一：只要某个 $N$ 符合要求，任何更大的正整数也同样符合要求。实际证明中，通常先从 $|a_n-A|<\varepsilon$ 出发估计出对 $n$ 的下界要求，再据此选定整数 $N$。
+\item 对固定的 $c>0$、$p>0$，将定义右端的 $\varepsilon$ 替换为 $c\varepsilon$ 或 $\varepsilon^p$，或将严格不等号 $<$ 改为 $\le$，所得定义均与原定义等价。例如，若对任意 $\varepsilon>0$ 都能使误差小于 $c\varepsilon$，则对给定目标误差 $\eta>0$ 取 $\varepsilon=\eta/c$ 即可；若误差仅保证 $\le\varepsilon$，则取 $\varepsilon=\eta/2$ 便可回到严格不等式。
 \end{enumerate}
 
 \subsection{邻域刻画}
-记 $U(A;\varepsilon)=(A-\varepsilon,A+\varepsilon)$，则
-\[
- |a_n-A|<\varepsilon\iff A-\varepsilon<a_n<A+\varepsilon
- \iff a_n\in U(A;\varepsilon).
-\]
-因此，$a_n\to A$ 当且仅当：对任意 $\varepsilon>0$，落在
-$U(A;\varepsilon)$ 外的数列项只有有限项。
-这里按下标计数，即集合 $\{n\in\Nplus:a_n\notin U(A;\varepsilon)\}$ 有限。
-一方面，$n>N$ 时均在邻域内，邻域外至多有前 $N$ 项；另一方面，
-若邻域外仅有有限项，取 $N$ 不小于这些项的所有下标即可（没有这样的项时取 $N=1$）。
+记 $U(A;\varepsilon)=(A-\varepsilon,A+\varepsilon)$，不等式 $|a_n-A|<\varepsilon$ 等价于 $a_n\in U(A;\varepsilon)$。由此可将数列收敛翻译为直观的邻域语言：$a_n\to A$ 当且仅当对任意 $\varepsilon>0$，落在邻域 $U(A;\varepsilon)$ 之外的数列项只有有限项。
+
+这里的“有限项”按下标计数，即集合 $\{n\in\Nplus:a_n\notin U(A;\varepsilon)\}$ 为有限集。一方面，若 $n>N$ 时所有项都在邻域内，则邻域外至多只有前 $N$ 项；另一方面，若邻域外仅有有限项，只需取 $N$ 不小于这些项的所有下标（若不存在这样的项，取 $N=1$ 即可），便能保证 $n>N$ 时全部落入邻域内。
 
 \subsection{发散及其量词表述}
-数列不收敛于任何实数时，称其发散。准确地说，
+当数列不收敛于任何实数时，称其发散。对收敛定义中关于存在极限 $A$ 的全称与存在量词逐层取否定，即得发散的准确表述：
 \[
  \forall A\in\R,\quad\exists\varepsilon_0>0,\quad
  \forall N\in\Nplus,\quad\exists n>N:\ |a_n-A|\ge\varepsilon_0.
 \]
-即对每个候选极限 $A$，都存在一个邻域，其外有无穷多项。
-只排除某一个 $A$，不能证明数列发散。
+从邻域视角看，这意味着对每一个候选极限 $A\in\R$，都存在它的某个邻域，其外含有数列的无穷多项。因此，仅排除某一个特定的 $A$ 并不能证明数列发散。
 
-\newpage
 \section{由定义证明极限：基本例题}
+按 $\varepsilon$--$N$ 定义验证具体数列的极限时，基本步骤是先整理误差 $|a_n-A|$，反解出使它小于 $\varepsilon$ 的充分条件，再选出相应的正整数 $N$。下文以 $\lceil t\rceil$ 表示不小于 $t$ 的最小整数。
+
 \begin{example}
 证明 $\displaystyle\lim_{n\to\infty}\frac1n=0$。
 \end{example}
 \begin{proof}
-任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$。
-对任意 $n>N$，有
+任取 $\varepsilon>0$，选取 $N=\max\{1,\lceil1/\varepsilon\rceil\}\in\Nplus$。则对任意 $n>N$，都有
 \[
- \left|\frac1n-0\right|=\frac1n<\frac1N\le\varepsilon.
+ \left|\frac1n-0\right|=\frac1n<\frac1N\le\varepsilon,
 \]
-故结论成立。这里 $\lceil t\rceil$ 为不小于 $t$ 的最小整数。
+故 $\lim_{n\to\infty}1/n=0$。
 \end{proof}
 
 \begin{example}
 证明 $\displaystyle\lim_{n\to\infty}\frac{3n^2}{n^2-3}=3$。
 \end{example}
 \begin{proof}
-当 $n\ge2$ 时，
+为使分母为正，先限制 $n\ge2$，此时
 \[
  \left|\frac{3n^2}{n^2-3}-3\right|=\frac9{n^2-3}.
 \]
-任取 $\varepsilon>0$，取
+任取 $\varepsilon>0$，要使 $9/(n^2-3)<\varepsilon$，只需 $n^2>9/\varepsilon+3$。为此取
 \[
  N=\max\left\{2,\left\lceil\sqrt{\frac9\varepsilon+3}\right\rceil\right\}.
 \]
-对任意 $n>N$，有 $n^2>9/\varepsilon+3$，于是
+于是对任意 $n>N$，均有 $n\ge2$ 且 $n^2>9/\varepsilon+3$，从而
 \[
  \left|\frac{3n^2}{n^2-3}-3\right|=\frac9{n^2-3}<\varepsilon.
 \]
@@ -128,160 +119,148 @@ $U(A;\varepsilon)$ 外的数列项只有有限项。
 设 $q\in\R$ 且 $|q|<1$，证明 $\displaystyle\lim_{n\to\infty}q^n=0$。
 \end{example}
 \begin{proof}
-$q=0$ 时显然成立。以下设 $0<|q|<1$。
-任取 $\varepsilon>0$，因 $\ln|q|<0$，有
+当 $q=0$ 时数列恒为 $0$，结论显然成立。以下设 $0<|q|<1$。
+
+任取 $\varepsilon>0$。因为 $\ln|q|<0$，取对数解不等式时不等号反转：
 \[
  |q|^n<\varepsilon
  \iff n\ln|q|<\ln\varepsilon
  \iff n>\frac{\ln\varepsilon}{\ln|q|}.
 \]
-取
+为此选取
 \[
- N=\max\left\{1,\left\lceil\frac{\ln\varepsilon}{\ln|q|}\right\rceil\right\}.
+ N=\max\left\{1,\left\lceil\frac{\ln\varepsilon}{\ln|q|}\right\rceil\right\},
 \]
-则对任意 $n>N$，都有 $|q^n-0|=|q|^n<\varepsilon$，故结论成立。
-取最大值保证了 $\varepsilon\ge1$ 时 $N$ 仍是正整数。
+其中与 $1$ 取最大值是为了保证当 $\varepsilon\ge1$ 时 $N$ 仍为正整数。对任意 $n>N$，均有 $|q^n-0|=|q|^n<\varepsilon$，故结论成立。
 \end{proof}
 
-\newpage
 \section{根式与方根的极限}
+当误差不能直接显式解出 $n$ 时，往往需要结合分子有理化或二项式展开对误差作适当放缩。
+
 \begin{example}
-设 $x_n\to a>0$，证明 $\sqrt{x_n}$ 从充分大的 $n$ 起有定义，且
-$\sqrt{x_n}\to\sqrt a$。
+设 $x_n\to a>0$，证明 $\sqrt{x_n}$ 从充分大的 $n$ 起有定义，且 $\sqrt{x_n}\to\sqrt a$。
 \end{example}
 \begin{proof}
-先保证根式有意义。由极限定义，存在 $N_0\in\Nplus$，使 $n>N_0$ 时
-$|x_n-a|<a/2$，从而 $x_n>a/2>0$。
-因此 $\sqrt{x_n}$ 至少从某一项起有定义；若要把它看成从第一项起的实数列，
-可要求所有 $x_n\ge0$，或将前面有限项另行赋值，均不影响极限。
+首先保证根式有意义。由 $x_n\to a$ 及 $a>0$，取误差界 $a/2$，存在 $N_0\in\Nplus$，使得当 $n>N_0$ 时 $|x_n-a|<a/2$，从而 $x_n>a/2>0$。这说明 $\sqrt{x_n}$ 至少从第 $N_0+1$ 项起有定义；若希望将其视为从首项起均有定义的实数列，只需假定所有 $x_n\ge0$ 或将前 $N_0$ 项另行赋值，均不改变极限。
 
-任取 $\varepsilon>0$，由 $x_n\to a$，存在 $N_1\in\Nplus$，
-使 $n>N_1$ 时 $|x_n-a|<\varepsilon\sqrt a$。
-取 $N=\max\{N_0,N_1\}$，则对任意 $n>N$，
+接着验证收敛性。任取 $\varepsilon>0$，由 $x_n\to a$ 可知存在 $N_1\in\Nplus$，使得当 $n>N_1$ 时 $|x_n-a|<\varepsilon\sqrt a$。取 $N=\max\{N_0,N_1\}$，则对任意 $n>N$，分子有理化给出
 \[
  |\sqrt{x_n}-\sqrt a|
  =\frac{|x_n-a|}{\sqrt{x_n}+\sqrt a}
  \le\frac{|x_n-a|}{\sqrt a}<\varepsilon.
 \]
-故 $\sqrt{x_n}\to\sqrt a$。
+由此证得 $\sqrt{x_n}\to\sqrt a$。
 \end{proof}
-\textbf{另一种估计。} 对 $u,v\ge0$，由
-$|u-v|=|\sqrt u-\sqrt v|(\sqrt u+\sqrt v)$ 及
-$|\sqrt u-\sqrt v|\le\sqrt u+\sqrt v$，可得
+
+\noindent\textbf{另一种估计。}对任意 $u,v\ge0$，由 $|u-v|=|\sqrt u-\sqrt v|(\sqrt u+\sqrt v)$ 以及 $|\sqrt u-\sqrt v|\le\sqrt u+\sqrt v$，可以直接得到
 \[
  |\sqrt u-\sqrt v|\le\sqrt{|u-v|}.
 \]
-故只要使 $|x_n-a|<\varepsilon^2$，就能使
-$|\sqrt{x_n}-\sqrt a|<\varepsilon$。
+利用这一不等式，只要使 $|x_n-a|<\varepsilon^2$，就能保证 $|\sqrt{x_n}-\sqrt a|<\varepsilon$，且该估计在 $a=0$ 时同样有效。
 
 \begin{example}
 设 $a>0$，证明 $\displaystyle\lim_{n\to\infty}a^{1/n}=1$。
 \end{example}
 \begin{proof}
-$a=1$ 时显然成立。
-若 $a>1$，令 $t_n=a^{1/n}-1>0$。由二项式展开，
-\[
- a=(1+t_n)^n\ge1+nt_n,\qquad 0<t_n\le\frac{a-1}{n}.
-\]
-任取 $\varepsilon>0$，取 $N=\max\{1,\lceil(a-1)/\varepsilon\rceil\}$，
-则 $n>N$ 时，$|a^{1/n}-1|\le(a-1)/n<\varepsilon$。
+当 $a=1$ 时数列恒为 $1$，结论显然成立。
 
-若 $0<a<1$，令 $b=1/a>1$。由前面的估计，
+若 $a>1$，令 $t_n=a^{1/n}-1>0$。由二项式展开保留前两项，有
+\[
+ a=(1+t_n)^n\ge1+nt_n,
+ \qquad \text{从而 } 0<t_n\le\frac{a-1}{n}.
+\]
+任取 $\varepsilon>0$，取 $N=\max\{1,\lceil(a-1)/\varepsilon\rceil\}$，则对一切 $n>N$ 都有 $|a^{1/n}-1|\le(a-1)/n<\varepsilon$。
+
+若 $0<a<1$，令 $b=1/a>1$，将其转化为前一情形。因为 $b^{1/n}>1$，有
 \[
  |a^{1/n}-1|=1-\frac1{b^{1/n}}
  =\frac{b^{1/n}-1}{b^{1/n}}\le b^{1/n}-1\le\frac{b-1}{n}.
 \]
-取 $N=\max\{1,\lceil(b-1)/\varepsilon\rceil\}$ 即得所需结论。
+于是取 $N=\max\{1,\lceil(b-1)/\varepsilon\rceil\}$ 即可完成证明。
 \end{proof}
 
-\newpage
 \subsection*{补充例题：$\sqrt[n]{n}$ 的极限}
 证明 $\displaystyle\lim_{n\to\infty}n^{1/n}=1$。
 \begin{proof}
-令 $t_n=n^{1/n}-1\ge0$。当 $n\ge2$ 时，二项式展开给出
+令 $t_n=n^{1/n}-1\ge0$。此处底数 $n$ 本身随项数增长，若仅保留二项式展开的一次项 $1+nt_n$ 不足以控制 $t_n$，因而保留二次项：当 $n\ge2$ 时，
 \[
- n=(1+t_n)^n\ge\binom n2t_n^2,
- \qquad 0\le t_n\le\sqrt{\frac2{n-1}}.
+ n=(1+t_n)^n\ge\binom n2 t_n^2=\frac{n(n-1)}{2}t_n^2,
+ \qquad \text{从而 } 0\le t_n\le\sqrt{\frac2{n-1}}.
 \]
-任取 $\varepsilon>0$，取 $N=\max\{2,\lceil1+2/\varepsilon^2\rceil\}$。
-对任意 $n>N$，有
+任取 $\varepsilon>0$，取 $N=\max\{2,\lceil1+2/\varepsilon^2\rceil\}$。对任意 $n>N$，有
 \[
- |n^{1/n}-1|=t_n\le\sqrt{\frac2{n-1}}<\varepsilon.
+ |n^{1/n}-1|=t_n\le\sqrt{\frac2{n-1}}<\varepsilon,
 \]
-所以 $n^{1/n}\to1$。此处底数随 $n$ 变化，不能直接套用固定 $a$ 的结论。
+故 $n^{1/n}\to1$。应当注意，由于底数随 $n$ 变化，本题不能直接套用上例固定 $a$ 的结论。
 \end{proof}
 
 \section{阶乘与幂的比较}
+当 $n$ 充分大时，阶乘的增长速度远超任意固定底数的指数函数；证明的关键在于选取一个固定阈值，使后续每一个新乘入的因子都不超过 $1/2$。
+
 \begin{example}
-证明 $\displaystyle\lim_{n\to\infty}\frac{2^n}{n!}=0$；
-进一步，对任意固定的 $\alpha\in\R$，证明
-$\displaystyle\lim_{n\to\infty}\frac{\alpha^n}{n!}=0$。
+证明 $\displaystyle\lim_{n\to\infty}\frac{2^n}{n!}=0$；进一步，对任意固定的 $\alpha\in\R$，证明 $\displaystyle\lim_{n\to\infty}\frac{\alpha^n}{n!}=0$。
 \end{example}
 \begin{proof}
-先看 $2^n/n!$。当 $n\ge2$ 时，
+先考察 $2^n/n!$。当 $n\ge2$ 时，将分子分母逐项配对，中间各项均不超过 $1$：
 \[
  \frac{2^n}{n!}
  =\frac4n\prod_{k=2}^{n-1}\frac2k\le\frac4n,
 \]
-其中 $n=2$ 时空乘积取 $1$。
-任取 $\varepsilon>0$，取 $N=\max\{2,\lceil4/\varepsilon\rceil\}$，
-则 $n>N$ 时，$|2^n/n!|\le4/n<\varepsilon$。
+其中 $n=2$ 时空乘积约定为 $1$。任取 $\varepsilon>0$，取 $N=\max\{2,\lceil4/\varepsilon\rceil\}$，则对所有 $n>N$ 均有 $|2^n/n!|\le4/n<\varepsilon$。
 
-一般地，$\alpha=0$ 时显然成立。若 $\alpha\ne0$，选取整数
-$m\ge\max\{1,2|\alpha|\}$，并记 $C=|\alpha|^m/m!>0$。
-对 $n>m$，有
+再看一般的 $\alpha\in\R$。当 $\alpha=0$ 时结论显然成立；若 $\alpha\ne0$，选取固定整数 $m\ge\max\{1,2|\alpha|\}$，并记常数 $C=|\alpha|^m/m!>0$。当 $n>m$ 时，每个满足 $k>m$ 的因子都满足 $|\alpha|/k\le1/2$，从而
 \[
  \left|\frac{\alpha^n}{n!}\right|
  =C\prod_{k=m+1}^{n}\frac{|\alpha|}{k}
  \le C\left(\frac12\right)^{n-m}.
 \]
-给定 $\varepsilon>0$，取
+对任意给定的 $\varepsilon>0$，选取
 \[
  N=m+\max\{1,\lceil\log_2(C/\varepsilon)\rceil\}.
 \]
-对任意 $n>N$，有 $n-m>\log_2(C/\varepsilon)$，于是
-$|\alpha^n/n!|\le C2^{-(n-m)}<\varepsilon$，结论成立。
+则当 $n>N$ 时有 $n-m>\log_2(C/\varepsilon)$，由此得 $|\alpha^n/n!|\le C2^{-(n-m)}<\varepsilon$，结论成立。
 \end{proof}
 
-\newpage
 \section{用定义证明数列发散}
+依据发散的量词表述，证明数列发散时必须针对任意候选极限 $A\in\R$ 给出固定的 $\varepsilon_0>0$，并说明无论 $N$ 多大，总存在 $n>N$ 使 $|a_n-A|\ge\varepsilon_0$。
+
 \begin{example}
 证明数列 $\{n^2\}$ 与 $\{(-1)^n\}$ 均发散。
 \end{example}
 \begin{proof}
 \textbf{（1）$\{n^2\}$。}
-任取 $A\in\R$，取 $\varepsilon_0=1$。
-对于任意 $N\in\Nplus$，选取正整数
+任取候选极限 $A\in\R$，取 $\varepsilon_0=1$。对任意 $N\in\Nplus$，选取正整数
 \[
  n>\max\{N,1,A+1\}.
 \]
-则 $n^2\ge n>A+1$，从而
+于是 $n^2\ge n>A+1$，进而
 \[
  |n^2-A|=n^2-A>1=\varepsilon_0.
 \]
-所以 $A$ 不是该数列的极限。由于 $A$ 任意，$\{n^2\}$ 发散。
+这表明 $A$ 不是 $\{n^2\}$ 的极限；由 $A$ 的任意性可知 $\{n^2\}$ 发散。
 
+\medskip
 \textbf{（2）$\{(-1)^n\}$。}
-任取 $A\in\R$，仍取 $\varepsilon_0=1$。
+任取候选极限 $A\in\R$，仍取 $\varepsilon_0=1$，按 $A$ 的符号分两种情形选取下标：
 \begin{itemize}[leftmargin=2em]
-\item 若 $A\ge0$，则对任意 $N$，可取奇数 $n>N$，此时
+\item 若 $A\ge0$，对任意 $N$ 取奇数 $n>N$，则
 \[
- |(-1)^n-A|=|-1-A|=1+A\ge1.
+ |(-1)^n-A|=|-1-A|=1+A\ge1;
 \]
-\item 若 $A<0$，则对任意 $N$，可取偶数 $n>N$，此时
+\item 若 $A<0$，对任意 $N$ 取偶数 $n>N$，则
 \[
  |(-1)^n-A|=|1-A|=1-A>1.
 \]
 \end{itemize}
-所以对每个 $A\in\R$，邻域 $U(A;1)$ 外都有无穷多项，故该数列发散。
+由此对每个 $A\in\R$，邻域 $U(A;1)$ 外均含有该数列的无穷多项，故 $\{(-1)^n\}$ 发散。
 \end{proof}
 
-\newpage
 \section{无穷小量与无穷大量}
 \begin{definition}[无穷小量]
-极限为 $0$ 的数列称为无穷小量。数列 $a_n\to a$ 当且仅当
-$\alpha_n=a_n-a$ 是无穷小量；此时可写成 $a_n=a+\alpha_n$。
+极限为 $0$ 的数列称为无穷小量。一般地，数列 $a_n\to a$ 当且仅当 $\alpha_n=a_n-a$ 是无穷小量，此时可将数列改写为 $a_n=a+\alpha_n$。
 \end{definition}
+
+发散数列中有一类特别重要的情形，即项的绝对值随项数增大最终超过任何正数界限。
 
 \begin{definition}[无穷大量]
 若数列 $\{a_n\}$ 满足
@@ -289,22 +268,16 @@ $\alpha_n=a_n-a$ 是无穷小量；此时可写成 $a_n=a+\alpha_n$。
  \forall M>0,\quad\exists N\in\Nplus,\quad
  \forall n>N,\quad |a_n|>M,
 \]
-则称其为无穷大量，记作 $a_n\to\infty$。
-若上式中的 $|a_n|>M$ 分别可加强为 $a_n>M$ 或 $a_n<-M$，
-则记作 $a_n\to+\infty$ 或 $a_n\to-\infty$。
+则称其为无穷大量，记作 $a_n\to\infty$。若上式中的 $|a_n|>M$ 可分别加强为 $a_n>M$ 或 $a_n<-M$，则相应记作 $a_n\to+\infty$ 或 $a_n\to-\infty$。
 \end{definition}
-记号 $a_n\to\infty$ 只要求绝对值最终超过任意给定的界，
-不要求数列最终同号。例如 $(-1)^n n\to\infty$，
-但既不趋于 $+\infty$，也不趋于 $-\infty$。
+
+记号 $a_n\to\infty$ 只要求绝对值最终超过任意给定的正数，并不要求数列最终保持同号。例如数列 $(-1)^n n$ 满足 $|(-1)^n n|=n\to+\infty$，故 $(-1)^n n\to\infty$，但它既不趋于 $+\infty$，也不趋于 $-\infty$。
 
 \subsection*{无界与无穷大的区别}
-无界只要求对任意 $M>0$，\emph{存在某一项}的绝对值大于 $M$；
-无穷大量要求\emph{从某一项起每一项}都如此。
-数列 $b_n=[1+(-1)^n]n$ 无界，但其奇数项恒为 $0$，
-所以不是无穷大量。无穷大量必发散，因为收敛数列从某项起
-落在某个有限区间内，再加上有限个首项即有界。
+无界与无穷大量在量词结构上有本质差异：无界只要求对任意 $M>0$，\emph{存在某一项}的绝对值大于 $M$；无穷大量则要求\emph{从某一项起每一项}的绝对值都大于 $M$。例如数列 $b_n=[1+(-1)^n]n$ 的偶数项为 $2n$，因而是无界的，但它的奇数项恒为 $0$，所以不是无穷大量。
 
-\newpage
+另一方面，无穷大量必定发散：任何收敛数列从某一项起都落在极限的某个有限邻域内，再加上前面有限项后整体必然有界，而无穷大量显然无界。
+
 \section{课后作业}
 \subsection{习题 2.1，第 1 题}
 \noindent\textbf{题目：}设
@@ -314,15 +287,14 @@ $\varepsilon_3=0.001$，分别求出符合极限定义的 $N$；
 （2）这是否已经证明 $a_n\to0$；
 （3）对任意 $\varepsilon>0$，是否都能找到这样的 $N$？
 
-\begin{proof}
-奇数项为 $0$，偶数项为 $2/n$，故 $0\le a_n\le2/n$。
-（1）依次可取 $N=20,200,2000$；当 $n>N$ 时，
-$|a_n| \le 2/n<2/N=\varepsilon_i$。
-（2）仅检查三个指定的 $\varepsilon$，还不足以证明极限，
-因为定义要求\emph{每个}正 $\varepsilon$ 都成立。
-（3）任给 $\varepsilon>0$，取
-$N=\max\{1,\lceil2/\varepsilon\rceil\}$。
-对一切 $n>N$，都有 $|a_n|\le2/n<\varepsilon$，因此 $a_n\to0$。
+\begin{proof}[解]
+注意到该数列的奇数项恒为 $0$，偶数项为 $2/n$，因此对一切 $n\in\Nplus$ 均有 $0\le a_n\le2/n$。
+
+（1）依次可取 $N=20,200,2000$；当 $n>N$ 时，均有 $|a_n|\le 2/n<2/N=\varepsilon_i$（$i=1,2,3$）。
+
+（2）尚未证明。仅对三个具体的 $\varepsilon$ 验证成立并不足够，因为极限定义要求对\emph{每一个}正数 $\varepsilon$ 都存在相应的 $N$。
+
+（3）可以。任给 $\varepsilon>0$，取 $N=\max\{1,\lceil2/\varepsilon\rceil\}$，则对一切 $n>N$ 都有 $|a_n|\le2/n<\varepsilon$，由此即证 $a_n\to0$。
 \end{proof}
 
 \subsection{习题 2.1，第 2 题（1）（3）（5）}
@@ -333,28 +305,27 @@ $N=\max\{1,\lceil2/\varepsilon\rceil\}$。
  \text{（5）}\ \frac{n}{a^n}\to0\quad(a>1).
 \]
 \begin{proof}
-\textbf{（1）}任取 $\varepsilon>0$，取
-$N=\max\{1,\lceil1/\varepsilon\rceil\}$。当 $n>N$ 时，
+\textbf{（1）}任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$。当 $n>N$ 时，有
 \[
  \left|\frac{n}{n+1}-1\right|=\frac1{n+1}
- <\frac1n<\varepsilon.
+ <\frac1n<\varepsilon,
 \]
-\textbf{（3）}对 $n\ge1$，
+故 $n/(n+1)\to1$。
+
+\medskip
+\textbf{（3）}对任意 $n\ge1$，将分子分母逐项配对，后 $n-1$ 个因子均不超过 $1$，从而
 \[
  0<\frac{n!}{n^n}
  =\frac1n\cdot\frac2n\cdots\frac nn\le\frac1n.
 \]
-任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$，
-则 $n>N$ 时上式小于 $\varepsilon$。
+任取 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$，则当 $n>N$ 时上式小于 $\varepsilon$，故 $n!/n^n\to0$。
 
-\textbf{（5）}写 $a=1+h$，其中 $h>0$。二项式定理给出
-$a^n\ge\binom n2h^2$，所以 $n\ge2$ 时
+\medskip
+\textbf{（5）}记 $a=1+h$，其中 $h>0$。当 $n\ge2$ 时，二项式展开给出 $a^n\ge\binom n2 h^2=\frac{n(n-1)}{2}h^2$，因此
 \[
  0<\frac n{a^n}\le\frac{2}{(n-1)h^2}.
 \]
-给定 $\varepsilon>0$，取
-$N=\max\{2,\lceil1+2/(\varepsilon h^2)\rceil\}$，
-则 $n>N$ 时右端小于 $\varepsilon$。
+任取 $\varepsilon>0$，取 $N=\max\{2,\lceil1+2/(\varepsilon h^2)\rceil\}$，则当 $n>N$ 时右端小于 $\varepsilon$，故 $n/a^n\to0$。
 \end{proof}
 
 \subsection{习题 2.1，第 3 题}
@@ -373,63 +344,56 @@ $N=\max\{2,\lceil1+2/(\varepsilon h^2)\rceil\}$，
 \]
 并指出哪些是无穷小数列。
 
-\begin{proof}
-（1）对任意 $\varepsilon>0$，当 $n>1/\varepsilon^2$ 时，
-$1/\sqrt n<\varepsilon$，故极限为 $0$。
-（2）与（6）由前文固定正数的方根极限得到，分别为 $1$ 与 $1$；
-更具体地，$0\le\sqrt[n]3-1\le2/n$、
-$0\le\sqrt[n]{10}-1\le9/n$。
-（3）因 $0<1/n^3\le1/n$，极限为 $0$。
-（4）与（5）分别是公比 $1/3$ 与 $1/\sqrt2$ 的几何数列，
-两公比的绝对值都小于 $1$，故极限均为 $0$。
-（7）令 $b_n=\sqrt[n]2\ge1$，则
+\begin{proof}[解]
+逐项计算如下：
+\begin{itemize}[leftmargin=2em,itemsep=0.2em]
+\item （1）对任意 $\varepsilon>0$，当 $n>1/\varepsilon^2$ 时有 $1/\sqrt n<\varepsilon$，故极限为 $0$。
+\item （2）与（6）由固定正数的 $n$ 次方根极限直接可得，极限均为 $1$（具体估计为 $0\le\sqrt[n]3-1\le2/n$ 与 $0\le\sqrt[n]{10}-1\le9/n$）。
+\item （3）因 $0<1/n^3\le1/n$，故极限为 $0$。
+\item （4）与（5）分别是公比为 $1/3$ 与 $1/\sqrt2$ 的等比数列，公比绝对值均小于 $1$，故极限均为 $0$。
+\item （7）记 $b_n=\sqrt[n]2\ge1$，则
 \[
  0\le1-\frac1{b_n}=\frac{b_n-1}{b_n}
  \le b_n-1\le\frac1n\to0,
 \]
-故极限为 $1$。因此（1）、（3）、（4）、（5）是无穷小数列。
+故极限为 $1$。
+\end{itemize}
+综上，其中（1）、（3）、（4）、（5）是无穷小数列。
 \end{proof}
 
 \subsection{习题 2.1，第 4 题}
-\noindent\textbf{题目：}证明：若 $a_n\to a$，则对任一正整数 $k$，
-$a_{n+k}\to a$。
+\noindent\textbf{题目：}证明：若 $a_n\to a$，则对任一正整数 $k$，$a_{n+k}\to a$。
 \begin{proof}
-任取 $\varepsilon>0$，由 $a_n\to a$，存在 $N\in\Nplus$，
-使 $m>N$ 时 $|a_m-a|<\varepsilon$。
-若 $n>N$，则 $n+k>N$，于是
-$|a_{n+k}-a|<\varepsilon$。故 $a_{n+k}\to a$。
+任取 $\varepsilon>0$。由 $a_n\to a$ 可知，存在 $N\in\Nplus$，使得当 $m>N$ 时有 $|a_m-a|<\varepsilon$。于是只要 $n>N$，就有 $n+k>N$，从而 $|a_{n+k}-a|<\varepsilon$。故 $a_{n+k}\to a$。
 \end{proof}
 
 \subsection{习题 2.1，第 5 题}
-\noindent\textbf{题目：}用“任一候选极限的某个邻域外总有无穷多项”
-这一表述证明：（1）$\{1/n\}$ 不以 $1$ 为极限；
-（2）$\{n^{(-1)^n}\}$ 发散。
+\noindent\textbf{题目：}用“任一候选极限的某个邻域外总有无穷多项”这一表述证明：（1）$\{1/n\}$ 不以 $1$ 为极限；（2）$\{n^{(-1)^n}\}$ 发散。
 \begin{proof}
-\textbf{（1）}取 $\varepsilon_0=1/2$。无论给定哪个 $N$，
-都可取 $n>\max\{N,2\}$，使
-$|1/n-1|=1-1/n>1/2$。
-因此 $1$ 不是 $\{1/n\}$ 的极限。
+\textbf{（1）}取 $\varepsilon_0=1/2$。对任意 $N\in\Nplus$，只要取 $n>\max\{N,2\}$，便有
+\[
+ \left|\frac1n-1\right|=1-\frac1n>\frac12.
+\]
+即邻域 $U(1;1/2)$ 外有无穷多项，故 $1$ 不是 $\{1/n\}$ 的极限。
 
-\textbf{（2）}任取候选极限 $A\in\R$，取 $\varepsilon_0=1$。
-对任意 $N$，可取偶数 $n>\max\{N,|A|+1\}$。
-此时 $n^{(-1)^n}=n$，且
-$|n-A|\ge n-|A|>1$。
-所以没有任何实数是该数列的极限，数列发散。
+\medskip
+\textbf{（2）}任取候选极限 $A\in\R$，取 $\varepsilon_0=1$。对任意 $N\in\Nplus$，选取偶数 $n>\max\{N,|A|+1\}$，此时 $n^{(-1)^n}=n$，且
+\[
+ |n-A|\ge n-|A|>1.
+\]
+由此邻域 $U(A;1)$ 外含有该数列的无穷多项。因 $A$ 任意，没有任何实数是它的极限，故数列发散。
 \end{proof}
 
 \subsection{习题 2.1，第 8 题}
-\noindent\textbf{题目：}若 $a_n\to a$，证明 $|a_n|\to|a|$；
-求使逆命题对任意数列成立的 $a$。
+\noindent\textbf{题目：}若 $a_n\to a$，证明 $|a_n|\to|a|$；求使逆命题对任意数列成立的 $a$。
 \begin{proof}
-由反三角不等式，
+由绝对值的反三角不等式可得
 \[
- \bigl||a_n|-|a|\bigr|\le|a_n-a|\to0,
+ \bigl||a_n|-|a|\bigr|\le|a_n-a|.
 \]
-故 $|a_n|\to|a|$。若 $a=0$，则
-$\bigl||a_n|-|a|\bigr|=|a_n|=|a_n-a|$，逆命题也成立。
-若 $a\ne0$，取常数列 $a_n=-a$，有
-$|a_n|=|a|$，但 $a_n$ 不趋于 $a$。
-因此所求的值恰为 $a=0$。
+因为 $a_n\to a$，对任意 $\varepsilon>0$，当 $n$ 充分大时右端小于 $\varepsilon$，左端亦然，故 $|a_n|\to|a|$。
+
+再讨论逆命题。若 $a=0$，则 $\bigl||a_n|-|a|\bigr|=|a_n|=|a_n-a|$，此时由 $|a_n|\to0$ 立即推出 $a_n\to0$，逆命题成立。反之，若 $a\ne0$，取常数列 $a_n=-a$，则 $|a_n|=|a|\to|a|$，但 $a_n$ 收敛于 $-a$ 而非 $a$。因此，使逆命题对任意数列成立的实数恰为 $a=0$。
 \end{proof}
 
 \subsection{习题 2.1，第 9 题}
@@ -446,44 +410,35 @@ $|a_n|=|a|$，但 $a_n$ 不趋于 $a$。
  \end{cases}
 \]
 \begin{proof}
-\textbf{（1）}有
+\textbf{（1）}分子有理化可得
 \[
  0<\sqrt{n+1}-\sqrt n
  =\frac1{\sqrt{n+1}+\sqrt n}<\frac1{\sqrt n}.
 \]
-给定 $\varepsilon>0$，取
-$N=\max\{1,\lceil1/\varepsilon^2\rceil\}$ 即可。
+对任意 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon^2\rceil\}$，则当 $n>N$ 时上式小于 $\varepsilon$，结论成立。
 
-\textbf{（2）}由等差数列求和式，对 $n\ge1$ 有
+\medskip
+\textbf{（2）}利用等差数列求和公式，对任意 $n\ge1$ 有
 \[
  0<\frac{1+2+\cdots+n}{n^3}
- =\frac{n+1}{2n^2}\le\frac1n.
+ =\frac{n(n+1)}{2n^3}=\frac{n+1}{2n^2}\le\frac1n.
 \]
-取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$ 即可。
+对任意 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$，则当 $n>N$ 时上式小于 $\varepsilon$，结论成立。
 
-\textbf{（3）}若 $n$ 为偶数，则 $|a_n-1|=1/n$；
-若 $n$ 为奇数，则
+\medskip
+\textbf{（3）}分奇偶估计 $|a_n-1|$：当 $n$ 为偶数时，$|a_n-1|=1/n$；当 $n$ 为奇数时，分子有理化得
 \[
  |a_n-1|=\sqrt{1+\frac1n}-1
  =\frac{1/n}{\sqrt{1+1/n}+1}\le\frac1{2n}.
 \]
-故所有 $n$ 都有 $|a_n-1|\le1/n$。
-取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$ 即得 $a_n\to1$。
+因此对一切 $n\in\Nplus$ 均有 $|a_n-1|\le1/n$。对任意 $\varepsilon>0$，取 $N=\max\{1,\lceil1/\varepsilon\rceil\}$，即得 $a_n\to1$。
 \end{proof}
 
 \subsection{习题 2.1，第 10 题}
-\noindent\textbf{题目：}设每个 $a_n\ne0$，证明
-$a_n\to0$ 的充要条件是 $1/a_n\to\infty$。
-这里“趋于 $\infty$”指绝对值最终超过任意正数，
-不预设 $a_n$ 的符号。
+\noindent\textbf{题目：}设每个 $a_n\ne0$，证明 $a_n\to0$ 的充要条件是 $1/a_n\to\infty$。这里“趋于 $\infty$”指绝对值最终超过任意正数，不预设 $a_n$ 的符号。
 \begin{proof}
-若 $a_n\to0$，任取 $M>0$，对 $\varepsilon=1/M$ 应用极限定义，
-可得充分大 $n$ 时 $|a_n|<1/M$。因为 $a_n\ne0$，
-所以 $|1/a_n|>M$，即 $1/a_n\to\infty$。
+先证必要性：设 $a_n\to0$。任取 $M>0$，令 $\varepsilon=1/M>0$，由极限定义存在 $N\in\Nplus$，使得当 $n>N$ 时 $|a_n|<1/M$。因为每个 $a_n\ne0$，取倒数即得 $|1/a_n|>M$，故 $1/a_n\to\infty$。
 
-反之，若 $1/a_n\to\infty$，任取 $\varepsilon>0$，
-对 $M=1/\varepsilon$ 应用无穷大量的定义，
-可得充分大 $n$ 时 $|1/a_n|>1/\varepsilon$，
-从而 $|a_n|<\varepsilon$。故 $a_n\to0$。
+再证充分性：设 $1/a_n\to\infty$。任取 $\varepsilon>0$，令 $M=1/\varepsilon>0$，由无穷大量的定义存在 $N\in\Nplus$，使得当 $n>N$ 时 $|1/a_n|>1/\varepsilon$，取倒数即得 $|a_n|<\varepsilon$。故 $a_n\to0$。
 \end{proof}
 \end{document}

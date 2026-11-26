@@ -1,0 +1,331 @@
+% !TeX program = lualatex
+% halo:begin
+% {
+%   "version": 1,
+%   "publish": false,
+%   "course": "mathematical-analysis-i",
+%   "section": "6.5",
+%   "title": "数学分析（一）6.5：函数的凸性与拐点",
+%   "categories": ["study-notes"],
+%   "tags": ["mathematics"],
+%   "excerpt": "从弦与切线建立凹凸判据，推出延森不等式、凸函数的极值和单侧导数，再用曲线两侧的凹凸变化判断拐点。"
+% }
+% halo:end
+% 来源：IMG_3597 右页至 IMG_3599；华东师范大学《数学分析》第5版上册，第六章§5，书页137–143（PDF 148–154）。参照正文例1–8，并选取习题6.5第1(3)、3、4、7、8、9题中的性质与应用。
+\RequirePackage{iftex}
+\RequireLuaTeX
+\documentclass[UTF8,fontset=fandol,a4paper,12pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{example}[theorem]{例题}
+\renewcommand{\proofname}{证明}
+\setlength{\headheight}{16pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small 数学分析（一）}
+\fancyhead[R]{\small 6.5\quad 函数的凸性与拐点}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\title{函数的凸性与拐点}
+\author{Yuchen Zhang}
+\date{整理日期：2026年11月26日}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\LARGE\bfseries\@title\par}\vspace{0.6em}\@author\par\vspace{0.2em}{\small\@date\par}\end{center}}
+\makeatother
+\begin{document}
+\maketitle
+
+\section{弦的位置与割线的斜率}
+在抛物线 $y=x^2$ 上任取两点 $(0,0)$ 与 $(2,4)$，连接它们的弦位于直线 $y=2x$ 上。由于 $2x-x^2=x(2-x)\ge0$，在 $[0,2]$ 上曲线始终位于弦的下方或与弦相接。再考察曲线在 $x=1$ 处的切线 $y=2x-1$，此时 $x^2-(2x-1)=(x-1)^2\ge0$，曲线位于切线的上方或与切线相接。弦与切线这两种相对位置关系，正是刻画函数凸性的基本几何视角。
+
+\textbf{凸函数与凹函数。} 设 $I$ 为区间。若对任意 $x_1,x_2\in I$ 及任意 $0<\lambda<1$，均有
+\[
+ f\bigl(\lambda x_1+(1-\lambda)x_2\bigr)
+ \le\lambda f(x_1)+(1-\lambda)f(x_2),
+\]
+则称 $f$ 在 $I$ 上为\textbf{凸函数}。不等式左端是曲线在分点处的纵坐标，右端则是同一横坐标处连接两端点的弦的高度。若将不等号反向，便定义为\textbf{凹函数}；若每当 $x_1\ne x_2$ 时不等式均严格成立，则分别称为严格凸函数与严格凹函数。仿射函数 $f(x)=kx+b$ 恒取等号，因而既凸又凹。
+
+例如在 $[0,1]$ 上，曲线 $y=\sqrt{x}$ 连接两端点的弦是 $y=x$，曲线位于弦的上方。对 $[0,+\infty)$ 上任意两点 $u,v$ 及 $0<\lambda<1$，将 $\sqrt{\lambda u+(1-\lambda)v}$ 与 $\lambda\sqrt{u}+(1-\lambda)\sqrt{v}$ 分别平方再作差，可得
+\[
+ \bigl[\lambda u+(1-\lambda)v\bigr]-\bigl(\lambda\sqrt{u}+(1-\lambda)\sqrt{v}\bigr)^2
+ =\lambda(1-\lambda)(\sqrt{u}-\sqrt{v})^2.
+\]
+只要 $u\ne v$，右端便严格为正，因此平方根函数在 $[0,+\infty)$ 上严格凹。
+
+将凸性定义改写为三点之间割线斜率的比较，往往更便于与导数建立联系。
+
+\begin{proposition}[三点的割线斜率]
+对 $u<v$，记割线斜率为 $s(u,v)=\dfrac{f(v)-f(u)}{v-u}$。则 $f$ 在区间 $I$ 上为凸函数，当且仅当对任意 $x_1,x_2,x_3\in I$ 且 $x_1<x_2<x_3$，均有
+\[
+ s(x_1,x_2)\le s(x_2,x_3).
+\]
+在这一条件下，同时满足 $s(x_1,x_2)\le s(x_1,x_3)\le s(x_2,x_3)$。将上述斜率不等式改为严格小于，即得严格凸的充要条件。
+\end{proposition}
+
+\begin{proof}
+对任意 $x_1<x_2<x_3$，为了把 $x_2$ 表示为 $x_1$ 与 $x_3$ 的凸组合，取
+\[
+ \lambda=\frac{x_3-x_2}{x_3-x_1},\qquad
+ 1-\lambda=\frac{x_2-x_1}{x_3-x_1},
+\]
+则 $0<\lambda<1$ 且 $x_2=\lambda x_1+(1-\lambda)x_3$。将凸性不等式 $f(x_2)\le\lambda f(x_1)+(1-\lambda)f(x_3)$ 两端同乘以正数 $x_3-x_1$，整理并移项可得
+\[
+ (x_3-x_2)\bigl[f(x_2)-f(x_1)\bigr]
+ \le (x_2-x_1)\bigl[f(x_3)-f(x_2)\bigr].
+\]
+两端再同除以 $(x_2-x_1)(x_3-x_2)>0$，便等价地化为 $s(x_1,x_2)\le s(x_2,x_3)$。由于上述每一步代数变形均可逆，这就证明了充要性（严格不等式情形同理）。
+
+最后，整段的割线斜率恰好是两小段斜率的加权平均：
+\[
+ s(x_1,x_3)=\frac{x_2-x_1}{x_3-x_1}s(x_1,x_2)
+           +\frac{x_3-x_2}{x_3-x_1}s(x_2,x_3),
+\]
+因此它必然介于 $s(x_1,x_2)$ 与 $s(x_2,x_3)$ 之间。
+\end{proof}
+
+\section{由割线过渡到导数与切线}
+当函数在开区间上可导时，令割线的一个端点趋近另一个端点，三点割线斜率的单调性便自然过渡为导数的单调性，同时确立曲线与切线之间的全局位置关系。
+
+\begin{theorem}[可导函数的凸性判据，教材定理 6.14、6.15]
+设 $f$ 在开区间 $I$ 上可导，则下列三个条件等价：
+\begin{enumerate}
+\item $f$ 在 $I$ 上为凸函数；
+\item $f'$ 在 $I$ 上单调不减；
+\item 对任意 $x,y\in I$，有 $f(y)\ge f(x)+f'(x)(y-x)$。
+\end{enumerate}
+若 $f$ 在 $I$ 上二阶可导，则上述条件还等价于在 $I$ 上恒有 $f''(x)\ge0$。相应地，凹函数等价于 $f'$ 单调不增、曲线位于每条切线下方，以及二阶可导时的 $f''(x)\le0$。
+\end{theorem}
+
+\begin{proof}
+$(1)\Rightarrow(2)$：固定 $u,v\in I$ 且 $u<v$，任取 $w\in(u,v)$。由三点斜率不等式有 $s(u,w)\le s(u,v)\le s(w,v)$。在左端令 $w\to u^+$，在右端令 $w\to v^-$，得
+\[
+ f'(u)\le s(u,v)\le f'(v),
+\]
+故 $f'$ 在 $I$ 上单调不减。
+
+$(2)\Rightarrow(3)$：任取 $x,y\in I$（$x=y$ 时显然成立）。由拉格朗日中值定理，在 $x$ 与 $y$ 之间存在 $\xi$ 使 $f(y)-f(x)=f'(\xi)(y-x)$。当 $y>x$ 时，由 $f'$ 不减有 $f'(\xi)\ge f'(x)$；当 $y<x$ 时，有 $f'(\xi)\le f'(x)$ 而 $y-x<0$。两种情形均推出 $f(y)-f(x)\ge f'(x)(y-x)$。
+
+$(3)\Rightarrow(1)$：任取 $x_1,x_2\in I$ 及 $0<\lambda<1$，记 $z=\lambda x_1+(1-\lambda)x_2$。在同一点 $z$ 处应用切线不等式，对两个端点分别有
+\[
+ f(x_i)\ge f(z)+f'(z)(x_i-z),\qquad i=1,2.
+\]
+将两式分别乘以 $\lambda$ 与 $1-\lambda$ 后相加，含 $f'(z)$ 的项因 $\lambda(x_1-z)+(1-\lambda)(x_2-z)=0$ 而消去，即得 $f(z)\le\lambda f(x_1)+(1-\lambda)f(x_2)$。
+
+最后，当 $f$ 在 $I$ 上二阶可导时，对 $f'$ 应用单调性的导数判别法即知，$f'$ 单调不减等价于 $f''\ge0$ 处处成立。特别地，若在 $I$ 上恒有 $f''(x)>0$，则 $f'$ 严格递增；由拉格朗日中值定理，相邻两段的割线斜率随之严格递增，从而 $f$ 在 $I$ 上严格凸。当 $f''(x)<0$ 时同理可得严格凹。
+\end{proof}
+
+切线始终位于曲线下方这一几何特征，对凸函数的极值结构给出了极强的约束：任何水平切线都直接托住整条曲线，因而局部极小必然是全局最小。
+
+\begin{proposition}[凸函数的极值]
+若 $f$ 在开区间 $I$ 上可导且为凸函数，则内点 $x_0\in I$ 为极小值点当且仅当 $f'(x_0)=0$，且此时 $f(x_0)$ 必为 $f$ 在 $I$ 上的全局最小值。此外，非常值的凸函数在开区间 $I$ 内不能取得全局最大值。
+\end{proposition}
+
+\begin{proof}
+对于第一条，若 $x_0$ 为极小值点，由费马定理必有 $f'(x_0)=0$；反之，若 $f'(x_0)=0$，切线判据直接给出对一切 $x\in I$ 均有 $f(x)\ge f(x_0)+0=f(x_0)$，故 $f(x_0)$ 是整个区间 $I$ 上的最小值。
+
+对于第二条，反设凸函数 $f$ 在某内点 $c\in I$ 处取得全局最大值 $M$。任取 $u,v\in I$ 满足 $u<c<v$，记 $c=\lambda u+(1-\lambda)v$（$0<\lambda<1$）。由凸性与最大值定义，有
+\[
+ M=f(c)\le\lambda f(u)+(1-\lambda)f(v)\le\lambda M+(1-\lambda)M=M,
+\]
+故两处不等号均取等。因为两个权重 $\lambda,1-\lambda$ 均严格为正，且 $f(u),f(v)\le M$，只能有 $f(u)=f(v)=M$。由 $u,v$ 的任意性可知 $f$ 在 $I$ 上恒等于 $M$，与非常值矛盾。
+\end{proof}
+
+类似地，若 $f$ 在闭区间 $[a,b]$ 上凸，直接比较连接端点的弦高即可得 $f(x)\le\max\{f(a),f(b)\}$，即最大值必在端点处取得。凹函数的相应性质只需考察 $-f$ 即可得到。
+
+\section{用凸性构造函数、估计函数值}
+由于凸性的定义仅涉及函数值之间的不等式，许多保持凸性的基本运算完全无需借助导数即可验证。记 $z=\lambda u+(1-\lambda)v$（$u,v\in I$，$0<\lambda<1$），下面直接比较分点值与端点加权平均。
+
+\begin{proposition}[保持凸性的运算]
+设 $f,g$ 在区间 $I$ 上均为凸函数，则：
+\begin{enumerate}
+\item 对任意常数 $\alpha,\beta\ge0$，线性组合 $\alpha f+\beta g$ 在 $I$ 上凸；
+\item 逐点最大值函数 $F(x)=\max\{f(x),g(x)\}$ 在 $I$ 上凸；
+\item 若 $h$ 在包含 $f(I)$ 的区间上凸且单调不减，则复合函数 $h\circ f$ 在 $I$ 上凸。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+将 $f$ 与 $g$ 的凸性不等式分别乘以非负常数 $\alpha,\beta$ 再相加，即得第一条。对于第二条，由 $f(z)\le\lambda f(u)+(1-\lambda)f(v)\le\lambda F(u)+(1-\lambda)F(v)$，且 $g(z)$ 满足同样的上界，因此二者中的较大者 $F(z)$ 也不超过 $\lambda F(u)+(1-\lambda)F(v)$。对于第三条，依次利用 $h$ 的单调不减性与凸性，得
+\[
+ h\bigl(f(z)\bigr)\le h\bigl(\lambda f(u)+(1-\lambda)f(v)\bigr)
+ \le\lambda h\bigl(f(u)\bigr)+(1-\lambda)h\bigl(f(v)\bigr).
+\]
+\end{proof}
+
+由此立即可见，$|x|=\max\{x,-x\}$ 尽管在原点处不可导，却仍在整个实轴上为凸函数。事实上，即便不假定可导，严格凸函数的局部极小值一旦存在，就必是唯一的全局最小值。若另有 $y\ne x_0$ 满足 $f(y)\le f(x_0)$，只需在 $x_0$ 与 $y$ 之间取充分靠近 $x_0$ 的点 $z=(1-\lambda)x_0+\lambda y$（$\lambda\in(0,1)$ 充分小），严格凸性便给出 $f(z)<(1-\lambda)f(x_0)+\lambda f(y)\le f(x_0)$，与 $x_0$ 为局部极小值点矛盾。
+
+利用凸曲线位于弦下方这一几何性质，还可以直接导出区间上的双边不等式。
+
+\begin{example}[教材例 4]
+证明当 $0\le x\le1$ 时，$1+x^2\le 2^x\le 1+x$。
+\end{example}
+
+\begin{proof}
+首先，$2^x$ 的二阶导数为 $2^x(\ln 2)^2>0$，故它在 $[0,1]$ 上严格凸。连接端点 $(0,1)$ 与 $(1,2)$ 的弦为 $y=1+x$，由此立即得到上界 $2^x\le 1+x$。
+
+为证明下界，令 $G(x)=1+x^2-2^x$，则 $G(0)=G(1)=0$，且在 $[0,1]$ 上有
+\[
+ G''(x)=2-2^x(\ln 2)^2\ge 2-2(\ln 2)^2>0.
+\]
+因此 $G$ 在 $[0,1]$ 上也严格凸，其两端点连线的高度恒为零，故 $G(x)\le0$，即 $1+x^2\le 2^x$。由于两函数均严格凸，两个不等式在 $0<x<1$ 时都严格成立，等号仅在端点 $x=0,1$ 处取得。
+\end{proof}
+
+三点割线斜率的比较也可以写成简洁的三阶行列式形式。任取 $x_1<x_2<x_3$，先从第三行减去第二行、再从第二行减去第一行并按第一列展开，可得
+\[
+ \begin{vmatrix}1&x_1&f(x_1)\\1&x_2&f(x_2)\\1&x_3&f(x_3)\end{vmatrix}
+ =(x_2-x_1)(x_3-x_2)\,\bigl[s(x_2,x_3)-s(x_1,x_2)\bigr].
+\]
+因为两段横向长度均为正数，该行列式对任意 $x_1<x_2<x_3$ 恒非负恰好等价于 $f$ 为凸函数，恒为正恰好等价于 $f$ 为严格凸函数。
+
+\section{凸函数的单侧导数与延森不等式}
+凸函数未必处处可导，如 $|x|$ 在原点处就有折角；但即便存在折角，当割线从单侧收缩到该点时，三点割线斜率的单调性与有界性仍足以保证左、右导数均有限存在。
+
+\begin{proposition}
+若 $f$ 在开区间 $I$ 上为凸函数，则在每一点 $x_0\in I$ 处，有限的左导数 $f'_-(x_0)$ 与右导数 $f'_+(x_0)$ 均存在，且满足 $f'_-(x_0)\le f'_+(x_0)$。
+\end{proposition}
+
+\begin{proof}
+任取固定点 $u,v\in I$ 满足 $u<x_0<v$。当 $0<h<v-x_0$ 时，由三点斜率不等式可知，割线斜率 $s(x_0,x_0+h)$ 随 $h$ 增大而单调不减，并且受上下界控制：
+\[
+ s(u,x_0)\le s(x_0,x_0+h)\le s(x_0,v).
+\]
+由单调有界原理，当 $h\downarrow0$ 时 $s(x_0,x_0+h)$ 存在有限极限，这正是右导数 $f'_+(x_0)$。
+
+同理，当 $u<t<x_0$ 时，$s(t,x_0)$ 随 $t$ 增大而单调不减，并同样被 $s(u,x_0)$ 与 $s(x_0,v)$ 夹在中间，故当 $t\uparrow x_0$ 时存在有限极限 $f'_-(x_0)$。对不等式 $s(t,x_0)\le s(x_0,x_0+h)$ 两端分别取单侧极限，即得 $f'_-(x_0)\le f'_+(x_0)$。
+\end{proof}
+
+例如对于 $f(x)=|x|$，在原点处有 $f'_-(0)=-1$ 与 $f'_+(0)=1$，左右两条单侧切线的斜率均有限存在，只是方向不同。
+
+另一方面，凸性的定义比较的是两个点的加权平均；若将其反复合并推广到任意有限个点，便得到分析学中应用极广的延森不等式。
+
+\begin{theorem}[延森（Jensen）不等式]
+设 $f$ 在区间 $I$ 上为凸函数，$x_1,\ldots,x_n\in I$，正权重 $\lambda_1,\ldots,\lambda_n>0$ 满足 $\sum_{i=1}^{n}\lambda_i=1$，则
+\[
+ f\!\left(\sum_{i=1}^{n}\lambda_i x_i\right)
+ \le\sum_{i=1}^{n}\lambda_i f(x_i).
+\]
+若 $f$ 严格凸，则等号成立当且仅当 $x_1=\cdots=x_n$。对于凹函数，不等号方向相反。
+\end{theorem}
+
+\begin{proof}
+对点数 $n$ 施用数学归纳法。当 $n=2$ 时即为凸函数的定义。假设命题对 $n$ 个点成立，现考虑 $n+1$ 个点。记最后两项的权重之和为 $s=\lambda_n+\lambda_{n+1}>0$，并令 $z=(\lambda_n x_n+\lambda_{n+1}x_{n+1})/s\in I$。先对前 $n-1$ 个点与 $z$ 应用归纳假设，再对 $z$ 应用两点凸性，可得
+\[
+ f\!\left(\sum_{i=1}^{n+1}\lambda_i x_i\right)
+ =f\!\left(\sum_{i=1}^{n-1}\lambda_i x_i+s z\right)
+ \le\sum_{i=1}^{n-1}\lambda_i f(x_i)+s f(z)
+ \le\sum_{i=1}^{n+1}\lambda_i f(x_i).
+\]
+当 $f$ 严格凸时，若各点不全相等，可将其中两个互异的点排在末两位进行合并，此时上述推导的第二步为严格不等式，从而等号仅在所有 $x_i$ 全相等时成立。
+\end{proof}
+
+例如，设 $A,B,C$ 为三角形的三个内角，满足 $A+B+C=\pi$。由于 $\sin x$ 在 $(0,\pi)$ 上的二阶导数为 $-\sin x<0$，故严格凹。对三个角取等权重 $1/3$ 应用延森不等式，得
+\[
+ \sin A+\sin B+\sin C\le 3\sin\frac{A+B+C}{3}=\frac{3\sqrt3}{2},
+\]
+且等号恰好在等边三角形时取得。
+
+\section{怎样选择延森不等式中的函数}
+运用延森不等式证明经典不等式的关键，在于根据目标式的结构选取恰当的凸函数或凹函数。上例中各内角之和为定值，适合直接对角度求平均再施加正弦；若目标式涉及乘积，可先取对数将乘积化为和；若各因子本身带有幂指数，取对数后便自然出现形如 $t\ln t$ 的函数。
+
+\begin{example}[调和、几何与算术平均，习题 6.5 第 9 题]
+设 $a_1,\ldots,a_n>0$。证明三个平均数满足
+\[
+ \frac{n}{\sum_{i=1}^n 1/a_i}
+ \le\left(\prod_{i=1}^n a_i\right)^{1/n}
+ \le\frac1n\sum_{i=1}^n a_i.
+\]
+\end{example}
+
+\begin{proof}
+函数 $\ln x$ 在 $(0,+\infty)$ 上二阶导数为 $-1/x^2<0$，因而是严格凹函数。对 $a_1,\ldots,a_n$ 取相等权重 $1/n$ 应用延森不等式，得
+\[
+ \ln\!\left(\frac1n\sum_{i=1}^n a_i\right)\ge\frac1n\sum_{i=1}^n\ln a_i,
+\]
+两端同时取指数即得右边不等式。再将这一结果应用于倒数 $1/a_1,\ldots,1/a_n$ 并两端取倒数，便得到左边不等式。由于 $\ln x$ 严格凹，两处等号均当且仅当 $a_1=\cdots=a_n$ 时成立。
+\end{proof}
+
+\begin{example}[教材例 6]
+设 $a,b,c>0$。证明 $(abc)^{(a+b+c)/3}\le a^a b^b c^c$。
+\end{example}
+
+\begin{proof}
+记 $m=(a+b+c)/3$。对右端取自然对数得 $a\ln a+b\ln b+c\ln c$，因此选取辅助函数 $f(t)=t\ln t$（$t>0$）。由 $f''(t)=1/t>0$ 知 $f$ 在正半轴上严格凸，取等权重 $1/3$ 应用延森不等式得
+\[
+ 3m\ln m\le a\ln a+b\ln b+c\ln c,
+\]
+两端取指数即为 $m^{3m}\le a^a b^b c^c$。再由算术、几何平均不等式 $abc\le m^3$，两边同取正的 $m$ 次幂，便得 $(abc)^m\le m^{3m}\le a^a b^b c^c$。等号当且仅当 $a=b=c$ 时成立。
+\end{proof}
+
+\begin{example}[赫尔德（Hölder）不等式，习题 6.5 第 9 题]
+设 $a_i,b_i>0$（$i=1,\ldots,n$），$p,q>1$ 且 $1/p+1/q=1$。证明
+\[
+ \sum_{i=1}^n a_i b_i
+ \le\left(\sum_{i=1}^n a_i^p\right)^{1/p}
+       \left(\sum_{i=1}^n b_i^q\right)^{1/q}.
+\]
+\end{example}
+
+\begin{proof}
+作归一化处理：记 $A=\sum_{i=1}^n a_i^p$、$B=\sum_{i=1}^n b_i^q$，并令 $u_i=a_i^p/A$、$v_i=b_i^q/B$，则有 $\sum_{i=1}^n u_i=\sum_{i=1}^n v_i=1$。对严格凹函数 $\ln t$ 以权重 $1/p$ 与 $1/q$ 应用延森不等式，得
+\[
+ \frac1p\ln u_i+\frac1q\ln v_i\le\ln\!\left(\frac{u_i}{p}+\frac{v_i}{q}\right),
+\]
+即 $u_i^{1/p}v_i^{1/q}\le u_i/p+v_i/q$。对 $i=1,\ldots,n$ 求和，得
+\[
+ \sum_{i=1}^n u_i^{1/p}v_i^{1/q}\le\frac1p+\frac1q=1.
+\]
+两端同乘以 $A^{1/p}B^{1/q}$ 即得所证不等式。等号成立当且仅当对每个 $i$ 都有 $u_i=v_i$，也就是两组正数 $a_i^p$ 与 $b_i^q$ 成比例。
+\end{proof}
+
+\section{拐点与凹凸区间}
+曲线的凹凸性发生转换的分界点称为拐点。具体而言，如果曲线在一点处存在切线，且该切线穿过曲线，使得曲线在切点邻近的左右两段分别严格凸、严格凹（或次序相反），则称该点为曲线的\textbf{拐点}。求拐点时，必须先确认该点确实位于曲线上（即横坐标属于函数定义域），再考察其两侧凹凸性的变化。
+
+\begin{theorem}[拐点的判别，教材定理 6.16、6.17]
+曲线拐点的必要条件与充分条件如下：
+\begin{enumerate}
+\item 若 $f$ 在 $x_0$ 处二阶可导，且 $(x_0,f(x_0))$ 是曲线的拐点，则必有 $f''(x_0)=0$。
+\item 若 $f$ 在 $x_0$ 处可导，在 $x_0$ 的某去心邻域内二阶可导，且 $f''$ 在 $x_0$ 左、右两侧分别恒正与恒负（或分别恒负与恒正），则 $(x_0,f(x_0))$ 是曲线的拐点。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+先证第一条。不妨设曲线在 $x_0$ 左侧凸、右侧凹，则 $f'$ 在左侧单调不减、在右侧单调不增。由于 $f'$ 在 $x_0$ 处可导，因而在 $x_0$ 处连续，上述两段单调性均可延伸至点 $x_0$。由此可见 $f'$ 在 $x_0$ 处取得极大值，由费马定理即得 $f''(x_0)=0$。左凹右凸的情形同理。
+
+再证第二条，不妨设在 $x_0$ 左侧 $f''>0$、右侧 $f''<0$，从而曲线在左侧严格凸、在右侧严格凹。还需验证 $x_0$ 处的切线确实穿过曲线。在左侧邻域内任取 $x<t<x_0$，由于 $f'$ 在左侧严格递增，结合拉格朗日中值定理有 $s(x,t)<s(t,x_0)$，故二者的加权平均满足 $s(x,x_0)<s(t,x_0)$。同理，对任意 $u\in(t,x_0)$ 均有 $s(t,x_0)<s(u,x_0)$；令 $u\uparrow x_0$ 取极限，得到
+\[
+ s(x,x_0)<s(t,x_0)\le f'(x_0),
+\]
+移项可知 $f(x)>f(x_0)+f'(x_0)(x-x_0)$，即左侧曲线严格位于切线上方。完全类似地，右侧曲线严格位于切线下方，故切线在 $(x_0,f(x_0))$ 处穿过曲线，该点确为拐点。另一种变号方向只需对 $-f$ 重复上述论证即可。
+\end{proof}
+
+下面的三组曲线对比展示了拐点判别中常见的三类情形：二阶导数变号、二阶导数为零却不变号，以及存在竖直切线的不可导拐点。
+
+\begin{example}
+考察三条曲线 $y=\arctan x$、$y=x^4$ 与 $y=\sqrt[3]{x}$ 在原点处的凹凸变化。
+\end{example}
+
+\begin{proof}[解]
+对 $f(x)=\arctan x$，其二阶导数 $f''(x)=-2x/(1+x^2)^2$ 在原点左侧为正、右侧为负，故曲线左凸右凹，原点为拐点。对 $f(x)=x^4$，虽有 $f''(0)=0$，但一阶导数 $f'(x)=4x^3$ 在整个实轴上严格递增，由三点割线斜率判据可知曲线处处严格凸，原点不是拐点。
+
+对 $f(x)=\sqrt[3]{x}$，当 $x\ne0$ 时 $f''(x)=-2/(9\sqrt[3]{x^5})$，同样呈左正右负。尽管函数在原点不可导，但差商 $\sqrt[3]{x}/x=1/\sqrt[3]{x^2}\to+\infty$，表明曲线在原点存在竖直切线 $x=0$，且曲线在左侧位于切线左方、右侧位于切线右方，凹凸性由凸转凹，因此依定义原点仍是拐点。
+\end{proof}
+
+\begin{example}
+求 $f(x)=x^2+1/x$ 的凹凸区间与拐点。
+\end{example}
+
+\begin{proof}[解]
+函数的定义域为 $\mathbb R\setminus\{0\}$，二阶导数为
+\[
+ f''(x)=2+\frac{2}{x^3}=\frac{2(x^3+1)}{x^3}.
+\]
+按分界点 $x=-1$ 与 $x=0$ 将定义域分为 $(-\infty,-1)$、$(-1,0)$ 与 $(0,+\infty)$ 三段，$f''(x)$ 的符号依次为 $+$、$-$、$+$。结合在 $x=-1$ 处的连续性可知，曲线在 $(-\infty,-1]$ 与 $(0,+\infty)$ 上凸，在 $[-1,0)$ 上凹。因为 $f(-1)=0$，唯一拐点为 $(-1,0)$；虽然 $x=0$ 两侧的凹凸性也不同，但 $x=0$ 不在定义域内，曲线上没有对应点，因而不能算作拐点。
+\end{proof}
+
+同理，考察正弦曲线 $y=\sin x$，其二阶导数 $y''=-\sin x$ 仅在 $x=k\pi$（$k\in\mathbb Z$）处为零，且经过每个零点时均改变符号，因此它的全部拐点为 $(k\pi,0)$（$k\in\mathbb Z$）。
+
+\end{document}

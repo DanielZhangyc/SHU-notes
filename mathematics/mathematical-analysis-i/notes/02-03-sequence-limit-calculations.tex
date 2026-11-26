@@ -47,50 +47,56 @@
 \newtheorem{example}{例题}
 \begin{document}
 \maketitle
+
+在掌握收敛数列的基本性质与四则运算法则后，具体求极限时通常先通过代数变形或不等式放缩化简通项，再结合夹逼定理与运算法则得出结果。本节通过方根、阶乘、有理分式、根式差以及含参数数列等典型例题，归纳几类常见计算方法。
+
 \section{方根与阶乘的极限}
+涉及 $n$ 次方根或阶乘的数列往往难以直接套用四则运算法则，常用的处理方式是借助二项式展开或因子放缩给出上下界，再由夹逼定理求出极限。
+
 \begin{example}
-设 $a>0$，证明 $a^{1/n}\to1$；证明 $n^{1/n}\to1$。
+设 $a>0$，证明 $a^{1/n}\to1$；再证明 $n^{1/n}\to1$。
 \end{example}
 \begin{proof}
-若 $a>1$，令 $t_n=a^{1/n}-1>0$，由二项式定理，
+先证 $a^{1/n}\to1$。当 $a>1$ 时，令 $t_n=a^{1/n}-1>0$，由二项式定理可得
 \[
  a=(1+t_n)^n\ge1+nt_n,\qquad
  0<t_n\le\frac{a-1}{n}\longrightarrow0.
 \]
-由夹逼定理，$a^{1/n}=1+t_n\to1$。
-$a=1$ 时显然成立；若 $0<a<1$，对 $1/a>1$ 应用上式，再取倒数即可。
+由夹逼定理可知 $t_n\to0$，从而 $a^{1/n}=1+t_n\to1$。当 $a=1$ 时结论显然成立；当 $0<a<1$ 时，由于 $1/a>1$，由前述结果有 $(1/a)^{1/n}\to1$，取倒数即得 $a^{1/n}\to1$。
 
-令 $s_n=n^{1/n}-1\ge0$。当 $n\ge2$ 时，
+再证 $n^{1/n}\to1$。令 $s_n=n^{1/n}-1\ge0$。此处若只保留二项式展开的一次项，无法将 $s_n$ 控制到趋于零，因此对 $n\ge2$ 保留二次项，得
 \[
  n=(1+s_n)^n\ge\binom n2s_n^2,\qquad
  0\le s_n\le\sqrt{\frac2{n-1}}\longrightarrow0.
 \]
-故 $n^{1/n}\to1$。
+再由夹逼定理得 $s_n\to0$，故 $n^{1/n}\to1$。
 \end{proof}
 
 \begin{example}
 证明 $\displaystyle\lim_{n\to\infty}\frac1{\sqrt[n]{n!}}=0$。
 \end{example}
 \begin{proof}
-\textbf{方法一。} 已知对每个固定的 $c>0$，有 $c^n/n!\to0$。
-任取 $\varepsilon>0$，令 $c=1/\varepsilon$。存在 $N$，使 $n>N$ 时
+\textbf{方法一。} 利用已知结论：对任意固定的 $c>0$，均有 $c^n/n!\to0$。任取 $\varepsilon>0$，令 $c=1/\varepsilon$，则存在 $N\in\Nplus$，使当 $n>N$ 时有
 \[
  \frac{(1/\varepsilon)^n}{n!}<1,
- \qquad 0<\frac1{\sqrt[n]{n!}}<\varepsilon.
 \]
-故所求极限为 $0$。
+两端开 $n$ 次方即得
+\[
+ 0<\frac1{\sqrt[n]{n!}}<\varepsilon.
+\]
+由极限定义可知所求极限为 $0$。
 
-\textbf{方法二。} 当 $n\ge2$ 时，$n!$ 中至少有 $n/2$ 个因子不小于 $n/2$，
-其余因子均不小于 $1$，因而
+\textbf{方法二。} 直接从下界估计阶乘的增长速度。当 $n\ge2$ 时，$n!$ 中至少有 $n/2$ 个因子不小于 $n/2$，其余因子均不小于 $1$，因而
 \[
  n!\ge\left(\frac n2\right)^{n/2},\qquad
  0<\frac1{\sqrt[n]{n!}}\le\sqrt{\frac2n}\longrightarrow0.
 \]
-再由夹逼定理得结论。
+由夹逼定理即得所求极限为 $0$。
 \end{proof}
 
-\newpage
 \section{多项式之比}
+当通项为两个关于 $n$ 的多项式之比时，分子和分母通常都趋于无穷，不能直接套用商的运算法则。一般做法是分子、分母同除以分母的最高次幂，将其化为可逐项取极限的形式，收敛与否取决于分子与分母次数的大小关系。
+
 \begin{example}
 求下列极限：
 \[
@@ -100,30 +106,34 @@ $a=1$ 时显然成立；若 $0<a<1$，对 $1/a>1$ 应用上式，再取倒数即
 \]
 \end{example}
 \begin{proof}[解]
-\textbf{（1）} 分子、分母同除以 $n^3$，得
+\textbf{（1）} 分子与分母次数相同，同除以 $n^3$ 后利用四则运算法则，得
 \[
  \frac{n^3+2n^2}{2n^3+1}
  =\frac{1+2/n}{2+1/n^3}\longrightarrow\frac12.
 \]
-\textbf{（2）} 同除以 $n^3$，得
+
+\textbf{（2）} 分子次数低于分母次数，同除以 $n^3$，得
 \[
  \frac{3n^2+2}{2n^3+1}
  =\frac{3/n+2/n^3}{2+1/n^3}\longrightarrow0.
 \]
-\textbf{（3）} 同除以 $n^4$，得
+
+\textbf{（3）} 分子次数高于分母次数，同除以分母的最高次幂 $n^4$，有
 \[
  \frac{n^5+2}{2n^4+n^3}
  =\frac{n+2/n^4}{2+1/n}\ge\frac n3\longrightarrow+\infty.
 \]
-所以第三个数列趋于正无穷，不收敛于有限实数。
+因此第三个数列趋于正无穷，不收敛于有限实数。
 \end{proof}
 
 \section{根式之差}
+对于两个趋于无穷的根式相减所构成的不定式，常通过分子有理化将差化为和，再进一步提取最高次幂求极限。
+
 \begin{example}
 求 $\displaystyle\lim_{n\to\infty}\sqrt n\bigl(\sqrt{n+1}-\sqrt n\bigr)$。
 \end{example}
 \begin{proof}[解]
-将根式之差有理化，得
+将括号内的根式之差有理化，再分子、分母同除以 $\sqrt n$，可得
 \[
  \sqrt n\bigl(\sqrt{n+1}-\sqrt n\bigr)
  =\frac{\sqrt n}{\sqrt{n+1}+\sqrt n}
@@ -131,23 +141,24 @@ $a=1$ 时显然成立；若 $0<a<1$，对 $1/a>1$ 应用上式，再取倒数即
 \]
 \end{proof}
 
-\newpage
 \section{含参数的极限}
+当数列通项含有参数，尤其是参数出现在幂的底数位置时，其绝对值与 $1$ 的大小关系会决定幂次的渐近趋势，因此需要按参数取值范围分类讨论。
+
 \begin{example}
 设 $a\in\R\setminus\{-1\}$，求
 $\displaystyle\lim_{n\to\infty}\frac{a^n}{a^n+1}$。
 \end{example}
 \begin{proof}[解]
-分三种情形讨论。
+按 $|a|$ 与 $1$ 的大小关系分三种情形讨论。
 \begin{enumerate}
-\item 若 $a=1$，则各项均为 $1/2$，故极限为 $1/2$。
-\item 若 $|a|<1$，由 $a^n\to0$，得 $a^n/(a^n+1)\to0$。
-\item 若 $|a|>1$，则 $(1/a)^n\to0$，从而
+\item 若 $a=1$，则数列各项恒为 $1/2$，故极限为 $1/2$。
+\item 若 $|a|<1$，则 $a^n\to0$，由四则运算法则得 $a^n/(a^n+1)\to0$。
+\item 若 $|a|>1$，则 $(1/a)^n\to0$，分子、分母同除以 $a^n$ 得
 \[
  \frac{a^n}{a^n+1}=\frac1{1+(1/a)^n}\longrightarrow1.
 \]
 \end{enumerate}
-因此
+综合以上三种情形，有
 \[
  \lim_{n\to\infty}\frac{a^n}{a^n+1}
  =\begin{cases}
@@ -156,7 +167,7 @@ $\displaystyle\lim_{n\to\infty}\frac{a^n}{a^n+1}$。
  1,&|a|>1.
  \end{cases}
 \]
-$a=-1$ 时奇数项的分母为零，不能构成题设的数列。
+此外，当 $a=-1$ 时，奇数项的分母为零，通项没有意义，故题设中排除了这一取值。
 \end{proof}
 
 \end{document}

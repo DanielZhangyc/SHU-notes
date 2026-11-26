@@ -63,37 +63,45 @@
 \maketitle
 
 \section{课后作业}
+以下围绕有理数与无理数的运算性质、实数的距离刻画、绝对值不等式及分式大小比较，给出习题 1.1 各题的证明。
 
 \subsection{习题 1.1，第 1 题}
 \noindent\textbf{题目：}设 $a\in\mathbb{Q}$，$x\in\R\setminus\mathbb{Q}$。证明：
 （1）$a+x$ 为无理数；（2）当 $a\ne0$ 时，$ax$ 为无理数。
 
 \begin{proof}
-（1）反设 $a+x\in\mathbb{Q}$。由有理数对减法封闭，
-$x=(a+x)-a\in\mathbb{Q}$，与 $x$ 为无理数矛盾。
+两问均采用反证法，利用有理数对四则运算的封闭性导出矛盾。
 
-（2）反设 $ax\in\mathbb{Q}$。由于 $a\in\mathbb{Q}$ 且 $a\ne0$，
-有 $x=(ax)/a\in\mathbb{Q}$，仍与条件矛盾。
+（1）假设 $a+x\in\mathbb{Q}$。因为 $a\in\mathbb{Q}$ 且有理数对减法封闭，所以
+\[
+ x=(a+x)-a\in\mathbb{Q},
+\]
+这与 $x$ 为无理数矛盾，故 $a+x$ 为无理数。
+
+（2）假设 $ax\in\mathbb{Q}$。因为 $a$ 是非零有理数，由有理数对非零除法的封闭性可知
+\[
+ x=\frac{ax}{a}\in\mathbb{Q},
+\]
+同样与题设矛盾，故 $ax$ 为无理数。
 \end{proof}
 
 \subsection{习题 1.1，第 3 题}
 \noindent\textbf{题目：}设 $a,b\in\R$。若对任意 $\varepsilon>0$，都有 $|a-b|<\varepsilon$，证明 $a=b$。
 
 \begin{proof}
-反设 $a\ne b$，则 $|a-b|>0$。取 $\varepsilon=|a-b|$，由题设得到
-$|a-b|<|a-b|$，矛盾。因此 $a=b$。
+采用反证法。假设 $a\ne b$，则 $|a-b|>0$。在题设条件中取 $\varepsilon=|a-b|$，即得 $|a-b|<|a-b|$，显然矛盾。因此必有 $a=b$。
 \end{proof}
 
 \subsection{习题 1.1，第 5 题（1）}
 \noindent\textbf{题目：}证明：对任意 $x\in\R$，有 $|x-1|+|x-2|\ge1$，并说明等号成立的条件。
 
 \begin{proof}
-由三角不等式，
+注意到 $|x-2|=|2-x|$，由绝对值的三角不等式可得
 \[
  |x-1|+|x-2|=|x-1|+|2-x|
  \ge |(x-1)+(2-x)|=1.
 \]
-等号成立当且仅当 $(x-1)(2-x)\ge0$，即 $x\in[1,2]$。
+三角不等式中等号成立当且仅当 $x-1$ 与 $2-x$ 同号或至少有一者为零，即 $(x-1)(2-x)\ge0$，等价于 $x\in[1,2]$。
 \end{proof}
 
 \newpage
@@ -101,33 +109,34 @@ $|a-b|<|a-b|$，矛盾。因此 $a=b$。
 \noindent\textbf{题目：}设 $x>0$，$b>0$，$a\ne b$。证明 $\dfrac{a+x}{b+x}$ 严格介于 $1$ 与 $\dfrac ab$ 之间。
 
 \begin{proof}
-由于 $b>0$、$b+x>0$，有
+作差比较 $\dfrac{a+x}{b+x}$ 与 $1$、$\dfrac ab$ 的大小。由于 $b>0$ 且 $b+x>0$，有
 \[
  \frac{a+x}{b+x}-1=\frac{a-b}{b+x},\qquad
  \frac ab-\frac{a+x}{b+x}=\frac{x(a-b)}{b(b+x)}.
 \]
-当 $a>b$ 时，两式右端均为正，故
+因为 $x>0$、$b>0$、$b+x>0$，两式右端的符号均与 $a-b$ 一致。当 $a>b$ 时，两式右端均为正，从而
 \[
- 1<\frac{a+x}{b+x}<\frac ab.
+ 1<\frac{a+x}{b+x}<\frac ab;
 \]
-当 $a<b$ 时，两式右端均为负，故
+当 $a<b$ 时，两式右端均为负，从而
 \[
  \frac ab<\frac{a+x}{b+x}<1.
 \]
+综合两种情形可知，$\dfrac{a+x}{b+x}$ 严格介于 $1$ 与 $\dfrac ab$ 之间。
 \end{proof}
 
 \subsection{习题 1.1，第 8 题}
 \noindent\textbf{题目：}设 $p$ 为正整数且不是完全平方数，证明 $\sqrt p$ 是无理数。
 
 \begin{proof}
-反设 $\sqrt p=m/n$，其中 $m,n\in\Nplus$ 且 $\gcd(m,n)=1$。平方得
+采用反证法。假设 $\sqrt p$ 是有理数，则可表示为既约分数 $\sqrt p=m/n$，其中 $m,n\in\Nplus$ 且 $\gcd(m,n)=1$。两边平方得
 \[
  m^2=pn^2.
 \]
-若 $n>1$，取 $n$ 的一个素因子 $q$。由 $q\mid n$ 得 $q\mid m^2$；
-由于 $q$ 是素数，可得 $q\mid m$。这与 $\gcd(m,n)=1$ 矛盾。
-因此 $n=1$，从而 $p=m^2$，与 $p$ 不是完全平方数矛盾。
-故 $\sqrt p$ 是无理数。
+
+首先排除 $n>1$ 的情形：若 $n>1$，则 $n$ 至少有一个素因子 $q$。由 $q\mid n$ 与 $m^2=pn^2$ 可推出 $q\mid m^2$；由于 $q$ 是素数，进而有 $q\mid m$。于是 $q$ 为 $m$ 与 $n$ 的公约数，与 $\gcd(m,n)=1$ 矛盾。
+
+由此必有 $n=1$，代入上式得 $p=m^2$，这又与 $p$ 不是完全平方数的条件矛盾。故 $\sqrt p$ 是无理数。
 \end{proof}
 
 \end{document}

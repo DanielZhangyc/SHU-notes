@@ -63,28 +63,29 @@
 \maketitle
 
 \section{邻域}
+分析中经常需要刻画某一点附近一定范围内的实数，邻域正是描述这种局部范围的基本记号。
 
 \begin{definition}[邻域与去心邻域]
-设 $a\in\R$，$\delta>0$。点 $a$ 的 $\delta$ 邻域为
+设 $a\in\R$，$\delta>0$。点 $a$ 的 $\delta$ 邻域定义为以 $a$ 为中心、半径为 $\delta$ 的开区间
 \[
   U(a;\delta)=(a-\delta,a+\delta)
   =\{x\in\R:|x-a|<\delta\}.
 \]
-去掉中心点 $a$，得到去心邻域
+从中去掉中心点 $a$，便得到点 $a$ 的去心 $\delta$ 邻域
 \[
   U^{\circ}(a;\delta)=(a-\delta,a)\cup(a,a+\delta)
   =\{x\in\R:0<|x-a|<\delta\}.
 \]
-左邻域、右邻域分别记为
+此外，点 $a$ 的左 $\delta$ 邻域与右 $\delta$ 邻域分别记为
 \[
   U_-(a;\delta)=(a-\delta,a],\qquad
   U_+(a;\delta)=[a,a+\delta).
 \]
 \end{definition}
-\noindent\textbf{注意：}这里的左、右邻域均包含 $a$；去心时再去掉 $a$。
+\noindent\textbf{注意：}按此约定，左、右邻域均包含中心点 $a$；若只需考察 $a$ 的单侧而不含 $a$ 本身，再将 $a$ 去掉即可。
 
 \section{数集的有界性}
-以下讨论非空实数集 $S\subseteq\R$。
+下面考察非空实数集 $S\subseteq\R$ 在数轴上的整体范围是否受限。
 
 \begin{definition}[上界、下界与有界集]
 \leavevmode
@@ -95,38 +96,40 @@
 \end{enumerate}
 \end{definition}
 
+按定义验证有界性需要分别寻找上界和下界；在多数推导中，用一个对称的绝对值不等式来统一刻画更为简洁。
+
 \begin{proposition}[有界性的等价刻画]
 $S$ 有界，当且仅当存在 $K>0$，使得对所有 $x\in S$ 都有 $|x|\le K$。
 \end{proposition}
 \begin{proof}
-若 $S$ 有界，设 $L,M$ 分别为其下界和上界，取
+若 $S$ 有界，设 $L$ 与 $M$ 分别为其下界和上界，取
 \[
   K=\max\{|L|,|M|\}+1>0.
 \]
-则对任意 $x\in S$，有 $-K\le L\le x\le M\le K$，故 $|x|\le K$。
-反之，若 $|x|\le K$ 对所有 $x\in S$ 成立，则 $-K\le x\le K$，所以 $-K$ 和 $K$ 分别为下界和上界，$S$ 有界。
+这里加 $1$ 是为了在 $L=M=0$ 时仍保证 $K>0$。此时对任意 $x\in S$ 都有 $-K\le L\le x\le M\le K$，因而 $|x|\le K$。
+
+反之，若存在 $K>0$ 使 $|x|\le K$ 对所有 $x\in S$ 成立，则 $-K\le x\le K$，表明 $-K$ 和 $K$ 分别为 $S$ 的下界和上界，故 $S$ 有界。
 \end{proof}
 
-\newpage
 \section{有界性例题}
+下面通过两个具体数集，演示如何利用上述等价刻画验证有界性。
 
 \begin{example}[正弦函数值组成的数集]
 证明 $A=\{\sin t:t\in[-\pi/2,\pi/2]\}$ 有界。
 \end{example}
 \begin{proof}
-对任意 $x\in A$，存在 $t\in[-\pi/2,\pi/2]$，使得 $x=\sin t$。
-于是 $|x|=|\sin t|\le1$。取 $K=1$，即知 $A$ 有界。
+任取 $x\in A$，按集合定义存在 $t\in[-\pi/2,\pi/2]$ 使得 $x=\sin t$。由正弦函数的值域性质可知 $|x|=|\sin t|\le1$，于是取 $K=1$ 即证 $A$ 有界。
 \end{proof}
 
 \begin{example}[正整数倒数组成的数集]
 证明 $B=\{1/n:n\in\Nplus\}=\{1,1/2,1/3,\ldots\}$ 有界。
 \end{example}
 \begin{proof}
-对任意 $n\in\Nplus$，有 $0<1/n\le1$，因此对任意 $x\in B$，
-都有 $|x|\le1$。所以 $B$ 有界。
+对任意 $n\in\Nplus$，均有 $0<1/n\le1$。因此对所有 $x\in B$ 都有 $|x|\le1$，故 $B$ 有界。
 \end{proof}
 
 \section{上确界、下确界与确界原理}
+若一个数集有上界，它的上界便有无穷多个：任何大于已有上界的实数仍是上界。为了唯一地刻画数集在右侧所能达到的最紧界限，需要引入最小的上界，即上确界；对称地，用最大的下界来定义下确界。
 
 \begin{definition}[上确界]
 实数 $\beta$ 称为 $S$ 的\textbf{上确界}，记作 $\beta=\sup S$，若它满足：
@@ -135,8 +138,7 @@ $S$ 有界，当且仅当存在 $K>0$，使得对所有 $x\in S$ 都有 $|x|\le 
   \item \textbf{任意逼近性：}$\forall\varepsilon>0,\ \exists x_{\varepsilon}\in S$，使得
   $\beta-\varepsilon<x_{\varepsilon}$。
 \end{enumerate}
-第二条说明，任何小于 $\beta$ 的实数都不是 $S$ 的上界。
-因此，上确界就是\textbf{最小的上界}。
+第二条表明任何小于 $\beta$ 的实数都不是 $S$ 的上界，因此上确界正是\textbf{最小的上界}。
 \end{definition}
 
 \begin{definition}[下确界]
@@ -146,18 +148,19 @@ $S$ 有界，当且仅当存在 $K>0$，使得对所有 $x\in S$ 都有 $|x|\le 
   \item \textbf{任意逼近性：}$\forall\varepsilon>0,\ \exists x_{\varepsilon}\in S$，使得
   $x_{\varepsilon}<\alpha+\varepsilon$。
 \end{enumerate}
-第二条说明，任何大于 $\alpha$ 的实数都不是 $S$ 的下界。
-因此，下确界就是\textbf{最大的下界}。
+第二条表明任何大于 $\alpha$ 的实数都不是 $S$ 的下界，因此下确界正是\textbf{最大的下界}。
 \end{definition}
 
-\noindent\textbf{注意：}上、下确界不一定属于 $S$。若 $\sup S\in S$，它就是最大值；若 $\inf S\in S$，它就是最小值。
+\noindent\textbf{注意：}上、下确界未必属于集合 $S$ 本身。当 $\sup S\in S$ 时，它同时是 $S$ 的最大值；当 $\inf S\in S$ 时，它同时是 $S$ 的最小值。
+
+有了定义之后，自然要问：只要数集非空且有上界（或下界），最小上界（或最大下界）是否一定存在？确界原理对此给出肯定回答，它反映了实数系的基本完备性。
 
 \begin{theorem}[确界原理]
 非空、有上界的实数集必有上确界；非空、有下界的实数集必有下确界。
 \end{theorem}
 
-\newpage
 \section{确界例题：\texorpdfstring{$1-1/n$}{1-1/n}}
+下面结合一个具体数集，演示如何按照定义的两条条件严格验证上下确界。
 
 \begin{example}
 设
@@ -171,23 +174,20 @@ $S$ 有界，当且仅当存在 $K>0$，使得对所有 $x\in S$ 都有 $|x|\le 
 \begin{proof}
 \textbf{第一步：证明 $\inf S=0$。}
 
-对任意 $n\in\Nplus$，由 $n\ge1$ 得
+对任意 $n\in\Nplus$，由 $n\ge1$ 可得
 \[
-  0\le1-\frac1n<1.
+  0\le1-\frac1n<1,
 \]
-故 $0$ 是 $S$ 的一个下界。对任意 $\varepsilon>0$，取 $n=1$，则
+故 $0$ 是 $S$ 的一个下界。进一步，任取 $\varepsilon>0$，直接取 $n=1$ 对应的元素 $x_{\varepsilon}=1-1/1=0\in S$，就有
 \[
-  x_{\varepsilon}=1-\frac11=0\in S,
-  \qquad x_{\varepsilon}=0<0+\varepsilon.
+  x_{\varepsilon}=0<0+\varepsilon.
 \]
-因此，下确界定义中的两条条件均满足，$\inf S=0$。
+由此可见下确界定义中的两条条件均已满足，故 $\inf S=0$。
 
 \medskip
 \textbf{第二步：证明 $\sup S=1$。}
 
-由 $1-1/n<1$ 可知，$1$ 是 $S$ 的一个上界。
-任取 $\varepsilon>0$，为了找到 $x_{\varepsilon}\in S$ 使得
-$x_{\varepsilon}>1-\varepsilon$，只需选择正整数 $n$ 满足
+由上述不等式 $1-1/n<1$ 可知，$1$ 是 $S$ 的一个上界。为验证任意逼近性，任取 $\varepsilon>0$，需要将 $1-1/n>1-\varepsilon$ 转化为对正整数 $n$ 的要求：
 \[
   1-\frac1n>1-\varepsilon
   \quad\Longleftrightarrow\quad
@@ -195,18 +195,16 @@ $x_{\varepsilon}>1-\varepsilon$，只需选择正整数 $n$ 满足
   \quad\Longleftrightarrow\quad
   n>\frac1\varepsilon.
 \]
-具体地，取
+为此具体取
 \[
   n=\left\lfloor\frac1\varepsilon\right\rfloor+1,
 \]
-其中 $\lfloor t\rfloor$ 表示不超过 $t$ 的最大整数。因为
-$\lfloor t\rfloor\le t<\lfloor t\rfloor+1$，所以此时
-$n\in\Nplus$ 且 $n>1/\varepsilon$。于是
+其中 $\lfloor t\rfloor$ 表示不超过 $t$ 的最大整数。因为 $\lfloor t\rfloor\le t<\lfloor t\rfloor+1$，这样选取的 $n$ 必为正整数且满足 $n>1/\varepsilon$，从而
 \[
   \frac1n<\varepsilon,
   \qquad 1-\varepsilon<1-\frac1n<1.
 \]
-这就验证了任意逼近性，故 $\sup S=1$。
+令 $x_{\varepsilon}=1-1/n\in S$，即验证了任意逼近性，故 $\sup S=1$。
 \end{proof}
 
 \newpage
@@ -215,13 +213,13 @@ $n\in\Nplus$ 且 $n>1/\varepsilon$。于是
 \subsection{习题 1.2，第 2 题}
 \noindent\textbf{题目：}设 $S\subseteq\R$ 为非空数集，给出“$S$ 无上界”和“$S$ 无界”的定义。
 
-\noindent\textbf{解：}
+\noindent\textbf{解：}将“有上界”与“有界”的量词表述分别取否定，即得如下定义：
 \begin{enumerate}
- \item $S$ 无上界，是指
+ \item $S$ 无上界，是指任何实数都不能成为 $S$ 的上界，即
  \[
    \forall M\in\R,\quad\exists x\in S,\quad x>M.
  \]
- \item $S$ 无界，是指
+ \item $S$ 无界，是指对任意给定的正数界限，集合中总有绝对值超过该界限的元素，即
  \[
    \forall M>0,\quad\exists x\in S,\quad |x|>M.
  \]
@@ -231,61 +229,56 @@ $n\in\Nplus$ 且 $n>1/\varepsilon$。于是
 \noindent\textbf{题目：}证明数集 $S=\{2-x^2:x\in\R\}$ 有上界而无下界。
 
 \begin{proof}
-对任意 $x\in\R$，都有 $2-x^2\le2$，故 $2$ 是 $S$ 的一个上界。
+对任意 $x\in\R$，由于 $x^2\ge0$，恒有 $2-x^2\le2$，故 $2$ 是 $S$ 的一个上界。
 
-任取 $L\in\R$。若 $L\le2$，取 $x=\sqrt{3-L}$，则
+下面证明 $S$ 无下界。任取 $L\in\R$，按 $L$ 与 $2$ 的大小分两种情形构造小于 $L$ 的元素：若 $L\le2$，则 $3-L\ge1>0$，可取 $x=\sqrt{3-L}\in\R$，此时
 \[
- y=2-x^2=L-1<L,\qquad y\in S.
+ y=2-x^2=L-1<L,\qquad y\in S;
 \]
-若 $L>2$，取 $x=0$，则 $y=2\in S$ 且 $y<L$。
-因此任意实数 $L$ 都不是 $S$ 的下界，故 $S$ 无下界。
+若 $L>2$，直接取 $x=0$，则 $y=2\in S$ 且满足 $y<L$。综上，任意实数 $L$ 都不是 $S$ 的下界，故 $S$ 无下界。
 \end{proof}
 
-\newpage
 \subsection{习题 1.2，第 4 题（3）}
 \noindent\textbf{题目：}求 $S=(0,1)\setminus\mathbb{Q}$ 的上、下确界，并依定义验证。
 
 \begin{proof}
-对任意 $x\in S$，有 $0<x<1$，故 $0$ 是下界，$1$ 是上界。
+$\inf S=0$，$\sup S=1$。验证如下。
 
-任取 $\varepsilon>0$，由正整数的无界性，可取正整数
-\[
- n>\max\left\{2,\frac{\sqrt2}{\varepsilon}\right\}.
-\]
-令 $u=\sqrt2/n$。因为 $\sqrt2$ 是无理数，$1/n$ 是非零有理数，
-所以 $u$ 是无理数，且
-\[
- 0<u<1,\qquad u<\varepsilon.
-\]
-于是 $u\in S$ 且 $u<0+\varepsilon$，验证了下确界的任意逼近性，故 $\inf S=0$。
+首先，对任意 $x\in S$ 均有 $0<x<1$，故 $0$ 是 $S$ 的下界，$1$ 是 $S$ 的上界。
 
-再令 $v=1-u$，则 $v$ 也是无理数，且
+其次，任取 $\varepsilon>0$。为了在 $(0,1)$ 中构造任意小的无理数，由正整数的无界性，选取正整数
+\[
+ n>\max\left\{2,\frac{\sqrt2}{\varepsilon}\right\},
+\]
+并令 $u=\sqrt2/n$。因为 $\sqrt2$ 是无理数而 $1/n$ 是非零有理数，故 $u$ 是无理数；同时 $n>2$ 保证了 $0<u<1$，而 $n>\sqrt2/\varepsilon$ 保证了 $u<\varepsilon$。由此 $u\in S$ 且 $u<0+\varepsilon$，验证了下确界的任意逼近性，从而 $\inf S=0$。
+
+再令 $v=1-u$。由于 $1$ 为有理数、$u$ 为无理数，$v$ 仍是无理数，并且
 \[
  0<v<1,\qquad v>1-\varepsilon.
 \]
-因此 $v\in S$，验证了上确界的任意逼近性，故 $\sup S=1$。
+于是 $v\in S$ 且满足上确界的任意逼近性，故 $\sup S=1$。
 \end{proof}
 
 \subsection{习题 1.2，第 4 题（4）}
 \noindent\textbf{题目：}求 $S=\{1-2^{-n}:n\in\Nplus\}$ 的上、下确界，并依定义验证。
 
 \begin{proof}
-对任意 $n\in\Nplus$，都有 $\frac12\le1-2^{-n}<1$。
-故 $1/2$ 是下界，$1$ 是上界。
+$\inf S=1/2$，$\sup S=1$。验证如下。
 
-任取 $\varepsilon>0$，取 $n=1$，则 $1-2^{-1}=1/2\in S$，且
-$1/2<1/2+\varepsilon$，所以 $\inf S=1/2$。
+对任意 $n\in\Nplus$，都有 $\frac12\le1-2^{-n}<1$，故 $1/2$ 是 $S$ 的下界，$1$ 是 $S$ 的上界。
 
-任取 $\alpha<1$，令
+对于下确界，任取 $\varepsilon>0$，取 $n=1$ 即得元素 $1-2^{-1}=1/2\in S$，满足 $1/2<1/2+\varepsilon$，因此 $\inf S=1/2$。
+
+对于上确界，任取 $\alpha<1$，令
 \[
  t=\log_2\frac1{1-\alpha},\qquad
  n=\max\{1,\lfloor t\rfloor+1\}.
 \]
-则 $n\in\Nplus$ 且 $n>t$，从而
+则 $n\in\Nplus$ 且 $n>t$，由于 $2^x$ 严格递增，可得 $2^n>2^t=1/(1-\alpha)$，从而
 \[
  1-\frac1{2^n}>1-\frac1{2^t}=\alpha.
 \]
-这说明任意小于 $1$ 的实数都不是 $S$ 的上界，故 $\sup S=1$。
+这表明任何小于 $1$ 的实数都不是 $S$ 的上界，故 $\sup S=1$。
 \end{proof}
 
 \end{document}

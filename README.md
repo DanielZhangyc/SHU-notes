@@ -26,4 +26,4 @@ lualatex filename.tex
 
 ## 通识课程笔记
 
-- [第一讲：数据之用：从数据到模型](general-education/data-and-optimization/notes/01-01-data-and-modeling.pdf)（[LaTeX 源文件](general-education/data-and-optimization/notes/01-01-data-and-modeling.tex)）。课程目录暂用描述性名称“数据与优化”，编号按讲次整理；仅保存在仓库，`publish: false`，不发布博客。
+- [大数据与最优化](general-education/data-and-optimization/notes/01-01-data-and-optimization.pdf)（[LaTeX 源文件](general-education/data-and-optimization/notes/01-01-data-and-optimization.tex)）。单一完整笔记，按知识结构整合四份课件；《优化建模》截至支持向量机。2026年11月3日修订，含关键词页码导航、公式中文解释、教学例子与要点归纳，兼顾理解和开卷查阅。课程目录沿用描述性名称“数据与优化”；仅保存在仓库，`publish: false`，不发布博客。旧单课笔记及修订前版本保存在同课程的 `archive/` 目录。

@@ -53,9 +53,11 @@
 \setcounter{section}{2}
 \section{函数极限}
 
-数列极限研究下标趋于无穷时数列项的变化。函数极限研究的是：自变量按照指定方式趋近某个位置时，函数值是否趋近一个确定的数。这里的“趋近”只涉及函数定义域中可以取到的自变量，函数在趋近点的点值本身不决定极限。
+数列极限讨论的是下标沿正整数趋于无穷时数列项的变化趋势，而函数极限研究的是自变量按指定方式趋近某个位置时，函数值是否趋近一个确定的实数。这里的趋近过程只涉及定义域内可以取到的自变量，函数在趋近点本身的函数值并不决定极限。本节依次建立自变量趋于无穷、趋于有限点以及单侧趋近时的极限定义，并通过基本例题说明用定义证明极限的方法。
 
 \subsection*{自变量趋于无穷时的极限}
+先从与数列极限最为接近的情形入手，考察自变量趋于无穷大时函数值的极限。
+
 \begin{definition}
 设函数 $f$ 在某个右半无限区间 $(a,+\infty)$ 上有定义。若存在 $A\in\R$，使得对任意 $\varepsilon>0$，都存在 $M>a$，当 $x>M$ 时有
 \[
@@ -67,7 +69,7 @@
 \]
 \end{definition}
 
-类似地，若 $f$ 在某个左半无限区间 $(-\infty,a)$ 上有定义，且对任意 $\varepsilon>0$，存在 $M<a$，使 $x<M$ 时 $|f(x)-A|<\varepsilon$，则记作
+类似地，若 $f$ 在某个左半无限区间 $(-\infty,a)$ 上有定义，且对任意 $\varepsilon>0$ 都存在 $M<a$，使当 $x<M$ 时有 $|f(x)-A|<\varepsilon$，则记作
 \[
  \lim_{x\to-\infty}f(x)=A.
 \]
@@ -79,19 +81,17 @@
 \[
  \lim_{x\to\infty}f(x)=A.
 \]
-此处的 $x\to\infty$ 表示 $|x|\to+\infty$，而不是只表示 $x\to+\infty$。几何上，若 $\lim_{x\to\infty}f(x)=A$，则直线 $y=A$ 是曲线的一条水平渐近线。
+需要区分的是，这里的 $x\to\infty$ 表示 $|x|\to+\infty$，而非仅指 $x\to+\infty$。从几何上看，若 $\lim_{x\to\infty}f(x)=A$（或相应单向无穷极限为 $A$），则直线 $y=A$ 是曲线 $y=f(x)$ 的一条水平渐近线。
+
+下面用定义验证两个基本函数在无穷远处的极限。
 
 \begin{example}
 证明 $\displaystyle\lim_{x\to+\infty}\sin\frac1x=0$。
 \end{example}
 \begin{proof}
-任取 $\varepsilon>0$，取 $M=1/\varepsilon$。当 $x>M$ 时，利用
+任取 $\varepsilon>0$，取 $M=1/\varepsilon>0$。当 $x>M$ 时，利用不等式 $|\sin t|\le |t|$（$t\in\R$），可得
 \[
- |\sin t|\le |t|\qquad(t\in\R),
-\]
-有
-\[
- \left|\sin\frac1x-0\right|\le\frac1x<\frac1M=\varepsilon.
+ \left|\sin\frac1x-0\right|\le\frac1x<\frac1M=\varepsilon,
 \]
 故 $\displaystyle\lim_{x\to+\infty}\sin(1/x)=0$。
 \end{proof}
@@ -100,31 +100,32 @@
 证明 $\displaystyle\lim_{x\to+\infty}\arctan x=\frac\pi2$。
 \end{example}
 \begin{proof}
-任取 $\varepsilon>0$。当 $x>0$ 时，$\arctan x\in(0,\pi/2)$，故
+任取 $\varepsilon>0$。当 $x>0$ 时，$\arctan x\in(0,\pi/2)$，因而 $\frac\pi2-\arctan x\in(0,\pi/2)$。利用不等式 $t<\tan t$（$t\in(0,\pi/2)$），有
 \[
  0<\frac\pi2-\arctan x<\tan\left(\frac\pi2-\arctan x\right)=\frac1x.
 \]
-取 $M=1/\varepsilon$。当 $x>M$ 时，
+取 $M=1/\varepsilon>0$，则当 $x>M$ 时，
 \[
- \left|\arctan x-\frac\pi2\right|<\frac1x<\varepsilon.
+ \left|\arctan x-\frac\pi2\right|<\frac1x<\varepsilon,
 \]
 因此 $\displaystyle\lim_{x\to+\infty}\arctan x=\pi/2$。
 
-由于 $\arctan x$ 是奇函数，同理可得
+因为 $\arctan x$ 是奇函数，同理可得
 \[
  \lim_{x\to-\infty}\arctan x=-\frac\pi2.
 \]
-两个方向的极限不同，所以 $\arctan x$ 当 $x\to\infty$ 时不存在有限极限。
+两个方向的极限不相等，所以当 $x\to\infty$ 时，$\arctan x$ 不存在有限极限。
 \end{proof}
 
 \subsection*{自变量趋于有限点}
-记
+接下来考虑自变量趋近某个有限点 $x_0$ 的情形。为便于表述自变量与 $x_0$ 充分接近但不等于 $x_0$ 的条件，先引入邻域与去心邻域记号：
 \[
  \U(x_0,\delta)=\{x\in\R:|x-x_0|<\delta\},\qquad
  \U^0(x_0,\delta)=\{x\in\R:0<|x-x_0|<\delta\}.
 \]
+
 \begin{definition}
-设函数 $f$ 在 $x_0$ 的某个去心邻域 $\U^0(x_0,\delta_0)$ 上有定义。若存在 $A\in\R$，使得对任意 $\varepsilon>0$，存在 $\delta>0$，当
+设函数 $f$ 在 $x_0$ 的某个去心邻域 $\U^0(x_0,\delta_0)$ 上有定义。若存在 $A\in\R$，使得对任意 $\varepsilon>0$，存在 $0<\delta\le\delta_0$，当
 \[
  0<|x-x_0|<\delta
 \]
@@ -136,22 +137,26 @@
 \[
  \lim_{x\to x_0}f(x)=A.
 \]
-这里先给定 $\varepsilon$，再选取只依赖于 $\varepsilon$ 和 $x_0$ 的 $\delta$；选定后，同一个去心邻域内的所有 $x$ 都必须满足误差估计。由于条件排除了 $x=x_0$，所以 $f(x_0)$ 可以没有定义，也可以任意指定，而不影响该极限。
-其中可取 $0<\delta\le\delta_0$。
 \end{definition}
 
-若极限定义中的 $\delta$ 可以取为 $\delta_0$，那么任意 $0<\delta\le\delta_0$ 也可以作为一个选择。证明中常把 $\delta$ 取得更小，以同时满足几个条件。
+在定义中，先给定误差界 $\varepsilon>0$，再选取只依赖于 $\varepsilon$ 和 $x_0$ 的 $\delta>0$；$\delta$ 一经选定，去心邻域 $\U^0(x_0,\delta)$ 内的所有 $x$ 都必须满足误差估计。由于条件 $0<|x-x_0|<\delta$ 排除了 $x=x_0$，因此 $f(x_0)$ 可以没有定义，也可以任意取值，均不影响该极限。
+
+另外，如果某个 $\delta_1>0$ 满足定义要求，那么任意更小的正数 $0<\delta\le\delta_1$ 同样满足要求。实际证明中，常常把 $\delta$ 取为若干个正数的最小值，以同时满足多个条件。
 
 \subsection*{单侧极限}
-若只允许 $x$ 从 $x_0$ 的左侧趋近，记
+有时函数仅在 $x_0$ 的某一侧有定义，或者在 $x_0$ 两侧具有不同的变化趋势，此时需要分别讨论左极限与右极限。
+
+若只允许 $x$ 从 $x_0$ 的左侧趋近，极限记作
 \[
  \lim_{x\to x_0^-}f(x)=A;
 \]
-若只允许 $x$ 从右侧趋近，记
+若只允许 $x$ 从 $x_0$ 的右侧趋近，极限记作
 \[
  \lim_{x\to x_0^+}f(x)=A.
 \]
-例如，右极限的定义是：对任意 $\varepsilon>0$，存在 $\delta>0$，使得当 $x_0<x<x_0+\delta$ 时，$|f(x)-A|<\varepsilon$；左极限同理，将条件改为 $x_0-\delta<x<x_0$。
+具体而言，设 $f$ 在右邻域 $(x_0,x_0+\delta_0)$ 上有定义，右极限的定义为：对任意 $\varepsilon>0$，存在 $0<\delta\le\delta_0$，使得当 $x_0<x<x_0+\delta$ 时，恒有 $|f(x)-A|<\varepsilon$；左极限的定义完全类似，只需将定义区间与自变量范围分别改为 $(x_0-\delta_0,x_0)$ 与 $x_0-\delta<x<x_0$。
+
+双侧极限与单侧极限之间的联系由以下判定定理给出。
 
 \begin{criterion}[双侧极限的判定]
 \[
@@ -161,35 +166,42 @@
 \]
 \end{criterion}
 \begin{proof}
-必要性显然：双侧去心邻域包含左侧和右侧的去心邻域，因此双侧极限成立时，两侧极限都等于 $A$。
+必要性直接由定义得出：去心邻域 $\U^0(x_0,\delta)$ 包含左右两侧的半邻域 $(x_0-\delta,x_0)$ 与 $(x_0,x_0+\delta)$，因此双侧极限等于 $A$ 时，左右极限都等于 $A$。
 
-反之，设左右极限都等于 $A$。任取 $\varepsilon>0$，分别取 $\delta_1,\delta_2>0$，使左侧和右侧的误差均小于 $\varepsilon$。令 $\delta=\min\{\delta_1,\delta_2\}$。当 $0<|x-x_0|<\delta$ 时，$x$ 必在 $x_0$ 左侧或右侧，因而总有 $|f(x)-A|<\varepsilon$。故双侧极限等于 $A$。
+再证充分性。设左右极限都等于 $A$，任取 $\varepsilon>0$，分别存在 $\delta_1,\delta_2>0$，使当 $x_0-\delta_1<x<x_0$ 或 $x_0<x<x_0+\delta_2$ 时均有 $|f(x)-A|<\varepsilon$。令 $\delta=\min\{\delta_1,\delta_2\}$，则对任意满足 $0<|x-x_0|<\delta$ 的 $x$，无论它位于 $x_0$ 左侧还是右侧，总有 $|f(x)-A|<\varepsilon$，故双侧极限等于 $A$。
 \end{proof}
+
+借助上述定理，可以方便地检验分段函数或含绝对值函数在分界点处的极限是否存在。
 
 \begin{example}
 设
 \[
  f(x)=\begin{cases}x+2,&x\ge0,\\x-2,&x<0.\end{cases}
 \]
-则
+求 $\lim_{x\to0^+}f(x)$ 与 $\lim_{x\to0^-}f(x)$，并判断 $\lim_{x\to0}f(x)$ 是否存在。
+\end{example}
+\begin{proof}[解]
+在 $x>0$ 与 $x<0$ 两侧分别使用对应的解析式，可得
 \[
  \lim_{x\to0^+}f(x)=2,\qquad \lim_{x\to0^-}f(x)=-2.
 \]
-左右极限不相等，故 $\lim_{x\to0}f(x)$ 不存在。
-\end{example}
+因为左右极限不相等，所以 $\lim_{x\to0}f(x)$ 不存在。
+\end{proof}
 
 \begin{example}
-函数 $f(x)=|x|/x$ 在 $x=0$ 的去心邻域内有定义。因为
+考察函数 $f(x)=|x|/x$ 在 $x\to0$ 时的极限。
+\end{example}
+\begin{proof}[解]
+函数 $f(x)=|x|/x$ 在 $x=0$ 的去心邻域内有定义。当 $x<0$ 时 $f(x)=-1$，当 $x>0$ 时 $f(x)=1$，因而
 \[
  \lim_{x\to0^-}\frac{|x|}{x}=-1,\qquad
- \lim_{x\to0^+}\frac{|x|}{x}=1,
+ \lim_{x\to0^+}\frac{|x|}{x}=1.
 \]
-所以 $\lim_{x\to0}|x|/x$ 不存在。
-\end{example}
+左右极限不等，故 $\lim_{x\to0}|x|/x$ 不存在。
+\end{proof}
 
-\newpage
 \subsection*{用定义证明极限}
-证明有限点处的极限时，先把 $|f(x)-A|$ 化成可控制的表达式；若表达式含有随 $x$ 变化的分母，先用 $|x-x_0|<1$ 等条件使分母远离零。
+用 $\varepsilon$-$\delta$ 定义证明有限点处的极限时，核心步骤是先将 $|f(x)-A|$ 化简或放缩为易于控制 $|x-x_0|$ 的形式。如果表达式中含有随 $x$ 变化的分母，通常先附加诸如 $|x-x_0|<1$ 的局部约束使分母远离零，再据此确定 $\delta$。
 
 \begin{example}
 证明
@@ -200,51 +212,51 @@
 \]
 \end{example}
 \begin{proof}
-当 $x\ne2$ 时，$x^2-4=(x-2)(x+2)$。
+当 $x\ne2$ 时，可约去公因式 $x-2$，化简后分别加以验证。
 
-（1）任取 $\varepsilon>0$，取 $\delta=\varepsilon$。当 $0<|x-2|<\delta$ 时，
+\textbf{（1）} 任取 $\varepsilon>0$，取 $\delta=\varepsilon$。当 $0<|x-2|<\delta$ 时，有
 \[
- \left|\frac{x^2-4}{x-2}-4\right|=|x+2-4|=|x-2|<\varepsilon.
+ \left|\frac{x^2-4}{x-2}-4\right|=|x+2-4|=|x-2|<\varepsilon,
 \]
+故第一式成立。
 
-（2）先要求 $|x-2|<1$，于是 $1<x<3$，从而 $|x+2|>3$。任取 $\varepsilon>0$，取
+\textbf{（2）} 先附加限制 $|x-2|<1$，此时 $1<x<3$，从而 $|x+2|>3$。任取 $\varepsilon>0$，取
 \[
  \delta=\min\left\{1,\,12\varepsilon\right\}.
 \]
-当 $0<|x-2|<\delta$ 时，
+当 $0<|x-2|<\delta$ 时，两个约束同时满足，因此
 \[
  \left|\frac{x-2}{x^2-4}-\frac14\right|
  =\left|\frac1{x+2}-\frac14\right|
  =\frac{|x-2|}{4|x+2|}
- <\frac{|x-2|}{12}<\varepsilon.
+ <\frac{|x-2|}{12}<\varepsilon,
 \]
-故两式均得证。
+故第二式也得证。
 \end{proof}
 
 \begin{example}
-证明对任意 $x_0\in\R$，有
+证明对任意 $x_0\in\R$，均有
 \[
  \lim_{x\to x_0}\sin x=\sin x_0.
 \]
 \end{example}
 \begin{proof}
-由和差化积公式，
+由和差化积公式，并结合 $|\cos u|\le1$ 与 $|\sin t|\le |t|$，可得
 \[
  |\sin x-\sin x_0|
  =2\left|\sin\frac{x-x_0}{2}\right|\left|\cos\frac{x+x_0}{2}\right|
  \le 2\left|\sin\frac{x-x_0}{2}\right|
  \le |x-x_0|.
 \]
-任取 $\varepsilon>0$，取 $\delta=\varepsilon$。当 $0<|x-x_0|<\delta$ 时，上式给出
-\[
- |\sin x-\sin x_0|<\varepsilon.
-\]
+任取 $\varepsilon>0$，取 $\delta=\varepsilon$，则当 $0<|x-x_0|<\delta$ 时，上式立即给出 $|\sin x-\sin x_0|<\varepsilon$，结论得证。
 \end{proof}
 
-同理，利用 $\cos x-\cos x_0=-2\sin((x+x_0)/2)\sin((x-x_0)/2)$，可得
+同理，利用 $\cos x-\cos x_0=-2\sin\bigl((x+x_0)/2\bigr)\sin\bigl((x-x_0)/2\bigr)$，可证得对任意 $x_0\in\R$ 有
 \[
  \lim_{x\to x_0}\cos x=\cos x_0.
 \]
+
+对于定义域为闭区间的函数，在区间端点处只能考虑来自定义域内部的一侧极限。
 
 \begin{example}
 证明
@@ -255,13 +267,13 @@
 \]
 \end{example}
 \begin{proof}
-函数 $\sqrt{1-x^2}$ 的定义域是 $[-1,1]$，所以在端点处只能从定义域内的一侧趋近。
+函数 $\sqrt{1-x^2}$ 的定义域是 $[-1,1]$，因此在端点 $1$ 和 $-1$ 处分别只讨论左极限与右极限。
 
-以 $x\to1^-$ 为例。任取 $\varepsilon>0$，取 $\delta=\min\{1,\varepsilon^2/2\}$。当 $1-\delta<x<1$ 时，
+先证 $x\to1^-$ 的情形。任取 $\varepsilon>0$，取 $\delta=\min\{1,\varepsilon^2/2\}$。当 $1-\delta<x<1$ 时，有 $0<x<1$，从而 $1+x<2$，于是
 \[
  0<1-x^2=(1-x)(1+x)<2(1-x)<2\delta\le\varepsilon^2,
 \]
-因而 $|\sqrt{1-x^2}-0|<\varepsilon$。另一端点的证明完全类似，故结论成立。
+两边开方即得 $|\sqrt{1-x^2}-0|<\varepsilon$。当 $x\to-1^+$ 时，证明过程完全类似，故两式均成立。
 \end{proof}
 
 \end{document}
